@@ -1,210 +1,753 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haushaltsheld</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haushaltsheld</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #e8f1ff, #f8fbff);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+    :root {
+      --bg: #eef4ff;
+      --panel: #ffffff;
+      --panel-soft: #f7f9fc;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #f59e0b;
+      --line: #dbe4f0;
+      --success: #10b981;
+      --shadow: 0 16px 40px rgba(37, 99, 235, 0.12);
+      --radius: 22px;
+    }
 
-/* Container */
-.container {
-    width: 420px;
-    background: white;
-    border-radius: 25px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-    overflow: hidden;
-}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #eaf2ff, #f7fbff);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-/* Header */
-.header {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
+    .app-shell {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 20px;
+      min-height: 100vh;
+    }
 
-.snail {
-    font-size: 45px;
-    animation: wiggle 2s infinite;
-}
+    .sidebar {
+      background: linear-gradient(180deg, #2563eb, #1e40af);
+      color: white;
+      border-radius: 28px;
+      padding: 24px 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
 
-@keyframes wiggle {
-    0%,100% { transform: rotate(0deg); }
-    25% { transform: rotate(5deg); }
-    75% { transform: rotate(-5deg); }
-}
+    .brand {
+      text-align: center;
+      padding: 10px 8px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
 
-.header h1 {
-    margin: 5px 0;
-}
+    .brand-icon {
+      font-size: 42px;
+      display: block;
+      margin-bottom: 8px;
+    }
 
-/* Chat */
-.chatbox {
-    height: 320px;
-    overflow-y: auto;
-    padding: 15px;
-    background: #f5f7fa;
-}
+    .brand h1 {
+      margin: 0;
+      font-size: 1.7rem;
+      line-height: 1.1;
+    }
 
-/* Nachrichten */
-.message {
-    margin: 10px 0;
-    padding: 12px;
-    border-radius: 15px;
-    max-width: 80%;
-    animation: fadeIn 0.3s ease;
-}
+    .brand p {
+      margin: 8px 0 0;
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.86);
+    }
 
-.user {
-    background: #2563eb;
-    color: white;
-    margin-left: auto;
-}
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-.bot {
-    background: #e4e4e4;
-}
+    .nav-btn {
+      border: none;
+      background: rgba(255,255,255,0.12);
+      color: white;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: white;
+      color: var(--primary-dark);
+      transform: translateX(2px);
+    }
 
-/* Chips */
-.chips {
-    display: flex;
-    gap: 8px;
-    padding: 10px;
-    justify-content: center;
-}
+    .sidebar-card {
+      margin-top: auto;
+      background: rgba(255,255,255,0.14);
+      border-radius: 20px;
+      padding: 16px;
+    }
 
-.chip {
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 20px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: 0.2s;
-}
+    .sidebar-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
 
-.chip:hover {
-    background: #e8f1ff;
-    transform: scale(1.05);
-}
+    .sidebar-card p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.88);
+    }
 
-/* Input */
-.input-area {
-    display: flex;
-    gap: 10px;
-    padding: 12px;
-}
+    .main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
 
-input {
-    flex: 1;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-}
+    .topbar {
+      background: var(--panel);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
 
-button {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-}
+    .topbar h2 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
 
-button:hover {
-    background: #1d4ed8;
-    transform: scale(1.05);
-}
-</style>
+    .topbar p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
 
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .top-chip {
+      background: #eff6ff;
+      color: var(--primary-dark);
+      border: 1px solid #cfe0ff;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat .emoji {
+      font-size: 1.8rem;
+    }
+
+    .stat .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .stat .label {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff, #eef5ff);
+      border: 1px solid #d8e5ff;
+    }
+
+    .hero-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .hero h3 {
+      font-size: 1.35rem;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      max-width: 700px;
+    }
+
+    .snail-big {
+      font-size: 70px;
+      line-height: 1;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .list-item {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .list-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      background: #e8f7ef;
+      color: #0f8f63;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .badge.warn {
+      background: #fff4db;
+      color: #b7791f;
+    }
+
+    .badge.blue {
+      background: #e9f2ff;
+      color: var(--primary-dark);
+    }
+
+    .chat-preview {
+      height: 320px;
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bubble {
+      max-width: 78%;
+      border-radius: 16px;
+      padding: 12px 14px;
+      line-height: 1.5;
+    }
+
+    .bubble.bot {
+      background: #e5e7eb;
+      align-self: flex-start;
+    }
+
+    .bubble.user {
+      background: var(--primary);
+      color: white;
+      align-self: flex-end;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #cfd9e5;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 1rem;
+      outline: none;
+      font-family: inherit;
+      background: white;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 0.98rem;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-soft {
+      background: #eff6ff;
+      color: var(--primary-dark);
+      border: 1px solid #d5e4ff;
+    }
+
+    .btn-soft:hover {
+      background: #e3efff;
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .chip {
+      border: 1px solid #d4dce7;
+      background: white;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      background: #eff6ff;
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 1.25rem;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .mini-note {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 0 10px 10px;
+    }
+
+    @media (max-width: 1080px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        padding-bottom: 18px;
+      }
+
+      .sidebar-card {
+        margin-top: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .chat-input {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<div class="container">
-
-    <div class="header">
-        <div class="snail">🐌</div>
-        <h1>Haushaltsheld 💰</h1>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🐌</span>
+        <h1>Haushaltsheld</h1>
         <p>Dein Helfer für Sparen, Alltag & Organisation</p>
-    </div>
+      </div>
 
-    <div class="chatbox" id="chat">
-        <div class="message bot">
-            🐌 Hallo! Ich bin dein Haushaltsheld. Frag mich etwas 😊
+      <nav class="nav">
+        <button class="nav-btn active" onclick="showScreen('dashboard', this)">🏠 Dashboard</button>
+        <button class="nav-btn" onclick="showScreen('sparen', this)">💰 Sparen</button>
+        <button class="nav-btn" onclick="showScreen('einkauf', this)">🛒 Einkauf</button>
+        <button class="nav-btn" onclick="showScreen('haushalt', this)">🧽 Haushalt</button>
+        <button class="nav-btn" onclick="showScreen('tipps', this)">💡 Tipps</button>
+        <button class="nav-btn" onclick="showScreen('chat', this)">🤖 Chat</button>
+      </nav>
+
+      <div class="sidebar-card">
+        <h3>🐌 Schnickschnack-Stil</h3>
+        <p>Freundlich, weich, hell und übersichtlich. Morgen können wir daraus die echte KI-Version machen.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="topbar">
+        <div>
+          <h2>Haushaltsheld App</h2>
+          <p>Heute arbeiten wir am Gesamt-Layout, an Farben, Navigation und dem Look deiner Seiten.</p>
         </div>
-    </div>
+        <div class="top-actions">
+          <div class="top-chip">🐌 Brand: Schnecke</div>
+          <div class="top-chip">🎨 Stil: freundlich</div>
+          <div class="top-chip">💙 Farbe: Blau / Weiß</div>
+        </div>
+      </section>
 
-    <div class="chips">
-        <div class="chip" onclick="setQuestion('Wie kann ich Geld sparen?')">💰 Sparen</div>
-        <div class="chip" onclick="setQuestion('Gib mir Einkaufstipps')">🛒 Einkauf</div>
-        <div class="chip" onclick="setQuestion('Erstelle mir einen Plan')">📋 Plan</div>
-    </div>
+      <section id="dashboard" class="screen active">
+        <div class="grid">
+          <div class="card hero">
+            <div class="hero-box">
+              <div>
+                <h3>Willkommen in deinem Haushaltshelden</h3>
+                <p>
+                  Hier kannst du später sparen, planen, Listen erstellen und echte KI-Antworten bekommen.
+                  Heute bauen wir zuerst das vollständige App-Gefühl auf: Navigation, Farben, Karten und Bereiche.
+                </p>
+                <div class="chips">
+                  <div class="chip">💰 Budget</div>
+                  <div class="chip">🛒 Einkauf</div>
+                  <div class="chip">🧽 Putzplan</div>
+                  <div class="chip">🤖 Haushalts-KI</div>
+                </div>
+              </div>
+              <div class="snail-big">🐌</div>
+            </div>
+          </div>
 
-    <div class="input-area">
-        <input id="frage" placeholder="Frag mich was..." />
-        <button onclick="antwort()">Senden</button>
-    </div>
+          <div class="grid grid-3">
+            <div class="card stat">
+              <div class="emoji">💰</div>
+              <div class="value">120 €</div>
+              <div class="label">Monatlich gespart</div>
+            </div>
+            <div class="card stat">
+              <div class="emoji">🛒</div>
+              <div class="value">18</div>
+              <div class="label">Artikel auf Einkaufsliste</div>
+            </div>
+            <div class="card stat">
+              <div class="emoji">🧽</div>
+              <div class="value">5</div>
+              <div class="label">Haushaltsaufgaben diese Woche</div>
+            </div>
+          </div>
 
-</div>
+          <div class="grid grid-2">
+            <div class="card">
+              <h3 class="section-title">Nächste Aufgaben</h3>
+              <div class="list">
+                <div class="list-item">
+                  <div><strong>Wocheneinkauf planen</strong><span>Gemüse, Getränke, Putzmittel</span></div>
+                  <span class="badge blue">Heute</span>
+                </div>
+                <div class="list-item">
+                  <div><strong>Bad putzen</strong><span>15 Minuten Schnellroutine</span></div>
+                  <span class="badge warn">Morgen</span>
+                </div>
+                <div class="list-item">
+                  <div><strong>Abos prüfen</strong><span>Sparmöglichkeit suchen</span></div>
+                  <span class="badge">Offen</span>
+                </div>
+              </div>
+            </div>
 
-<script>
-function setQuestion(text) {
-    document.getElementById("frage").value = text;
-}
+            <div class="card">
+              <h3 class="section-title">Wochenziel</h3>
+              <p>Diese Woche möchtest du Ordnung, Sparen und Einkauf besser zusammenbringen. Später kann deine KI daraus echte Vorschläge machen.</p>
+              <div class="list" style="margin-top:14px;">
+                <div class="list-item">
+                  <div><strong>Ziel 1</strong><span>20 € weniger Spontankäufe</span></div>
+                </div>
+                <div class="list-item">
+                  <div><strong>Ziel 2</strong><span>Putzplan gleichmäßig verteilen</span></div>
+                </div>
+                <div class="list-item">
+                  <div><strong>Ziel 3</strong><span>1 feste Einkaufsliste nutzen</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-function antwort() {
-    let text = document.getElementById("frage").value;
-    let chat = document.getElementById("chat");
+      <section id="sparen" class="screen">
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 class="section-title">Sparübersicht</h3>
+            <p>Hier kann später dein monatliches Budget rein. Für jetzt ist es ein schönes Layout für deine App.</p>
+            <div class="list">
+              <div class="list-item">
+                <div><strong>Lebensmittel</strong><span>Budget: 300 €</span></div>
+                <span class="badge">Noch 86 € frei</span>
+              </div>
+              <div class="list-item">
+                <div><strong>Haushalt</strong><span>Putzmittel & Kleinkram</span></div>
+                <span class="badge blue">Im Plan</span>
+              </div>
+              <div class="list-item">
+                <div><strong>Strom & Energie</strong><span>Verbrauch beobachten</span></div>
+                <span class="badge warn">Optimieren</span>
+              </div>
+            </div>
+          </div>
 
-    if (!text) return;
+          <div class="card">
+            <h3 class="section-title">Spar-Ideen</h3>
+            <div class="list">
+              <div class="list-item"><div><strong>Einkaufsliste vorab schreiben</strong><span>Vermeidet Spontankäufe</span></div></div>
+              <div class="list-item"><div><strong>Wochenmenü planen</strong><span>Weniger Lebensmittelverschwendung</span></div></div>
+              <div class="list-item"><div><strong>Stromfresser prüfen</strong><span>Standby vermeiden</span></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    chat.innerHTML += `<div class="message user">${text}</div>`;
-    chat.innerHTML += `<div class="message bot" id="loading">🐌 denkt nach...</div>`;
-    chat.scrollTop = chat.scrollHeight;
+      <section id="einkauf" class="screen">
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 class="section-title">Einkaufsliste</h3>
+            <div class="list">
+              <div class="list-item"><div><strong>Milch</strong><span>2 Packungen</span></div><span class="badge blue">Liste</span></div>
+              <div class="list-item"><div><strong>Tomaten</strong><span>Für Salat</span></div><span class="badge blue">Liste</span></div>
+              <div class="list-item"><div><strong>Allzweckreiniger</strong><span>Haushalt</span></div><span class="badge blue">Liste</span></div>
+            </div>
+          </div>
 
-    setTimeout(() => {
-        document.getElementById("loading").remove();
+          <div class="card">
+            <h3 class="section-title">Neuen Eintrag vorbereiten</h3>
+            <div class="form-grid">
+              <input placeholder="Artikelname" />
+              <input placeholder="Menge oder Hinweis" />
+              <select>
+                <option>Lebensmittel</option>
+                <option>Haushalt</option>
+                <option>Drogerie</option>
+              </select>
+              <button class="btn btn-primary">Zur Liste hinzufügen</button>
+            </div>
+            <div class="mini-note">Später können wir diese Eingaben auch wirklich speichern.</div>
+          </div>
+        </div>
+      </section>
 
-        let antwort;
+      <section id="haushalt" class="screen">
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 class="section-title">Wochen-Putzplan</h3>
+            <div class="list">
+              <div class="list-item"><div><strong>Montag</strong><span>Küche</span></div><span class="badge">15 Min</span></div>
+              <div class="list-item"><div><strong>Dienstag</strong><span>Bad</span></div><span class="badge">20 Min</span></div>
+              <div class="list-item"><div><strong>Mittwoch</strong><span>Staubsaugen</span></div><span class="badge">15 Min</span></div>
+              <div class="list-item"><div><strong>Donnerstag</strong><span>Wäsche</span></div><span class="badge">30 Min</span></div>
+              <div class="list-item"><div><strong>Freitag</strong><span>Staub wischen</span></div><span class="badge">10 Min</span></div>
+            </div>
+          </div>
 
-        if (text.toLowerCase().includes("strom")) {
-            antwort = "💡 Nutze LED & vermeide Standby!";
-        } else if (text.toLowerCase().includes("geld")) {
-            antwort = "💰 Schreib deine Ausgaben auf – das ist der Gamechanger!";
+          <div class="card">
+            <h3 class="section-title">Schnellroutine</h3>
+            <p>Hier könntest du später tägliche 10-Minuten-Routinen hinterlegen. Fürs Layout ist das schon eine schöne zweite Seite.</p>
+            <div class="chips">
+              <div class="chip">🧺 Wäsche</div>
+              <div class="chip">🧽 Oberflächen</div>
+              <div class="chip">🗑️ Müll</div>
+              <div class="chip">🛏️ Bett</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tipps" class="screen">
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>💡 Spartipp</h3>
+            <p>Nie hungrig einkaufen gehen. Das spart oft sofort Geld.</p>
+          </div>
+          <div class="card">
+            <h3>💡 Haushaltstipp</h3>
+            <p>Lieber 10 Minuten täglich als ein riesiger Putzstress am Wochenende.</p>
+          </div>
+          <div class="card">
+            <h3>💡 Orga-Tipp</h3>
+            <p>Wiederkehrende Aufgaben am besten fest auf bestimmte Tage legen.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="chat" class="screen">
+        <div class="card">
+          <h3 class="section-title">Haushaltsheld Chat</h3>
+          <div class="chat-preview" id="chatPreview">
+            <div class="bubble bot">🐌 Hallo! Morgen schließen wir hier wieder die echte KI an. Heute bleibt das dein schönes App-Layout.</div>
+          </div>
+
+          <div class="chips">
+            <button class="chip" onclick="setQuestion('Wie spare ich im Alltag Geld?')">💰 Sparen</button>
+            <button class="chip" onclick="setQuestion('Gib mir Einkaufstipps')">🛒 Einkauf</button>
+            <button class="chip" onclick="setQuestion('Erstelle mir einen Putzplan')">🧽 Putzplan</button>
+          </div>
+
+          <div class="chat-input">
+            <input id="frage" placeholder="Frag mich was..." />
+            <button class="btn btn-primary" onclick="antwort()">Senden</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        Haushaltsheld Demo-Layout • morgen können wir die echte KI wieder anschließen.
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function showScreen(id, button) {
+      document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+      });
+      document.getElementById(id).classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+      button.classList.add("active");
+    }
+
+    function setQuestion(text) {
+      document.getElementById("frage").value = text;
+    }
+
+    function antwort() {
+      const input = document.getElementById("frage");
+      const chat = document.getElementById("chatPreview");
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      chat.innerHTML += `<div class="bubble user">${text}</div>`;
+      chat.innerHTML += `<div class="bubble bot" id="loading">🐌 denkt nach...</div>`;
+      chat.scrollTop = chat.scrollHeight;
+
+      setTimeout(() => {
+        const loading = document.getElementById("loading");
+        if (loading) loading.remove();
+
+        let reply = "🐌 Ich helfe dir beim Sparen, Haushalt und Planen.";
+
+        if (text.toLowerCase().includes("geld") || text.toLowerCase().includes("sparen")) {
+          reply = "💰 Ein guter Start: Ausgaben aufschreiben, Einkauf planen und Spontankäufe reduzieren.";
         } else if (text.toLowerCase().includes("einkauf")) {
-            antwort = "🛒 Geh nie hungrig einkaufen 😄";
-        } else if (text.toLowerCase().includes("plan")) {
-            antwort = "📋 Plane deine Woche – spart Zeit & Stress!";
-        } else {
-            antwort = "🐌 Ich helfe dir beim Sparen & Planen!";
+          reply = "🛒 Schreib vorab eine Liste und geh nie hungrig einkaufen.";
+        } else if (text.toLowerCase().includes("putz") || text.toLowerCase().includes("plan")) {
+          reply = "🧽 Verteile Aufgaben auf die Woche – dann ist es leichter und stressfreier.";
         }
 
-        chat.innerHTML += `<div class="message bot">${antwort}</div>`;
+        chat.innerHTML += `<div class="bubble bot">${reply}</div>`;
         chat.scrollTop = chat.scrollHeight;
+      }, 850);
 
-    }, 900);
-
-    document.getElementById("frage").value = "";
-}
-</script>
-
+      input.value = "";
+    }
+  </script>
 </body>
 </html>
