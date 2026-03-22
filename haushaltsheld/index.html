@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Haushaltsheld</title>
+</head>
+<body>
+  <h1>Haushaltsheld 💰</h1>
+  <input id="frage" placeholder="Frag mich was...">
+  <button onclick="antwort()">Senden</button>
+  <p id="aiText"></p>
+
+  <script>
+    async function antwort(){
+      let text = document.getElementById("frage").value;
+
+      document.getElementById("aiText").innerHTML = "🤔 denkt nach...";
+
+      const res = await fetch("/.netlify/functions/chat", {
+        method: "POST",
+        body: JSON.stringify({ message: text })
+      });
+
+      const data = await res.json();
+      document.getElementById("aiText").innerHTML = data.reply;
+    }
+  </script>
+</body>
+</html>
