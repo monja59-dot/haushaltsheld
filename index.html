@@ -18,7 +18,7 @@ body {
 
 /* Container */
 .container {
-    width: 400px;
+    width: 420px;
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -27,7 +27,7 @@ body {
 
 /* Header */
 .header {
-    background: #007bff;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: white;
     text-align: center;
     padding: 20px;
@@ -35,13 +35,21 @@ body {
 
 .header h1 {
     margin: 0;
+    font-size: 26px;
+}
+
+/* Schnecke */
+.snail {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 5px;
 }
 
 /* Chat */
 .chatbox {
-    height: 300px;
+    height: 320px;
     overflow-y: auto;
-    padding: 10px;
+    padding: 12px;
     background: #f5f7fa;
 }
 
@@ -51,10 +59,11 @@ body {
     padding: 10px;
     border-radius: 12px;
     max-width: 80%;
+    animation: fadeIn 0.3s ease;
 }
 
 .user {
-    background: #007bff;
+    background: #2563eb;
     color: white;
     margin-left: auto;
 }
@@ -63,27 +72,58 @@ body {
     background: #e0e0e0;
 }
 
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Chips */
+.chips {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    justify-content: center;
+}
+
+.chip {
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 20px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.chip:hover {
+    background: #e8f1ff;
+}
+
 /* Input */
 .input-area {
     display: flex;
     gap: 10px;
-    padding: 10px;
+    padding: 12px;
 }
 
 input {
     flex: 1;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #ccc;
 }
 
 button {
-    background: #007bff;
+    background: #2563eb;
     color: white;
     border: none;
     padding: 10px 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
 }
 </style>
 
@@ -94,13 +134,21 @@ button {
 <div class="container">
 
     <div class="header">
+        <span class="snail">🐌</span>
         <h1>Haushaltsheld 💰</h1>
+        <p>Dein Helfer für Sparen, Alltag & Organisation</p>
     </div>
 
     <div class="chatbox" id="chat">
         <div class="message bot">
-            Hallo 😊 Ich helfe dir beim Sparen und im Haushalt!
+            🐌 Hallo! Ich bin dein Haushaltsheld. Frag mich etwas zu Sparen oder Haushalt 😊
         </div>
+    </div>
+
+    <div class="chips">
+        <div class="chip" onclick="setQuestion('Wie kann ich Geld sparen?')">💰 Sparen</div>
+        <div class="chip" onclick="setQuestion('Gib mir Einkaufstipps')">🛒 Einkauf</div>
+        <div class="chip" onclick="setQuestion('Erstelle mir einen Plan')">📋 Plan</div>
     </div>
 
     <div class="input-area">
@@ -111,6 +159,10 @@ button {
 </div>
 
 <script>
+function setQuestion(text) {
+    document.getElementById("frage").value = text;
+}
+
 function antwort() {
     let text = document.getElementById("frage").value;
     let chat = document.getElementById("chat");
@@ -121,7 +173,7 @@ function antwort() {
     chat.innerHTML += `<div class="message user">${text}</div>`;
 
     // Ladeanzeige
-    chat.innerHTML += `<div class="message bot" id="loading">🤖 denkt nach...</div>`;
+    chat.innerHTML += `<div class="message bot" id="loading">🐌 denkt nach...</div>`;
     chat.scrollTop = chat.scrollHeight;
 
     setTimeout(() => {
@@ -130,15 +182,15 @@ function antwort() {
         let antwort;
 
         if (text.toLowerCase().includes("strom")) {
-            antwort = "💡 Tipp: Nutze LED-Lampen und vermeide Standby-Geräte!";
+            antwort = "💡 Tipp: Nutze LED-Lampen und vermeide Standby!";
         } else if (text.toLowerCase().includes("geld")) {
             antwort = "💰 Schreib deine Ausgaben auf – das ist der erste Schritt zum Sparen!";
         } else if (text.toLowerCase().includes("einkauf")) {
-            antwort = "🛒 Geh nie hungrig einkaufen – das spart sofort Geld!";
-        } else if (text.toLowerCase().includes("putzen")) {
-            antwort = "🧽 Mach dir einen Wochenplan – so bleibt alles sauber ohne Stress!";
+            antwort = "🛒 Geh nie hungrig einkaufen – spart Geld!";
+        } else if (text.toLowerCase().includes("plan")) {
+            antwort = "📋 Plane deine Woche – so behältst du Kontrolle!";
         } else {
-            antwort = "🤖 Ich helfe dir beim Sparen, Planen und Haushalten!";
+            antwort = "🐌 Ich helfe dir beim Sparen, Planen und Haushalt!";
         }
 
         chat.innerHTML += `<div class="message bot">${antwort}</div>`;
