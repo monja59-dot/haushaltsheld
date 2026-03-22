@@ -1,238 +1,154 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Haushaltsheld</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haushaltsheld</title>
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #e8f1ff, #f8fbff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e8f1ff, #f8fbff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-    .app {
-      width: 100%;
-      max-width: 480px;
-      background: #ffffff;
-      border-radius: 22px;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
-      overflow: hidden;
-    }
+/* Container */
+.container {
+    width: 400px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
 
-    .header {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      padding: 24px 20px;
-      text-align: center;
-    }
+/* Header */
+.header {
+    background: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
 
-    .header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
+.header h1 {
+    margin: 0;
+}
 
-    .header p {
-      margin: 8px 0 0;
-      opacity: 0.95;
-      font-size: 0.95rem;
-    }
+/* Chat */
+.chatbox {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #f5f7fa;
+}
 
-    .chatbox {
-      height: 380px;
-      overflow-y: auto;
-      padding: 16px;
-      background: #f8fafc;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+/* Nachrichten */
+.message {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 12px;
+    max-width: 80%;
+}
 
-    .message {
-      max-width: 82%;
-      padding: 12px 14px;
-      border-radius: 16px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-size: 0.98rem;
-    }
+.user {
+    background: #007bff;
+    color: white;
+    margin-left: auto;
+}
 
-    .user {
-      align-self: flex-end;
-      background: #2563eb;
-      color: white;
-      border-bottom-right-radius: 6px;
-    }
+.bot {
+    background: #e0e0e0;
+}
 
-    .bot {
-      align-self: flex-start;
-      background: #e5e7eb;
-      color: #111827;
-      border-bottom-left-radius: 6px;
-    }
+/* Input */
+.input-area {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
 
-    .input-area {
-      display: flex;
-      gap: 10px;
-      padding: 16px;
-      border-top: 1px solid #e5e7eb;
-      background: white;
-    }
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
 
-    input {
-      flex: 1;
-      border: 1px solid #cbd5e1;
-      border-radius: 14px;
-      padding: 13px 14px;
-      font-size: 1rem;
-      outline: none;
-    }
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+</style>
 
-    input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    button {
-      border: none;
-      border-radius: 14px;
-      background: #2563eb;
-      color: white;
-      padding: 0 18px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 0 16px 16px;
-      background: white;
-    }
-
-    .chip {
-      border: 1px solid #cbd5e1;
-      background: #fff;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 0.88rem;
-      cursor: pointer;
-    }
-
-    .chip:hover {
-      background: #eff6ff;
-    }
-
-    @media (max-width: 520px) {
-      .chatbox {
-        height: 340px;
-      }
-
-      .header h1 {
-        font-size: 1.7rem;
-      }
-
-      .input-area {
-        flex-direction: column;
-      }
-
-      button {
-        height: 48px;
-      }
-
-      .message {
-        max-width: 90%;
-      }
-    }
-  </style>
 </head>
+
 <body>
-  <div class="app">
+
+<div class="container">
+
     <div class="header">
-      <h1>Haushaltsheld 💰</h1>
-      <p>Dein Helfer für Sparen, Alltag und Haushalt</p>
+        <h1>Haushaltsheld 💰</h1>
     </div>
 
     <div class="chatbox" id="chat">
-      <div class="message bot">
-        Hallo 👋 Ich bin dein Haushaltsheld. Frag mich etwas zu Sparen, Haushalt oder Organisation.
-      </div>
-    </div>
-
-    <div class="chips">
-      <button class="chip" onclick="setQuestion('Wie kann ich im Alltag Strom sparen?')">Strom sparen</button>
-      <button class="chip" onclick="setQuestion('Gib mir 5 Spartipps für Lebensmittel.')">Spartipps</button>
-      <button class="chip" onclick="setQuestion('Erstelle mir einen einfachen Wochenplan fürs Putzen.')">Wochenplan</button>
+        <div class="message bot">
+            Hallo 😊 Ich helfe dir beim Sparen und im Haushalt!
+        </div>
     </div>
 
     <div class="input-area">
-      <input id="frage" placeholder="Frag mich was..." />
-      <button onclick="antwort()">Senden</button>
+        <input id="frage" placeholder="Frag mich was..." />
+        <button onclick="antwort()">Senden</button>
     </div>
-  </div>
 
-  <script>
-    function setQuestion(text) {
-      document.getElementById("frage").value = text;
-    }
+</div>
 
-    async function antwort() {
-      const input = document.getElementById("frage");
-      const chat = document.getElementById("chat");
-      const text = input.value.trim();
+<script>
+function antwort() {
+    let text = document.getElementById("frage").value;
+    let chat = document.getElementById("chat");
 
-      if (!text) return;
+    if (!text) return;
 
-      chat.innerHTML += `<div class="message user">${text}</div>`;
-      chat.innerHTML += `<div class="message bot" id="loading">🤖 denkt nach...</div>`;
-      chat.scrollTop = chat.scrollHeight;
-      input.value = "";
+    // User Nachricht
+    chat.innerHTML += `<div class="message user">${text}</div>`;
 
-      try {
-        const res = await fetch("/.netlify/functions/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ message: text })
-        });
+    // Ladeanzeige
+    chat.innerHTML += `<div class="message bot" id="loading">🤖 denkt nach...</div>`;
+    chat.scrollTop = chat.scrollHeight;
 
-        const data = await res.json();
-        const loading = document.getElementById("loading");
-        if (loading) loading.remove();
+    setTimeout(() => {
+        document.getElementById("loading").remove();
 
-        chat.innerHTML += `<div class="message bot">${data.reply || "Ich habe gerade keine Antwort."}</div>`;
+        let antwort;
+
+        if (text.toLowerCase().includes("strom")) {
+            antwort = "💡 Tipp: Nutze LED-Lampen und vermeide Standby-Geräte!";
+        } else if (text.toLowerCase().includes("geld")) {
+            antwort = "💰 Schreib deine Ausgaben auf – das ist der erste Schritt zum Sparen!";
+        } else if (text.toLowerCase().includes("einkauf")) {
+            antwort = "🛒 Geh nie hungrig einkaufen – das spart sofort Geld!";
+        } else if (text.toLowerCase().includes("putzen")) {
+            antwort = "🧽 Mach dir einen Wochenplan – so bleibt alles sauber ohne Stress!";
+        } else {
+            antwort = "🤖 Ich helfe dir beim Sparen, Planen und Haushalten!";
+        }
+
+        chat.innerHTML += `<div class="message bot">${antwort}</div>`;
         chat.scrollTop = chat.scrollHeight;
-      } catch (error) {
-        const loading = document.getElementById("loading");
-        if (loading) loading.remove();
 
-        chat.innerHTML += `<div class="message bot">⚠️ Es gab ein Problem: ${error.message}</div>`;
-        chat.scrollTop = chat.scrollHeight;
-      }
-    }
+    }, 1000);
 
-    document.getElementById("frage").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        antwort();
-      }
-    });
-  </script>
+    document.getElementById("frage").value = "";
+}
+</script>
+
 </body>
 </html>
