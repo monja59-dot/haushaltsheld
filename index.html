@@ -1,141 +1,740 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Haushaltsheld</title>
-
   <style>
-    body {
+    :root {
+      --bg: #fffaf6;
+      --bg-soft: #fff3ea;
+      --card: rgba(255, 255, 255, 0.88);
+      --text: #47352c;
+      --muted: #8d7468;
+      --primary: #f38b59;
+      --primary-dark: #db6d39;
+      --accent: #8fd3c1;
+      --accent-dark: #5cb8a0;
+      --border: rgba(155, 118, 95, 0.14);
+      --shadow: 0 12px 30px rgba(139, 92, 64, 0.10);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max-width: 1250px;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    html, body {
       font-family: Arial, sans-serif;
-      background: #fffaf6;
-      color: #47352c;
+      background:
+        radial-gradient(circle at top left, #ffe7d5 0%, transparent 28%),
+        radial-gradient(circle at bottom right, #ffe9d9 0%, transparent 25%),
+        linear-gradient(180deg, #fffaf6 0%, #fff4ec 100%);
+      color: var(--text);
+      min-height: 100%;
     }
 
-    .app {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    /* SIDEBAR */
-    .sidebar {
-      width: 250px;
-      background: #ffffff;
+    body {
       padding: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+
+    .app-shell {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 22px;
+      min-height: calc(100vh - 40px);
+    }
+
+    .sidebar {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 6px 14px;
+      border-bottom: 1px solid rgba(120, 90, 70, 0.08);
     }
 
     .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fff4eb, #ffe2cc);
       display: flex;
+      align-items: center;
       justify-content: center;
-      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(243, 139, 89, 0.14);
+      flex-shrink: 0;
     }
 
     .logo img {
-      width: 120px;
-    }
-
-    .nav a {
+      width: 92%;
+      height: 92%;
+      object-fit: contain;
       display: block;
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-      text-decoration: none;
-      color: #47352c;
-      background: #fff3ea;
     }
 
-    .nav a:hover {
-      background: #ffe2cc;
+    .brand-text h1 {
+      font-size: 21px;
+      line-height: 1.1;
     }
 
-    /* MAIN */
-    .main {
-      flex: 1;
-      padding: 30px;
+    .brand-text p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
     }
 
-    .hero {
-      background: #fff3ea;
-      padding: 30px;
-      border-radius: 20px;
+    .nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #a48778;
+      padding: 0 6px;
+    }
+
+    .nav-link {
       display: flex;
       align-items: center;
+      gap: 12px;
+      padding: 14px 14px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255,255,255,0.65);
+      border: 1px solid transparent;
+      border-radius: 16px;
+      transition: 0.25s ease;
+      font-weight: 600;
+    }
+
+    .nav-link:hover {
+      transform: translateY(-1px);
+      background: #fff;
+      border-color: rgba(243,139,89,0.18);
+      box-shadow: 0 8px 20px rgba(186, 126, 96, 0.10);
+    }
+
+    .nav-link.active {
+      background: linear-gradient(135deg, rgba(243,139,89,0.16), rgba(143,211,193,0.20));
+      border-color: rgba(243,139,89,0.18);
+    }
+
+    .nav-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: #fff5ef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      background: linear-gradient(145deg, #fff1e7, #fff9f3);
+      border: 1px solid rgba(243,139,89,0.14);
+      border-radius: 22px;
+      padding: 16px;
+    }
+
+    .sidebar-bottom h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-bottom p {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      border: none;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #ff9c69);
+      color: white;
+      box-shadow: 0 10px 20px rgba(243, 139, 89, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, var(--primary-dark), #f38b59);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid rgba(120, 90, 70, 0.12);
+    }
+
+    .btn-secondary:hover {
+      background: #fff8f4;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .topbar {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 18px 22px;
+      display: flex;
       justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
     }
 
-    .hero-text {
-      max-width: 60%;
+    .topbar-left h2 {
+      font-size: 28px;
+      margin-bottom: 4px;
     }
 
-    .hero h1 {
-      margin-top: 0;
+    .topbar-left p {
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .hero img {
-      width: 200px;
-      animation: float 4s ease-in-out infinite;
+    .topbar-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    @keyframes float {
-      0%,100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
+    .mini-btn {
+      border: none;
+      background: white;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-weight: 700;
+      color: var(--text);
+      border: 1px solid rgba(120, 90, 70, 0.10);
+      cursor: pointer;
+    }
+
+    .mini-btn:hover {
+      background: #fff8f4;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
     }
 
     .card {
-      margin-top: 20px;
-      padding: 20px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 22px;
     }
 
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 10px;
+    }
+
+    .card-header h3 {
+      font-size: 20px;
+    }
+
+    .card-header span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .hero-box {
+      background: linear-gradient(135deg, rgba(243,139,89,0.14), rgba(143,211,193,0.18));
+      border-radius: 24px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .hero-box h3 {
+      font-size: 30px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .hero-box p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      font-size: 15px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-snail {
+      min-height: 240px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 60% 35%, #fff4eb 0%, #ffe2cc 45%, #f8bf98 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
+      padding: 16px;
+    }
+
+    .hero-snail img {
+      width: 240px;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      animation: floatSnail 4s ease-in-out infinite;
+      display: block;
+    }
+
+    @keyframes floatSnail {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(120, 90, 70, 0.08);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .stat-change {
+      font-size: 13px;
+      color: var(--accent-dark);
+      font-weight: 700;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .task-item {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(120, 90, 70, 0.08);
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .task-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      flex-shrink: 0;
+    }
+
+    .task-content h4 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .task-content p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chat-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 500px;
+    }
+
+    .chat-window {
+      background: linear-gradient(180deg, #fffdfb 0%, #fff6f1 100%);
+      border-radius: 22px;
+      padding: 18px;
+      flex: 1;
+      border: 1px solid rgba(120, 90, 70, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .chat-bubble {
+      max-width: 82%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.55;
+      box-shadow: 0 8px 18px rgba(120, 90, 70, 0.06);
+    }
+
+    .chat-bubble.bot {
+      align-self: flex-start;
+      background: white;
+      border-top-left-radius: 8px;
+    }
+
+    .chat-bubble.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #f59b68, #f38b59);
+      color: white;
+      border-top-right-radius: 8px;
+    }
+
+    .chat-input-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+    }
+
+    .chat-input {
+      border: 1px solid rgba(120, 90, 70, 0.12);
+      background: white;
+      padding: 15px 16px;
+      border-radius: 18px;
+      outline: none;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .send-btn {
+      border: none;
+      padding: 0 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), #75c8b3);
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(95, 179, 155, 0.22);
+    }
+
+    .send-btn:hover {
+      background: linear-gradient(135deg, var(--accent-dark), #6bc4ae);
+    }
+
+    .small-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1080px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-box {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 12px;
+      }
+
+      .sidebar,
+      .topbar,
+      .card {
+        border-radius: 22px;
+      }
+
+      .topbar-left h2 {
+        font-size: 24px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-input-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .send-btn {
+        min-height: 48px;
+      }
+
+      .brand {
+        align-items: center;
+      }
+
+      .logo {
+        width: 62px;
+        height: 62px;
+      }
+
+      .hero-snail img {
+        width: 190px;
+      }
+    }
   </style>
 </head>
-
 <body>
 
-<div class="app">
+  <div class="app-shell">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="logo">
-      <img src="assetsschnecke.png" alt="Schnecke">
-    </div>
-
-    <div class="nav">
-      <a href="#">🏠 Dashboard</a>
-      <a href="#">🧹 Aufgaben</a>
-      <a href="#">🛒 Einkauf</a>
-      <a href="#">💬 Assistent</a>
-    </div>
-  </div>
-
-  <!-- MAIN -->
-  <div class="main">
-
-    <div class="hero">
-      <div class="hero-text">
-        <h1>Willkommen zurück, Monja 🐌</h1>
-        <p>Deine Schnickschnack-Schnecke hilft dir beim Organisieren 💛</p>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">
+          <img src="assetsschnecke.png" alt="Schnickschnack Schnecke">
+        </div>
+        <div class="brand-text">
+          <h1>Haushaltsheld</h1>
+          <p>Schnickschnack-Schnecke Edition</p>
+        </div>
       </div>
 
-      <img src="assetsschnecke.png" alt="Schnecke">
-    </div>
+      <div class="nav-group">
+        <div class="nav-title">Menü</div>
 
-    <div class="card">
-      <h3>Heute erledigen</h3>
-      <ul>
-        <li>Küche aufräumen</li>
-        <li>Einkaufen planen</li>
-        <li>Wäsche starten</li>
-      </ul>
-    </div>
+        <a href="#" class="nav-link active">
+          <div class="nav-icon">🏠</div>
+          <span>Dashboard</span>
+        </a>
 
+        <a href="#" class="nav-link">
+          <div class="nav-icon">🧹</div>
+          <span>Aufgaben</span>
+        </a>
+
+        <a href="#" class="nav-link">
+          <div class="nav-icon">🛒</div>
+          <span>Einkauf</span>
+        </a>
+
+        <a href="#" class="nav-link">
+          <div class="nav-icon">💬</div>
+          <span>Assistent</span>
+        </a>
+
+        <a href="#" class="nav-link">
+          <div class="nav-icon">⚙️</div>
+          <span>Einstellungen</span>
+        </a>
+      </div>
+
+      <div class="sidebar-bottom">
+        <h3>Deine Schneckenhilfe</h3>
+        <p>
+          Alles entspannt, weich und übersichtlich. Genau so soll sich deine App anfühlen.
+        </p>
+        <button class="btn-primary">Neuen Bereich starten</button>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <section class="topbar">
+        <div class="topbar-left">
+          <h2>Willkommen zurück, Monja 🐌</h2>
+          <p>Heute organisieren wir Haushalt, Aufgaben und deine kleinen Alltagshelden.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="mini-btn">+ Aufgabe</button>
+          <button class="mini-btn">+ Liste</button>
+          <button class="mini-btn">Profil</button>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Dein Haushaltsbereich</h3>
+            <span>Freundlich. Klar. Schneckenschön.</span>
+          </div>
+
+          <div class="hero-box">
+            <div>
+              <h3>Mach deinen Alltag leichter — ohne Stress und Chaos.</h3>
+              <p>
+                Haushaltsheld hilft dir dabei, Aufgaben zu planen, Routinen aufzubauen
+                und später auch per KI clevere Tipps zu bekommen.
+              </p>
+
+              <div class="hero-actions">
+                <button class="btn-primary" style="width:auto;">Jetzt loslegen</button>
+                <button class="btn-secondary" style="width:auto;">Design ansehen</button>
+              </div>
+            </div>
+
+            <div class="hero-snail">
+              <img src="assetsschnecke.png" alt="Schnickschnack Schnecke">
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-label">Offene Aufgaben</div>
+              <div class="stat-value">12</div>
+              <div class="stat-change">+2 heute</div>
+            </div>
+
+            <div class="stat-box">
+              <div class="stat-label">Erledigt</div>
+              <div class="stat-value">28</div>
+              <div class="stat-change">super im Flow</div>
+            </div>
+
+            <div class="stat-box">
+              <div class="stat-label">Einkaufsliste</div>
+              <div class="stat-value">7</div>
+              <div class="stat-change">2 dringend</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Heute wichtig</h3>
+            <span>Deine nächsten Schritte</span>
+          </div>
+
+          <div class="task-list">
+            <div class="task-item">
+              <div class="task-check"></div>
+              <div class="task-content">
+                <h4>Küche aufräumen</h4>
+                <p>Arbeitsfläche, Spülmaschine, Müll trennen</p>
+              </div>
+            </div>
+
+            <div class="task-item">
+              <div class="task-check"></div>
+              <div class="task-content">
+                <h4>Einkauf planen</h4>
+                <p>Milch, Brot, Gemüse, Katzenfutter</p>
+              </div>
+            </div>
+
+            <div class="task-item">
+              <div class="task-check"></div>
+              <div class="task-content">
+                <h4>Wäsche starten</h4>
+                <p>Dunkle Wäsche + Trockner vorbereiten</p>
+              </div>
+            </div>
+
+            <div class="task-item">
+              <div class="task-check"></div>
+              <div class="task-content">
+                <h4>Bad kurz durchwischen</h4>
+                <p>5-Minuten-Routine für den Abend</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="card chat-card">
+        <div class="card-header">
+          <h3>Haushaltsheld Assistent</h3>
+          <span>Später wieder mit KI gekoppelt</span>
+        </div>
+
+        <div class="chat-window">
+          <div class="chat-bubble bot">
+            Hallo Monja 👋 Ich helfe dir dabei, deinen Haushalt entspannter zu organisieren.
+          </div>
+
+          <div class="chat-bubble user">
+            Was sollte ich heute im Haushalt zuerst machen?
+          </div>
+
+          <div class="chat-bubble bot">
+            Starte mit einer kleinen Schnellrunde: Küche, Wäsche anstellen und dann Einkauf prüfen.
+          </div>
+        </div>
+
+        <div class="chat-input-wrap">
+          <input class="chat-input" type="text" placeholder="Schreib deiner Schneckenhilfe...">
+          <button class="send-btn">Senden</button>
+        </div>
+
+        <div class="small-note">
+          Aktuell noch Dummy-Chat — später kann hier wieder OpenAI / KI angebunden werden.
+        </div>
+      </section>
+
+    </main>
   </div>
-
-</div>
 
 </body>
 </html>
