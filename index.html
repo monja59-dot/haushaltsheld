@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haushaltsheld Dashboard</title>
+<title>Haushaltsheld</title>
 
 <style>
 body {
@@ -13,13 +13,11 @@ body {
   color: #47352c;
 }
 
-/* LAYOUT */
 .container {
   display: flex;
   min-height: 100vh;
 }
 
-/* SIDEBAR */
 .sidebar {
   width: 240px;
   background: white;
@@ -35,7 +33,7 @@ body {
 
 .nav a {
   display: block;
-  margin: 12px 0;
+  margin: 10px 0;
   padding: 12px;
   background: #fff3ea;
   border-radius: 10px;
@@ -43,37 +41,18 @@ body {
   color: #47352c;
 }
 
-/* MAIN */
 .main {
   flex: 1;
   padding: 25px;
 }
 
-/* HEADER */
-.header {
-  margin-bottom: 20px;
-}
-
-.header h1 {
-  margin: 0;
-}
-
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-/* CARDS */
 .card {
   background: white;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
 }
 
-/* HERO */
 .hero {
   display: flex;
   justify-content: space-between;
@@ -84,17 +63,6 @@ body {
 .hero img {
   width: 140px;
 }
-
-/* LISTEN */
-ul {
-  padding-left: 18px;
-}
-
-/* HIGHLIGHT */
-.highlight {
-  font-size: 24px;
-  font-weight: bold;
-}
 </style>
 </head>
 
@@ -102,7 +70,6 @@ ul {
 
 <div class="container">
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="logo">
       <img src="assetsschnecke.png">
@@ -113,69 +80,33 @@ ul {
       <a href="#">💰 Finanzen</a>
       <a href="#">🛒 Einkauf</a>
       <a href="#">🧹 Aufgaben</a>
-      <a href="#">🤖 Assistent</a>
     </div>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
 
-    <!-- BEGRÜßUNG -->
-    <div class="header">
-      <h1>Willkommen zurück, Monja 🐌</h1>
-      <p>Alles im Blick – ohne Stress 💛</p>
-    </div>
+    <h1>Willkommen zurück, Monja 🐌</h1>
 
-    <!-- HERO -->
     <div class="card hero">
       <div>
-        <h2>Dein heutiger Überblick</h2>
-        <p>Du hast 3 Aufgaben und 2 Ausgaben offen</p>
+        <h2>Dein Überblick</h2>
+        <p>Alles im Griff 💛</p>
       </div>
       <img src="assetsschnecke.png">
     </div>
 
-    <br>
+    <div class="card">
+      <h3>💰 Finanzen</h3>
+      <p>Heute: -24,50 €</p>
+      <p>Budget: 320 €</p>
+    </div>
 
-    <!-- GRID -->
-    <div class="grid">
-
-      <!-- FINANZEN -->
-      <div class="card">
-        <h3>💰 Finanzen</h3>
-        <p>Ausgaben heute:</p>
-        <div class="highlight">-24,50 €</div>
-
-        <p>Budget übrig:</p>
-        <div class="highlight">320 €</div>
-      </div>
-
-      <!-- AUFGABEN -->
-      <div class="card">
-        <h3>🧹 Aufgaben</h3>
-        <ul>
-          <li>Küche aufräumen</li>
-          <li>Wäsche starten</li>
-          <li>Müll rausbringen</li>
-        </ul>
-      </div>
-
-      <!-- EINKAUF -->
-      <div class="card">
-        <h3>🛒 Einkauf</h3>
-        <ul>
-          <li>Milch</li>
-          <li>Brot</li>
-          <li>Obst</li>
-        </ul>
-      </div>
-
-      <!-- SCHNECKE TIPP -->
-      <div class="card">
-        <h3>🐌 Tipp</h3>
-        <p>Du hast diese Woche etwas mehr für Einkäufe ausgegeben als sonst 💛</p>
-      </div>
-
+    <div class="card">
+      <h3>🧹 Aufgaben</h3>
+      <ul>
+        <li>Küche aufräumen</li>
+        <li>Wäsche starten</li>
+      </ul>
     </div>
 
   </div>
