@@ -1,188 +1,212 @@
+(function () {
+  const body = document.body;
 
-(function(){
-  if (window.__HH_KI_READY__) return;
-  window.__HH_KI_READY__ = true;
+  function detectPage() {
+    const path = window.location.pathname.toLowerCase();
 
-  const title = (document.querySelector('h1')?.textContent || document.title || 'Haushaltsheld').trim();
-  const pagePath = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-  const pageMap = {
-    'index.html': {
-      label: 'Dashboard',
-      prompts: ['Was ist heute wichtig?', 'Gib mir einen Familien-Überblick', 'Welche Aufgaben sollte ich zuerst machen?']
-    },
-    'finanzen.html': {
-      label: 'Finanzen',
-      prompts: ['Hilf mir eine Ausgabe einzuordnen', 'Gib mir einen Spartipp', 'Welche Kategorie passt zu meinem Eintrag?']
-    },
-    'einkaufsliste.html': {
-      label: 'Einkauf',
-      prompts: ['Sortiere meinen Einkauf', 'Was fehlt für den Wocheneinkauf?', 'Ordne diesen Einkauf einer Kategorie zu']
-    },
-    'beleg_import.html': {
-      label: 'Belegimport',
-      prompts: ['Hilf mir beim Beleg-Import', 'Welche Daten sollte ich übernehmen?', 'Ist das eher Einkauf oder Finanzen?']
-    },
-    'familienplaner.html': {
-      label: 'Familienplaner',
-      prompts: ['Plane einen Geburtstag', 'Woran sollte ich jetzt denken?', 'Hilf mir beim Geschenkbudget']
-    },
-    'finanz_historie.html': {
-      label: 'Historie',
-      prompts: ['Erkläre mir meine Historie', 'Wonach sollte ich filtern?', 'Was fällt in meinen Ausgaben auf?']
-    },
-    'finanzbericht.html': {
-      label: 'Bericht',
-      prompts: ['Fass mir den Bericht einfach zusammen', 'Welche Zahl ist am wichtigsten?', 'Welche Ausgaben stechen heraus?']
-    },
-    'datenzentrale.html': {
-      label: 'Datenzentrale',
-      prompts: ['Erkläre mir die Datenverknüpfung', 'Welche Bereiche hängen zusammen?', 'Was sollte ich als Nächstes prüfen?']
-    },
-    'kindermodus.html': {
-      label: 'Kindermodus',
-      prompts: ['Erkläre es kindgerecht', 'Wie kann ich Sterne sammeln?', 'Hilf mir bei meinem Sparziel']
-    },
-    'aufgaben.html': {
-      label: 'Aufgaben',
-      prompts: ['Hilf mir Aufgaben zu verteilen', 'Mach mir eine motivierende Aufgabe', 'Was ist heute am wichtigsten?']
-    }
+    if (path.includes("finanzen")) return "finanzen";
+    if (path.includes("einkaufsliste")) return "einkaufsliste";
+    if (path.includes("aufgaben")) return "aufgaben";
+    if (path.includes("familienplaner")) return "familienplaner";
+    if (path.includes("finanzbericht")) return "finanzbericht";
+    if (path.includes("finanz_historie")) return "finanz_historie";
+    if (path.includes("beleg_import")) return "beleg_import";
+    if (path.includes("kindermodus")) return "kindermodus";
+    if (path.includes("index")) return "dashboard";
+
+    return "allgemein";
+  }
+
+  function detectMode() {
+    if (body.classList.contains("child-mode")) return "child";
+
+    const badge = document.getElementById("modeBadge")?.textContent?.toLowerCase() || "";
+    if (badge.includes("kind")) return "child";
+
+    const activeModeBtn = document.querySelector(".mode-btn.active")?.textContent?.toLowerCase() || "";
+    if (activeModeBtn.includes("kind")) return "child";
+
+    return "parent";
+  }
+
+  const page = detectPage();
+  let mode = detectMode();
+
+  const quickQuestionsByPage = {
+    dashboard: [
+      "Was ist heute wichtig?",
+      "Gib mir einen kurzen Überblick.",
+      "Worauf sollten wir als Nächstes achten?"
+    ],
+    finanzen: [
+      "Hilf mir beim Sparen.",
+      "Wie kann ich Ausgaben besser ordnen?",
+      "Erkläre mir meine Finanzen einfacher."
+    ],
+    einkaufsliste: [
+      "Was fehlt noch für den Wocheneinkauf?",
+      "Hilf mir beim Sortieren.",
+      "Welche Kategorie passt dazu?"
+    ],
+    aufgaben: [
+      "Hilf mir Aufgaben zu priorisieren.",
+      "Formuliere eine freundliche Aufgabe.",
+      "Wie verteile ich Aufgaben besser?"
+    ],
+    familienplaner: [
+      "Trage mir einen Kinderarzttermin ein.",
+      "Hilf mir einen Geburtstag zu planen.",
+      "Woran sollte ich diese Woche denken?"
+    ],
+    finanzbericht: [
+      "Erkläre mir den Bericht einfach.",
+      "Was fällt hier auf?",
+      "Was bedeutet das Ergebnis?"
+    ],
+    finanz_historie: [
+      "Erkennst du ein Muster?",
+      "Erkläre mir die letzten Einträge.",
+      "Was ist hier wichtig?"
+    ],
+    beleg_import: [
+      "Wie soll ich den Beleg einordnen?",
+      "Welche Kategorie passt?",
+      "Worauf sollte ich achten?"
+    ],
+    kindermodus: [
+      "Hilfst du mir beim Sparen?",
+      "Was kann ich heute schaffen?",
+      "Erklär mir das ganz einfach."
+    ],
+    allgemein: [
+      "Wobei kannst du helfen?",
+      "Gib mir einen Überblick.",
+      "Was kannst du für mich tun?"
+    ]
   };
-  const pageInfo = pageMap[pagePath] || {label:title, prompts:['Hilf mir auf dieser Seite','Erkläre mir diese Seite','Was kann ich hier tun?']};
-  const storageKey = 'hh_ki_chat_' + pagePath;
 
-  const root = document.createElement('div');
-  root.className = 'hh-ki-shell';
-  root.innerHTML = `
-    <div class="hh-ki-panel" aria-live="polite">
-      <div class="hh-ki-head">
-        <div class="hh-ki-title">
-          <div class="icon">🐌</div>
-          <div>
-            <strong>KI-Schnecke</strong>
-            <span>${pageInfo.label} · ${title}</span>
-          </div>
-        </div>
-        <button type="button" class="hh-ki-close" aria-label="KI schließen">✕</button>
-      </div>
-      <div class="hh-ki-quick"></div>
-      <div class="hh-ki-messages"></div>
-      <div class="hh-ki-foot">
-        <div class="hh-ki-typing"><span>denkt nach</span><span class="hh-ki-dot"></span><span class="hh-ki-dot"></span><span class="hh-ki-dot"></span></div>
-        <form class="hh-ki-form">
-          <input class="hh-ki-input" type="text" placeholder="Frag die KI-Schnecke etwas …" maxlength="500" />
-          <button class="hh-ki-send" type="submit">Senden</button>
-        </form>
-        <div class="hh-ki-note">Die Schnecke kennt den Seitenkontext und nutzt deine Chat-Funktion im Hintergrund.</div>
-      </div>
-    </div>
-    <button type="button" class="hh-ki-toggle" aria-label="KI-Schnecke öffnen">
-      <span class="emoji">🐌</span>
+  const shell = document.createElement("div");
+  shell.className = "ki-shell";
+  shell.innerHTML = `
+    <button class="ki-fab" id="kiFab" type="button" aria-label="KI-Schnecke öffnen">
+      🐌 KI
     </button>
-    <div class="hh-ki-badge">1</div>
+
+    <div class="ki-panel" id="kiPanel" aria-hidden="true">
+      <div class="ki-header">
+        <div class="ki-title-wrap">
+          <div class="ki-title">Haushaltsheld KI</div>
+          <div class="ki-subtitle" id="kiSubtitle">Ich helfe dir auf dieser Seite.</div>
+        </div>
+        <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">✕</button>
+      </div>
+
+      <div class="ki-quick" id="kiQuick"></div>
+
+      <div class="ki-messages" id="kiMessages">
+        <div class="ki-msg ki-msg-bot">Hallo 👋 Ich bin deine KI-Schnecke. Wie kann ich dir helfen?</div>
+      </div>
+
+      <form class="ki-form" id="kiForm">
+        <input id="kiInput" type="text" placeholder="Schreib deine Frage hier hinein..." autocomplete="off" />
+        <button type="submit">Senden</button>
+      </form>
+    </div>
   `;
-  document.body.appendChild(root);
 
-  const panel = root.querySelector('.hh-ki-panel');
-  const toggle = root.querySelector('.hh-ki-toggle');
-  const closeBtn = root.querySelector('.hh-ki-close');
-  const messagesEl = root.querySelector('.hh-ki-messages');
-  const form = root.querySelector('.hh-ki-form');
-  const input = root.querySelector('.hh-ki-input');
-  const sendBtn = root.querySelector('.hh-ki-send');
-  const typing = root.querySelector('.hh-ki-typing');
-  const quickEl = root.querySelector('.hh-ki-quick');
+  body.appendChild(shell);
 
-  pageInfo.prompts.forEach(prompt => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'hh-ki-chip';
-    b.textContent = prompt;
-    b.addEventListener('click', () => {
-      input.value = prompt;
-      input.focus();
+  const fab = document.getElementById("kiFab");
+  const panel = document.getElementById("kiPanel");
+  const closeBtn = document.getElementById("kiClose");
+  const form = document.getElementById("kiForm");
+  const input = document.getElementById("kiInput");
+  const messages = document.getElementById("kiMessages");
+  const quick = document.getElementById("kiQuick");
+  const subtitle = document.getElementById("kiSubtitle");
+
+  subtitle.textContent =
+    mode === "child"
+      ? "Ich helfe dir kindgerecht und freundlich."
+      : "Ich helfe dir freundlich, praktisch und mit Überblick.";
+
+  function renderQuickQuestions() {
+    const questions = quickQuestionsByPage[page] || quickQuestionsByPage.allgemein;
+    quick.innerHTML = "";
+    questions.forEach((q) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "ki-quick-btn";
+      btn.textContent = q;
+      btn.addEventListener("click", () => {
+        input.value = q;
+        form.requestSubmit();
+      });
+      quick.appendChild(btn);
     });
-    quickEl.appendChild(b);
+  }
+
+  function addMessage(text, who = "bot") {
+    const el = document.createElement("div");
+    el.className = `ki-msg ki-msg-${who}`;
+    el.textContent = text;
+    messages.appendChild(el);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function setOpen(open) {
+    panel.classList.toggle("open", open);
+    panel.setAttribute("aria-hidden", open ? "false" : "true");
+    if (open) input.focus();
+  }
+
+  fab.addEventListener("click", () => {
+    mode = detectMode();
+    subtitle.textContent =
+      mode === "child"
+        ? "Ich helfe dir kindgerecht und freundlich."
+        : "Ich helfe dir freundlich, praktisch und mit Überblick.";
+    setOpen(true);
   });
 
-  function saveMessages() {
-    try { sessionStorage.setItem(storageKey, JSON.stringify(history)); } catch (e) {}
-  }
-  function loadMessages() {
-    try { return JSON.parse(sessionStorage.getItem(storageKey) || '[]'); } catch (e) { return []; }
-  }
-  function scrollDown() { messagesEl.scrollTop = messagesEl.scrollHeight; }
-  function addMessage(role, text) {
-    const el = document.createElement('div');
-    el.className = 'hh-ki-msg ' + role;
-    el.textContent = text;
-    messagesEl.appendChild(el);
-    scrollDown();
-  }
-  function renderHistory() {
-    messagesEl.innerHTML = '';
-    if (!history.length) {
-      addMessage('bot', `Hallo ✨ Ich bin deine KI-Schnecke auf der Seite „${pageInfo.label}“. Frag mich nach Hilfe, Einordnung oder Ideen.`);
-      addMessage('meta', 'Beispiel: „Welche Kategorie passt zu einem dm-Einkauf?“');
-      return;
-    }
-    history.forEach(m => addMessage(m.role, m.text));
-  }
-  function openPanel() {
-    root.classList.add('open');
-    root.classList.remove('has-unread');
-    input.focus();
-  }
-  function closePanel() { root.classList.remove('open'); }
+  closeBtn.addEventListener("click", () => setOpen(false));
 
-  let history = loadMessages();
-  renderHistory();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  toggle.addEventListener('click', () => root.classList.contains('open') ? closePanel() : openPanel());
-  closeBtn.addEventListener('click', closePanel);
+    const message = input.value.trim();
+    if (!message) return;
 
-  async function sendMessage(text) {
-    const trimmed = (text || '').trim();
-    if (!trimmed) return;
-    history.push({ role:'user', text: trimmed });
-    saveMessages();
-    renderHistory();
-    input.value = '';
-    sendBtn.disabled = true;
-    typing.classList.add('active');
+    mode = detectMode();
 
-    const payload = {
-      message: `Seitenkontext: ${pageInfo.label} (${title}). URL-Datei: ${pagePath}. Nutzerfrage: ${trimmed}`
-    };
+    addMessage(message, "user");
+    input.value = "";
+    addMessage("Ich denke kurz nach…", "bot");
+
+    const typingBubble = messages.lastElementChild;
 
     try {
-      const res = await fetch('/.netlify/functions/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+      const response = await fetch("/.netlify/functions/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message,
+          page,
+          mode
+        })
       });
-      const data = await res.json().catch(() => ({}));
-      const reply = data.reply || data.answer || data.output_text || data.message || 'Ich konnte gerade keine Antwort holen.';
-      history.push({ role:'bot', text: reply });
-      saveMessages();
-      renderHistory();
-      if (!root.classList.contains('open')) root.classList.add('has-unread');
-    } catch (err) {
-      const msg = 'Die KI-Schnecke konnte gerade keine Verbindung herstellen. Bitte prüfe später die Function oder versuche es erneut.';
-      history.push({ role:'bot', text: msg });
-      saveMessages();
-      renderHistory();
-    } finally {
-      typing.classList.remove('active');
-      sendBtn.disabled = false;
+
+      const data = await response.json();
+      typingBubble.remove();
+      addMessage(data.reply || "Ich konnte gerade nichts Sinnvolles antworten.", "bot");
+    } catch (error) {
+      typingBubble.remove();
+      addMessage("Ups, ich konnte gerade keine Verbindung herstellen.", "bot");
+      console.error(error);
     }
-  }
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    sendMessage(input.value);
   });
 
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape') closePanel();
-  });
+  renderQuickQuestions();
 })();
