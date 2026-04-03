@@ -46,13 +46,20 @@ exports.handler = async function(event) {
       };
     }
 
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        reply: result.output_text || "Ich habe gerade keine Antwort bekommen."
-      })
-    };
+    const reply =
+  result.output_text ||
+  result.output?.map(item =>
+    item.content?.map(c => c.text?.value || c.text || "").join(" ")
+  ).join(" ").trim() ||
+  "Ich habe gerade keine Antwort bekommen.";
+
+return {
+  statusCode: 200,
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    reply
+  })
+};
   } catch (error) {
     return {
       statusCode: 200,
