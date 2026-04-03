@@ -1,37 +1,26 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Haushaltsheld – Dashboard</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+<!-- NUR STYLE WURDE ÜBERARBEITET -->
 <style>
-
-/* 🌿 NEUES FARBSYSTEM */
 :root{
-  --primary:#4CAF50;
-  --primary-dark:#3E8E41;
-
+  /* 🌿 NEUES DESIGN */
   --bg:#F6F7F5;
   --bg2:#FFFFFF;
   --card:#FFFFFF;
   --soft:#EDF7EE;
   --soft2:#E4F3E6;
+  --line:#E5E7EB;
 
   --text:#1F2937;
   --text2:#4B5563;
   --muted:#6B7280;
 
-  --border:#E5E7EB;
-
-  --accent:#A7D7A9;
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#A7D7A9;
 
   --green:#4CAF50;
+  --green-soft:#E8F5E9;
   --red:#c85858;
+  --red-soft:#fbe8e8;
 
   --shadow-sm:0 4px 12px rgba(0,0,0,.05);
   --shadow:0 10px 30px rgba(0,0,0,.08);
@@ -45,40 +34,41 @@
   --sidebar-w:248px;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-
+/* BODY */
 body{
   font-family:"Outfit", sans-serif;
   background:var(--bg);
   color:var(--text);
 }
 
-/* SIDEBAR */
+/* SIDEBAR CLEAN */
 .sidebar{
   background:#ffffff;
-  border-right:1px solid var(--border);
+  border-right:1px solid var(--line);
 }
 
-/* ACTIVE MENU */
+/* ACTIVE NAV */
 .nav a.active{
   background:var(--soft);
   box-shadow:0 6px 16px rgba(76,175,80,.25);
 }
 
-/* HERO */
+/* HERO SOFT */
 .hero{
-  background:linear-gradient(135deg,#edf7ee 0%,#e4f3e6 100%);
+  background:linear-gradient(135deg,#EDF7EE 0%,#E4F3E6 100%);
   border:none;
 }
 
-/* 🌿 CARDS (WERTIG!) */
-.card{
+/* 💎 CARDS UPGRADE */
+.card, .stat-card{
   background:linear-gradient(145deg,#ffffff,#f3f7f3);
+  border:1px solid var(--line);
   border-radius:var(--r-lg);
-  border:1px solid var(--border);
+
   box-shadow:
     0 12px 30px rgba(0,0,0,.08),
     0 2px 6px rgba(0,0,0,.04);
+
   transition:all .25s ease;
 }
 
@@ -89,28 +79,25 @@ body{
     0 6px 12px rgba(0,0,0,.06);
 }
 
-/* 🌿 STATS */
+/* 🌿 STAT VALUES */
 .stat-value{
-  color:var(--primary);
+  color:var(--accent);
   font-weight:800;
 }
 
-/* 🌿 BUTTONS */
-.btn, .cta-link{
-  background:linear-gradient(145deg,var(--primary),var(--primary-dark));
+/* 🌿 BUTTONS WOW */
+.btn, button.btn, a.btn, .cta-link{
+  background:linear-gradient(145deg,var(--accent),var(--accent-dark)) !important;
   color:#fff !important;
-  border:none;
   border-radius:16px;
-  padding:12px 18px;
   font-weight:700;
-  cursor:pointer;
-  text-decoration:none;
 
   box-shadow:
     0 5px 0 #2f6f32,
-    0 10px 25px rgba(76,175,80,.35);
+    0 10px 25px rgba(76,175,80,.35),
+    inset 0 1px 0 rgba(255,255,255,.2);
 
-  transition:all .2s ease;
+  transition:.2s;
 }
 
 .btn:hover, .cta-link:hover{
@@ -124,114 +111,28 @@ body{
     0 4px 10px rgba(76,175,80,.3);
 }
 
-/* MODE BUTTON */
+/* MODE SWITCH */
 .mode-btn.active{
-  background:linear-gradient(145deg,var(--primary),var(--primary-dark));
+  background:linear-gradient(145deg,var(--accent),var(--accent-dark)) !important;
   color:#fff;
 }
 
-/* LIST */
+/* LISTS */
 .list-row{
   background:var(--soft);
 }
 
+.task-item{
+  background:var(--soft);
+}
+
+.task-item:hover{
+  background:var(--soft2);
+}
+
+.chip{
+  background:#fff;
+  border:1px solid var(--line);
+}
+
 </style>
-
-<link rel="stylesheet" href="ki-schnecke.css">
-</head>
-
-<body>
-<div class="app">
-
-<!-- SIDEBAR bleibt UNVERÄNDERT -->
-<aside class="sidebar">
-  <div class="logo-wrap">
-   <img src="assetsschnecke.png" alt="Haushaltsheld">
-    <div>
-      <div class="logo-name">Haushaltsheld</div>
-      <div class="logo-sub">Dein Familien-Assistent</div>
-    </div>
-  </div>
-
-  <div class="nav-label">Hauptmenü</div>
-  <nav class="nav">
-    <a href="index.html" class="active"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
-    <a href="finanzen.html"><span class="nav-icon">💰</span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html"><span class="nav-icon">🛒</span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon">🧹</span><span>Aufgaben</span></a>
-    <a href="familienplaner.html"><span class="nav-icon">📅</span><span>Familienplaner</span></a>
-  </nav>
-
-  <div class="nav-label">Extras</div>
-  <nav class="nav">
-    <a href="finanzbericht.html"><span class="nav-icon">📊</span><span>Bericht</span></a>
-    <a href="finanz_historie.html"><span class="nav-icon">📋</span><span>Historie</span></a>
-    <a href="beleg_import.html"><span class="nav-icon">📥</span><span>Belege</span></a>
-    <a href="kindermodus.html"><span class="nav-icon">⭐</span><span>Kindermodus</span></a>
-  </nav>
-
-  <div class="sidebar-footer">
-    <div class="mode-switch">
-      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
-      <button class="mode-btn" id="childBtn" type="button">Kind</button>
-    </div>
-  </div>
-</aside>
-
-<!-- MAIN bleibt UNVERÄNDERT -->
-<main class="main">
-  <div class="page-header">
-    <div>
-      <h1>Willkommen zurück 🌿</h1>
-      <p>Dein ruhiger Überblick über Haushalt, Aufgaben und Alltag.</p>
-    </div>
-    <span class="mode-badge" id="modeBadge">🛠️ Elternmodus aktiv</span>
-  </div>
-
-  <section class="hero">
-    <div>
-      <h2>Haushaltsheld denkt im Alltag mit</h2>
-      <p>Aufgaben, Finanzen, Einkäufe und Familienplanung — alles an einem Ort.</p>
-    </div>
-  </section>
-
-  <section class="stats-grid">
-    <div class="stat-card finance-sensitive">
-      <div class="stat-label">Heute ausgegeben</div>
-      <div class="stat-value" id="statToday">–</div>
-    </div>
-    <div class="stat-card finance-sensitive">
-      <div class="stat-label">Monatliches Ergebnis</div>
-      <div class="stat-value" id="statBalance">–</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Offene Aufgaben</div>
-      <div class="stat-value" id="statOpenTasks">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Wichtige Aufgaben</div>
-      <div class="stat-value" id="statImportantTasks">0</div>
-    </div>
-  </section>
-
-  <section class="content-grid">
-    <div class="card">
-      <div class="card-title">📌 Heute offen</div>
-      <div id="taskList">
-        <div class="list-row">Wird geladen…</div>
-      </div>
-      <a class="cta-link" href="aufgaben.html">Alle Aufgaben ansehen →</a>
-    </div>
-
-    <div class="card">
-      <div class="card-title">✨ KI-Hinweise</div>
-      <div class="list-row">Alles läuft ruhig 🌿</div>
-    </div>
-  </section>
-
-</main>
-</div>
-
-<script src="ki-schnecke.js"></script>
-</body>
-</html>
