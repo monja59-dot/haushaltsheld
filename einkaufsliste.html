@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haushaltsheld – Einkaufsliste</title>
+  <style>
+    :root{--bg:#fdf5ec;--card:#fff;--soft:#fff3e8;--line:#e6cdb8;--text:#433028;--muted:#9a7060;--accent:#f07c38;--accent-dark:#d4621e;--shadow:0 8px 28px rgba(70,35,10,.09);--radius:22px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Outfit", sans-serif;background:var(--bg);color:var(--text);padding:24px;position:relative;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at top right, rgba(255,241,230,.92) 0%, rgba(255,241,230,.45) 22%, transparent 48%),radial-gradient(circle at bottom left, rgba(255,232,214,.72) 0%, rgba(255,232,214,.18) 26%, transparent 46%);pointer-events:none;z-index:-2}
+    .wrap{padding-top:8px;max-width:1600px;margin:0 auto;position:relative;z-index:1}
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+    h1{font-size:2rem;margin-bottom:6px}
+    .sub{color:var(--muted);line-height:1.5;max-width:840px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:12px 16px;border-radius:16px;font-size:.95rem;font-weight:700;text-decoration:none;cursor:pointer}
+    .btn-soft{background:#fff3e8;color:#7c5848;border:1px solid #efcfbb}
+    .grid,.form-grid,.form-grid-3{display:grid;gap:18px}
+    .grid{grid-template-columns:1fr 1fr}
+    .form-grid{grid-template-columns:repeat(2,1fr)}
+    .form-grid-3{grid-template-columns:repeat(3,1fr)}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:18px}
+    .card h2{font-size:1.12rem;margin-bottom:12px}
+    .card-sub{color:var(--muted);line-height:1.5;margin-bottom:14px}
+    .field label{display:block;font-weight:700;font-size:.92rem;color:#7b6050;margin-bottom:8px}
+    .field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:#fffdfb;border-radius:14px;padding:13px 14px;font-size:.95rem;color:var(--text);outline:none}
+    .field textarea{min-height:90px;resize:vertical;font-family:inherit}
+    .list{display:grid;gap:12px}
+    .item{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;background:var(--soft);border-radius:16px;padding:14px 16px}
+    .item strong{display:block;margin-bottom:4px}
+    .item p{color:var(--muted);font-size:.92rem;line-height:1.45}
+    .amount{font-weight:700;white-space:nowrap}
+    .helper{background:#eef7ee;color:#5b7c66;border-radius:16px;padding:14px 16px;line-height:1.5;font-size:.94rem;margin-top:14px}
+    @media(max-width:1100px){.grid,.form-grid,.form-grid-3{grid-template-columns:1fr}}
+    @media(max-width:760px){body{padding:16px}}
+  
+.page-topnav{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#fef0e2 0%,#fdf6ee 100%);
+  border-bottom:1px solid #e6cdb8;padding:14px 28px;
+  position:sticky;top:0;z-index:100;
+}
+.topnav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:"Outfit", sans-serif;font-weight:700;font-size:1.1rem;color:#3a2418;}
+.topnav-links{display:flex;gap:4px;flex-wrap:wrap}
+.topnav-links a{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:10px;text-decoration:none;color:#6a4432;font-weight:700;font-size:.82rem;transition:.18s;}
+.topnav-links a:hover{background:#fde9d4;color:#3a2418}
+.topnav-links a.active-page{background:linear-gradient(135deg,#f5975a 0%,#f0c99a 100%);color:#3a2418}
+
+
+/* ══ Button Upgrade – visible, punchy, warm ══ */
+.btn, button.btn, a.btn {
+  border: none;
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%);
+  color: #fff !important;
+  padding: 13px 22px;
+  border-radius: 16px;
+  font-size: .94rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* rich layered shadow */
+  box-shadow:
+    0 4px 0 #a83e0c,
+    0 8px 22px rgba(180,70,10,.32),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  letter-spacing: .01em;
+  position: relative;
+}
+.btn:hover, button.btn:hover, a.btn:hover {
+  background: linear-gradient(135deg, #f99650 0%, #e06520 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 #a83e0c,
+    0 14px 30px rgba(180,70,10,.36),
+    inset 0 1px 0 rgba(255,255,255,.26);
+}
+.btn:active, button.btn:active, a.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 0 #a83e0c,
+    0 4px 12px rgba(180,70,10,.28),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* Soft / secondary button */
+.btn-soft, button.btn-soft, a.btn-soft {
+  background: linear-gradient(135deg, #fff6ee 0%, #fce8d4 100%) !important;
+  color: #8a4a28 !important;
+  border: 1.5px solid #e8c4a0 !important;
+  box-shadow:
+    0 3px 0 #d4a070,
+    0 6px 18px rgba(160,90,40,.14),
+    inset 0 1px 0 rgba(255,255,255,.7) !important;
+}
+.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover {
+  background: linear-gradient(135deg, #fde9d4 0%, #f9d8bc 100%) !important;
+  box-shadow:
+    0 5px 0 #d4a070,
+    0 10px 24px rgba(160,90,40,.18),
+    inset 0 1px 0 rgba(255,255,255,.7) !important;
+  transform: translateY(-2px);
+}
+
+/* mini buttons in task lists */
+.mini-btn {
+  border: 1.5px solid #e6cdb8 !important;
+  background: linear-gradient(135deg, #fffaf5 0%, #fdf0e2 100%) !important;
+  color: #7a4a28 !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  font-size: .78rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 2px 6px rgba(150,80,20,.12), inset 0 1px 0 rgba(255,255,255,.8) !important;
+}
+.mini-btn:hover {
+  background: linear-gradient(135deg, #fde9d4 0%, #f9d4b4 100%) !important;
+  border-color: #d4956a !important;
+  box-shadow: 0 4px 10px rgba(150,80,20,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
+  transform: translateY(-1px);
+}
+.mini-btn.delete-btn:hover {
+  background: linear-gradient(135deg, #fde8e8 0%, #fac8c8 100%) !important;
+  border-color: #e08080 !important;
+  color: #b03030 !important;
+}
+
+/* Pill mode-switch buttons */
+.mode-btn.active {
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 #a83e0c, 0 6px 16px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+/* Pill toggle (finanzbericht / historie) */
+.pill-btn.active {
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 #a83e0c, 0 6px 14px rgba(180,70,10,.25) !important;
+}
+
+/* CTA link on dashboard */
+.cta-link {
+  box-shadow: 0 4px 0 #a83e0c, 0 8px 22px rgba(180,70,10,.3), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.cta-link:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a83e0c, 0 14px 30px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+/* Kid page buttons (Nunito font) */
+.quick-btn {
+  box-shadow: 0 4px 0 #a83e0c, 0 8px 20px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+.quick-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a83e0c, 0 14px 28px rgba(180,70,10,.32), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.add-star-btn {
+  box-shadow: 0 4px 0 #a07000, 0 8px 20px rgba(180,140,0,.28) !important;
+}
+.add-star-btn:hover {
+  transform: scale(1.04) translateY(-1px) !important;
+  box-shadow: 0 6px 0 #a07000, 0 12px 26px rgba(180,140,0,.32) !important;
+}
+
+
+/* ══ Outfit Font System ══ */
+:root {
+  --font-main: "Outfit", sans-serif;
+}
+body {
+  font-family: "Outfit", sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  letter-spacing: -0.01em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Outfit", sans-serif !important;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+h1 { font-size: 2.4rem !important; font-weight: 800 !important; }
+h2 { font-size: 1.5rem !important; font-weight: 700 !important; }
+h3 { font-size: 1.15rem !important; font-weight: 700 !important; }
+.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
+.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
+.stat .value, .pocket-amount, .stars-count {
+  font-family: "Outfit", sans-serif !important;
+}
+.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
+.pill-btn, .pill-toggle button, .mode-switch button,
+label, .field label, .form-label, .section-label,
+.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
+select, input, textarea, button, .mini-btn,
+.chip, .hero-tag, .badge, .mode-badge,
+.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
+p, span, div, li, td, th {
+  font-family: "Outfit", sans-serif !important;
+}
+/* Bigger body text */
+p, .sub, .card-sub, .body, .helper, .small-note,
+.ki-note, .mode-note, .section-note, .filter-note {
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+}
+/* Stat values bigger & bolder */
+.stat-value, .stat .value, .stat-val, .pocket-amount {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em;
+}
+/* Buttons rounded and bold */
+.btn, button.btn, a.btn {
+  font-weight: 800 !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.01em;
+  border-radius: 14px !important;
+}
+/* Labels uppercase + spaced */
+.field label, .form-label, .stat-label, .stat-lbl,
+.nav-lbl, .section-label, .opt-name {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+/* Nav sidebar items */
+.nav a, .nav-item {
+  font-weight: 700 !important;
+  font-size: 0.97rem !important;
+}
+/* Logo name display */
+.logo-name, .s-logo-text {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+}
+/* Input fields */
+input, select, textarea {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+}
+/* Kindermodus — keep Outfit too */
+.wrap, .hero, .savings-card, .pocket-card,
+.tasks-card, .stars-banner, .quick-card,
+.kid-tab, .add-goal-btn, .quick-btn {
+  font-family: "Outfit", sans-serif !important;
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="ki-schnecke.css">
+</head>
+<body>
+<nav class="page-topnav">
+  <a href="index.html" class="topnav-logo">🦸 Haushaltsheld</a>
+  <div class="topnav-links">
+    <a href="index.html">🏠</a>
+    <a href="finanzen.html">💰 Finanzen</a>
+    <a href="einkaufsliste.html">🛒 Einkäufe</a>
+    <a href="aufgaben.html">🧹 Aufgaben</a>
+    <a href="familienplaner.html">📅 Planer</a>
+    <a href="finanzbericht.html">📊 Bericht</a>
+    <a href="finanz_historie.html">📋 Historie</a>
+    <a href="beleg_import.html">📥 Belege</a>
+    <a href="kindermodus.html">⭐ Kinder</a>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>Einkaufsliste</h1>
+      <p class="sub">Finale Einkaufsliste: Speichert Einkäufe automatisch auch in Finanzen. Feierlichkeiten haben zusätzlich ein eigenes Anlass-Feld, damit Geburtstag, Weihnachten oder Sommerfest später separat ausgewertet werden können.</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-soft" href="finanzen.html">💰 Zu Finanzen</a>
+      <a class="btn btn-soft" href="finanz_historie.html">📋 Zur Historie</a>
+    </div>
+  </div>
+
+  <section class="grid">
+    <div>
+      <section class="card">
+        <h2>🛒 Einkauf erfassen</h2>
+        <p class="card-sub">Beim Speichern wird der Einkauf gleichzeitig in die gemeinsame Einkaufsdatenbasis und in die Finanzdatenbasis geschrieben.</p>
+
+        <div class="form-grid">
+          <div class="field"><label for="store">Geschäft / Ort</label><input id="store" type="text" placeholder="z. B. Rewe, dm, Kiosk" /></div>
+          <div class="field"><label for="date">Datum</label><input id="date" type="date" /></div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="field"><label for="purchaseType">Einkaufsart</label><select id="purchaseType"><option value="alltag">Alltag</option><option value="spontan">Spontan</option><option value="freizeit">Freizeit / Café / Bar</option><option value="feierlichkeiten">Feierlichkeiten</option></select></div>
+          <div class="field"><label for="category">Kategorie</label><select id="category"><option>Lebensmittel</option><option>Drogerie</option><option>Haushalt</option><option>Haustier</option><option>Tanken</option><option>Kiosk / Spontan</option><option>Freizeit / Bar / Café</option><option>Feierlichkeiten</option></select></div>
+          <div class="field"><label for="total">Gesamtbetrag</label><input id="total" type="number" step="0.01" placeholder="0.00" /></div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="field"><label for="method">Zahlung</label><select id="method"><option>Karte</option><option>Bar</option><option>PayPal</option><option>Lastschrift</option><option>Online</option></select></div>
+          <div class="field"><label for="buyer">Person</label><select id="buyer"><option>Allgemein</option><option>Monja</option><option>Michael</option><option>Kind 1</option><option>Kind 2</option></select></div>
+          <div class="field"><label for="occasion">Anlass / Event</label><input id="occasion" type="text" placeholder="z. B. Geburtstag Mia, Weihnachten 2026" /></div>
+        </div>
+
+        <div class="field"><label for="items">Artikel / Inhalt</label><textarea id="items" placeholder="z. B. Milch, Brot, Servietten, Kuchenkerzen"></textarea></div>
+        <div class="field"><label for="note">Notiz</label><textarea id="note" placeholder="z. B. Snacks und Deko für Geburtstag"></textarea></div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn" id="savePurchaseBtn" type="button">Einkauf speichern</button>
+          <button class="btn btn-soft" id="examplePurchaseBtn" type="button">Feier-Beispiel</button>
+        </div>
+
+        <div class="helper">Jeder gespeicherte Einkauf wird automatisch zusätzlich als Ausgabe in <strong>haushaltsheld_finance_entries_v2</strong> geschrieben. So erscheinen Einkäufe direkt in Finanz-Historie, Finanzbericht und später in der KI.</div>
+      </section>
+    </div>
+
+    <div>
+      <section class="card"><h2>🕘 Letzte Einkäufe</h2><div class="list" id="purchaseHistoryList"></div></section>
+      <section class="card"><h2>🎉 Feierlichkeiten aus Einkäufen</h2><div class="list" id="partyShoppingList"></div></section>
+    </div>
+  </section>
+</div>
+
+<script>
+function getTodayDate(){
+  const now=new Date();
+  const offset=now.getTimezoneOffset();
+  return new Date(now.getTime()-offset*60000).toISOString().split("T")[0];
+}
+function cryptoId(){ return Date.now()+Math.floor(Math.random()*999); }
+function formatEuro(value){
+  return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(value||0);
+}
+function getSharedFinanceEntries(){ return JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2")||"[]"); }
+function saveSharedFinanceEntries(entries){ localStorage.setItem("haushaltsheld_finance_entries_v2",JSON.stringify(entries)); }
+function getSharedShoppingEntries(){ return JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2")||"[]"); }
+function saveSharedShoppingEntries(entries){ localStorage.setItem("haushaltsheld_shopping_entries_v2",JSON.stringify(entries)); }
+
+function mapShoppingMainCategory(category,type){
+  if(category==="Tanken") return "Mobilität";
+  if(category==="Freizeit / Bar / Café" || type==="freizeit") return "Freizeit";
+  if(category==="Feierlichkeiten" || type==="feierlichkeiten") return "Feierlichkeiten";
+  return "Einkauf";
+}
+function addPurchaseToSharedData(entry){
+  const financeEntries=getSharedFinanceEntries();
+  financeEntries.push({
+    id:cryptoId(),
+    date:entry.date||getTodayDate(),
+    category:entry.category||"Einkauf",
+    mainCategory:mapShoppingMainCategory(entry.category,entry.type),
+    title:entry.store||"Einkauf",
+    text:entry.note||entry.items||"Einkauf aus Einkaufsliste",
+    occasion:entry.occasion||"",
+    payment:entry.method||"Unbekannt",
+    amount:Number(entry.total||0),
+    type:"Ausgabe",
+    person:entry.buyer||"Allgemein",
+    recurring:false
+  });
+  saveSharedFinanceEntries(financeEntries);
+
+  const shoppingEntries=getSharedShoppingEntries();
+  shoppingEntries.push({
+    id:cryptoId(),
+    date:entry.date||getTodayDate(),
+    title:entry.store||"Einkauf",
+    text:entry.items||entry.note||"Einkauf",
+    payment:entry.method||"Unbekannt",
+    amount:Number(entry.total||0),
+    person:entry.buyer||"Allgemein",
+    occasion:entry.occasion||"",
+    type:"Ausgabe"
+  });
+  saveSharedShoppingEntries(shoppingEntries);
+}
+function fillExample(){
+  document.getElementById("store").value="dm";
+  document.getElementById("date").value=getTodayDate();
+  document.getElementById("purchaseType").value="feierlichkeiten";
+  document.getElementById("category").value="Feierlichkeiten";
+  document.getElementById("total").value="28.40";
+  document.getElementById("method").value="Karte";
+  document.getElementById("buyer").value="Allgemein";
+  document.getElementById("occasion").value="Geburtstag Mia";
+  document.getElementById("items").value="Servietten, Luftballons, Kerzen";
+  document.getElementById("note").value="Kleine Party-Deko und Zubehör";
+}
+function savePurchase(){
+  const entry={
+    id:cryptoId(),
+    store:document.getElementById("store").value.trim(),
+    date:document.getElementById("date").value,
+    type:document.getElementById("purchaseType").value,
+    category:document.getElementById("category").value,
+    total:parseFloat(document.getElementById("total").value),
+    method:document.getElementById("method").value,
+    buyer:document.getElementById("buyer").value,
+    occasion:document.getElementById("occasion").value.trim(),
+    items:document.getElementById("items").value.trim(),
+    note:document.getElementById("note").value.trim(),
+    createdAt:Date.now()
+  };
+
+  if(!entry.store || !entry.date || Number.isNaN(entry.total) || entry.total < 0){
+    alert("Bitte Geschäft, Datum und einen gültigen Betrag (≥ 0) ausfüllen.");
+    return;
+  }
+
+  addPurchaseToSharedData(entry);
+  renderAll();
+
+  document.getElementById("store").value="";
+  document.getElementById("date").value=getTodayDate();
+  document.getElementById("purchaseType").value="alltag";
+  document.getElementById("category").value="Lebensmittel";
+  document.getElementById("total").value="";
+  document.getElementById("method").value="Karte";
+  document.getElementById("buyer").value="Allgemein";
+  document.getElementById("occasion").value="";
+  document.getElementById("items").value="";
+  document.getElementById("note").value="";
+
+  alert("Einkauf gespeichert ✅\nAuch in Finanzen übernommen.");
+}
+function renderAll(){
+  const purchases=[...getSharedShoppingEntries()].sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  document.getElementById("purchaseHistoryList").innerHTML=purchases.length
+    ? purchases.slice(0,8).map(e=>`
+      <div class="item">
+        <div>
+          <strong>${e.title}</strong>
+          <p>${new Date(e.date+"T12:00:00").toLocaleDateString("de-DE")} · ${e.payment}${e.occasion?" · "+e.occasion:""}<br>${e.text||""}</p>
+        </div>
+        <div class="amount">- ${formatEuro(e.amount)}</div>
+      </div>
+    `).join("")
+    : `<div class="item"><div><strong>Noch keine Einkäufe</strong><p>Sobald du speicherst, erscheint der Verlauf hier.</p></div><div class="amount">🛒</div></div>`;
+
+  const partyShopping=purchases.filter(e=>e.occasion || /geburtstag|weihnacht|fest|party|sommerfest/i.test((e.text||"")+" "+(e.title||"")));
+  document.getElementById("partyShoppingList").innerHTML=partyShopping.length
+    ? partyShopping.slice(0,6).map(e=>`
+      <div class="item">
+        <div>
+          <strong>${e.title}</strong>
+          <p>${e.occasion||"Feier-Kontext"} · ${e.text||""}</p>
+        </div>
+        <div class="amount">- ${formatEuro(e.amount)}</div>
+      </div>
+    `).join("")
+    : `<div class="item"><div><strong>Noch keine Feier-Einkäufe</strong><p>Sobald du Anlass-Einkäufe speicherst, erscheinen sie hier.</p></div><div class="amount">🎉</div></div>`;
+}
+document.getElementById("date").value=getTodayDate();
+document.getElementById("savePurchaseBtn").addEventListener("click",savePurchase);
+document.getElementById("examplePurchaseBtn").addEventListener("click",fillExample);
+renderAll();
+</script>
+
+<script src="ki-schnecke.js"></script>
+</body>
+</html>

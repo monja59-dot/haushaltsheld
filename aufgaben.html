@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Haushaltsheld – Aufgaben</title>
+<style>
+:root{
+  --bg:#fdf5ec;--card:#fff;--soft:#fff3e4;--soft2:#fde9d4;--line:#e6cdb8;
+  --text:#3a2418;--text2:#6a4432;--muted:#9a7060;
+  --accent:#f07c38;--accent-dark:#d4621e;
+  --green:#5ea872;--green-soft:#e6f4ec;--red:#c85858;--red-soft:#fbe8e8;
+  --blue:#5e8ec8;--blue-soft:#e4effc;--yellow:#c49030;--yellow-soft:#fdf4dc;
+  --shadow-sm:0 2px 10px rgba(70,35,10,.06);--shadow:0 8px 28px rgba(70,35,10,.09);
+  --r-sm:14px;--r:20px;--r-lg:26px;--r-xl:34px;--sidebar-w:248px;
+  --cat-haushalt:#f5e8ef;--cat-einkaufen:#e4eef8;--cat-familie:#f8e4ee;
+  --cat-gesundheit:#e4f4ec;--cat-auto:#e4eef8;--cat-haustier:#fdf0e0;
+  --cat-organisation:#ede4f8;--cat-sonstiges:#f0ece4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Outfit", sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+
+/* ── Sidebar ── */
+.sidebar{background:linear-gradient(180deg,#fef0e2 0%,#fdf6ee 100%);border-right:1px solid var(--line);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10}
+.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.logo-wrap img{width:44px;height:44px;object-fit:contain}
+.logo-name{font-family:"Outfit", sans-serif;font-weight:700;font-size:1.2rem;color:var(--text)}
+.logo-sub{font-size:.72rem;color:var(--muted);margin-top:1px}
+.nav-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:16px 10px 6px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-sm);text-decoration:none;color:var(--text2);font-family:"Outfit", sans-serif;font-weight:700;font-size:.98rem;transition:all .18s;border:1px solid transparent}
+.nav a:hover{background:var(--soft2);border-color:rgba(230,205,184,.6);transform:translateX(2px)}
+.nav a.active{background:linear-gradient(135deg,#f5975a 0%,#f0c99a 100%);border-color:rgba(220,140,80,.3);box-shadow:0 8px 20px rgba(212,98,30,.18)}
+.nav-icon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.9);border:1px solid rgba(230,205,184,.8);font-size:16px;flex-shrink:0}
+.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:999px;padding:5px}
+.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:8px 10px;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;transition:.18s;font-family:"Outfit", sans-serif}
+.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff}
+
+/* ── Main ── */
+.main{padding:32px;max-width:1600px}
+
+/* ── Page Header ── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.page-header h1{font-family:"Outfit", sans-serif;font-size:2.2rem;font-weight:700;margin-bottom:6px}
+.page-header p{color:var(--muted);font-size:.95rem}
+.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mode-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:700;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2)}
+.mode-badge.child{background:var(--blue-soft);border-color:#c0d8f4;color:#3d6898}
+.mode-note{color:var(--muted);font-size:.86rem;margin-bottom:20px;line-height:1.5;background:var(--soft);padding:12px 16px;border-radius:var(--r-sm);border:1px solid var(--line)}
+
+/* ── Stats ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow-sm)}
+.stat-icon{font-size:1.4rem;margin-bottom:10px}
+.stat-label{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.stat-value{font-size:1.9rem;font-weight:700;font-family:"Outfit", sans-serif;margin-bottom:4px}
+.stat-sub{font-size:.8rem;color:var(--muted)}
+
+/* ── Add Form ── */
+.add-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+.add-card h2{font-family:"Outfit", sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:14px}
+.input-row{display:grid;grid-template-columns:1fr auto auto auto auto auto;gap:10px;align-items:end;margin-bottom:10px}
+.field label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px}
+.input-el{width:100%;border:1.5px solid var(--line);background:#fff9f4;border-radius:var(--r-sm);padding:12px 14px;font-size:.92rem;color:var(--text);outline:none;font-family:"Outfit", sans-serif;transition:.18s}
+.input-el:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(240,124,56,.1)}
+.btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:12px 18px;border-radius:var(--r-sm);font-size:.9rem;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(212,98,30,.2);transition:.18s;white-space:nowrap;font-family:"Outfit", sans-serif}
+.btn:hover{transform:translateY(-1px)}
+.btn-soft{background:var(--soft);color:var(--text2);border:1px solid var(--line);box-shadow:none}
+.btn-soft:hover{background:var(--soft2)}
+
+/* ── Filter ── */
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.filter-el{border:1.5px solid var(--line);background:#fff9f4;border-radius:var(--r-sm);padding:10px 14px;font-size:.88rem;color:var(--text);outline:none;font-family:"Outfit", sans-serif;transition:.18s;min-width:120px}
+.filter-el:focus{border-color:var(--accent)}
+.search-el{flex:1;min-width:180px}
+.filter-note{color:var(--muted);font-size:.84rem;line-height:1.45;margin-bottom:16px}
+
+/* ── Task Cards ── */
+.section-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+.section-card h2{font-family:"Outfit", sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:14px}
+.task-list{display:flex;flex-direction:column;gap:10px}
+.task-item{
+  display:flex;align-items:center;gap:14px;border-radius:var(--r-sm);padding:14px 16px;
+  border:1.5px solid transparent;transition:.18s;cursor:default;
+}
+.task-item:hover{border-color:var(--line);transform:translateX(2px)}
+.task-item.done{opacity:.6}
+.task-item.done .task-text strong{text-decoration:line-through;color:var(--muted)}
+.cat-haushalt{background:var(--cat-haushalt)}
+.cat-einkaufen{background:var(--cat-einkaufen)}
+.cat-familie{background:var(--cat-familie)}
+.cat-gesundheit{background:var(--cat-gesundheit)}
+.cat-auto{background:var(--cat-auto)}
+.cat-haustier{background:var(--cat-haustier)}
+.cat-organisation{background:var(--cat-organisation)}
+.cat-sonstiges{background:var(--cat-sonstiges)}
+.task-checkbox{width:22px;height:22px;border-radius:6px;border:2px solid var(--line);flex-shrink:0;cursor:pointer;accent-color:var(--accent)}
+.task-text{flex:1}
+.task-text strong{display:block;margin-bottom:5px;font-size:.94rem}
+.task-meta{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:.76rem;font-weight:700;background:rgba(255,255,255,.85);border:1px solid var(--line);color:var(--text2)}
+.chip-high{background:var(--red-soft);border-color:#f5c0c0;color:var(--red)}
+.chip-med{background:var(--yellow-soft);border-color:#f0dda0;color:var(--yellow)}
+.chip-low{background:var(--green-soft);border-color:#b8e0c4;color:var(--green)}
+.task-actions{display:flex;gap:6px;flex-shrink:0}
+.mini-btn{border:none;background:rgba(255,255,255,.9);border:1px solid var(--line);color:var(--text2);padding:6px 10px;border-radius:999px;font-size:.78rem;font-weight:700;cursor:pointer;transition:.18s;font-family:"Outfit", sans-serif}
+.mini-btn:hover{background:var(--soft2)}
+.mini-btn.delete-btn:hover{background:var(--red-soft);border-color:#f5c0c0;color:var(--red)}
+.empty-state{color:var(--muted);text-align:center;padding:24px;font-size:.92rem;background:var(--soft);border-radius:var(--r-sm)}
+.admin-only.hidden-for-child{display:none!important}
+
+/* ── KI Card ── */
+.ki-note{background:var(--green-soft);border:1px solid #b8e0c4;border-radius:var(--r-sm);padding:14px 16px;color:#3d7050;font-size:.88rem;line-height:1.55;margin-top:12px}
+
+/* ── Responsive ── */
+@media(max-width:1200px){.stats-grid{grid-template-columns:repeat(2,1fr)}.input-row{grid-template-columns:1fr 1fr;}}
+@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a{flex:0 1 auto;padding:10px 12px}.nav-label,.sidebar-footer{display:none}}
+@media(max-width:600px){.main{padding:16px}.stats-grid{grid-template-columns:1fr 1fr}.input-row{grid-template-columns:1fr}}
+
+/* ══ Button Upgrade – visible, punchy, warm ══ */
+.btn, button.btn, a.btn {
+  border: none;
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%);
+  color: #fff !important;
+  padding: 13px 22px;
+  border-radius: 16px;
+  font-size: .94rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* rich layered shadow */
+  box-shadow:
+    0 4px 0 #a83e0c,
+    0 8px 22px rgba(180,70,10,.32),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  letter-spacing: .01em;
+  position: relative;
+}
+.btn:hover, button.btn:hover, a.btn:hover {
+  background: linear-gradient(135deg, #f99650 0%, #e06520 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 #a83e0c,
+    0 14px 30px rgba(180,70,10,.36),
+    inset 0 1px 0 rgba(255,255,255,.26);
+}
+.btn:active, button.btn:active, a.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 0 #a83e0c,
+    0 4px 12px rgba(180,70,10,.28),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* Soft / secondary button */
+.btn-soft, button.btn-soft, a.btn-soft {
+  background: linear-gradient(135deg, #fff6ee 0%, #fce8d4 100%) !important;
+  color: #8a4a28 !important;
+  border: 1.5px solid #e8c4a0 !important;
+  box-shadow:
+    0 3px 0 #d4a070,
+    0 6px 18px rgba(160,90,40,.14),
+    inset 0 1px 0 rgba(255,255,255,.7) !important;
+}
+.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover {
+  background: linear-gradient(135deg, #fde9d4 0%, #f9d8bc 100%) !important;
+  box-shadow:
+    0 5px 0 #d4a070,
+    0 10px 24px rgba(160,90,40,.18),
+    inset 0 1px 0 rgba(255,255,255,.7) !important;
+  transform: translateY(-2px);
+}
+
+/* mini buttons in task lists */
+.mini-btn {
+  border: 1.5px solid #e6cdb8 !important;
+  background: linear-gradient(135deg, #fffaf5 0%, #fdf0e2 100%) !important;
+  color: #7a4a28 !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  font-size: .78rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 2px 6px rgba(150,80,20,.12), inset 0 1px 0 rgba(255,255,255,.8) !important;
+}
+.mini-btn:hover {
+  background: linear-gradient(135deg, #fde9d4 0%, #f9d4b4 100%) !important;
+  border-color: #d4956a !important;
+  box-shadow: 0 4px 10px rgba(150,80,20,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
+  transform: translateY(-1px);
+}
+.mini-btn.delete-btn:hover {
+  background: linear-gradient(135deg, #fde8e8 0%, #fac8c8 100%) !important;
+  border-color: #e08080 !important;
+  color: #b03030 !important;
+}
+
+/* Pill mode-switch buttons */
+.mode-btn.active {
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 #a83e0c, 0 6px 16px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+/* Pill toggle (finanzbericht / historie) */
+.pill-btn.active {
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 #a83e0c, 0 6px 14px rgba(180,70,10,.25) !important;
+}
+
+/* CTA link on dashboard */
+.cta-link {
+  box-shadow: 0 4px 0 #a83e0c, 0 8px 22px rgba(180,70,10,.3), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.cta-link:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a83e0c, 0 14px 30px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+/* Kid page buttons (Nunito font) */
+.quick-btn {
+  box-shadow: 0 4px 0 #a83e0c, 0 8px 20px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+.quick-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a83e0c, 0 14px 28px rgba(180,70,10,.32), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.add-star-btn {
+  box-shadow: 0 4px 0 #a07000, 0 8px 20px rgba(180,140,0,.28) !important;
+}
+.add-star-btn:hover {
+  transform: scale(1.04) translateY(-1px) !important;
+  box-shadow: 0 6px 0 #a07000, 0 12px 26px rgba(180,140,0,.32) !important;
+}
+
+
+/* ══ Outfit Font System ══ */
+:root {
+  --font-main: "Outfit", sans-serif;
+}
+body {
+  font-family: "Outfit", sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  letter-spacing: -0.01em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Outfit", sans-serif !important;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+h1 { font-size: 2.4rem !important; font-weight: 800 !important; }
+h2 { font-size: 1.5rem !important; font-weight: 700 !important; }
+h3 { font-size: 1.15rem !important; font-weight: 700 !important; }
+.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
+.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
+.stat .value, .pocket-amount, .stars-count {
+  font-family: "Outfit", sans-serif !important;
+}
+.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
+.pill-btn, .pill-toggle button, .mode-switch button,
+label, .field label, .form-label, .section-label,
+.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
+select, input, textarea, button, .mini-btn,
+.chip, .hero-tag, .badge, .mode-badge,
+.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
+p, span, div, li, td, th {
+  font-family: "Outfit", sans-serif !important;
+}
+/* Bigger body text */
+p, .sub, .card-sub, .body, .helper, .small-note,
+.ki-note, .mode-note, .section-note, .filter-note {
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+}
+/* Stat values bigger & bolder */
+.stat-value, .stat .value, .stat-val, .pocket-amount {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em;
+}
+/* Buttons rounded and bold */
+.btn, button.btn, a.btn {
+  font-weight: 800 !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.01em;
+  border-radius: 14px !important;
+}
+/* Labels uppercase + spaced */
+.field label, .form-label, .stat-label, .stat-lbl,
+.nav-lbl, .section-label, .opt-name {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+/* Nav sidebar items */
+.nav a, .nav-item {
+  font-weight: 700 !important;
+  font-size: 0.97rem !important;
+}
+/* Logo name display */
+.logo-name, .s-logo-text {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+}
+/* Input fields */
+input, select, textarea {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+}
+/* Kindermodus — keep Outfit too */
+.wrap, .hero, .savings-card, .pocket-card,
+.tasks-card, .stars-banner, .quick-card,
+.kid-tab, .add-goal-btn, .quick-btn {
+  font-family: "Outfit", sans-serif !important;
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="ki-schnecke.css">
+</head>
+<body>
+<div class="app">
+
+<!-- ════ Sidebar ════ -->
+<aside class="sidebar">
+  <div class="logo-wrap">
+    <img src="assets/schnecke.png" alt="Haushaltsheld">
+    <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Familien-Assistent</div></div>
+  </div>
+  <div class="nav-label">Hauptmenü</div>
+  <nav class="nav">
+    <a href="index.html"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon">💰</span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon">🛒</span><span>Einkäufe</span></a>
+    <a href="aufgaben.html" class="active"><span class="nav-icon">🧹</span><span>Aufgaben</span></a>
+    <a href="familienplaner.html"><span class="nav-icon">📅</span><span>Familienplaner</span></a>
+  </nav>
+  <div class="nav-label">Extras</div>
+  <nav class="nav">
+    <a href="finanzbericht.html"><span class="nav-icon">📊</span><span>Bericht</span></a>
+    <a href="finanz_historie.html"><span class="nav-icon">📋</span><span>Historie</span></a>
+    <a href="beleg_import.html"><span class="nav-icon">📥</span><span>Belege</span></a>
+    <a href="kindermodus.html"><span class="nav-icon">⭐</span><span>Kindermodus</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="mode-switch">
+      <button class="mode-btn active" id="adminModeBtn" type="button">Admin</button>
+      <button class="mode-btn" id="childModeBtn" type="button">Kind</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ════ Main ════ -->
+<main class="main">
+  <div class="page-header">
+    <div>
+      <h1>Aufgaben 🧹</h1>
+      <p>Verwalte Haushalt, Einkäufe und Familienaufgaben — mit Prioritäten und Kategorien.</p>
+    </div>
+    <div class="header-right">
+      <span class="mode-badge" id="modeBadge">🛠️ Adminmodus aktiv</span>
+    </div>
+  </div>
+
+  <div class="mode-note" id="modeNote">Im Adminmodus siehst du alle Aufgaben. In der Kind-Ansicht werden nur Aufgaben für „Kind" angezeigt.</div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-label">Offen</div>
+      <div class="stat-value" id="openCount">0</div>
+      <div class="stat-sub">Aufgaben</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-label">Erledigt</div>
+      <div class="stat-value" id="doneCount">0</div>
+      <div class="stat-sub">Aufgaben</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🧒</div>
+      <div class="stat-label">Für Kinder</div>
+      <div class="stat-value" id="childCount">0</div>
+      <div class="stat-sub">Aufgaben</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-label">Wichtig & offen</div>
+      <div class="stat-value" id="importantCount">0</div>
+      <div class="stat-sub">Aufgaben</div>
+    </div>
+  </div>
+
+  <!-- Add Form -->
+  <div class="add-card admin-only">
+    <h2>➕ Aufgabe hinzufügen</h2>
+    <div class="input-row">
+      <div class="field" style="grid-column:1/-1 / span 2"><label for="taskInput">Aufgabe</label><input class="input-el" type="text" id="taskInput" placeholder="z. B. Müll rausbringen, Arzttermin, Einkaufen gehen…"/></div>
+      <div class="field"><label for="person">Person</label><select class="input-el" id="person"><option>Ich</option><option>Kind</option><option>Gemeinsam</option><option>Monja</option><option>Michael</option></select></div>
+      <div class="field"><label for="category">Kategorie</label><select class="input-el" id="category"><option>Haushalt</option><option>Einkaufen</option><option>Familie</option><option>Gesundheit</option><option>Auto</option><option>Haustier</option><option>Organisation</option><option>Sonstiges</option></select></div>
+      <div class="field"><label for="priority">Priorität</label><select class="input-el" id="priority"><option>Wichtig</option><option>Normal</option><option>Weniger wichtig</option></select></div>
+      <div class="field"><label for="date">Datum</label><input class="input-el" type="date" id="date"/></div>
+      <div class="field"><label>&nbsp;</label><div style="display:flex;gap:8px"><button class="btn" id="addTaskBtn" type="button">Hinzufügen</button><button class="btn btn-soft" id="fillExampleBtn" type="button">Beispiel</button></div></div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="section-card">
+    <h2>🔎 Aufgaben filtern</h2>
+    <div class="filter-bar">
+      <input class="filter-el search-el" type="text" id="searchInput" placeholder="Nach Aufgabe suchen…"/>
+      <select class="filter-el" id="filterCategory"><option value="Alle">Alle Kategorien</option><option>Haushalt</option><option>Einkaufen</option><option>Familie</option><option>Gesundheit</option><option>Auto</option><option>Haustier</option><option>Organisation</option><option>Sonstiges</option></select>
+      <select class="filter-el" id="filterPriority"><option value="Alle">Alle Prioritäten</option><option>Wichtig</option><option>Normal</option><option>Weniger wichtig</option></select>
+      <select class="filter-el" id="filterStatus"><option value="Offen">Nur offen</option><option value="Alle">Alle</option><option value="Erledigt">Nur erledigt</option></select>
+    </div>
+    <p class="filter-note">Automatisch sortiert: erst Wichtig, dann Normal, dann Weniger wichtig. Erledigte Aufgaben rutschen nach unten.</p>
+
+    <!-- Task List -->
+    <div class="task-list" id="taskList"></div>
+  </div>
+
+  <!-- KI -->
+  <div class="section-card">
+    <h2>✨ KI-Hinweise</h2>
+    <div class="ki-note" id="kiNote">Sobald du mehr Aufgaben einträgst, erkennt die KI wiederkehrende Muster, Aufgaben die oft liegen bleiben, und kann sinnvolle Erinnerungen vorschlagen.</div>
+  </div>
+</main>
+</div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem("haushaltsheld_tasks")) || [
+  {text:"Müll rausbringen",person:"Kind",date:"",category:"Haushalt",priority:"Normal",done:false},
+  {text:"Arzttermin anrufen",person:"Ich",date:"",category:"Gesundheit",priority:"Wichtig",done:false},
+  {text:"Wäsche zusammenlegen",person:"Gemeinsam",date:"",category:"Haushalt",priority:"Weniger wichtig",done:true}
+];
+tasks = tasks.map(t=>({category:"Sonstiges",priority:"Normal",...t}));
+
+let currentView = localStorage.getItem("haushaltsheld_task_view") || "admin";
+
+const adminModeBtn    = document.getElementById("adminModeBtn");
+const childModeBtn    = document.getElementById("childModeBtn");
+const modeBadge       = document.getElementById("modeBadge");
+const modeNote        = document.getElementById("modeNote");
+const searchInput     = document.getElementById("searchInput");
+const filterCategory  = document.getElementById("filterCategory");
+const filterPriority  = document.getElementById("filterPriority");
+const filterStatus    = document.getElementById("filterStatus");
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function fmtDate(s){ if(!s) return "ohne Datum"; const d=new Date(s); return isNaN(d.getTime())?s:d.toLocaleDateString("de-DE"); }
+function saveTasks(){ localStorage.setItem("haushaltsheld_tasks",JSON.stringify(tasks)); }
+function getPrioClass(p){ return p==="Wichtig"?"chip-high":p==="Weniger wichtig"?"chip-low":"chip-med"; }
+function getPrioWeight(p){ return p==="Wichtig"?0:p==="Normal"?1:2; }
+function getCatClass(c){ const m={"Haushalt":"cat-haushalt","Einkaufen":"cat-einkaufen","Familie":"cat-familie","Gesundheit":"cat-gesundheit","Auto":"cat-auto","Haustier":"cat-haustier","Organisation":"cat-organisation","Sonstiges":"cat-sonstiges"}; return m[c]||"cat-sonstiges"; }
+
+function getFiltered(){
+  const sv=searchInput.value.trim().toLowerCase();
+  const cv=filterCategory.value, pv=filterPriority.value, stv=filterStatus.value;
+  let visible = currentView==="child" ? tasks.filter(t=>t.person==="Kind") : [...tasks];
+  visible = visible.filter(t=>{
+    const ms=!sv||t.text.toLowerCase().includes(sv);
+    const mc=cv==="Alle"||t.category===cv;
+    const mp=pv==="Alle"||t.priority===pv;
+    const mst=stv==="Alle"||(stv==="Offen"&&!t.done)||(stv==="Erledigt"&&t.done);
+    return ms&&mc&&mp&&mst;
+  });
+  visible.sort((a,b)=>{
+    if(a.done!==b.done) return a.done?1:-1;
+    const pd=getPrioWeight(a.priority)-getPrioWeight(b.priority);
+    if(pd!==0) return pd;
+    if(a.date&&b.date) return new Date(a.date)-new Date(b.date);
+    if(a.date) return -1; if(b.date) return 1;
+    return a.text.localeCompare(b.text,"de");
+  });
+  return visible;
+}
+
+function updateStats(){
+  const view = currentView==="child" ? tasks.filter(t=>t.person==="Kind") : tasks;
+  document.getElementById("openCount").textContent = view.filter(t=>!t.done).length;
+  document.getElementById("doneCount").textContent = view.filter(t=>t.done).length;
+  document.getElementById("childCount").textContent = tasks.filter(t=>t.person==="Kind").length;
+  document.getElementById("importantCount").textContent = tasks.filter(t=>t.priority==="Wichtig"&&!t.done).length;
+  // KI hint
+  const open=tasks.filter(t=>!t.done);
+  const ki=document.getElementById("kiNote");
+  if(open.length>5) ki.textContent=`Du hast ${open.length} offene Aufgaben. Vielleicht lohnt es sich, ein paar davon zu delegieren oder einige als "Weniger wichtig" zu markieren.`;
+  else if(open.length===0) ki.textContent="Alle Aufgaben erledigt! 🌟 Das ist ein toller Tag.";
+  else ki.textContent="Sobald du mehr Aufgaben einträgst, erkennt die KI Muster und schlägt sinnvolle Erinnerungen vor.";
+}
+
+function renderTasks(){
+  const tl=document.getElementById("taskList");
+  const visible=getFiltered();
+  if(!visible.length){ tl.innerHTML=`<div class="empty-state">Keine Aufgaben gefunden. Ändere den Filter oder füge neue Aufgaben hinzu.</div>`; updateStats(); return; }
+  tl.innerHTML="";
+  visible.forEach(task=>{
+    const origIdx=tasks.indexOf(task);
+    const el=document.createElement("div");
+    el.className=`task-item ${getCatClass(task.category)}${task.done?" done":""}`;
+    el.innerHTML=`
+      <input class="task-checkbox" type="checkbox" ${task.done?"checked":""} onchange="toggleTask(${origIdx})"/>
+      <div class="task-text">
+        <strong>${esc(task.text)}</strong>
+        <div class="task-meta">
+          <span class="chip">${esc(task.person)}</span>
+          <span class="chip">${esc(task.category)}</span>
+          <span class="chip ${getPrioClass(task.priority)}">${esc(task.priority)}</span>
+          <span class="chip">${fmtDate(task.date)}</span>
+        </div>
+      </div>
+      <div class="task-actions admin-only">
+        <button class="mini-btn" type="button" onclick="toggleTask(${origIdx})">${task.done?"↩️ Offen":"✔️ Erledigt"}</button>
+        <button class="mini-btn delete-btn" type="button" onclick="deleteTask(${origIdx})">❌ Löschen</button>
+      </div>`;
+    tl.appendChild(el);
+  });
+  updateStats();
+}
+
+function addTask(){
+  const text=document.getElementById("taskInput").value.trim();
+  if(!text){alert("Bitte eine Aufgabe eingeben.");return;}
+  tasks.unshift({text,person:document.getElementById("person").value,date:document.getElementById("date").value,category:document.getElementById("category").value,priority:document.getElementById("priority").value,done:false});
+  document.getElementById("taskInput").value="";
+  document.getElementById("date").value="";
+  saveTasks(); renderTasks();
+}
+function fillExample(){
+  document.getElementById("taskInput").value="Kinderarzttermin eintragen";
+  document.getElementById("person").value="Ich";
+  document.getElementById("category").value="Gesundheit";
+  document.getElementById("priority").value="Wichtig";
+}
+function toggleTask(i){ tasks[i].done=!tasks[i].done; saveTasks(); renderTasks(); }
+function deleteTask(i){ tasks.splice(i,1); saveTasks(); renderTasks(); }
+
+function setView(mode){
+  currentView=mode;
+  localStorage.setItem("haushaltsheld_task_view",mode);
+  if(mode==="child"){
+    document.body.classList.add("child-mode");
+    adminModeBtn.classList.remove("active"); childModeBtn.classList.add("active");
+    modeBadge.className="mode-badge child"; modeBadge.textContent="🧒 Kindmodus aktiv";
+    modeNote.textContent="Im Kindmodus werden nur Aufgaben für „Kind" angezeigt. Einfachere und freundlichere Ansicht.";
+    document.querySelectorAll(".admin-only").forEach(e=>e.classList.add("hidden-for-child"));
+  } else {
+    document.body.classList.remove("child-mode");
+    childModeBtn.classList.remove("active"); adminModeBtn.classList.add("active");
+    modeBadge.className="mode-badge"; modeBadge.textContent="🛠️ Adminmodus aktiv";
+    modeNote.textContent="Im Adminmodus siehst du alle Aufgaben. In der Kind-Ansicht werden nur Aufgaben für „Kind" angezeigt.";
+    document.querySelectorAll(".admin-only").forEach(e=>e.classList.remove("hidden-for-child"));
+  }
+  renderTasks();
+}
+
+[searchInput,filterCategory,filterPriority,filterStatus].forEach(el=>{el.addEventListener("input",renderTasks);el.addEventListener("change",renderTasks);});
+document.getElementById("addTaskBtn").addEventListener("click",addTask);
+document.getElementById("fillExampleBtn").addEventListener("click",fillExample);
+adminModeBtn.addEventListener("click",()=>setView("admin"));
+childModeBtn.addEventListener("click",()=>setView("child"));
+setView(currentView);
+</script>
+
+<script src="ki-schnecke.js"></script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haushaltsheld – Datenzentrale</title>
+  <style>
+    :root{
+      --bg:#fdf5ec; --card:#ffffff; --soft:#fff3e8; --line:#e6cdb8; --text:#433028; --muted:#9a7060;
+      --accent:#f07c38; --accent-dark:#d4621e; --green:#70a781; --red:#d27777; --yellow:#d7a647; --blue:#7ea5d8;
+      --shadow:0 8px 28px rgba(70,35,10,.09); --radius-lg:22px; --radius-md:16px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Outfit", sans-serif;background:var(--bg);color:var(--text);padding:24px}
+    .wrap{padding-top:8px;max-width:1600px;margin:0 auto}
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+    h1{font-size:2rem;margin-bottom:6px}
+    .subtitle{color:var(--muted);line-height:1.5;max-width:820px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:12px 16px;border-radius:16px;font-size:.95rem;font-weight:700;text-decoration:none;cursor:pointer;box-shadow:0 10px 22px rgba(217,111,48,.16)}
+    .btn-soft{background:#fff3e8;color:#7c5848;border:1px solid #efcfbb;box-shadow:none}
+    .card{background:var(--card);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;margin-bottom:18px}
+    .card h2{font-size:1.18rem;margin-bottom:10px}
+    .card p{color:var(--muted);line-height:1.5;margin-bottom:14px}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .mini{background:var(--soft);border-radius:16px;padding:16px}
+    .mini strong{display:block;margin-bottom:6px}
+    .mini span{color:var(--muted);font-size:.92rem;line-height:1.4}
+    .codeish{background:#fffdfb;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:.92rem;color:#6b5245;line-height:1.5}
+    @media(max-width:760px){body{padding:16px}.grid{grid-template-columns:1fr}}
+  
+.page-topnav{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#fef0e2 0%,#fdf6ee 100%);
+  border-bottom:1px solid #e6cdb8;padding:14px 28px;
+  position:sticky;top:0;z-index:100;
+}
+.topnav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:"Outfit", sans-serif;font-weight:700;font-size:1.1rem;color:#3a2418;}
+.topnav-links{display:flex;gap:4px;flex-wrap:wrap}
+.topnav-links a{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:10px;text-decoration:none;color:#6a4432;font-weight:700;font-size:.82rem;transition:.18s;}
+.topnav-links a:hover{background:#fde9d4;color:#3a2418}
+.topnav-links a.active-page{background:linear-gradient(135deg,#f5975a 0%,#f0c99a 100%);color:#3a2418}
+
+
+/* ══ Button Upgrade – visible, punchy, warm ══ */
+.btn, button.btn, a.btn {
+  border: none;
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%);
+  color: #fff !important;
+  padding: 13px 22px;
+  border-radius: 16px;
+  font-size: .94rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* rich layered shadow */
+  box-shadow:
+    0 4px 0 #a83e0c,
+    0 8px 22px rgba(180,70,10,.32),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  letter-spacing: .01em;
+  position: relative;
+}
+.btn:hover, button.btn:hover, a.btn:hover {
+  background: linear-gradient(135deg, #f99650 0%, #e06520 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 #a83e0c,
+    0 14px 30px rgba(180,70,10,.36),
+    inset 0 1px 0 rgba(255,255,255,.26);
+}
+.btn:active, button.btn:active, a.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 0 #a83e0c,
+    0 4px 12px rgba(180,70,10,.28),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* Soft / secondary button */
+.btn-soft, button.btn-soft, a.btn-soft {
+  background: linear-gradient(135deg, #fff6ee 0%, #fce8d4 100%) !important;
+  color: #8a4a28 !important;
+  border: 1.5px solid #e8c4a0 !important;
+  box-shadow:
+    0 3px 0 #d4a070,
+    0 6px 18px rgba(160,90,40,.14),
+    inset 0 1px 0 rgba(255,255,255,.7) !important;
+}
+.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover {
+  background: linear-gradient(135deg, #fde9d4 0%, #f9d8bc 100%) !important;
+  box-shadow:
+    0 5px 0 #d4a070,
+    0 10px 24px rgba(160,90,40,.18),
+    inset 0 1px 0 rgba(255,255,255,.7) !important;
+  transform: translateY(-2px);
+}
+
+/* mini buttons in task lists */
+.mini-btn {
+  border: 1.5px solid #e6cdb8 !important;
+  background: linear-gradient(135deg, #fffaf5 0%, #fdf0e2 100%) !important;
+  color: #7a4a28 !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  font-size: .78rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 2px 6px rgba(150,80,20,.12), inset 0 1px 0 rgba(255,255,255,.8) !important;
+}
+.mini-btn:hover {
+  background: linear-gradient(135deg, #fde9d4 0%, #f9d4b4 100%) !important;
+  border-color: #d4956a !important;
+  box-shadow: 0 4px 10px rgba(150,80,20,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
+  transform: translateY(-1px);
+}
+.mini-btn.delete-btn:hover {
+  background: linear-gradient(135deg, #fde8e8 0%, #fac8c8 100%) !important;
+  border-color: #e08080 !important;
+  color: #b03030 !important;
+}
+
+/* Pill mode-switch buttons */
+.mode-btn.active {
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 #a83e0c, 0 6px 16px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+/* Pill toggle (finanzbericht / historie) */
+.pill-btn.active {
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 #a83e0c, 0 6px 14px rgba(180,70,10,.25) !important;
+}
+
+/* CTA link on dashboard */
+.cta-link {
+  box-shadow: 0 4px 0 #a83e0c, 0 8px 22px rgba(180,70,10,.3), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.cta-link:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a83e0c, 0 14px 30px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+/* Kid page buttons (Nunito font) */
+.quick-btn {
+  box-shadow: 0 4px 0 #a83e0c, 0 8px 20px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+.quick-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a83e0c, 0 14px 28px rgba(180,70,10,.32), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.add-star-btn {
+  box-shadow: 0 4px 0 #a07000, 0 8px 20px rgba(180,140,0,.28) !important;
+}
+.add-star-btn:hover {
+  transform: scale(1.04) translateY(-1px) !important;
+  box-shadow: 0 6px 0 #a07000, 0 12px 26px rgba(180,140,0,.32) !important;
+}
+
+
+/* ══ Outfit Font System ══ */
+:root {
+  --font-main: "Outfit", sans-serif;
+}
+body {
+  font-family: "Outfit", sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  letter-spacing: -0.01em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Outfit", sans-serif !important;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+h1 { font-size: 2.4rem !important; font-weight: 800 !important; }
+h2 { font-size: 1.5rem !important; font-weight: 700 !important; }
+h3 { font-size: 1.15rem !important; font-weight: 700 !important; }
+.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
+.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
+.stat .value, .pocket-amount, .stars-count {
+  font-family: "Outfit", sans-serif !important;
+}
+.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
+.pill-btn, .pill-toggle button, .mode-switch button,
+label, .field label, .form-label, .section-label,
+.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
+select, input, textarea, button, .mini-btn,
+.chip, .hero-tag, .badge, .mode-badge,
+.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
+p, span, div, li, td, th {
+  font-family: "Outfit", sans-serif !important;
+}
+/* Bigger body text */
+p, .sub, .card-sub, .body, .helper, .small-note,
+.ki-note, .mode-note, .section-note, .filter-note {
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+}
+/* Stat values bigger & bolder */
+.stat-value, .stat .value, .stat-val, .pocket-amount {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em;
+}
+/* Buttons rounded and bold */
+.btn, button.btn, a.btn {
+  font-weight: 800 !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.01em;
+  border-radius: 14px !important;
+}
+/* Labels uppercase + spaced */
+.field label, .form-label, .stat-label, .stat-lbl,
+.nav-lbl, .section-label, .opt-name {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+/* Nav sidebar items */
+.nav a, .nav-item {
+  font-weight: 700 !important;
+  font-size: 0.97rem !important;
+}
+/* Logo name display */
+.logo-name, .s-logo-text {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+}
+/* Input fields */
+input, select, textarea {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+}
+/* Kindermodus — keep Outfit too */
+.wrap, .hero, .savings-card, .pocket-card,
+.tasks-card, .stars-banner, .quick-card,
+.kid-tab, .add-goal-btn, .quick-btn {
+  font-family: "Outfit", sans-serif !important;
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="ki-schnecke.css">
+</head>
+<body>
+<nav class="page-topnav">
+  <a href="index.html" class="topnav-logo">🦸 Haushaltsheld</a>
+  <div class="topnav-links">
+    <a href="index.html">🏠</a>
+    <a href="finanzen.html">💰 Finanzen</a>
+    <a href="einkaufsliste.html">🛒 Einkäufe</a>
+    <a href="aufgaben.html">🧹 Aufgaben</a>
+    <a href="familienplaner.html">📅 Planer</a>
+    <a href="finanzbericht.html">📊 Bericht</a>
+    <a href="finanz_historie.html">📋 Historie</a>
+    <a href="beleg_import.html">📥 Belege</a>
+    <a href="kindermodus.html">⭐ Kinder</a>
+  </div>
+</nav>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>Datenzentrale</h1>
+        <p class="subtitle">
+          Diese Seite verbindet Historie, Finanzbericht und Einkaufsliste über dieselbe Datenbasis.
+          Wiederkehrende Ausgaben wie Miete, Strom oder Gehalt werden dabei automatisch sauber kategorisiert.
+        </p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-soft" href="finanzen.html">← Zurück zu Finanzen</a>
+        <button class="btn" onclick="seedData()">Beispieldaten aktualisieren</button>
+      </div>
+    </div>
+
+    <section class="card">
+      <h2>🔗 Was jetzt verknüpft ist</h2>
+      <div class="grid">
+        <div class="mini">
+          <strong>Finanzbericht</strong>
+          <span>liest dieselben Einträge wie die Historie und zeigt dadurch identische Summen.</span>
+        </div>
+        <div class="mini">
+          <strong>Finanz Historie</strong>
+          <span>zeigt dieselben Einträge einzeln, filterbar und druckbar.</span>
+        </div>
+        <div class="mini">
+          <strong>Einkaufsliste / Einkaufseinträge</strong>
+          <span>wird als eigener Bereich mit in dieselbe Datenbasis aufgenommen.</span>
+        </div>
+        <div class="mini">
+          <strong>Wiederkehrende Kosten</strong>
+          <span>Miete, Gehalt, Strom, Internet, Versicherungen und Verträge bekommen feste Kategorien.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>📁 Gespeicherte Kategorien</h2>
+      <div class="codeish">
+        Einnahme / Gehalt · Einnahme / Geldgeschenke · Einnahme / Taschengeld · Fixkosten / Miete · Fixkosten / Strom ·
+        Fixkosten / Internet · Fixkosten / Versicherung · Abo · Einkauf · Freizeit · Taxi / Uber · Google / Apple
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>🧠 Warum das wichtig ist</h2>
+      <p>
+        Ab jetzt sollen nicht mehr drei Seiten mit drei verschiedenen Beispieldaten existieren. Stattdessen greifen alle Bereiche
+        auf dieselben Einträge zu. So taucht eine Miete, ein Gehalt oder ein Einkauf überall gleich auf:
+        im Bericht, in der Historie und später auch in weiteren Auswertungen.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>📌 Aktive Dateien</h2>
+      <p>
+        Diese Datenbasis ist jetzt für <strong>finanzen.html</strong>, <strong>finanzbericht.html</strong>
+        und <strong>finanz_historie.html</strong> gedacht.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    function seedData() {
+  if(!confirm("Achtung: Bestehende Beispieldaten werden überschrieben. Fortfahren?")) return;
+      const financeEntries = [
+        { id: 1, date: "2026-03-01", category: "Gehalt", mainCategory: "Einnahme", title: "Gehalt Monja", text: "monatlicher Geldeingang", payment: "Überweisung", amount: 1850, type: "Einnahme", person: "Monja", recurring: true },
+        { id: 2, date: "2026-03-03", category: "Miete", mainCategory: "Fixkosten", title: "Warmmiete", text: "monatliche Miete", payment: "Überweisung", amount: 720, type: "Ausgabe", person: "Allgemein", recurring: true },
+        { id: 3, date: "2026-03-04", category: "Strom", mainCategory: "Fixkosten", title: "Stromabschlag", text: "monatlich", payment: "Lastschrift", amount: 68, type: "Ausgabe", person: "Allgemein", recurring: true },
+        { id: 4, date: "2026-03-05", category: "Internet", mainCategory: "Fixkosten", title: "Internet", text: "monatlich", payment: "Lastschrift", amount: 39.99, type: "Ausgabe", person: "Allgemein", recurring: true },
+        { id: 5, date: "2026-03-06", category: "Versicherung", mainCategory: "Fixkosten", title: "Haftpflicht", text: "monatlich", payment: "Lastschrift", amount: 18.50, type: "Ausgabe", person: "Allgemein", recurring: true },
+        { id: 6, date: "2026-03-07", category: "Abo", mainCategory: "Fixkosten", title: "Netflix", text: "monatlich", payment: "Lastschrift", amount: 13.99, type: "Ausgabe", person: "Allgemein", recurring: true },
+        { id: 7, date: "2026-03-10", category: "Taxi / Uber", mainCategory: "Mobilität", title: "Uber Fahrt", text: "abends nach Hause", payment: "PayPal", amount: 16.80, type: "Ausgabe", person: "Monja", recurring: false },
+        { id: 8, date: "2026-03-11", category: "Google / Apple", mainCategory: "Online", title: "Google Play Kauf", text: "App-Kauf", payment: "Online", amount: 6.99, type: "Ausgabe", person: "Allgemein", recurring: false },
+        { id: 9, date: "2026-03-12", category: "Taschengeld", mainCategory: "Einnahme", title: "Kind 1", text: "monatliches Taschengeld", payment: "Bar", amount: 20, type: "Einnahme", person: "Kind 1", recurring: true },
+        { id: 10, date: "2026-03-13", category: "Geldgeschenke", mainCategory: "Einnahme", title: "Oma", text: "Geburtstagsgeld", payment: "Bar", amount: 50, type: "Einnahme", person: "Kind 1", recurring: false },
+        { id: 11, date: "2026-03-18", category: "Freizeit", mainCategory: "Freizeit", title: "Kinobesuch", text: "Filmabend", payment: "Karte", amount: 24, type: "Ausgabe", person: "Monja", recurring: false }
+      ];
+
+      const shoppingEntries = [
+        { id: 101, date: "2026-03-20", title: "Wocheneinkauf", text: "Milch, Brot, Obst", payment: "Karte", amount: 54.20, person: "Allgemein", type: "Ausgabe" },
+        { id: 102, date: "2026-03-22", title: "Drogerie", text: "Shampoo, Waschmittel", payment: "Karte", amount: 18.40, person: "Allgemein", type: "Ausgabe" },
+        { id: 103, date: "2026-03-23", title: "Kleine Extras", text: "Snacks, Eis", payment: "Bar", amount: 9.80, person: "Allgemein", type: "Ausgabe" }
+      ];
+
+      localStorage.setItem("haushaltsheld_finance_entries_v2", JSON.stringify(financeEntries));
+      localStorage.setItem("haushaltsheld_shopping_entries_v2", JSON.stringify(shoppingEntries));
+      alert("Verknüpfte Beispieldaten gespeichert. Finanzbericht und Historie können jetzt dieselben Daten lesen.");
+    }
+  </script>
+
+<script src="ki-schnecke.js"></script>
+</body>
+</html>

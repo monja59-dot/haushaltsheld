@@ -1,0 +1,62 @@
+
+:root{
+  --ki-snail-size:72px;
+  --ki-panel-w:min(390px, calc(100vw - 24px));
+  --ki-z:9999;
+}
+.hh-ki-shell{position:fixed;right:18px;bottom:18px;z-index:var(--ki-z);font-family:"Outfit",sans-serif}
+.hh-ki-toggle{
+  width:var(--ki-snail-size);height:var(--ki-snail-size);border:none;cursor:pointer;
+  border-radius:22px;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(135deg,#f5893f 0%,#d45c18 100%);
+  box-shadow:0 6px 0 #a83e0c,0 14px 30px rgba(180,70,10,.30), inset 0 1px 0 rgba(255,255,255,.20);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.hh-ki-toggle:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 8px 0 #a83e0c,0 18px 34px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24)}
+.hh-ki-toggle:active{transform:translateY(1px)}
+.hh-ki-toggle .emoji{font-size:2rem;line-height:1}
+.hh-ki-badge{
+  position:absolute;right:6px;top:-6px;min-width:22px;height:22px;padding:0 6px;
+  border-radius:999px;background:#fff;color:#d45c18;font-size:.72rem;font-weight:800;
+  display:none;align-items:center;justify-content:center;border:1.5px solid #f3c7a3;box-shadow:0 4px 10px rgba(70,35,10,.12)
+}
+.hh-ki-shell.has-unread .hh-ki-badge{display:flex}
+.hh-ki-panel{
+  position:absolute;right:0;bottom:88px;width:var(--ki-panel-w);max-height:min(74vh,760px);display:none;flex-direction:column;
+  background:#fff;border:1px solid #e6cdb8;border-radius:28px;overflow:hidden;
+  box-shadow:0 24px 56px rgba(70,35,10,.18);
+}
+.hh-ki-shell.open .hh-ki-panel{display:flex}
+.hh-ki-head{
+  padding:16px 18px;background:linear-gradient(135deg,#fef0e2 0%,#fdf6ee 100%);border-bottom:1px solid #e6cdb8;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+}
+.hh-ki-title{display:flex;align-items:center;gap:10px}
+.hh-ki-title .icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:#fff;border:1px solid #efd7c4;font-size:1.3rem}
+.hh-ki-title strong{display:block;font-size:1rem;color:#3a2418}
+.hh-ki-title span{display:block;font-size:.8rem;color:#9a7060;margin-top:2px}
+.hh-ki-close{border:none;background:#fff;color:#8a4a28;border:1px solid #efd7c4;border-radius:12px;padding:8px 10px;cursor:pointer;font-weight:800}
+.hh-ki-quick{padding:12px 14px;border-bottom:1px solid #f0e0d2;display:flex;gap:8px;flex-wrap:wrap;background:#fffaf5}
+.hh-ki-chip{border:none;background:#fff;color:#7a4a28;border:1px solid #e8c4a0;border-radius:999px;padding:8px 12px;font-size:.78rem;font-weight:700;cursor:pointer;transition:.15s}
+.hh-ki-chip:hover{background:#fde9d4;transform:translateY(-1px)}
+.hh-ki-messages{padding:14px;display:flex;flex-direction:column;gap:10px;overflow:auto;background:#fffdfb;min-height:230px}
+.hh-ki-msg{max-width:88%;padding:11px 13px;border-radius:16px;font-size:.92rem;line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
+.hh-ki-msg.bot{align-self:flex-start;background:#fff3e8;color:#53382a;border:1px solid #edd4c0}
+.hh-ki-msg.user{align-self:flex-end;background:linear-gradient(135deg,#f5893f 0%,#d45c18 100%);color:#fff}
+.hh-ki-msg.meta{align-self:center;background:#eef7ff;color:#56708f;border:1px solid #d7e6f6;font-size:.8rem}
+.hh-ki-foot{padding:12px 14px;border-top:1px solid #f0e0d2;background:#fff}
+.hh-ki-form{display:grid;grid-template-columns:1fr auto;gap:10px}
+.hh-ki-input{width:100%;border:1.5px solid #e6cdb8;background:#fffdfb;border-radius:16px;padding:13px 14px;font-size:.94rem;color:#3a2418;outline:none;font-family:"Outfit",sans-serif}
+.hh-ki-input:focus{border-color:#f07c38;box-shadow:0 0 0 3px rgba(240,124,56,.12)}
+.hh-ki-send{border:none;cursor:pointer;border-radius:16px;padding:12px 16px;font-weight:800;color:#fff;background:linear-gradient(135deg,#f5893f 0%,#d45c18 100%);box-shadow:0 4px 0 #a83e0c,0 10px 22px rgba(180,70,10,.26)}
+.hh-ki-send:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+.hh-ki-note{font-size:.76rem;color:#9a7060;line-height:1.4;margin-top:8px;padding:0 2px}
+.hh-ki-typing{display:none;align-items:center;gap:5px;padding:0 2px 6px 2px;color:#9a7060;font-size:.82rem}
+.hh-ki-typing.active{display:flex}
+.hh-ki-dot{width:6px;height:6px;border-radius:999px;background:#d49268;animation:hhkidot 1.2s infinite ease-in-out}
+.hh-ki-dot:nth-child(2){animation-delay:.15s}.hh-ki-dot:nth-child(3){animation-delay:.3s}
+@keyframes hhkidot{0%,80%,100%{transform:scale(.55);opacity:.45}40%{transform:scale(1);opacity:1}}
+@media(max-width:760px){
+  .hh-ki-shell{right:12px;bottom:12px}
+  .hh-ki-panel{right:0;bottom:82px;width:min(100vw - 16px, 380px)}
+}

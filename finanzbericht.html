@@ -1,0 +1,497 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haushaltsheld – Finanzbericht</title>
+  <style>
+    :root{--bg:#fdf5ec;--card:#fff;--soft:#fff3e8;--line:#e6cdb8;--text:#433028;--muted:#9a7060;--accent:#f07c38;--accent-dark:#d4621e;--green:#70a781;--red:#d27777;--yellow:#d7a647;--blue:#7ea5d8;--shadow:0 8px 28px rgba(70,35,10,.09);--radius-lg:22px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Outfit", sans-serif;background:var(--bg);color:var(--text);padding:24px}
+    .wrap{padding-top:8px;max-width:1600px;margin:0 auto}
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+    .title-box h1{font-size:2rem;margin-bottom:6px}.title-box p{color:var(--muted);line-height:1.5;max-width:780px}
+    .header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+    .btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:12px 16px;border-radius:16px;font-size:.95rem;font-weight:700;text-decoration:none;cursor:pointer;box-shadow:0 10px 22px rgba(217,111,48,.16)}
+    .btn-soft{background:#fff3e8;color:#7c5848;border:1px solid #efcfbb;box-shadow:none}
+    .pill-toggle{background:rgba(255,255,255,.92);border:1px solid rgba(236,215,199,.95);border-radius:999px;padding:6px;display:inline-flex;gap:6px;box-shadow:0 8px 18px rgba(90,55,29,.05)}
+    .pill-btn{border:none;background:transparent;color:var(--text);padding:11px 18px;border-radius:999px;font-size:.94rem;font-weight:700;cursor:pointer;font-family:"Outfit", sans-serif}
+    .pill-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff}
+    .mode-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;font-weight:700;font-size:.92rem;border:1px solid rgba(236,215,199,.9);background:#fff5ec;color:#8d5a33}
+    .mode-badge.child{background:#eef7ff;color:#5d7698}
+    .mode-note{color:var(--muted);line-height:1.5;margin-bottom:18px}
+    .report-meta,.summary-grid{display:grid;gap:14px;margin-bottom:18px}
+    .report-meta{grid-template-columns:repeat(4,1fr)}
+    .summary-grid{grid-template-columns:repeat(6,1fr)}
+    .meta-box,.summary-card,.section{background:var(--card);border-radius:var(--radius-lg);box-shadow:var(--shadow)}
+    .meta-box{padding:16px}.meta-box strong{display:block;margin-bottom:6px}.meta-box span{color:var(--muted);font-size:.92rem}
+    .summary-card{padding:20px}.summary-card h3{font-size:.95rem;margin-bottom:10px}.summary-card .value{font-size:1.45rem;font-weight:700;margin-bottom:6px}.summary-card p{color:var(--muted);font-size:.9rem}
+    .section{padding:22px;margin-bottom:18px}.section h2{font-size:1.2rem;margin-bottom:8px}.section p.subtitle{color:var(--muted);line-height:1.5;margin-bottom:14px}
+    table{width:100%;border-collapse:collapse;background:#fffdfb;border-radius:16px;overflow:hidden}
+    th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:.93rem;vertical-align:top} th{background:var(--soft);font-size:.9rem}
+    .total-row td{font-weight:700;background:#fff8f2}.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}
+    .child-only{display:none}.child-mode .child-only{display:block}.child-mode .hide-for-child{display:none !important}.child-mode h1,.child-mode h2,.child-mode .pill-btn,.child-mode .mode-badge{font-family:"Outfit", sans-serif}
+    @media(max-width:1100px){.summary-grid{grid-template-columns:repeat(3,1fr)}.report-meta{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:760px){body{padding:16px}.summary-grid,.report-meta{grid-template-columns:1fr}.topbar{flex-direction:column}.header-actions{justify-content:flex-start}}
+    @media print{body{background:#fff;padding:0}.header-actions,.pill-toggle,.btn,.btn-soft,.mode-note{display:none !important}.meta-box,.summary-card,.section{box-shadow:none}.wrap{padding-top:8px;max-width:none}}
+  
+.page-topnav{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#fef0e2 0%,#fdf6ee 100%);
+  border-bottom:1px solid #e6cdb8;padding:14px 28px;
+  position:sticky;top:0;z-index:100;
+}
+.topnav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:"Outfit", sans-serif;font-weight:700;font-size:1.1rem;color:#3a2418;}
+.topnav-links{display:flex;gap:4px;flex-wrap:wrap}
+.topnav-links a{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:10px;text-decoration:none;color:#6a4432;font-weight:700;font-size:.82rem;transition:.18s;}
+.topnav-links a:hover{background:#fde9d4;color:#3a2418}
+.topnav-links a.active-page{background:linear-gradient(135deg,#f5975a 0%,#f0c99a 100%);color:#3a2418}
+
+
+/* ══ Button Upgrade – visible, punchy, warm ══ */
+.btn, button.btn, a.btn {
+  border: none;
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%);
+  color: #fff !important;
+  padding: 13px 22px;
+  border-radius: 16px;
+  font-size: .94rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* rich layered shadow */
+  box-shadow:
+    0 4px 0 #a83e0c,
+    0 8px 22px rgba(180,70,10,.32),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  letter-spacing: .01em;
+  position: relative;
+}
+.btn:hover, button.btn:hover, a.btn:hover {
+  background: linear-gradient(135deg, #f99650 0%, #e06520 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 #a83e0c,
+    0 14px 30px rgba(180,70,10,.36),
+    inset 0 1px 0 rgba(255,255,255,.26);
+}
+.btn:active, button.btn:active, a.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 0 #a83e0c,
+    0 4px 12px rgba(180,70,10,.28),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* Soft / secondary button */
+.btn-soft, button.btn-soft, a.btn-soft {
+  background: linear-gradient(135deg, #fff6ee 0%, #fce8d4 100%) !important;
+  color: #8a4a28 !important;
+  border: 1.5px solid #e8c4a0 !important;
+  box-shadow:
+    0 3px 0 #d4a070,
+    0 6px 18px rgba(160,90,40,.14),
+    inset 0 1px 0 rgba(255,255,255,.7) !important;
+}
+.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover {
+  background: linear-gradient(135deg, #fde9d4 0%, #f9d8bc 100%) !important;
+  box-shadow:
+    0 5px 0 #d4a070,
+    0 10px 24px rgba(160,90,40,.18),
+    inset 0 1px 0 rgba(255,255,255,.7) !important;
+  transform: translateY(-2px);
+}
+
+/* mini buttons in task lists */
+.mini-btn {
+  border: 1.5px solid #e6cdb8 !important;
+  background: linear-gradient(135deg, #fffaf5 0%, #fdf0e2 100%) !important;
+  color: #7a4a28 !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  font-size: .78rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 2px 6px rgba(150,80,20,.12), inset 0 1px 0 rgba(255,255,255,.8) !important;
+}
+.mini-btn:hover {
+  background: linear-gradient(135deg, #fde9d4 0%, #f9d4b4 100%) !important;
+  border-color: #d4956a !important;
+  box-shadow: 0 4px 10px rgba(150,80,20,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
+  transform: translateY(-1px);
+}
+.mini-btn.delete-btn:hover {
+  background: linear-gradient(135deg, #fde8e8 0%, #fac8c8 100%) !important;
+  border-color: #e08080 !important;
+  color: #b03030 !important;
+}
+
+/* Pill mode-switch buttons */
+.mode-btn.active {
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 #a83e0c, 0 6px 16px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+/* Pill toggle (finanzbericht / historie) */
+.pill-btn.active {
+  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 #a83e0c, 0 6px 14px rgba(180,70,10,.25) !important;
+}
+
+/* CTA link on dashboard */
+.cta-link {
+  box-shadow: 0 4px 0 #a83e0c, 0 8px 22px rgba(180,70,10,.3), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.cta-link:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a83e0c, 0 14px 30px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+/* Kid page buttons (Nunito font) */
+.quick-btn {
+  box-shadow: 0 4px 0 #a83e0c, 0 8px 20px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+.quick-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #a83e0c, 0 14px 28px rgba(180,70,10,.32), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+.add-star-btn {
+  box-shadow: 0 4px 0 #a07000, 0 8px 20px rgba(180,140,0,.28) !important;
+}
+.add-star-btn:hover {
+  transform: scale(1.04) translateY(-1px) !important;
+  box-shadow: 0 6px 0 #a07000, 0 12px 26px rgba(180,140,0,.32) !important;
+}
+
+
+/* ══ Outfit Font System ══ */
+:root {
+  --font-main: "Outfit", sans-serif;
+}
+body {
+  font-family: "Outfit", sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  letter-spacing: -0.01em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Outfit", sans-serif !important;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+h1 { font-size: 2.4rem !important; font-weight: 800 !important; }
+h2 { font-size: 1.5rem !important; font-weight: 700 !important; }
+h3 { font-size: 1.15rem !important; font-weight: 700 !important; }
+.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
+.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
+.stat .value, .pocket-amount, .stars-count {
+  font-family: "Outfit", sans-serif !important;
+}
+.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
+.pill-btn, .pill-toggle button, .mode-switch button,
+label, .field label, .form-label, .section-label,
+.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
+select, input, textarea, button, .mini-btn,
+.chip, .hero-tag, .badge, .mode-badge,
+.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
+p, span, div, li, td, th {
+  font-family: "Outfit", sans-serif !important;
+}
+/* Bigger body text */
+p, .sub, .card-sub, .body, .helper, .small-note,
+.ki-note, .mode-note, .section-note, .filter-note {
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+}
+/* Stat values bigger & bolder */
+.stat-value, .stat .value, .stat-val, .pocket-amount {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em;
+}
+/* Buttons rounded and bold */
+.btn, button.btn, a.btn {
+  font-weight: 800 !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.01em;
+  border-radius: 14px !important;
+}
+/* Labels uppercase + spaced */
+.field label, .form-label, .stat-label, .stat-lbl,
+.nav-lbl, .section-label, .opt-name {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+/* Nav sidebar items */
+.nav a, .nav-item {
+  font-weight: 700 !important;
+  font-size: 0.97rem !important;
+}
+/* Logo name display */
+.logo-name, .s-logo-text {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+}
+/* Input fields */
+input, select, textarea {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+}
+/* Kindermodus — keep Outfit too */
+.wrap, .hero, .savings-card, .pocket-card,
+.tasks-card, .stars-banner, .quick-card,
+.kid-tab, .add-goal-btn, .quick-btn {
+  font-family: "Outfit", sans-serif !important;
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="ki-schnecke.css">
+</head>
+<body>
+<nav class="page-topnav">
+  <a href="index.html" class="topnav-logo">🦸 Haushaltsheld</a>
+  <div class="topnav-links">
+    <a href="index.html">🏠</a>
+    <a href="finanzen.html">💰 Finanzen</a>
+    <a href="einkaufsliste.html">🛒 Einkäufe</a>
+    <a href="aufgaben.html">🧹 Aufgaben</a>
+    <a href="familienplaner.html">📅 Planer</a>
+    <a href="finanzbericht.html">📊 Bericht</a>
+    <a href="finanz_historie.html">📋 Historie</a>
+    <a href="beleg_import.html">📥 Belege</a>
+    <a href="kindermodus.html">⭐ Kinder</a>
+  </div>
+</nav>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title-box">
+        <h1>Finanzbericht</h1>
+        <p>Der Bericht liest jetzt dieselben Daten wie die Historie. Wiederkehrende Ausgaben wie Miete, Strom, Internet, Versicherung und Gehalt werden automatisch sauber eingeordnet.</p>
+      </div>
+      <div class="header-actions">
+        <a class="btn btn-soft" href="datenzentrale.html">Datenzentrale</a>
+        <button class="btn btn-soft" type="button" onclick="window.print()">🖨️ Drucken</button>
+        <div class="mode-badge" id="modeBadge">🛠️ Elternmodus aktiv</div>
+        <div class="pill-toggle">
+          <button class="pill-btn active" id="adminViewBtn" type="button">Eltern</button>
+          <button class="pill-btn" id="childViewBtn" type="button">Kind</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="mode-note" id="modeNote">Im Elternmodus wird der komplette Finanzbericht angezeigt. Im Kindermodus werden nur die freigegebenen Bereiche druckbar sichtbar.</p>
+
+    <section class="report-meta">
+      <div class="meta-box"><strong>Berichtszeitraum</strong><span>Monat · Beispiel März 2026</span></div>
+      <div class="meta-box"><strong>Stand</strong><span id="reportDate">wird geladen</span></div>
+      <div class="meta-box hide-for-child"><strong>Datenbasis</strong><span>gemeinsame Einträge mit Historie</span></div>
+      <div class="meta-box"><strong>Ansicht</strong><span id="reportViewLabel">Elternbericht</span></div>
+    </section>
+
+    <section class="summary-grid">
+      <div class="summary-card"><h3>💚 Einnahmen</h3><div class="value green" id="summaryIncome">0 €</div><p>gesamte Einnahmen</p></div>
+      <div class="summary-card hide-for-child"><h3>🏠 Fixkosten</h3><div class="value yellow" id="summaryFixed">0 €</div><p>Miete, Strom, Internet, Versicherung, Abo</p></div>
+      <div class="summary-card hide-for-child"><h3>💸 variable Ausgaben</h3><div class="value red" id="summaryVariable">0 €</div><p>Freizeit, Taxi, Online etc.</p></div>
+      <div class="summary-card" data-permission-block="showShopping"><h3>🛒 Einkauf</h3><div class="value blue" id="summaryShopping">0 €</div><p>aus Einkaufsliste / Einkaufseinträgen</p></div>
+      <div class="summary-card" data-permission-block="showPocketMoney"><h3>💛 Taschengeld</h3><div class="value yellow" id="summaryPocket">0 €</div><p>separat ausgewiesen</p></div>
+      <div class="summary-card hide-for-child"><h3>📊 Ergebnis</h3><div class="value" id="summaryResult">0 €</div><p>Einnahmen minus Ausgaben</p></div>
+    </section>
+
+    <section class="section child-only" data-permission-block="showTips">
+      <h2>🌱 Kinderbericht</h2>
+      <p class="subtitle">Diese Ansicht zeigt nur freigegebene Bereiche in einer vereinfachten Form.</p>
+      <table>
+        <thead><tr><th>Bereich</th><th>Wert</th><th>Hinweis</th></tr></thead>
+        <tbody>
+          <tr data-permission-block="showPocketMoney"><td>Taschengeld</td><td id="childPocket">0 €</td><td>regelmäßig sichtbar</td></tr>
+          <tr data-permission-block="showGiftMoney"><td>Geldgeschenke</td><td id="childGifts">0 €</td><td>z. B. Oma, Geburtstag</td></tr>
+          <tr data-permission-block="showShopping"><td>Einkauf</td><td id="childShopping">0 €</td><td>gemeinsame Alltagsübersicht</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>💚 Einnahmen</h2>
+      <p class="subtitle">Gehalt, Taschengeld, Geldgeschenke und weitere Einnahmen.</p>
+      <table><thead><tr><th>Kategorie</th><th>Beschreibung</th><th>Betrag</th></tr></thead><tbody id="incomeBody"></tbody></table>
+    </section>
+
+    <section class="section hide-for-child" id="fixedSection">
+      <h2>🏠 Fixkosten</h2>
+      <p class="subtitle">Wiederkehrende Kosten mit sauberer Kategorisierung.</p>
+      <table><thead><tr><th>Kategorie</th><th>Beschreibung</th><th>Betrag</th></tr></thead><tbody id="fixedBody"></tbody></table>
+    </section>
+
+    <section class="section hide-for-child">
+      <h2>💸 variable Ausgaben</h2>
+      <p class="subtitle">Alle nicht wiederkehrenden oder frei beweglichen Ausgaben.</p>
+      <table><thead><tr><th>Kategorie</th><th>Beschreibung</th><th>Betrag</th></tr></thead><tbody id="variableBody"></tbody></table>
+    </section>
+
+    <section class="section" data-permission-block="showShopping">
+      <h2>🛒 Einkauf</h2>
+      <p class="subtitle">Direkt aus denselben Einkaufseinträgen wie in der Historie.</p>
+      <table><thead><tr><th>Bereich</th><th>Beschreibung</th><th>Betrag</th></tr></thead><tbody id="shoppingBody"></tbody></table>
+    </section>
+
+    <section class="section" data-permission-block="showPocketMoney">
+      <h2>💛 Taschengeld</h2>
+      <p class="subtitle">Eigenständig sichtbar und nicht mehr in allgemeinen Einnahmen versteckt.</p>
+      <table><thead><tr><th>Bereich</th><th>Beschreibung</th><th>Betrag</th></tr></thead><tbody id="pocketBody"></tbody></table>
+    </section>
+
+    <section class="section" data-permission-block="showGiftMoney">
+      <h2>🎁 Geldgeschenke</h2>
+      <p class="subtitle">Sauber getrennt nach Anlass und Herkunft.</p>
+      <table><thead><tr><th>Bereich</th><th>Beschreibung</th><th>Betrag</th></tr></thead><tbody id="giftBody"></tbody></table>
+    </section>
+  </div>
+
+<script>
+const adminViewBtn = document.getElementById("adminViewBtn");
+const childViewBtn = document.getElementById("childViewBtn");
+const modeBadge = document.getElementById("modeBadge");
+const modeNote = document.getElementById("modeNote");
+
+function formatEuro(value){
+  return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(value || 0);
+}
+function loadPermissions(){
+  const stored = localStorage.getItem("haushaltsheld_child_permissions");
+  return stored ? JSON.parse(stored) : {showShopping:true,showPocketMoney:true,showGiftMoney:true,showBookings:false,showSubscriptions:false,showPets:false,showTips:true};
+}
+function getDefaultFinance(){
+  return [
+    { id: 1, date: "2026-03-01", category: "Gehalt", mainCategory: "Einnahme", title: "Gehalt Monja", text: "monatlicher Geldeingang", payment: "Überweisung", amount: 1850, type: "Einnahme", person: "Monja", recurring: true },
+    { id: 2, date: "2026-03-03", category: "Miete", mainCategory: "Fixkosten", title: "Warmmiete", text: "monatliche Miete", payment: "Überweisung", amount: 720, type: "Ausgabe", person: "Allgemein", recurring: true },
+    { id: 3, date: "2026-03-04", category: "Strom", mainCategory: "Fixkosten", title: "Stromabschlag", text: "monatlich", payment: "Lastschrift", amount: 68, type: "Ausgabe", person: "Allgemein", recurring: true },
+    { id: 4, date: "2026-03-05", category: "Internet", mainCategory: "Fixkosten", title: "Internet", text: "monatlich", payment: "Lastschrift", amount: 39.99, type: "Ausgabe", person: "Allgemein", recurring: true },
+    { id: 5, date: "2026-03-06", category: "Versicherung", mainCategory: "Fixkosten", title: "Haftpflicht", text: "monatlich", payment: "Lastschrift", amount: 18.50, type: "Ausgabe", person: "Allgemein", recurring: true },
+    { id: 6, date: "2026-03-07", category: "Abo", mainCategory: "Fixkosten", title: "Netflix", text: "monatlich", payment: "Lastschrift", amount: 13.99, type: "Ausgabe", person: "Allgemein", recurring: true },
+    { id: 7, date: "2026-03-10", category: "Taxi / Uber", mainCategory: "Mobilität", title: "Uber Fahrt", text: "abends nach Hause", payment: "PayPal", amount: 16.80, type: "Ausgabe", person: "Monja", recurring: false },
+    { id: 8, date: "2026-03-11", category: "Google / Apple", mainCategory: "Online", title: "Google Play Kauf", text: "App-Kauf", payment: "Online", amount: 6.99, type: "Ausgabe", person: "Allgemein", recurring: false },
+    { id: 9, date: "2026-03-12", category: "Taschengeld", mainCategory: "Einnahme", title: "Kind 1", text: "monatliches Taschengeld", payment: "Bar", amount: 20, type: "Einnahme", person: "Kind 1", recurring: true },
+    { id: 10, date: "2026-03-13", category: "Geldgeschenke", mainCategory: "Einnahme", title: "Oma", text: "Geburtstagsgeld", payment: "Bar", amount: 50, type: "Einnahme", person: "Kind 1", recurring: false },
+    { id: 11, date: "2026-03-18", category: "Freizeit", mainCategory: "Freizeit", title: "Kinobesuch", text: "Filmabend", payment: "Karte", amount: 24, type: "Ausgabe", person: "Monja", recurring: false }
+  ];
+}
+function getDefaultShopping(){
+  return [
+    { id: 101, date: "2026-03-20", title: "Wocheneinkauf", text: "Milch, Brot, Obst", payment: "Karte", amount: 54.20, person: "Allgemein", type: "Ausgabe" },
+    { id: 102, date: "2026-03-22", title: "Drogerie", text: "Shampoo, Waschmittel", payment: "Karte", amount: 18.40, person: "Allgemein", type: "Ausgabe" },
+    { id: 103, date: "2026-03-23", title: "Kleine Extras", text: "Snacks, Eis", payment: "Bar", amount: 9.80, person: "Allgemein", type: "Ausgabe" }
+  ];
+}
+function loadData(){
+  const finance = JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "null") || getDefaultFinance();
+  const shopping = JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "null") || getDefaultShopping();
+  return {finance, shopping};
+}
+function addRows(targetId, rows, label){
+  const target = document.getElementById(targetId);
+  target.innerHTML = "";
+  if(!rows.length){
+    target.innerHTML = '<tr><td colspan="3">Noch keine Einträge vorhanden.</td></tr>';
+    return 0;
+  }
+  let total = 0;
+  rows.forEach(row => {
+    total += Number(row.amount || 0);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${row.category || row.title}</td><td>${row.title ? "<strong>"+row.title+"</strong><br>" : ""}${row.text || ""}</td><td>${formatEuro(row.amount)}</td>`;
+    target.appendChild(tr);
+  });
+  const totalRow = document.createElement("tr");
+  totalRow.className = "total-row";
+  totalRow.innerHTML = `<td colspan="2">${label}</td><td>${formatEuro(total)}</td>`;
+  target.appendChild(totalRow);
+  return total;
+}
+function renderReport(){
+  const {finance, shopping} = loadData();
+
+  const incomeRows = finance.filter(x => x.type === "Einnahme");
+  const fixedRows = finance.filter(x => x.mainCategory === "Fixkosten");
+  const variableRows = finance.filter(x => x.type === "Ausgabe" && x.mainCategory !== "Fixkosten");
+  const pocketRows = finance.filter(x => x.category === "Taschengeld");
+  const giftRows = finance.filter(x => x.category === "Geldgeschenke");
+  const shoppingRows = shopping.map(x => ({category:"Einkauf", title:x.title, text:x.text, amount:x.amount}));
+
+  const incomeTotal = addRows("incomeBody", incomeRows, "Summe Einnahmen");
+  const fixedTotal = addRows("fixedBody", fixedRows, "Summe Fixkosten");
+  const variableTotal = addRows("variableBody", variableRows, "Summe variable Ausgaben");
+  const shoppingTotal = addRows("shoppingBody", shoppingRows, "Summe Einkauf");
+  const pocketTotal = addRows("pocketBody", pocketRows, "Summe Taschengeld");
+  const giftTotal = addRows("giftBody", giftRows, "Summe Geldgeschenke");
+
+  const result = incomeTotal - fixedTotal - variableTotal - shoppingTotal;
+
+  document.getElementById("summaryIncome").textContent = formatEuro(incomeTotal);
+  document.getElementById("summaryFixed").textContent = formatEuro(fixedTotal);
+  document.getElementById("summaryVariable").textContent = formatEuro(variableTotal);
+  document.getElementById("summaryShopping").textContent = formatEuro(shoppingTotal);
+  document.getElementById("summaryPocket").textContent = formatEuro(pocketTotal);
+  document.getElementById("summaryResult").textContent = formatEuro(result);
+
+  document.getElementById("childPocket").textContent = formatEuro(pocketTotal);
+  document.getElementById("childGifts").textContent = formatEuro(giftTotal);
+  document.getElementById("childShopping").textContent = formatEuro(shoppingTotal);
+
+  document.getElementById("reportDate").textContent = new Date().toLocaleString("de-DE");
+}
+function applyPermissions(){
+  const permissions = loadPermissions();
+  document.querySelectorAll("[data-permission-block]").forEach(block => {
+    const key = block.dataset.permissionBlock;
+    if(document.body.classList.contains("child-mode")){
+      block.style.display = permissions[key] ? "block" : "none";
+    } else {
+      block.style.display = "block";
+    }
+  });
+}
+function setReportView(mode){
+  if(mode === "child"){
+    document.body.classList.add("child-mode");
+    adminViewBtn.classList.remove("active");
+    childViewBtn.classList.add("active");
+    modeBadge.textContent = "🧒 Kindmodus aktiv";
+    modeBadge.className = "mode-badge child";
+    modeNote.textContent = "Im Kindermodus werden nur freigegebene Bereiche als Bericht und Druckansicht angezeigt.";
+    document.getElementById("reportViewLabel").textContent = "Kinderbericht";
+  } else {
+    document.body.classList.remove("child-mode");
+    childViewBtn.classList.remove("active");
+    adminViewBtn.classList.add("active");
+    modeBadge.textContent = "🛠️ Elternmodus aktiv";
+    modeBadge.className = "mode-badge";
+    modeNote.textContent = "Im Elternmodus wird der komplette Finanzbericht angezeigt. Im Kindermodus werden nur die freigegebenen Bereiche druckbar sichtbar.";
+    document.getElementById("reportViewLabel").textContent = "Elternbericht";
+  }
+  localStorage.setItem("haushaltsheld_finance_view", mode);
+  applyPermissions();
+}
+adminViewBtn.addEventListener("click", () => setReportView("admin"));
+childViewBtn.addEventListener("click", () => setReportView("child"));
+renderReport();
+setReportView(localStorage.getItem("haushaltsheld_finance_view") || "admin");
+</script>
+
+<script src="ki-schnecke.js"></script>
+</body>
+</html>
