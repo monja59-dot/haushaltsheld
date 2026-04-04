@@ -1,572 +1,1676 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Haushaltsheld – Familiensteuerung</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Haushaltsheld – Familienrechte</title>
 
-    :root{
-      --bg:#f7f2e9;
-      --bg-2:#fdf9f3;
-      --card:#ffffff;
-      --line:#dfd1bc;
-      --text:#21323d;
-      --text2:#556159;
-      --muted:#7d8a82;
-      --accent:#4CAF50;
-      --accent-dark:#3E8E41;
-      --blue-soft:#d9e7f8;
-      --shadow-xs:0 2px 8px rgba(54,45,28,.05);
-      --shadow-sm:0 6px 18px rgba(54,45,28,.08);
-      --shadow-lg:0 18px 48px rgba(54,45,28,.12);
-      --sidebar-w:245px;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ki-schnecke.css">
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{min-height:100%}
-    body{
-      font-family:"Outfit",sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
-        linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-    }
+<style>
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
 
-    .app{
-      display:grid;
-      grid-template-columns:var(--sidebar-w) 1fr;
-      min-height:100vh;
-    }
+  --text:#2d342f;
+  --text2:#556159;
+  --muted:#7d8a82;
 
-    .sidebar{
-      background:linear-gradient(180deg,#f6f0e6 0%, #f2eadf 100%);
-      border-right:1px solid rgba(223,209,188,.95);
-      padding:16px 14px 12px;
-      position:sticky;
-      top:0;
-      height:100vh;
-      overflow-y:auto;
-      display:flex;
-      flex-direction:column;
-    }
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#e7f5e8;
 
-    .brand{
-      display:flex;
-      align-items:flex-start;
-      gap:12px;
-      padding:8px 10px 16px;
-      border-bottom:1px solid rgba(223,209,188,.95);
-      margin-bottom:20px;
-    }
-    .brand-icon{font-size:24px;line-height:1;margin-top:3px}
-    .brand-title{font-size:18px;font-weight:800;letter-spacing:.01em;color:var(--text)}
-    .brand-sub{font-size:13px;color:var(--muted);margin-top:4px}
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
 
-    .menu-group{padding:0 2px}
-    .menu-label{
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.12em;
-      color:#75868d;
-      text-transform:uppercase;
-      margin:8px 8px 14px;
-    }
+  --red:#cc6666;
+  --red-soft:#fdeaea;
 
-    .nav{display:flex;flex-direction:column;gap:14px}
-    .nav-link{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:8px 6px;
-      border-radius:22px;
-      text-decoration:none;
-      color:#31424b;
-      font-weight:700;
-      transition:.15s ease;
-      min-height:52px;
-      cursor:pointer;
-    }
-    .nav-link:hover{
-      background:rgba(255,255,255,.45);
-    }
-    .nav-icon{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#fffdfa;
-      border:1px solid var(--line);
-      box-shadow:
-        0 2px 6px rgba(54,45,28,.06),
-        inset 0 1px 0 rgba(255,255,255,.6);
-      flex:0 0 42px;
-      font-size:1.05rem;
-      color:var(--accent-dark);
-    }
-    .nav-link span:last-child{
-      font-size:.98rem;
-    }
+  --yellow:#b5882f;
+  --yellow-soft:#fbf4df;
 
-    .nav-link.active{
-      background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-      color:#fff;
-      padding:10px 12px;
-      box-shadow:
-        0 6px 0 #2f6f33,
-        0 14px 26px rgba(62,142,65,.23);
-      border-radius:20px;
-    }
-    .nav-link.active .nav-icon{
-      background:rgba(255,255,255,.16);
-      border:1px solid rgba(255,255,255,.18);
-      color:#fff;
-      box-shadow:none;
-    }
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
 
-    .mode-switch{
-      margin-top:auto;
-      padding-top:22px;
-      border-top:1px solid rgba(223,209,188,.95);
-    }
-    .mode-pill{
-      background:linear-gradient(180deg,#fffdfa 0%, #f6efe4 100%);
-      border:1px solid rgba(223,209,188,.95);
-      border-radius:999px;
-      padding:4px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:4px;
-      box-shadow:var(--shadow-xs);
-    }
-    .mode-pill button{
-      border:none;height:42px;border-radius:999px;font-family:inherit;
-      font-size:16px;font-weight:700;background:transparent;color:#56676f;cursor:pointer;
-    }
-    .mode-pill button.active{
-      background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-      color:#fff;
-      box-shadow:0 4px 0 #2f6f33;
-    }
+  --brown:#4d3c2c;
+  --brown-dark:#433324;
 
-    .content{padding:20px}
-    .grid-main{
-      display:grid;
-      grid-template-columns:1.15fr .9fr;
-      gap:18px;
-      align-items:start;
-    }
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
 
-    .panel{
-      background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-      border:1px solid rgba(223,209,188,.95);
-      border-radius:34px;
-      box-shadow:var(--shadow-sm);
-      padding:20px;
-    }
+  --sidebar-w:258px;
+}
 
-    .section-title{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      font-size:18px;
-      font-weight:800;
-      color:#183041;
-      margin-bottom:16px;
-    }
-    .section-icon{
-      width:42px;height:42px;border-radius:16px;display:grid;place-items:center;
-      background:#e8f3e6;border:1px solid #bfd8bd;color:#2f8a35;flex:0 0 42px;
-    }
-    .inner-box{
-      background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
-      border:1px solid rgba(223,209,188,.95);
-      border-radius:28px;
-      overflow:hidden;
-    }
-    .setting-row{
-      display:flex;align-items:center;justify-content:space-between;gap:16px;
-      padding:16px 18px;border-bottom:1px solid rgba(223,209,188,.85);
-    }
-    .setting-row:last-child{border-bottom:none}
-    .setting-copy strong{display:block;font-size:15px;font-weight:800;color:#163042;margin-bottom:4px}
-    .setting-copy span{color:#6d7d84;font-size:14px;line-height:1.35}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
 
-    .toggle{
-      width:72px;height:34px;border-radius:999px;background:#c7dfc6;border:1px solid #a9c9a8;
-      position:relative;flex:0 0 72px;box-shadow:inset 0 1px 2px rgba(255,255,255,.4);
-    }
-    .toggle::after{
-      content:"";position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;
-      background:linear-gradient(135deg,var(--accent),var(--accent-dark));
-      box-shadow:0 2px 4px rgba(0,0,0,.14);
-    }
+body{
+  font-family:"Outfit",sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+}
 
-    .security-grid{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px;
-    }
-    .security-card{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:16px 18px;border-radius:26px;background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
-      border:1px solid rgba(223,209,188,.95);
-    }
-    .security-card strong{display:block;font-size:15px;margin-bottom:4px}
-    .security-card span{display:block;color:#6d7d84;font-size:14px;line-height:1.35}
-    .status-pill{
-      padding:9px 14px;border-radius:999px;background:#e8f3e6;border:1px solid #bfd8bd;
-      color:#5b6f77;font-weight:800;font-size:14px;white-space:nowrap;
-    }
+h1,h2,h3,h4,h5,h6{
+  font-family:"Outfit",sans-serif;
+  letter-spacing:-0.03em;
+  line-height:1.15;
+}
 
-    .footer-actions{
-      display:flex;justify-content:flex-end;gap:16px;margin-top:18px;
-    }
+button,input,select,textarea{font:inherit}
 
-    .btn,
-    button.btn{
-      border:none;
-      background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-      color:#fff !important;
-      padding:13px 22px;
-      border-radius:16px;
-      font-size:.95rem;
-      font-weight:800;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      white-space:nowrap;
-      box-shadow:
-        0 4px 0 #2f6f33,
-        0 10px 22px rgba(62,142,65,.22),
-        inset 0 1px 0 rgba(255,255,255,.20);
-      transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
-      letter-spacing:.01em;
-      font-family:inherit;
-    }
-    .btn-secondary{
-      border:none;
-      background:linear-gradient(180deg,#fffdfa 0%, #f4ebde 100%);
-      color:var(--text);
-      padding:13px 18px;
-      border-radius:16px;
-      font-size:.95rem;
-      font-weight:800;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      box-shadow: var(--shadow-xs);
-      border:1px solid rgba(223,209,188,.95);
-      font-family:inherit;
-    }
+.app{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:100vh;
+}
 
-    .login-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(247,242,233,.85);
-      backdrop-filter:blur(10px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      z-index:50;
-    }
-    .login-card{
-      width:min(100%, 470px);
-      padding:24px;
-      border-radius:32px;
-      background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-      border:1px solid rgba(223,209,188,.95);
-      box-shadow:var(--shadow-lg);
-    }
-    .login-top{
-      margin-bottom:18px;
-    }
-    .login-help{
-      margin-top:14px;
-      padding:14px 16px;
-      border-radius:20px;
-      background:var(--blue-soft);
-      color:#5f7fae;
-      font-weight:700;
-      font-size:.9rem;
-      border:1px solid rgba(107,150,217,.14);
-    }
-    .login-error{
-      display:none;
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:#fdeaea;
-      color:#a45656;
-      font-weight:800;
-      border:1px solid rgba(204,102,102,.16);
-    }
-    .field{display:flex;flex-direction:column;gap:8px}
-    .field label{
-      font-size:.93rem;
-      color:var(--text2);
-      font-weight:800;
-    }
-    .field input{
-      width:100%;
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:#fffdfa;
-      padding:14px 16px;
-      outline:none;
-      font-family:"Outfit",sans-serif;
-      font-size:.97rem;
-      color:var(--text);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
-    }
-    .field input:focus{
-      border-color:#bfdcbf;
-      box-shadow:0 0 0 4px rgba(76,175,80,.10);
-    }
-    .form-actions{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-top:16px;
-      flex-wrap:wrap;
-    }
+/* Sidebar */
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:28px 18px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+}
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 8px 24px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:8px;
+}
+.logo-wrap img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
+}
+.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
+.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+.nav-label{
+  font-size:.7rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--muted);
+  padding:16px 10px 6px;
+}
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 13px;
+  border-radius:18px;
+  text-decoration:none;
+  color:var(--text2);
+  font-weight:700;
+  font-size:.98rem;
+  transition:all .18s ease;
+  border:1px solid transparent;
+}
+.nav a:hover{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+  color:var(--text);
+}
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;
+  border-color:rgba(62,142,65,.28);
+  box-shadow:
+    0 5px 0 #2f6f33,
+    0 14px 26px rgba(62,142,65,.20),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+.nav a.active .nav-icon{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+}
+.nav-icon{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--accent-dark);
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(54,45,28,.05);
+}
+.nav-icon svg{width:18px;height:18px;stroke:currentColor}
+.sidebar-footer{
+  margin-top:auto;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+}
+.mode-switch{
+  display:flex;
+  gap:6px;
+  background:rgba(255,255,255,.86);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px;
+  box-shadow:var(--shadow-xs);
+}
+.mode-btn{
+  flex:1;
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  padding:9px 12px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+}
+.mode-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  box-shadow:
+    0 3px 0 #2f6f33,
+    0 8px 18px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.2);
+}
 
-    @media (max-width:1180px){
-      .grid-main{grid-template-columns:1fr}
-      .security-grid{grid-template-columns:1fr}
-    }
-    @media (max-width:900px){
-      .app{grid-template-columns:1fr}
-      .sidebar{position:relative;height:auto;overflow:visible}
-    }
-  </style>
+/* Main */
+.main{
+  width:100%;
+  max-width:1580px;
+  padding:32px;
+}
+
+/* Header */
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+.page-header h1{
+  font-size:2.35rem;
+  font-weight:800;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.page-header p{
+  color:var(--muted);
+  font-size:.98rem;
+  max-width:920px;
+}
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.mode-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:.88rem;
+  background:var(--soft);
+  border:1px solid var(--line);
+  color:var(--text2);
+  box-shadow:var(--shadow-xs);
+}
+.mode-note{
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:18px;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(223,209,188,.75);
+  border-radius:18px;
+  padding:14px 16px;
+}
+
+/* Icons */
+.page-title-icon,
+.section-icon{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:inline-grid;
+  place-items:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.16);
+  box-shadow:var(--shadow-xs);
+  flex-shrink:0;
+}
+.page-title-icon svg,.section-icon svg{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+}
+
+/* Hero */
+.hero{
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
+  border:1px solid rgba(76,175,80,.18);
+  border-radius:30px;
+  padding:28px 30px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:20px;
+  align-items:stretch;
+  margin-bottom:24px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  right:-40px;
+  bottom:-40px;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+.hero h2{
+  font-size:1.55rem;
+  font-weight:800;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.hero p{
+  color:var(--text2);
+  line-height:1.65;
+  margin-bottom:16px;
+}
+.hero-tags{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.95);
+  padding:9px 14px;
+  border-radius:999px;
+  font-size:.88rem;
+  font-weight:800;
+  color:var(--text2);
+  box-shadow:0 1px 4px rgba(54,45,28,.04);
+}
+.hero-side{
+  display:grid;
+  gap:12px;
+}
+.mini{
+  background:rgba(255,255,255,.78);
+  border-radius:20px;
+  padding:16px;
+  border:1px solid rgba(223,209,188,.85);
+  box-shadow:var(--shadow-xs);
+}
+.mini strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:.96rem;
+  font-weight:800;
+}
+.mini span{
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.55;
+}
+
+/* Overview cards */
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:18px;
+}
+.summary-card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:24px;
+  padding:20px;
+  box-shadow:var(--shadow-sm);
+}
+.summary-card h3{
+  font-size:.85rem;
+  margin-bottom:10px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.summary-card .value{
+  font-size:1.4rem;
+  font-weight:800;
+  margin-bottom:6px;
+  letter-spacing:-0.03em;
+}
+.summary-card p{
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.45;
+}
+
+/* Sections */
+.section{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow-sm);
+}
+.section h2{
+  font-size:1.2rem;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.section p.subtitle{
+  color:var(--muted);
+  line-height:1.55;
+  margin-bottom:16px;
+}
+
+/* Settings */
+.settings-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.settings-box{
+  background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:24px;
+  overflow:hidden;
+}
+.settings-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:16px 18px;
+  background:rgba(255,255,255,.8);
+  border-bottom:1px solid rgba(223,209,188,.85);
+}
+.settings-head strong{
+  font-size:1rem;
+  font-weight:800;
+}
+.setting-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 18px;
+  border-bottom:1px solid rgba(223,209,188,.78);
+}
+.setting-row:last-child{border-bottom:none}
+.setting-copy strong{
+  display:block;
+  font-size:.96rem;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:4px;
+}
+.setting-copy span{
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.45;
+}
+
+/* Toggle */
+.toggle{
+  position:relative;
+  width:68px;
+  height:38px;
+  border:none;
+  border-radius:999px;
+  background:#d8ddd8;
+  cursor:pointer;
+  flex-shrink:0;
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.6), inset 0 -1px 2px rgba(45,52,47,.08);
+  transition:.18s ease;
+}
+.toggle::after{
+  content:"";
+  position:absolute;
+  top:4px;
+  left:4px;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:linear-gradient(180deg,#ffffff 0%, #f7f7f7 100%);
+  box-shadow:0 2px 8px rgba(45,52,47,.14);
+  transition:.18s ease;
+}
+.toggle.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.18), 0 4px 0 #2f6f33, 0 10px 18px rgba(62,142,65,.16);
+}
+.toggle.active::after{
+  left:34px;
+}
+
+/* Child profile area */
+.profile-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.profile-card{
+  background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:24px;
+  padding:18px;
+  box-shadow:var(--shadow-xs);
+}
+.profile-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.profile-avatar{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  background:var(--accent-soft);
+  border:1px solid rgba(76,175,80,.16);
+  color:var(--accent-dark);
+  box-shadow:var(--shadow-xs);
+}
+.profile-avatar svg{
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+}
+.profile-name{
+  font-weight:800;
+  font-size:1rem;
+}
+.profile-meta{
+  color:var(--muted);
+  font-size:.86rem;
+}
+.profile-list{
+  display:grid;
+  gap:8px;
+}
+.profile-item{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  color:var(--text2);
+  font-size:.9rem;
+}
+.profile-item svg{
+  width:16px;
+  height:16px;
+  stroke:var(--accent-dark);
+  flex-shrink:0;
+  margin-top:2px;
+}
+
+/* Footer actions */
+.footer-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:12px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+.btn,
+button.btn,
+a.btn{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:13px 22px;
+  border-radius:16px;
+  font-size:.95rem !important;
+  font-weight:800 !important;
+  text-decoration:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  white-space:nowrap;
+  box-shadow:
+    0 4px 0 #2f6f33,
+    0 10px 22px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  letter-spacing:.01em;
+}
+.btn:hover,
+button.btn:hover,
+a.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 14px 28px rgba(62,142,65,.26),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  filter:brightness(1.02);
+}
+.btn:active,
+button.btn:active,
+a.btn:active{
+  transform:translateY(1px);
+  box-shadow:
+    0 2px 0 #2f6f33,
+    0 6px 14px rgba(62,142,65,.18),
+    inset 0 1px 0 rgba(255,255,255,.16);
+}
+.btn-soft{
+  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
+  color:var(--brown) !important;
+  border:1.5px solid #d7c0a6 !important;
+  border-radius:16px !important;
+  box-shadow:
+    0 4px 0 #c7ae91,
+    0 8px 18px rgba(110,82,40,.10),
+    inset 0 1px 0 rgba(255,255,255,.65) !important;
+}
+.btn.btn-soft,
+button.btn.btn-soft,
+a.btn.btn-soft,
+.btn-soft span,
+.btn-soft svg{
+  color:var(--brown) !important;
+  stroke:currentColor !important;
+}
+
+/* Save note */
+.save-note{
+  display:none;
+  margin-top:14px;
+  padding:13px 16px;
+  border-radius:18px;
+  background:var(--green-soft);
+  border:1px solid rgba(92,166,111,.18);
+  color:#476d53;
+  font-weight:800;
+}
+.save-note.show{display:block}
+
+/* Login */
+.login-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(247,242,233,.82);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:99999;
+}
+.login-card{
+  width:min(100%, 520px);
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:32px;
+  box-shadow:var(--shadow-lg);
+  padding:26px;
+}
+.login-top{
+  margin-bottom:16px;
+}
+.login-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.login-icon{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  background:var(--accent-soft);
+  border:1px solid rgba(76,175,80,.16);
+  color:var(--accent-dark);
+  box-shadow:var(--shadow-xs);
+}
+.login-icon svg{
+  width:24px;
+  height:24px;
+  stroke:currentColor;
+}
+.login-headline{
+  font-weight:800;
+  font-size:1.18rem;
+  color:var(--text);
+}
+.login-sub{
+  color:var(--muted);
+  font-size:.94rem;
+}
+.field{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+.field label{
+  font-size:.93rem;
+  color:var(--text2);
+  font-weight:800;
+}
+.field input{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fffdfa;
+  padding:14px 16px;
+  outline:none;
+  font-family:"Outfit",sans-serif;
+  font-size:.97rem;
+  color:var(--text);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+}
+.field input:focus{
+  border-color:#bfdcbf;
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+}
+.form-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+.login-help{
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:20px;
+  background:var(--blue-soft);
+  color:#58739c;
+  font-weight:700;
+  font-size:.9rem;
+  border:1px solid rgba(107,150,217,.14);
+}
+.login-error{
+  display:none;
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:var(--red-soft);
+  color:#a45656;
+  font-weight:800;
+  border:1px solid rgba(204,102,102,.16);
+}
+.login-error.show{display:block}
+
+/* Responsive */
+@media(max-width:1500px){
+  .summary-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:1200px){
+  .hero{grid-template-columns:1fr}
+  .settings-grid{grid-template-columns:1fr}
+  .profile-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{
+    height:auto;
+    position:relative;
+    flex-direction:row;
+    flex-wrap:wrap;
+    padding:16px;
+    gap:0;
+  }
+  .logo-wrap{
+    margin-bottom:0;
+    padding-bottom:0;
+    border-bottom:none;
+    border-right:1px solid var(--line);
+    padding-right:16px;
+    margin-right:16px;
+  }
+  .nav{
+    flex-direction:row;
+    flex-wrap:wrap;
+    flex:1;
+  }
+  .nav a{
+    flex:0 1 auto;
+    padding:10px 12px;
+  }
+  .nav-label,.sidebar-footer{display:none}
+}
+@media(max-width:760px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.95rem}
+  .summary-grid{grid-template-columns:1fr}
+  .profile-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
-<body>
-  <div class="login-overlay" id="loginOverlay">
-    <div class="login-card">
-      <div class="login-top">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <div class="nav-icon">🔐</div>
-          <div>
-            <div style="font-weight:800;font-size:1.16rem;color:#2d342f;">Eltern-Login</div>
-            <div style="color:#7d8a82;">Geschützter Zugang zur Familiensteuerung.</div>
-          </div>
+<body data-page="admin">
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="login-top">
+      <div class="login-title">
+        <div class="login-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
         </div>
-      </div>
-
-      <div class="field">
-        <label for="email">E-Mail</label>
-        <input id="email" type="email" placeholder="admin@haushaltsheld.de">
-      </div>
-
-      <div class="field" style="margin-top:12px;">
-        <label for="password">Passwort</label>
-        <input id="password" type="password" placeholder="••••••••">
-      </div>
-
-      <div class="field" style="margin-top:12px;">
-        <label for="code">2FA-Code</label>
-        <input id="code" type="text" inputmode="numeric" placeholder="111111">
-      </div>
-
-      <div class="form-actions">
-        <button class="btn" onclick="loginAdmin()">Einloggen</button>
-      </div>
-
-      <div class="login-error" id="loginError">Login fehlgeschlagen. Bitte überprüfe E-Mail, Passwort und 2FA-Code.</div>
-
-      <div class="login-help">
-        Demo-Zugang: <strong>admin@haushaltsheld.de</strong> · Passwort: <strong>1234</strong> · 2FA: <strong>111111</strong>
+        <div>
+          <div class="login-headline">Eltern-Login</div>
+          <div class="login-sub">Geschützter Zugang zum Bereich Familienrechte.</div>
+        </div>
       </div>
     </div>
+
+    <div class="field">
+      <label for="adminEmail">E-Mail</label>
+      <input id="adminEmail" type="email" placeholder="admin@haushaltsheld.de">
+    </div>
+
+    <div class="field">
+      <label for="adminPassword">Passwort</label>
+      <input id="adminPassword" type="password" placeholder="••••••••">
+    </div>
+
+    <div class="field">
+      <label for="adminCode">2FA-Code</label>
+      <input id="adminCode" type="text" inputmode="numeric" placeholder="111111">
+    </div>
+
+    <div class="form-actions">
+      <button class="btn" type="button" id="loginBtn">Einloggen</button>
+    </div>
+
+    <div class="login-error" id="loginError">Login fehlgeschlagen. Bitte überprüfe E-Mail, Passwort und 2FA-Code.</div>
+
+    <div class="login-help">
+      Demo-Zugang: <strong>admin@haushaltsheld.de</strong> · Passwort: <strong>1234</strong> · 2FA: <strong>111111</strong>
+    </div>
   </div>
+</div>
 
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-icon">🐌</div>
-        <div>
-          <div class="brand-title">Haushaltsheld</div>
-          <div class="brand-sub">Dein Familien-Assistent</div>
-        </div>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="logo-wrap">
+      <img src="assetsschnecke.png" alt="Haushaltsheld">
+      <div>
+        <div class="logo-name">Haushaltsheld</div>
+        <div class="logo-sub">Dein Familien-Assistent</div>
       </div>
+    </div>
 
-      <div class="menu-group">
-        <div class="menu-label">Hauptmenü</div>
-        <nav class="nav">
-          <a class="nav-link" href="index.html"><span class="nav-icon">⌂</span><span>Dashboard</span></a>
-          <a class="nav-link" href="finanzen.html"><span class="nav-icon">▦</span><span>Finanzen</span></a>
-          <a class="nav-link" href="einkaufsliste.html"><span class="nav-icon">🛒</span><span>Einkäufe</span></a>
-          <a class="nav-link" href="aufgaben.html"><span class="nav-icon">☑</span><span>Aufgaben</span></a>
-          <a class="nav-link" href="familienplaner.html"><span class="nav-icon">🗓</span><span>Familienplaner</span></a>
-        </nav>
-      </div>
+    <div class="nav-label">Hauptmenü</div>
+    <nav class="nav">
+      <a href="index.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10.5 12 3l9 7.5"></path>
+            <path d="M5 9.5V21h14V9.5"></path>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </a>
+      <a href="finanzen.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2"></rect>
+            <path d="M16 12h.01"></path>
+            <path d="M3 10h18"></path>
+          </svg>
+        </span>
+        <span>Finanzen</span>
+      </a>
+      <a href="einkaufsliste.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="20" r="1"></circle>
+            <circle cx="18" cy="20" r="1"></circle>
+            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
+          </svg>
+        </span>
+        <span>Einkäufe</span>
+      </a>
+      <a href="aufgaben.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </span>
+        <span>Aufgaben</span>
+      </a>
+      <a href="familienplaner.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <path d="M16 2v4M8 2v4M3 10h18"></path>
+          </svg>
+        </span>
+        <span>Familienplaner</span>
+      </a>
+    </nav>
 
-      <div class="menu-group">
-        <div class="menu-label">Extras</div>
-        <nav class="nav">
-          <a class="nav-link active" href="finanzbericht.html"><span class="nav-icon">↗</span><span>Bericht</span></a>
-          <a class="nav-link" href="finanz_historie.html"><span class="nav-icon">◔</span><span>Historie</span></a>
-          <a class="nav-link" href="beleg_import.html"><span class="nav-icon">↓</span><span>Belege</span></a>
-          <a class="nav-link" href="kindermodus_links.html"><span class="nav-icon">☆</span><span>Kindermodus</span></a>
-        </nav>
-      </div>
+    <div class="nav-label">Extras</div>
+    <nav class="nav">
+      <a href="finanzbericht.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"></path>
+            <path d="M7 14l4-4 3 3 5-7"></path>
+          </svg>
+        </span>
+        <span>Bericht</span>
+      </a>
+      <a href="finanz_historie.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8v5l3 2"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+          </svg>
+        </span>
+        <span>Historie</span>
+      </a>
+      <a href="beleg_import.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12"></path>
+            <path d="m7 10 5 5 5-5"></path>
+            <path d="M5 21h14"></path>
+          </svg>
+        </span>
+        <span>Belege</span>
+      </a>
+      <a href="kindermodus.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
+          </svg>
+        </span>
+        <span>Kindermodus</span>
+      </a>
+      <a href="admin.html" class="active">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4Z"></path>
+            <path d="M9.5 12l1.7 1.7L14.8 10"></path>
+          </svg>
+        </span>
+        <span>Familienrechte</span>
+      </a>
+    </nav>
 
+    <div class="sidebar-footer">
       <div class="mode-switch">
-        <div class="mode-pill">
-          <button class="active" type="button">Eltern</button>
-          <button type="button" onclick="window.location.href='kindermodus_links.html'">Kind</button>
-        </div>
+        <button class="mode-btn active" type="button">Eltern</button>
+        <button class="mode-btn" type="button" onclick="window.location.href='kindermodus.html'">Kind</button>
       </div>
-    </aside>
+    </div>
+  </aside>
 
-    <main class="content">
-      <div class="grid-main">
-        <div class="panel">
-          <div class="section-title">
-            <div class="section-icon">🔒</div>
-            <span>Privatsphäre &amp; Schutz</span>
-          </div>
-
-          <div class="inner-box">
-            <div class="setting-row">
-              <div class="setting-copy">
-                <strong>Geschwisterprofile komplett trennen</strong>
-                <span>Jedes Kind sieht nur die eigenen Aufgaben, Wünsche und Ziele.</span>
-              </div>
-              <div class="toggle"></div>
-            </div>
-
-            <div class="setting-row">
-              <div class="setting-copy">
-                <strong>Vergleichsansichten deaktivieren</strong>
-                <span>Keine Ranglisten oder Fortschrittsvergleiche zwischen Geschwistern.</span>
-              </div>
-              <div class="toggle"></div>
-            </div>
-
-            <div class="setting-row">
-              <div class="setting-copy">
-                <strong>Zugriffe protokollieren</strong>
-                <span>Änderungen im Elternbereich werden in der Historie vermerkt.</span>
-              </div>
-              <div class="toggle"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="section-title">
-            <div class="section-icon">🎁</div>
-            <span>Geschenkmodus &amp; Wünsche</span>
-          </div>
-
-          <div class="inner-box">
-            <div class="setting-row">
-              <div class="setting-copy">
-                <strong>Überraschung für Eltern erlauben</strong>
-                <span>Kinder können Wünsche als geheim markieren.</span>
-              </div>
-              <div class="toggle"></div>
-            </div>
-
-            <div class="setting-row">
-              <div class="setting-copy">
-                <strong>Zugriff anfragen statt direkt öffnen</strong>
-                <span>Eltern müssen sensible Inhalte aktiv anfragen.</span>
-              </div>
-              <div class="toggle"></div>
-            </div>
-
-            <div class="setting-row">
-              <div class="setting-copy">
-                <strong>Nur Hinweis für Eltern anzeigen</strong>
-                <span>Beispiel: „1 privater Wunsch vorhanden“ statt vollständigem Inhalt.</span>
-              </div>
-              <div class="toggle"></div>
-            </div>
-          </div>
-        </div>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>
+          <span class="page-title-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4Z"></path>
+              <path d="M9.5 12l1.7 1.7L14.8 10"></path>
+            </svg>
+          </span>
+          <span>Familienrechte & Privatsphäre</span>
+        </h1>
+        <p>Hier legt ihr fest, welche Bereiche Kinder sehen dürfen, welche Inhalte privat bleiben und wo eine gegenseitige Zustimmung nötig ist. Die Seite ist für mehrere Kinder vorbereitet und arbeitet ohne Backend nur mit gespeicherten Einstellungen.</p>
       </div>
 
-      <div class="panel" style="margin-top:18px;">
-        <div class="section-title">
-          <div class="section-icon">🛡</div>
-          <span>Sicherheit</span>
-        </div>
+      <div class="header-right">
+        <a class="btn btn-soft" href="index.html"><span>Zum Dashboard</span></a>
+        <a class="btn btn-soft" href="kindermodus.html"><span>Zum Kindermodus</span></a>
+        <button class="btn btn-soft" type="button" id="logoutBtn"><span>Logout</span></button>
+        <div class="mode-badge">Elternbereich aktiv</div>
+      </div>
+    </div>
 
-        <div class="security-grid">
-          <div class="security-card">
-            <div>
-              <strong>Eltern-Login</strong>
-              <span>E-Mail und Passwort für den Zugang zur Familiensteuerung.</span>
-            </div>
-            <div class="status-pill">Aktiv</div>
-          </div>
-
-          <div class="security-card">
-            <div>
-              <strong>2FA für Eltern</strong>
-              <span>Zwei-Faktor-Authentifizierung für beide Elternteile.</span>
-            </div>
-            <div class="status-pill">Pflicht</div>
-          </div>
-
-          <div class="security-card">
-            <div>
-              <strong>Kinder-PIN</strong>
-              <span>Kindgerechte Anmeldung per PIN oder Avatar-Auswahl.</span>
-            </div>
-            <div class="status-pill">Aktiv</div>
-          </div>
-        </div>
-
-        <div class="footer-actions">
-          <button class="btn-secondary" type="button" onclick="logoutAdmin()">Logout</button>
-          <button class="btn" type="button">Einstellungen speichern</button>
+    <section class="hero">
+      <div>
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </span>
+          <span>Rechte fair statt einseitig</span>
+        </h2>
+        <p>Diese Seite trennt bewusst zwischen Verwaltungsrechten, persönlicher Privatsphäre und zustimmungspflichtigen Bereichen. Kinder sollen selbstständig in ihre Profile, Geschwister sollen voneinander getrennt bleiben und sensible Inhalte sollen nicht automatisch geöffnet werden.</p>
+        <div class="hero-tags">
+          <span class="hero-tag">Elternrechte</span>
+          <span class="hero-tag">Kinderrechte</span>
+          <span class="hero-tag">Zustimmung</span>
+          <span class="hero-tag">Geschwisterschutz</span>
         </div>
       </div>
-    </main>
-  </div>
+      <div class="hero-side">
+        <div class="mini">
+          <strong>Für große Familien gedacht</strong>
+          <span>Die Struktur ist für mehrere Kinder vorbereitet, damit Rechte nicht nur global, sondern sauber pro Familienlogik gedacht werden.</span>
+        </div>
+        <div class="mini">
+          <strong>Jugendschutz im Blick</strong>
+          <span>Schutz, Privatsphäre und altersgerechte Teilhabe werden gemeinsam gedacht statt nur über Kontrolle.</span>
+        </div>
+      </div>
+    </section>
 
-  <script>
-    const LOGIN_KEY = "haushaltsheld_admin_login_demo";
+    <p class="mode-note">Diese Seite speichert die Familienrechte zentral im Browser. Sie bereitet eine spätere echte Absicherung vor, ohne jetzt schon eine Schein-Sicherheit vorzutäuschen.</p>
 
-    function loginAdmin(){
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const code = document.getElementById("code").value.trim();
-      const error = document.getElementById("loginError");
+    <section class="summary-grid">
+      <div class="summary-card">
+        <h3>Elternbereich</h3>
+        <div class="value" id="sumParent">0</div>
+        <p>aktive Verwaltungsrechte</p>
+      </div>
+      <div class="summary-card">
+        <h3>Kinderrechte</h3>
+        <div class="value" id="sumChild">0</div>
+        <p>aktive Kinderrechte</p>
+      </div>
+      <div class="summary-card">
+        <h3>Zustimmung</h3>
+        <div class="value" id="sumApproval">0</div>
+        <p>aktive Schutzregeln</p>
+      </div>
+      <div class="summary-card">
+        <h3>Finanzsicht</h3>
+        <div class="value" id="sumFinance">0</div>
+        <p>aktive Freigaben für Kinder</p>
+      </div>
+    </section>
 
-      if (email === "admin@haushaltsheld.de" && password === "1234" && code === "111111"){
-        localStorage.setItem(LOGIN_KEY, "true");
-        document.getElementById("loginOverlay").style.display = "none";
-        error.style.display = "none";
-      } else {
-        error.style.display = "block";
-      }
-    }
+    <section class="section">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M19 8v6"></path>
+            <path d="M22 11h-6"></path>
+          </svg>
+        </span>
+        <span>Rechte im Überblick</span>
+      </h2>
+      <p class="subtitle">Verwaltung, Privatsphäre und Zustimmung werden bewusst getrennt. So entsteht kein starres „Eltern dürfen alles“, sondern eine faire Familienlogik.</p>
 
-    function logoutAdmin(){
-      localStorage.removeItem(LOGIN_KEY);
-      document.getElementById("loginOverlay").style.display = "flex";
-      document.getElementById("email").value = "";
-      document.getElementById("password").value = "";
-      document.getElementById("code").value = "";
-    }
+      <div class="settings-grid">
+        <div class="settings-box">
+          <div class="settings-head">
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Z"></path>
+                <path d="M19 21a7 7 0 0 0-14 0"></path>
+              </svg>
+            </span>
+            <strong>Elternrechte</strong>
+          </div>
 
-    function restoreLoginState(){
-      const loggedIn = localStorage.getItem(LOGIN_KEY) === "true";
-      document.getElementById("loginOverlay").style.display = loggedIn ? "none" : "flex";
-    }
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Kinderprofile verwalten</strong>
+              <span>Profile anlegen, anpassen und in der Familienstruktur ordnen.</span>
+            </div>
+            <button class="toggle" data-key="parentManageProfiles" type="button" aria-label="Kinderprofile verwalten"></button>
+          </div>
 
-    restoreLoginState();
-  </script>
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Haushaltsregeln steuern</strong>
+              <span>Grundregeln für Sichtbarkeit, Schutz und Freigaben festlegen.</span>
+            </div>
+            <button class="toggle" data-key="parentManageRules" type="button" aria-label="Haushaltsregeln steuern"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Budgets verwalten</strong>
+              <span>Familienbudgets und allgemeine Grenzen organisatorisch steuern.</span>
+            </div>
+            <button class="toggle" data-key="parentManageBudgets" type="button" aria-label="Budgets verwalten"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Freigaben anfragen</strong>
+              <span>Private Kinderbereiche dürfen nicht automatisch geöffnet werden.</span>
+            </div>
+            <button class="toggle" data-key="parentCanRequestPrivateAccess" type="button" aria-label="Freigaben anfragen"></button>
+          </div>
+        </div>
+
+        <div class="settings-box">
+          <div class="settings-head">
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M6 21v-2a6 6 0 0 1 12 0v2"></path>
+              </svg>
+            </span>
+            <strong>Kinderrechte</strong>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Eigenes Profil selbst öffnen</strong>
+              <span>Kinder dürfen selbstständig in ihr eigenes Profil wechseln.</span>
+            </div>
+            <button class="toggle" data-key="childOwnLogin" type="button" aria-label="Eigenes Profil selbst öffnen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Private Inhalte schützen</strong>
+              <span>Persönliche Wünsche, Ziele und Notizen bleiben geschützt.</span>
+            </div>
+            <button class="toggle" data-key="childPrivateSpace" type="button" aria-label="Private Inhalte schützen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Eigene Freigaben mitbestimmen</strong>
+              <span>Kinder dürfen bei sensiblen Bereichen aktiv zustimmen oder ablehnen.</span>
+            </div>
+            <button class="toggle" data-key="childCanApprovePrivateAccess" type="button" aria-label="Eigene Freigaben mitbestimmen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Geschwister komplett trennen</strong>
+              <span>Ein Kind sieht niemals private Inhalte oder Finanzen des anderen.</span>
+            </div>
+            <button class="toggle" data-key="siblingPrivacy" type="button" aria-label="Geschwister komplett trennen"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12l2 2 4-4"></path>
+            <path d="M21 12c0 5-4 9-9 9S3 17 3 12 7 3 12 3s9 4 9 9Z"></path>
+          </svg>
+        </span>
+        <span>Zustimmung & sensible Bereiche</span>
+      </h2>
+      <p class="subtitle">Nicht alles soll einseitig geöffnet werden. In diesen Bereichen gilt Schutz vor Neugier, auch innerhalb der Familie.</p>
+
+      <div class="settings-grid">
+        <div class="settings-box">
+          <div class="settings-head">
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20V10"></path>
+                <path d="M18 20V4"></path>
+                <path d="M6 20v-4"></path>
+              </svg>
+            </span>
+            <strong>Zustimmungspflicht</strong>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Private Inhalte nur mit Zustimmung</strong>
+              <span>Private Bereiche werden erst nach aktiver Freigabe sichtbar.</span>
+            </div>
+            <button class="toggle" data-key="requireApprovalPrivate" type="button" aria-label="Private Inhalte nur mit Zustimmung"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Wunschlisten können privat sein</strong>
+              <span>Wünsche dürfen verborgen bleiben, bis eine Freigabe erteilt wird.</span>
+            </div>
+            <button class="toggle" data-key="allowPrivateWishlist" type="button" aria-label="Wunschlisten können privat sein"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Überraschungsmodus schützen</strong>
+              <span>Geschenkideen bleiben auf Wunsch verborgen und werden nur als Hinweis angezeigt.</span>
+            </div>
+            <button class="toggle" data-key="protectSurpriseMode" type="button" aria-label="Überraschungsmodus schützen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Sparziele nur nach Freigabe teilen</strong>
+              <span>Persönliche Sparziele werden nicht automatisch für alle sichtbar.</span>
+            </div>
+            <button class="toggle" data-key="approvalSavingsGoals" type="button" aria-label="Sparziele nur nach Freigabe teilen"></button>
+          </div>
+        </div>
+
+        <div class="settings-box">
+          <div class="settings-head">
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+            </span>
+            <strong>Kindersicht allgemein</strong>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Hinweise statt Inhalte zeigen</strong>
+              <span>Eltern sehen nur, dass etwas vorhanden ist, aber nicht sofort den Inhalt.</span>
+            </div>
+            <button class="toggle" data-key="showOnlyHintsForPrivate" type="button" aria-label="Hinweise statt Inhalte zeigen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Vergleichsansichten sperren</strong>
+              <span>Keine Ranglisten oder Vergleiche zwischen Geschwistern anzeigen.</span>
+            </div>
+            <button class="toggle" data-key="disableSiblingComparisons" type="button" aria-label="Vergleichsansichten sperren"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Kindgerechte Selbstständigkeit erlauben</strong>
+              <span>Kinder dürfen ihre freigegebenen Bereiche selbstständig nutzen.</span>
+            </div>
+            <button class="toggle" data-key="allowChildIndependentUse" type="button" aria-label="Kindgerechte Selbstständigkeit erlauben"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Freigaben zentral speichern</strong>
+              <span>Rechte gelten appweit aus derselben Datenbasis.</span>
+            </div>
+            <button class="toggle" data-key="centralPermissionControl" type="button" aria-label="Freigaben zentral speichern"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1v22"></path>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </span>
+        <span>Finanzsicht im Kindermodus</span>
+      </h2>
+      <p class="subtitle">Diese Freigaben steuern, welche Finanzbereiche Kinder sehen dürfen. Eltern-Gehälter und allgemeine Einnahmen bleiben standardmäßig aus.</p>
+
+      <div class="settings-grid">
+        <div class="settings-box">
+          <div class="settings-head">
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"></path>
+                <path d="M7 14l4-4 3 3 5-7"></path>
+              </svg>
+            </span>
+            <strong>Berichte & Sichtbarkeit</strong>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Finanzbericht für Kinder freigeben</strong>
+              <span>Kinder dürfen eine vereinfachte Berichtssicht öffnen.</span>
+            </div>
+            <button class="toggle" data-key="showFinanceReport" type="button" aria-label="Finanzbericht für Kinder freigeben"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Einkäufe anzeigen</strong>
+              <span>Gemeinsame Einkaufsübersicht darf im Kindermodus sichtbar sein.</span>
+            </div>
+            <button class="toggle" data-key="showShopping" type="button" aria-label="Einkäufe anzeigen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Taschengeld anzeigen</strong>
+              <span>Eigene Taschengeld-Bereiche dürfen sichtbar sein.</span>
+            </div>
+            <button class="toggle" data-key="showPocketMoney" type="button" aria-label="Taschengeld anzeigen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Geldgeschenke anzeigen</strong>
+              <span>Geschenke und besondere Geldbeträge dürfen sichtbar sein.</span>
+            </div>
+            <button class="toggle" data-key="showGiftMoney" type="button" aria-label="Geldgeschenke anzeigen"></button>
+          </div>
+        </div>
+
+        <div class="settings-box">
+          <div class="settings-head">
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12h16"></path>
+                <path d="M12 4v16"></path>
+              </svg>
+            </span>
+            <strong>Vertrauliche Finanzbereiche</strong>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Eltern-Gehälter anzeigen</strong>
+              <span>Nur aktivieren, wenn ihr diese Information bewusst teilen wollt.</span>
+            </div>
+            <button class="toggle" data-key="showParentIncome" type="button" aria-label="Eltern-Gehälter anzeigen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Allgemeine Einnahmen anzeigen</strong>
+              <span>Weitere Einnahmen außerhalb von Taschengeld und Geschenken.</span>
+            </div>
+            <button class="toggle" data-key="showIncome" type="button" aria-label="Allgemeine Einnahmen anzeigen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Fixkosten anzeigen</strong>
+              <span>Miete, Strom, Internet, Versicherung und ähnliche Posten.</span>
+            </div>
+            <button class="toggle" data-key="showFixed" type="button" aria-label="Fixkosten anzeigen"></button>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-copy">
+              <strong>Variable Ausgaben anzeigen</strong>
+              <span>Freizeit, spontane Ausgaben und ähnliche Bereiche.</span>
+            </div>
+            <button class="toggle" data-key="showVariable" type="button" aria-label="Variable Ausgaben anzeigen"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </span>
+        <span>Vorbereitung für mehrere Kinder</span>
+      </h2>
+      <p class="subtitle">Diese Karten zeigen die gedachte Richtung für Haushalte mit vielen Kindern. Jedes Kind soll ein eigenes Profil mit eigener Privatsphäre behalten.</p>
+
+      <div class="profile-grid" id="profileGrid"></div>
+
+      <div class="footer-actions">
+        <button class="btn btn-soft" type="button" id="addProfileBtn">Profil hinzufügen</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+        </span>
+        <span>Aktionen</span>
+      </h2>
+      <p class="subtitle">Speichere die Familienrechte zentral oder setze sie auf die empfohlenen Standardwerte zurück.</p>
+
+      <div class="footer-actions">
+        <button class="btn btn-soft" type="button" id="resetBtn">Empfohlene Werte laden</button>
+        <button class="btn" type="button" id="saveBtn">Einstellungen speichern</button>
+      </div>
+
+      <div class="save-note" id="saveNote">Die Familienrechte wurden gespeichert.</div>
+    </section>
+  </main>
+</div>
+
+<script>
+const STORAGE_KEY = "haushaltsheld_child_permissions";
+const PROFILE_KEY = "haushaltsheld_child_profiles_demo";
+const ADMIN_LOGIN_KEY = "haushaltsheld_admin_login_demo";
+
+const defaultPermissions = {
+  showShopping: true,
+  showPocketMoney: true,
+  showGiftMoney: true,
+  showBookings: false,
+  showSubscriptions: false,
+  showPets: false,
+  showTips: true,
+  showFinanceReport: true,
+  showParentIncome: false,
+  showIncome: false,
+  showFixed: false,
+  showVariable: false,
+
+  parentManageProfiles: true,
+  parentManageRules: true,
+  parentManageBudgets: true,
+  parentCanRequestPrivateAccess: true,
+
+  childOwnLogin: true,
+  childPrivateSpace: true,
+  childCanApprovePrivateAccess: true,
+  siblingPrivacy: true,
+
+  requireApprovalPrivate: true,
+  allowPrivateWishlist: true,
+  protectSurpriseMode: true,
+  approvalSavingsGoals: true,
+
+  showOnlyHintsForPrivate: true,
+  disableSiblingComparisons: true,
+  allowChildIndependentUse: true,
+  centralPermissionControl: true
+};
+
+const defaultProfiles = [
+  { name:"Kind 1", note:"Eigenes Profil · eigene Rechte" },
+  { name:"Kind 2", note:"Eigenes Profil · eigene Rechte" },
+  { name:"Kind 3", note:"Eigenes Profil · eigene Rechte" }
+];
+
+function safeJsonParse(value, fallback){
+  try{
+    const parsed = JSON.parse(value);
+    return parsed ?? fallback;
+  }catch{
+    return fallback;
+  }
+}
+
+function loadPermissions(){
+  const stored = safeJsonParse(localStorage.getItem(STORAGE_KEY), {});
+  return { ...defaultPermissions, ...stored };
+}
+
+function savePermissions(data){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadProfiles(){
+  const stored = safeJsonParse(localStorage.getItem(PROFILE_KEY), null);
+  if(Array.isArray(stored) && stored.length) return stored;
+  return defaultProfiles;
+}
+
+function saveProfiles(list){
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(list));
+}
+
+function setToggleState(toggle, state){
+  toggle.classList.toggle("active", !!state);
+  toggle.setAttribute("aria-pressed", state ? "true" : "false");
+}
+
+function renderToggles(){
+  const permissions = loadPermissions();
+
+  document.querySelectorAll(".toggle[data-key]").forEach(toggle => {
+    const key = toggle.dataset.key;
+    setToggleState(toggle, !!permissions[key]);
+
+    toggle.onclick = () => {
+      setToggleState(toggle, !toggle.classList.contains("active"));
+      updateSummary();
+    };
+  });
+}
+
+function collectToggleValues(){
+  const current = loadPermissions();
+  document.querySelectorAll(".toggle[data-key]").forEach(toggle => {
+    current[toggle.dataset.key] = toggle.classList.contains("active");
+  });
+  return current;
+}
+
+function renderProfiles(){
+  const grid = document.getElementById("profileGrid");
+  const profiles = loadProfiles();
+
+  grid.innerHTML = profiles.map(profile => `
+    <div class="profile-card">
+      <div class="profile-top">
+        <div class="profile-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M6 21v-2a6 6 0 0 1 12 0v2"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="profile-name">${escapeHtml(profile.name)}</div>
+          <div class="profile-meta">${escapeHtml(profile.note || "Eigenes Profil")}</div>
+        </div>
+      </div>
+
+      <div class="profile-list">
+        <div class="profile-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <span>eigener Zugang ohne Geschwistersicht</span>
+        </div>
+        <div class="profile-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <span>private Inhalte geschützt</span>
+        </div>
+        <div class="profile-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <span>Freigaben können später individuell erweitert werden</span>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function updateSummary(){
+  const values = collectToggleValues();
+
+  const parentCount = [
+    "parentManageProfiles",
+    "parentManageRules",
+    "parentManageBudgets",
+    "parentCanRequestPrivateAccess"
+  ].filter(key => values[key]).length;
+
+  const childCount = [
+    "childOwnLogin",
+    "childPrivateSpace",
+    "childCanApprovePrivateAccess",
+    "siblingPrivacy"
+  ].filter(key => values[key]).length;
+
+  const approvalCount = [
+    "requireApprovalPrivate",
+    "allowPrivateWishlist",
+    "protectSurpriseMode",
+    "approvalSavingsGoals",
+    "showOnlyHintsForPrivate",
+    "disableSiblingComparisons"
+  ].filter(key => values[key]).length;
+
+  const financeCount = [
+    "showFinanceReport",
+    "showShopping",
+    "showPocketMoney",
+    "showGiftMoney",
+    "showParentIncome",
+    "showIncome",
+    "showFixed",
+    "showVariable"
+  ].filter(key => values[key]).length;
+
+  document.getElementById("sumParent").textContent = String(parentCount);
+  document.getElementById("sumChild").textContent = String(childCount);
+  document.getElementById("sumApproval").textContent = String(approvalCount);
+  document.getElementById("sumFinance").textContent = String(financeCount);
+}
+
+function showSavedNote(){
+  const note = document.getElementById("saveNote");
+  note.classList.add("show");
+  clearTimeout(showSavedNote.timer);
+  showSavedNote.timer = setTimeout(() => note.classList.remove("show"), 2200);
+}
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function loginAdmin(){
+  const email = document.getElementById("adminEmail").value.trim();
+  const password = document.getElementById("adminPassword").value.trim();
+  const code = document.getElementById("adminCode").value.trim();
+  const error = document.getElementById("loginError");
+
+  if(email === "admin@haushaltsheld.de" && password === "1234" && code === "111111"){
+    localStorage.setItem(ADMIN_LOGIN_KEY, "true");
+    document.getElementById("loginOverlay").style.display = "none";
+    error.classList.remove("show");
+  }else{
+    error.classList.add("show");
+  }
+}
+
+function logoutAdmin(){
+  localStorage.removeItem(ADMIN_LOGIN_KEY);
+  document.getElementById("loginOverlay").style.display = "flex";
+  document.getElementById("adminEmail").value = "";
+  document.getElementById("adminPassword").value = "";
+  document.getElementById("adminCode").value = "";
+  document.getElementById("loginError").classList.remove("show");
+}
+
+function restoreLoginState(){
+  const loggedIn = localStorage.getItem(ADMIN_LOGIN_KEY) === "true";
+  document.getElementById("loginOverlay").style.display = loggedIn ? "none" : "flex";
+}
+
+document.getElementById("loginBtn").addEventListener("click", loginAdmin);
+document.getElementById("logoutBtn").addEventListener("click", logoutAdmin);
+
+document.getElementById("adminCode").addEventListener("keydown", (e) => {
+  if(e.key === "Enter") loginAdmin();
+});
+document.getElementById("adminPassword").addEventListener("keydown", (e) => {
+  if(e.key === "Enter") loginAdmin();
+});
+document.getElementById("adminEmail").addEventListener("keydown", (e) => {
+  if(e.key === "Enter") loginAdmin();
+});
+
+document.getElementById("saveBtn").addEventListener("click", () => {
+  savePermissions(collectToggleValues());
+  updateSummary();
+  showSavedNote();
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  savePermissions(defaultPermissions);
+  renderToggles();
+  updateSummary();
+  showSavedNote();
+});
+
+document.getElementById("addProfileBtn").addEventListener("click", () => {
+  const profiles = loadProfiles();
+  const nextNumber = profiles.length + 1;
+  profiles.push({
+    name: `Kind ${nextNumber}`,
+    note: "Eigenes Profil · eigene Rechte"
+  });
+  saveProfiles(profiles);
+  renderProfiles();
+});
+
+renderToggles();
+renderProfiles();
+updateSummary();
+restoreLoginState();
+</script>
 </body>
 </html>
