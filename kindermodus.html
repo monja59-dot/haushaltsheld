@@ -1,638 +1,367 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Haushaltsheld – Kindermodus ⭐</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haushaltsheld – Kindermodus</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
+
 :root{
-  --bg:#fff9ee;--card:#ffffff;--line:#ffe0b0;
-  --text:#3a2010;--muted:#8a6040;
-  --orange:#f5883a;--orange-dark:#d4661a;--orange-soft:#fff0e0;
-  --green:#4caf7a;--green-soft:#e8f8ee;
-  --blue:#5b9fd4;--blue-soft:#e4f2fd;
-  --purple:#9c7ee0;--purple-soft:#f0ecfa;
-  --yellow:#f0b830;--yellow-soft:#fff8e0;
-  --pink:#e86090;--pink-soft:#fde8ef;
-  --shadow:0 8px 28px rgba(80,40,10,.1);
-  --r:22px;--r-lg:30px;--r-xl:40px;
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#fffdfa;
+  --line:#dfd1bc;
+  --text:#2d342f;
+  --muted:#7d8a82;
+  --accent:#6eaf72;
+  --accent-dark:#5b9960;
+  --accent-soft:#eef7ef;
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Outfit", sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-/* ── Bubbly background ── */
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+body{
+  font-family:"Outfit",sans-serif;
+  color:var(--text);
   background:
-    radial-gradient(circle at 10% 20%,rgba(255,225,140,.5) 0%,transparent 30%),
-    radial-gradient(circle at 90% 70%,rgba(200,240,210,.6) 0%,transparent 35%),
-    radial-gradient(circle at 50% 50%,rgba(255,200,160,.25) 0%,transparent 60%);
+    radial-gradient(circle at top left, rgba(255,255,255,.6) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  min-height:100vh;
+  padding:20px;
 }
 
-.wrap{max-width:960px;margin:0 auto;padding:24px;position:relative;z-index:1}
-
-/* ── Top Nav ── */
-.top-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
-.back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(255,255,255,.9);border:2px solid var(--line);border-radius:999px;text-decoration:none;color:var(--muted);font-weight:800;font-size:.92rem;transition:.18s}
-.back-btn:hover{background:var(--orange-soft);border-color:var(--orange);color:var(--orange-dark)}
-.who-select{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.9);border:2px solid var(--line);border-radius:999px;padding:6px 6px 6px 16px}
-.who-select label{font-weight:800;font-size:.88rem;color:var(--muted)}
-.who-select select{border:none;background:transparent;font-family:"Outfit", sans-serif;font-weight:800;font-size:.92rem;color:var(--text);padding:6px 10px;border-radius:999px;cursor:pointer;outline:none}
-
-/* ── Hero ── */
-.hero{
-  background:linear-gradient(135deg,#ffe8a0 0%,#ffd480 40%,#ffc060 100%);
-  border-radius:var(--r-xl);padding:30px 28px;margin-bottom:24px;
-  border:2px solid rgba(255,190,80,.6);box-shadow:0 12px 40px rgba(200,120,0,.15);
-  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+.wrapper{
+  max-width:1100px;
+  margin:0 auto;
 }
-.hero-emoji{font-size:4rem;line-height:1;flex-shrink:0}
-.hero h1{font-size:2rem;font-weight:900;margin-bottom:8px;color:#5a3000}
-.hero p{color:#7a4a10;line-height:1.55;font-size:1.05rem;max-width:580px}
 
-/* ── Section label ── */
-.section-label{font-weight:900;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px;padding:0 4px}
-
-/* ── Kid Switcher ── */
-.kid-tabs{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
-.kid-tab{
-  display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 20px;
-  background:rgba(255,255,255,.85);border:2px solid var(--line);border-radius:var(--r-lg);
-  cursor:pointer;transition:.18s;font-weight:800;font-size:.88rem;color:var(--muted);
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:22px;
 }
-.kid-tab .kid-avatar{font-size:2.2rem;line-height:1}
-.kid-tab:hover{background:#fff5e0;border-color:var(--orange);transform:translateY(-2px)}
-.kid-tab.active{background:linear-gradient(135deg,#ffe890 0%,#ffd060 100%);border-color:var(--yellow);color:#6a4000;box-shadow:0 8px 20px rgba(200,150,0,.2)}
 
-/* ── Savings Goal ── */
-.savings-card{
-  background:linear-gradient(135deg,#e8f8ee 0%,#d4f0e0 100%);
-  border:2px solid #b8e8cc;border-radius:var(--r-lg);padding:24px;margin-bottom:20px;
-  box-shadow:0 6px 20px rgba(60,160,100,.12);
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
-.savings-card h2{font-size:1.25rem;font-weight:900;margin-bottom:6px;color:#1e5a38}
-.savings-card .goal-sub{color:#3d8a5a;font-size:.92rem;margin-bottom:18px}
-.goal-item{background:rgba(255,255,255,.8);border:1px solid #c8e8d8;border-radius:var(--r);padding:16px 20px;margin-bottom:12px}
-.goal-name{font-weight:800;font-size:1rem;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.goal-amounts{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.88rem;color:#4a7060}
-.progress-bar{background:#d4eedc;border-radius:999px;height:14px;overflow:hidden;margin-bottom:6px}
-.progress-fill{background:linear-gradient(90deg,#4caf7a 0%,#38c46a 100%);height:100%;border-radius:999px;transition:width .6s ease}
-.goal-note{font-size:.8rem;color:#5a8870;margin-top:4px}
 
-/* ── Pocket Money ── */
-.pocket-card{
-  background:linear-gradient(135deg,#e4f2fd 0%,#cce6fa 100%);
-  border:2px solid #b0d8f4;border-radius:var(--r-lg);padding:24px;margin-bottom:20px;
-  box-shadow:0 6px 20px rgba(40,120,200,.1);
+.brand-icon{
+  width:64px;
+  height:64px;
+  border-radius:22px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(180deg,#fffdfa 0%, #f4ebde 100%);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
 }
-.pocket-card h2{font-size:1.25rem;font-weight:900;margin-bottom:4px;color:#1e4a78}
-.pocket-card .pocket-sub{color:#3a6898;font-size:.92rem;margin-bottom:18px}
-.pocket-amount{font-size:3rem;font-weight:900;color:#1e4a78;font-family:"Outfit", sans-serif;line-height:1;margin-bottom:6px}
-.pocket-detail{font-size:.88rem;color:#4a78a8;line-height:1.5}
-.pocket-row{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.7);border-radius:14px;padding:12px 16px;margin-bottom:8px;border:1px solid #c0daf4}
-.pocket-row span{font-weight:700;font-size:.9rem}
-
-/* ── Tasks (kid) ── */
-.tasks-card{background:linear-gradient(135deg,#fde8ef 0%,#fcd8e8 100%);border:2px solid #f4c0d4;border-radius:var(--r-lg);padding:24px;margin-bottom:20px;box-shadow:0 6px 20px rgba(200,60,100,.1)}
-.tasks-card h2{font-size:1.25rem;font-weight:900;margin-bottom:4px;color:#78183c}
-.tasks-card .tasks-sub{color:#a03060;font-size:.92rem;margin-bottom:18px}
-.task-row{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.8);border:1px solid #f0c0d4;border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:.18s}
-.task-row:hover{transform:translateX(3px);background:rgba(255,255,255,.96)}
-.task-row.done .task-text-area{opacity:.5;text-decoration:line-through}
-.task-emoji{font-size:1.5rem;flex-shrink:0}
-.task-check-circle{width:28px;height:28px;border-radius:50%;border:2.5px solid #e090b0;background:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;transition:.18s}
-.task-row.done .task-check-circle{background:#4caf7a;border-color:#4caf7a;color:#fff}
-.task-text-area strong{display:block;font-size:.96rem;font-weight:800;margin-bottom:2px}
-.task-text-area small{font-size:.8rem;color:#b04060}
-.stars-reward{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.9);border:2px solid #ffe08a;border-radius:999px;padding:5px 12px;font-size:.82rem;font-weight:800;color:#8a6000;margin-left:auto;flex-shrink:0}
-
-/* ── Stars Counter ── */
-.stars-banner{
-  background:linear-gradient(135deg,#fff5c0 0%,#ffe880 100%);
-  border:2px solid #f5d060;border-radius:var(--r-lg);padding:20px 24px;margin-bottom:20px;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
-  box-shadow:0 6px 20px rgba(200,160,0,.15);
+.brand-icon img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:4px;
 }
-.stars-banner .stars-info h2{font-size:1.15rem;font-weight:900;color:#6a4000;margin-bottom:4px}
-.stars-banner .stars-info p{color:#8a6020;font-size:.88rem}
-.stars-count{font-size:3rem;font-weight:900;color:#c48000;line-height:1;display:flex;align-items:center;gap:8px}
-.stars-count span{font-size:2rem}
-.add-star-btn{border:none;background:linear-gradient(135deg,#f5b830 0%,#d49020 100%);color:#fff;padding:12px 20px;border-radius:999px;font-size:.92rem;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(200,140,0,.25);transition:.18s;font-family:"Outfit", sans-serif}
-.add-star-btn:hover{transform:scale(1.04)}
 
-/* ── Quick Add ── */
-.quick-card{background:var(--card);border:2px solid var(--line);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;box-shadow:0 4px 16px rgba(80,40,10,.07)}
-.quick-card h2{font-size:1.15rem;font-weight:900;margin-bottom:4px}
-.quick-card .quick-sub{color:var(--muted);font-size:.88rem;margin-bottom:16px}
-.quick-input-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-.quick-input{flex:1;min-width:140px;border:2px solid var(--line);background:#fffbf5;border-radius:14px;padding:13px 15px;font-size:.95rem;color:var(--text);outline:none;font-family:"Outfit", sans-serif;font-weight:700;transition:.18s}
-.quick-input:focus{border-color:var(--orange);background:#fff;box-shadow:0 0 0 3px rgba(245,136,58,.12)}
-.quick-btn{border:none;background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);color:#fff;padding:13px 20px;border-radius:14px;font-size:.94rem;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(200,100,26,.22);transition:.18s;font-family:"Outfit", sans-serif}
-.quick-btn:hover{transform:translateY(-1px)}
-.quick-type-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.type-chip{border:2px solid var(--line);background:rgba(255,255,255,.9);padding:8px 14px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s;color:var(--muted)}
-.type-chip.active-in{border-color:var(--green);background:var(--green-soft);color:#2a7a4a}
-.type-chip.active-out{border-color:var(--pink);background:var(--pink-soft);color:#8a1840}
-.quick-list{display:grid;gap:8px}
-.quick-item{display:flex;justify-content:space-between;align-items:center;background:#fffbf4;border:1px solid var(--line);border-radius:14px;padding:12px 16px}
-.quick-item span{font-weight:700;font-size:.9rem}
-.quick-item .q-amt{font-weight:900;font-size:1rem}
-.q-plus{color:var(--green)}.q-minus{color:var(--pink)}
+h1{
+  font-size:2rem;
+  line-height:1.08;
+  margin-bottom:4px;
+}
 
-/* ── Confetti emoji ── */
-@keyframes pop{0%{transform:scale(0) rotate(-10deg);opacity:0}70%{transform:scale(1.15) rotate(5deg);opacity:1}100%{transform:scale(1) rotate(0deg);opacity:1}}
-.pop-animate{animation:pop .35s ease both}
+.subtitle{
+  color:var(--muted);
+}
 
-/* ══ Button Upgrade – visible, punchy, warm ══ */
-.btn, button.btn, a.btn {
-  border: none;
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%);
-  color: #fff !important;
-  padding: 13px 22px;
-  border-radius: 16px;
-  font-size: .94rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  /* rich layered shadow */
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:30px;
+  box-shadow:var(--shadow-sm);
+  padding:22px;
+}
+
+.info-box{
+  margin-bottom:18px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:18px;
+}
+
+.child-card{
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.child-card:hover{
+  transform:translateY(-2px);
+}
+
+.child-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.avatar{
+  width:64px;
+  height:64px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:linear-gradient(180deg,#fffdfa 0%, #f4ebde 100%);
+  border:1px solid rgba(223,209,188,.95);
+  box-shadow:var(--shadow-xs);
+  font-size:1.8rem;
+  flex:0 0 64px;
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+
+.child-name{
+  font-size:1.08rem;
+  font-weight:800;
+}
+
+.child-sub{
+  color:var(--muted);
+  font-size:.92rem;
+  margin-top:2px;
+}
+
+.pin-box{
+  margin-top:12px;
+  display:none;
+  border-top:1px solid rgba(223,209,188,.75);
+  padding-top:14px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.field label{
+  font-size:.93rem;
+  color:#556159;
+  font-weight:800;
+}
+
+.field input{
+  width:100%;
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid var(--line);
+  background:#fffdfa;
+  font-family:inherit;
+  font-size:.97rem;
+  color:var(--text);
+  outline:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+.field input:focus{
+  border-color:#c9dfcb;
+  box-shadow:0 0 0 4px rgba(110,175,114,.10);
+}
+
+.btn,
+button.btn{
+  border:none;
+  background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:13px 22px;
+  border-radius:16px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  white-space:nowrap;
   box-shadow:
-    0 4px 0 #a83e0c,
-    0 8px 22px rgba(180,70,10,.32),
-    inset 0 1px 0 rgba(255,255,255,.22);
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-  letter-spacing: .01em;
-  position: relative;
-}
-.btn:hover, button.btn:hover, a.btn:hover {
-  background: linear-gradient(135deg, #f99650 0%, #e06520 100%);
-  transform: translateY(-2px);
-  box-shadow:
-    0 6px 0 #a83e0c,
-    0 14px 30px rgba(180,70,10,.36),
-    inset 0 1px 0 rgba(255,255,255,.26);
-}
-.btn:active, button.btn:active, a.btn:active {
-  transform: translateY(1px);
-  box-shadow:
-    0 2px 0 #a83e0c,
-    0 4px 12px rgba(180,70,10,.28),
-    inset 0 1px 0 rgba(255,255,255,.18);
+    0 4px 0 #4b8250,
+    0 10px 20px rgba(91,153,96,.18),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  letter-spacing:.01em;
+  font-family:inherit;
+  text-decoration:none;
+  margin-top:12px;
+  width:100%;
 }
 
-/* Soft / secondary button */
-.btn-soft, button.btn-soft, a.btn-soft {
-  background: linear-gradient(135deg, #fff6ee 0%, #fce8d4 100%) !important;
-  color: #8a4a28 !important;
-  border: 1.5px solid #e8c4a0 !important;
-  box-shadow:
-    0 3px 0 #d4a070,
-    0 6px 18px rgba(160,90,40,.14),
-    inset 0 1px 0 rgba(255,255,255,.7) !important;
-}
-.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover {
-  background: linear-gradient(135deg, #fde9d4 0%, #f9d8bc 100%) !important;
-  box-shadow:
-    0 5px 0 #d4a070,
-    0 10px 24px rgba(160,90,40,.18),
-    inset 0 1px 0 rgba(255,255,255,.7) !important;
-  transform: translateY(-2px);
-}
-
-/* mini buttons in task lists */
-.mini-btn {
-  border: 1.5px solid #e6cdb8 !important;
-  background: linear-gradient(135deg, #fffaf5 0%, #fdf0e2 100%) !important;
-  color: #7a4a28 !important;
-  padding: 7px 12px !important;
-  border-radius: 999px !important;
-  font-size: .78rem !important;
-  font-weight: 700 !important;
-  cursor: pointer;
-  transition: all .15s;
-  box-shadow: 0 2px 6px rgba(150,80,20,.12), inset 0 1px 0 rgba(255,255,255,.8) !important;
-}
-.mini-btn:hover {
-  background: linear-gradient(135deg, #fde9d4 0%, #f9d4b4 100%) !important;
-  border-color: #d4956a !important;
-  box-shadow: 0 4px 10px rgba(150,80,20,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
-  transform: translateY(-1px);
-}
-.mini-btn.delete-btn:hover {
-  background: linear-gradient(135deg, #fde8e8 0%, #fac8c8 100%) !important;
-  border-color: #e08080 !important;
-  color: #b03030 !important;
+.btn-secondary{
+  border:none;
+  background:linear-gradient(180deg,#fffdfa 0%, #f4ebde 100%);
+  color:var(--text);
+  padding:13px 18px;
+  border-radius:16px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow: var(--shadow-xs);
+  border:1px solid rgba(223,209,188,.95);
+  font-family:inherit;
+  text-decoration:none;
 }
 
-/* Pill mode-switch buttons */
-.mode-btn.active {
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 0 #a83e0c, 0 6px 16px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+.error{
+  display:none;
+  margin-top:10px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:#fdeeee;
+  color:#a35a5a;
+  font-weight:800;
+  font-size:.9rem;
+  border:1px solid rgba(204,102,102,.16);
 }
 
-/* Pill toggle (finanzbericht / historie) */
-.pill-btn.active {
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 0 #a83e0c, 0 6px 14px rgba(180,70,10,.25) !important;
+.empty{
+  text-align:center;
+  color:var(--muted);
 }
 
-/* CTA link on dashboard */
-.cta-link {
-  box-shadow: 0 4px 0 #a83e0c, 0 8px 22px rgba(180,70,10,.3), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-.cta-link:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #a83e0c, 0 14px 30px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24) !important;
+.login-card{
+  max-width:460px;
+  margin:50px auto 0;
 }
 
-/* Kid page buttons (Nunito font) */
-.quick-btn {
-  box-shadow: 0 4px 0 #a83e0c, 0 8px 20px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
+@media (max-width:860px){
+  .topbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
 }
-.quick-btn:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #a83e0c, 0 14px 28px rgba(180,70,10,.32), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-.add-star-btn {
-  box-shadow: 0 4px 0 #a07000, 0 8px 20px rgba(180,140,0,.28) !important;
-}
-.add-star-btn:hover {
-  transform: scale(1.04) translateY(-1px) !important;
-  box-shadow: 0 6px 0 #a07000, 0 12px 26px rgba(180,140,0,.32) !important;
-}
-
-
-/* ══ Outfit Font System ══ */
-:root {
-  --font-main: "Outfit", sans-serif;
-}
-body {
-  font-family: "Outfit", sans-serif !important;
-  font-size: 16px !important;
-  line-height: 1.6 !important;
-  letter-spacing: -0.01em;
-}
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Outfit", sans-serif !important;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-h1 { font-size: 2.4rem !important; font-weight: 800 !important; }
-h2 { font-size: 1.5rem !important; font-weight: 700 !important; }
-h3 { font-size: 1.15rem !important; font-weight: 700 !important; }
-.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
-.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
-.stat .value, .pocket-amount, .stars-count {
-  font-family: "Outfit", sans-serif !important;
-}
-.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
-.pill-btn, .pill-toggle button, .mode-switch button,
-label, .field label, .form-label, .section-label,
-.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
-select, input, textarea, button, .mini-btn,
-.chip, .hero-tag, .badge, .mode-badge,
-.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
-p, span, div, li, td, th {
-  font-family: "Outfit", sans-serif !important;
-}
-/* Bigger body text */
-p, .sub, .card-sub, .body, .helper, .small-note,
-.ki-note, .mode-note, .section-note, .filter-note {
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-}
-/* Stat values bigger & bolder */
-.stat-value, .stat .value, .stat-val, .pocket-amount {
-  font-size: 2rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em;
-}
-/* Buttons rounded and bold */
-.btn, button.btn, a.btn {
-  font-weight: 800 !important;
-  font-size: 0.95rem !important;
-  letter-spacing: 0.01em;
-  border-radius: 14px !important;
-}
-/* Labels uppercase + spaced */
-.field label, .form-label, .stat-label, .stat-lbl,
-.nav-lbl, .section-label, .opt-name {
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-/* Nav sidebar items */
-.nav a, .nav-item {
-  font-weight: 700 !important;
-  font-size: 0.97rem !important;
-}
-/* Logo name display */
-.logo-name, .s-logo-text {
-  font-size: 1.25rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em;
-}
-/* Input fields */
-input, select, textarea {
-  font-size: 0.95rem !important;
-  font-weight: 500 !important;
-}
-/* Kindermodus — keep Outfit too */
-.wrap, .hero, .savings-card, .pocket-card,
-.tasks-card, .stars-banner, .quick-card,
-.kid-tab, .add-goal-btn, .quick-btn {
-  font-family: "Outfit", sans-serif !important;
-}
-
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="ki-schnecke.css">
 </head>
 <body>
-<div class="wrap">
-
-  <!-- Nav -->
-  <div class="top-nav">
-    <a class="back-btn" href="index.html">← Zurück zum Dashboard</a>
-    <div class="who-select">
-      <label for="kidSelect">Wer bist du?</label>
-      <select id="kidSelect">
-        <option value="Kind 1">Kind 1 🌟</option>
-        <option value="Kind 2">Kind 2 🌈</option>
-      </select>
+<div class="wrapper">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon"><img src="assetsschnecke.png" alt="Haushaltsheld Schnecke"></div>
+      <div>
+        <h1>Kindermodus</h1>
+        <div class="subtitle">Wähle dein eigenes Profil und melde dich mit deiner PIN an.</div>
+      </div>
     </div>
+    <a class="btn-secondary" href="admin_links.html">Zum Elternbereich</a>
   </div>
 
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-emoji">🦸</div>
-    <div>
-      <h1>Hallo, <span id="heroName">Kind 1</span>! 👋</h1>
-      <p>Hier ist dein ganz eigener Bereich. Sammle Sterne, überprüfe dein Taschengeld, erledige Aufgaben und spare auf dein Ziel hin!</p>
-    </div>
+  <div class="card info-box">
+    <strong style="display:block;margin-bottom:6px;">Wichtig:</strong>
+    <div class="subtitle">Jedes Kind hat ein eigenes Profil. Geschwister sehen nicht, was die anderen machen.</div>
   </div>
 
-  <!-- Stars banner -->
-  <div class="stars-banner">
-    <div class="stars-info">
-      <h2>Meine Sterne ⭐</h2>
-      <p>Für jede erledigte Aufgabe gibt es Sterne!</p>
-    </div>
-    <div class="stars-count"><span id="starCount">0</span> ⭐</div>
-    <button class="add-star-btn" id="redeemBtn" type="button">⭐ Stern einlösen</button>
-  </div>
+  <div id="childrenWrap" class="grid"></div>
 
-  <!-- Taschengeld -->
-  <div class="pocket-card">
-    <h2>💰 Mein Taschengeld</h2>
-    <p class="pocket-sub">Hier siehst du dein Taschengeld und was du diesen Monat bekommen hast.</p>
-    <div class="pocket-amount" id="pocketTotal">0 €</div>
-    <p class="pocket-detail" id="pocketDetail">Noch keine Taschengeld-Einträge vorhanden.</p>
+  <div id="emptyBox" class="card login-card empty" style="display:none;">
+    <h2 style="margin-bottom:8px;">Noch keine Kinderprofile vorhanden</h2>
+    <div class="subtitle" style="margin-bottom:16px;">Bitte lege zuerst im Elternbereich Kinderprofile an.</div>
+    <a class="btn-secondary" href="admin_links.html">Zum Elternbereich</a>
   </div>
-
-  <!-- Sparkonto / Sparziel -->
-  <div class="savings-card">
-    <h2>🎯 Mein Sparziel</h2>
-    <p class="goal-sub">Wofür sparst du gerade? Trag es ein und verfolge deinen Fortschritt!</p>
-    <div id="goalList"></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
-      <input class="quick-input" type="text" id="goalName" placeholder="Wofür spare ich? z. B. Lego" style="flex:2"/>
-      <input class="quick-input" type="number" id="goalTarget" placeholder="Ziel €" min="1" style="flex:1;min-width:90px"/>
-      <button class="quick-btn" id="addGoalBtn" type="button">Ziel hinzufügen</button>
-    </div>
-  </div>
-
-  <!-- Aufgaben -->
-  <div class="tasks-card">
-    <h2>🧹 Meine Aufgaben</h2>
-    <p class="tasks-sub">Erledige deine Aufgaben und sammle Sterne dafür!</p>
-    <div id="kidTaskList"></div>
-    <p style="color:#b04060;font-size:.84rem;margin-top:8px" id="noTasksMsg"></p>
-  </div>
-
-  <!-- Schnelleintrag Taschengeld -->
-  <div class="quick-card">
-    <h2>📝 Eintrag erfassen</h2>
-    <p class="quick-sub">Hast du etwas ausgegeben oder Taschengeld bekommen? Trag es hier ein!</p>
-    <div class="quick-type-row">
-      <div class="type-chip active-in" id="typeIn" data-type="in">✅ Bekommen</div>
-      <div class="type-chip" id="typeOut" data-type="out">🛍️ Ausgegeben</div>
-    </div>
-    <div class="quick-input-row">
-      <input class="quick-input" type="text" id="qWhat" placeholder="Was? z. B. Taschengeld, Kiosk"/>
-      <input class="quick-input" type="number" id="qAmount" placeholder="Betrag €" min="0.01" step="0.01" style="max-width:130px"/>
-      <button class="quick-btn" id="qSaveBtn" type="button">Eintragen ✓</button>
-    </div>
-    <div class="quick-list" id="qList"></div>
-  </div>
-
 </div>
 
+
 <script>
-// ── Helpers ──────────────────────────────────────────────────────
-function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-function fmt(v){ return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(v||0); }
+const CHILDREN_KEY = "hh_children_profiles";
+const ACTIVE_CHILD_KEY = "hh_active_child";
 
-// ── Kid State ──────────────────────────────────────────────────────
-let currentKid = localStorage.getItem("hh_kid_selected") || "Kind 1";
-
-function kidKey(k){ return "hh_kid_"+k.replace(/\s/g,"_"); }
-function getKidData(k){
-  const def={stars:0,goals:[],entries:[]};
-  try{ return {...def,...JSON.parse(localStorage.getItem(kidKey(k))||"{}") }; }catch{return def;}
-}
-function saveKidData(k,d){ localStorage.setItem(kidKey(k),JSON.stringify(d)); }
-
-// ── Tasks ──────────────────────────────────────────────────────────
-function getKidTasks(){
-  const all = JSON.parse(localStorage.getItem("haushaltsheld_tasks")||"[]");
-  return all.filter(t=>t.person==="Kind"||t.person===currentKid);
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#39;");
 }
 
-// ── Pocket Money from Finance ──────────────────────────────────────
-function getKidPocketMoney(){
-  const finance = JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2")||"[]");
-  return finance.filter(e=>e.category==="Taschengeld"&&(e.person===currentKid||e.person==="Kind 1"||e.person==="Kind 2"||e.person==="Allgemein"));
+function showPinBox(index){
+  document.querySelectorAll(".pin-box").forEach(el => el.style.display = "none");
+  const target = document.getElementById(`pinBox-${index}`);
+  if(target) target.style.display = "block";
 }
 
-// ── Render ──────────────────────────────────────────────────────────
-function render(){
-  const data = getKidData(currentKid);
-  document.getElementById("heroName").textContent = currentKid;
-  document.getElementById("starCount").textContent = data.stars;
+function loginChild(index){
+  const child = (window.hhChildren || [])[index];
+  const pinInput = document.getElementById(`pin-${index}`);
+  const error = document.getElementById(`error-${index}`);
+  if(!child || !pinInput) return;
 
-  // Pocket
-  const pm = getKidPocketMoney();
-  const total = pm.reduce((s,e)=>s+Number(e.amount||0),0);
-  document.getElementById("pocketTotal").textContent = fmt(total);
-  document.getElementById("pocketDetail").textContent = pm.length
-    ? pm.slice(-3).reverse().map(e=>`${new Date(e.date+"T12:00:00").toLocaleDateString("de-DE")}: ${fmt(e.amount)}`).join(" · ")
-    : "Noch keine Taschengeld-Einträge vorhanden.";
+  if(pinInput.value.trim() === String(child.pin)){
+    localStorage.setItem(ACTIVE_CHILD_KEY, JSON.stringify(child));
+    window.location.href = "dashboard_kind_links.html";
+  } else if (error){
+    error.style.display = "block";
+  }
+}
 
-  // Goals
-  const gl = document.getElementById("goalList");
-  if(!data.goals.length){
-    gl.innerHTML=`<div style="color:#3d8a5a;font-size:.9rem;padding:8px 0">Trag dein erstes Sparziel ein! 🎯</div>`;
-  } else {
-    gl.innerHTML = data.goals.map((g,i)=>{
-      const pct = Math.min(100,Math.round((g.saved/g.target)*100));
-      return `<div class="goal-item">
-        <div class="goal-name">${g.emoji||"🎯"} ${esc(g.name)}</div>
-        <div class="goal-amounts"><span>Gespart: <strong>${fmt(g.saved)}</strong></span><span>Ziel: <strong>${fmt(g.target)}</strong></span><span>${pct}%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-        <div class="goal-note">${pct>=100?"🎉 Ziel erreicht! Super!":(`Noch ${fmt(g.target-g.saved)} bis zum Ziel`)}</div>
-        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-          <input type="number" min="0.01" step="0.01" placeholder="€ dazusparen" style="border:2px solid #b8e8cc;background:#f0faf4;border-radius:10px;padding:8px 12px;font-size:.88rem;font-family:Nunito,sans-serif;font-weight:700;outline:none;width:140px" id="saveGoal_${i}"/>
-          <button onclick="addToGoal(${i})" style="border:none;background:#4caf7a;color:#fff;padding:8px 14px;border-radius:10px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif" type="button">+ Sparen</button>
-          <button onclick="deleteGoal(${i})" style="border:none;background:#fde8e8;color:#c85858;padding:8px 14px;border-radius:10px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;border:1px solid #f4c0c0" type="button">Löschen</button>
+function renderChildren(){
+  const children = JSON.parse(localStorage.getItem(CHILDREN_KEY) || "[]");
+  const wrap = document.getElementById("childrenWrap");
+  const emptyBox = document.getElementById("emptyBox");
+  wrap.innerHTML = "";
+
+  if(!children.length){
+    emptyBox.style.display = "block";
+    return;
+  }
+
+  emptyBox.style.display = "none";
+  window.hhChildren = children;
+
+  children.forEach((child, index) => {
+    const card = document.createElement("div");
+    card.className = "card child-card";
+
+    const avatarHtml = child.photo
+      ? `<div class="avatar"><img src="${child.photo}" alt=""></div>`
+      : `<div class="avatar">${escapeHtml(child.avatar || "🧒")}</div>`;
+
+    card.innerHTML = `
+      <div class="child-top">
+        ${avatarHtml}
+        <div>
+          <div class="child-name">${escapeHtml(child.nickname || child.name)}</div>
+          <div class="child-sub">${child.nickname ? escapeHtml(child.name) + " · " : ""}Eigenes Kinderprofil</div>
         </div>
-      </div>`;
-    }).join("");
-  }
+      </div>
 
-  // Tasks
-  const tasks = getKidTasks();
-  const tl = document.getElementById("kidTaskList");
-  const noMsg = document.getElementById("noTasksMsg");
-  if(!tasks.length){
-    tl.innerHTML=""; noMsg.textContent="Gerade hast du keine Aufgaben. 🌟 Toll gemacht!";
-  } else {
-    noMsg.textContent="";
-    tl.innerHTML = tasks.map((t,i)=>{
-      const emojis={"Haushalt":"🧹","Familie":"👨‍👩‍👧","Einkaufen":"🛒","Gesundheit":"💊","Auto":"🚗","Haustier":"🐾","Organisation":"📋","Sonstiges":"✏️"};
-      const em=emojis[t.category]||"✏️";
-      return `<div class="task-row ${t.done?"done":""}" onclick="toggleKidTask(${i})">
-        <div class="task-check-circle">${t.done?"✓":""}</div>
-        <div class="task-emoji">${em}</div>
-        <div class="task-text-area"><strong>${esc(t.text)}</strong><small>${esc(t.category)}</small></div>
-        <div class="stars-reward">+1 ⭐</div>
-      </div>`;
-    }).join("");
-  }
+      <div class="pin-box" id="pinBox-${index}">
+        <div class="field">
+          <label for="pin-${index}">PIN eingeben</label>
+          <input id="pin-${index}" type="password" placeholder="4-stellige PIN">
+        </div>
+        <button class="btn" type="button" onclick="event.stopPropagation(); loginChild(${index})">Starten</button>
+        <div class="error" id="error-${index}">Die PIN stimmt nicht.</div>
+      </div>
+    `;
 
-  // Quick entries
-  const entries = data.entries;
-  const ql = document.getElementById("qList");
-  ql.innerHTML = entries.length
-    ? [...entries].reverse().slice(0,5).map(e=>`
-      <div class="quick-item">
-        <span>${esc(e.what)}</span>
-        <span class="q-amt ${e.type==="in"?"q-plus":"q-minus"}">${e.type==="in"?"+":"–"} ${fmt(e.amount)}</span>
-      </div>`).join("")
-    : `<div style="color:var(--muted);font-size:.88rem;padding:8px 0">Noch keine Einträge — trag deinen ersten ein!</div>`;
+    card.addEventListener("click", () => showPinBox(index));
+    wrap.appendChild(card);
+  });
 }
 
-// ── Task Toggle ──────────────────────────────────────────────────
-function toggleKidTask(visIdx){
-  const allTasks = JSON.parse(localStorage.getItem("haushaltsheld_tasks")||"[]");
-  const kidTasks = getKidTasks();
-  const targetTask = kidTasks[visIdx];
-  const origIdx = allTasks.findIndex(t=>t.text===targetTask.text&&t.person===targetTask.person);
-  if(origIdx<0) return;
-  const wasNotDone = !allTasks[origIdx].done;
-  allTasks[origIdx].done = !allTasks[origIdx].done;
-  localStorage.setItem("haushaltsheld_tasks",JSON.stringify(allTasks));
-  // Award star
-  if(wasNotDone){
-    const d=getKidData(currentKid);
-    d.stars=(d.stars||0)+1;
-    saveKidData(currentKid,d);
-    // Mini celebration
-    const el = document.getElementById("starCount");
-    el.parentElement.classList.add("pop-animate");
-    setTimeout(()=>el.parentElement.classList.remove("pop-animate"),400);
-  }
-  render();
-}
-
-// ── Goal Management ──────────────────────────────────────────────
-const goalEmojis=["🎯","🚀","🎮","🎸","📱","🚲","⚽","🎨","📚","🌟"];
-function addGoal(){
-  const name=document.getElementById("goalName").value.trim();
-  const target=parseFloat(document.getElementById("goalTarget").value);
-  if(!name||isNaN(target)||target<=0){alert("Bitte einen Namen und ein Sparziel (> 0 €) eingeben.");return;}
-  const d=getKidData(currentKid);
-  d.goals.push({name,target,saved:0,emoji:goalEmojis[d.goals.length%goalEmojis.length]});
-  saveKidData(currentKid,d);
-  document.getElementById("goalName").value="";
-  document.getElementById("goalTarget").value="";
-  render();
-}
-function addToGoal(i){
-  const amt=parseFloat(document.getElementById("saveGoal_"+i)?.value||"0");
-  if(isNaN(amt)||amt<=0){alert("Bitte einen Betrag eingeben.");return;}
-  const d=getKidData(currentKid);
-  d.goals[i].saved=Math.min(d.goals[i].target,(d.goals[i].saved||0)+amt);
-  saveKidData(currentKid,d);
-  render();
-}
-function deleteGoal(i){
-  if(!confirm("Sparziel wirklich löschen?")) return;
-  const d=getKidData(currentKid);
-  d.goals.splice(i,1);
-  saveKidData(currentKid,d);
-  render();
-}
-
-// ── Quick Entry ──────────────────────────────────────────────────
-let qType="in";
-document.getElementById("typeIn").addEventListener("click",()=>{
-  qType="in";
-  document.getElementById("typeIn").className="type-chip active-in";
-  document.getElementById("typeOut").className="type-chip";
-});
-document.getElementById("typeOut").addEventListener("click",()=>{
-  qType="out";
-  document.getElementById("typeOut").className="type-chip active-out";
-  document.getElementById("typeIn").className="type-chip";
-});
-document.getElementById("qSaveBtn").addEventListener("click",()=>{
-  const what=document.getElementById("qWhat").value.trim();
-  const amount=parseFloat(document.getElementById("qAmount").value);
-  if(!what||isNaN(amount)||amount<=0){alert("Bitte ausfüllen: Was und Betrag.");return;}
-  const d=getKidData(currentKid);
-  d.entries.push({what,amount,type:qType,date:new Date().toISOString().split("T")[0]});
-  saveKidData(currentKid,d);
-  document.getElementById("qWhat").value="";
-  document.getElementById("qAmount").value="";
-  render();
-});
-
-// ── Star Redeem ──────────────────────────────────────────────────
-document.getElementById("redeemBtn").addEventListener("click",()=>{
-  const d=getKidData(currentKid);
-  if(d.stars<=0){alert("Du hast noch keine Sterne zum Einlösen. Erledige erst Aufgaben!");return;}
-  if(confirm(`Du hast ${d.stars} Sterne ⭐. Einen Stern einlösen und mit Mama oder Papa besprechen?`)){
-    d.stars--;
-    saveKidData(currentKid,d);
-    render();
-    alert("Super! ⭐ Zeig das deinen Eltern und bespreche deine Belohnung!");
-  }
-});
-
-// ── Kid Switch ──────────────────────────────────────────────────
-document.getElementById("kidSelect").addEventListener("change",e=>{
-  currentKid=e.target.value;
-  localStorage.setItem("hh_kid_selected",currentKid);
-  render();
-});
-
-// ── Goal Button ──────────────────────────────────────────────────
-document.getElementById("addGoalBtn").addEventListener("click",addGoal);
-
-// ── Init ──────────────────────────────────────────────────────────
-document.getElementById("kidSelect").value = currentKid;
-render();
+renderChildren();
 </script>
 
-<script src="ki-schnecke.js"></script>
 </body>
 </html>

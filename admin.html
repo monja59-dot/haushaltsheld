@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haushaltsheld – Familiensteuerung</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+
+    :root{
+      --bg:#f7f2e9;
+      --bg-2:#fdf9f3;
+      --card:#ffffff;
+      --line:#dfd1bc;
+      --text:#21323d;
+      --text2:#556159;
+      --muted:#7d8a82;
+      --accent:#4CAF50;
+      --accent-dark:#3E8E41;
+      --blue-soft:#d9e7f8;
+      --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+      --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+      --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+      --sidebar-w:245px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{min-height:100%}
+    body{
+      font-family:"Outfit",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+        linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+    }
+
+    .app{
+      display:grid;
+      grid-template-columns:var(--sidebar-w) 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      background:linear-gradient(180deg,#f6f0e6 0%, #f2eadf 100%);
+      border-right:1px solid rgba(223,209,188,.95);
+      padding:16px 14px 12px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .brand{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:8px 10px 16px;
+      border-bottom:1px solid rgba(223,209,188,.95);
+      margin-bottom:20px;
+    }
+    .brand-icon{font-size:24px;line-height:1;margin-top:3px}
+    .brand-title{font-size:18px;font-weight:800;letter-spacing:.01em;color:var(--text)}
+    .brand-sub{font-size:13px;color:var(--muted);margin-top:4px}
+
+    .menu-group{padding:0 2px}
+    .menu-label{
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.12em;
+      color:#75868d;
+      text-transform:uppercase;
+      margin:8px 8px 14px;
+    }
+
+    .nav{display:flex;flex-direction:column;gap:14px}
+    .nav-link{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:8px 6px;
+      border-radius:22px;
+      text-decoration:none;
+      color:#31424b;
+      font-weight:700;
+      transition:.15s ease;
+      min-height:52px;
+      cursor:pointer;
+    }
+    .nav-link:hover{
+      background:rgba(255,255,255,.45);
+    }
+    .nav-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fffdfa;
+      border:1px solid var(--line);
+      box-shadow:
+        0 2px 6px rgba(54,45,28,.06),
+        inset 0 1px 0 rgba(255,255,255,.6);
+      flex:0 0 42px;
+      font-size:1.05rem;
+      color:var(--accent-dark);
+    }
+    .nav-link span:last-child{
+      font-size:.98rem;
+    }
+
+    .nav-link.active{
+      background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color:#fff;
+      padding:10px 12px;
+      box-shadow:
+        0 6px 0 #2f6f33,
+        0 14px 26px rgba(62,142,65,.23);
+      border-radius:20px;
+    }
+    .nav-link.active .nav-icon{
+      background:rgba(255,255,255,.16);
+      border:1px solid rgba(255,255,255,.18);
+      color:#fff;
+      box-shadow:none;
+    }
+
+    .mode-switch{
+      margin-top:auto;
+      padding-top:22px;
+      border-top:1px solid rgba(223,209,188,.95);
+    }
+    .mode-pill{
+      background:linear-gradient(180deg,#fffdfa 0%, #f6efe4 100%);
+      border:1px solid rgba(223,209,188,.95);
+      border-radius:999px;
+      padding:4px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:4px;
+      box-shadow:var(--shadow-xs);
+    }
+    .mode-pill button{
+      border:none;height:42px;border-radius:999px;font-family:inherit;
+      font-size:16px;font-weight:700;background:transparent;color:#56676f;cursor:pointer;
+    }
+    .mode-pill button.active{
+      background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color:#fff;
+      box-shadow:0 4px 0 #2f6f33;
+    }
+
+    .content{padding:20px}
+    .grid-main{
+      display:grid;
+      grid-template-columns:1.15fr .9fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .panel{
+      background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+      border:1px solid rgba(223,209,188,.95);
+      border-radius:34px;
+      box-shadow:var(--shadow-sm);
+      padding:20px;
+    }
+
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:18px;
+      font-weight:800;
+      color:#183041;
+      margin-bottom:16px;
+    }
+    .section-icon{
+      width:42px;height:42px;border-radius:16px;display:grid;place-items:center;
+      background:#e8f3e6;border:1px solid #bfd8bd;color:#2f8a35;flex:0 0 42px;
+    }
+    .inner-box{
+      background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
+      border:1px solid rgba(223,209,188,.95);
+      border-radius:28px;
+      overflow:hidden;
+    }
+    .setting-row{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      padding:16px 18px;border-bottom:1px solid rgba(223,209,188,.85);
+    }
+    .setting-row:last-child{border-bottom:none}
+    .setting-copy strong{display:block;font-size:15px;font-weight:800;color:#163042;margin-bottom:4px}
+    .setting-copy span{color:#6d7d84;font-size:14px;line-height:1.35}
+
+    .toggle{
+      width:72px;height:34px;border-radius:999px;background:#c7dfc6;border:1px solid #a9c9a8;
+      position:relative;flex:0 0 72px;box-shadow:inset 0 1px 2px rgba(255,255,255,.4);
+    }
+    .toggle::after{
+      content:"";position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+      box-shadow:0 2px 4px rgba(0,0,0,.14);
+    }
+
+    .security-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px;
+    }
+    .security-card{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:16px 18px;border-radius:26px;background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
+      border:1px solid rgba(223,209,188,.95);
+    }
+    .security-card strong{display:block;font-size:15px;margin-bottom:4px}
+    .security-card span{display:block;color:#6d7d84;font-size:14px;line-height:1.35}
+    .status-pill{
+      padding:9px 14px;border-radius:999px;background:#e8f3e6;border:1px solid #bfd8bd;
+      color:#5b6f77;font-weight:800;font-size:14px;white-space:nowrap;
+    }
+
+    .footer-actions{
+      display:flex;justify-content:flex-end;gap:16px;margin-top:18px;
+    }
+
+    .btn,
+    button.btn{
+      border:none;
+      background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color:#fff !important;
+      padding:13px 22px;
+      border-radius:16px;
+      font-size:.95rem;
+      font-weight:800;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      white-space:nowrap;
+      box-shadow:
+        0 4px 0 #2f6f33,
+        0 10px 22px rgba(62,142,65,.22),
+        inset 0 1px 0 rgba(255,255,255,.20);
+      transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      letter-spacing:.01em;
+      font-family:inherit;
+    }
+    .btn-secondary{
+      border:none;
+      background:linear-gradient(180deg,#fffdfa 0%, #f4ebde 100%);
+      color:var(--text);
+      padding:13px 18px;
+      border-radius:16px;
+      font-size:.95rem;
+      font-weight:800;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      box-shadow: var(--shadow-xs);
+      border:1px solid rgba(223,209,188,.95);
+      font-family:inherit;
+    }
+
+    .login-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(247,242,233,.85);
+      backdrop-filter:blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:50;
+    }
+    .login-card{
+      width:min(100%, 470px);
+      padding:24px;
+      border-radius:32px;
+      background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+      border:1px solid rgba(223,209,188,.95);
+      box-shadow:var(--shadow-lg);
+    }
+    .login-top{
+      margin-bottom:18px;
+    }
+    .login-help{
+      margin-top:14px;
+      padding:14px 16px;
+      border-radius:20px;
+      background:var(--blue-soft);
+      color:#5f7fae;
+      font-weight:700;
+      font-size:.9rem;
+      border:1px solid rgba(107,150,217,.14);
+    }
+    .login-error{
+      display:none;
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:#fdeaea;
+      color:#a45656;
+      font-weight:800;
+      border:1px solid rgba(204,102,102,.16);
+    }
+    .field{display:flex;flex-direction:column;gap:8px}
+    .field label{
+      font-size:.93rem;
+      color:var(--text2);
+      font-weight:800;
+    }
+    .field input{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fffdfa;
+      padding:14px 16px;
+      outline:none;
+      font-family:"Outfit",sans-serif;
+      font-size:.97rem;
+      color:var(--text);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+    }
+    .field input:focus{
+      border-color:#bfdcbf;
+      box-shadow:0 0 0 4px rgba(76,175,80,.10);
+    }
+    .form-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width:1180px){
+      .grid-main{grid-template-columns:1fr}
+      .security-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:900px){
+      .app{grid-template-columns:1fr}
+      .sidebar{position:relative;height:auto;overflow:visible}
+    }
+  </style>
+</head>
+<body>
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <div class="login-top">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div class="nav-icon">🔐</div>
+          <div>
+            <div style="font-weight:800;font-size:1.16rem;color:#2d342f;">Eltern-Login</div>
+            <div style="color:#7d8a82;">Geschützter Zugang zur Familiensteuerung.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">E-Mail</label>
+        <input id="email" type="email" placeholder="admin@haushaltsheld.de">
+      </div>
+
+      <div class="field" style="margin-top:12px;">
+        <label for="password">Passwort</label>
+        <input id="password" type="password" placeholder="••••••••">
+      </div>
+
+      <div class="field" style="margin-top:12px;">
+        <label for="code">2FA-Code</label>
+        <input id="code" type="text" inputmode="numeric" placeholder="111111">
+      </div>
+
+      <div class="form-actions">
+        <button class="btn" onclick="loginAdmin()">Einloggen</button>
+      </div>
+
+      <div class="login-error" id="loginError">Login fehlgeschlagen. Bitte überprüfe E-Mail, Passwort und 2FA-Code.</div>
+
+      <div class="login-help">
+        Demo-Zugang: <strong>admin@haushaltsheld.de</strong> · Passwort: <strong>1234</strong> · 2FA: <strong>111111</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🐌</div>
+        <div>
+          <div class="brand-title">Haushaltsheld</div>
+          <div class="brand-sub">Dein Familien-Assistent</div>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <div class="menu-label">Hauptmenü</div>
+        <nav class="nav">
+          <a class="nav-link" href="index.html"><span class="nav-icon">⌂</span><span>Dashboard</span></a>
+          <a class="nav-link" href="finanzen.html"><span class="nav-icon">▦</span><span>Finanzen</span></a>
+          <a class="nav-link" href="einkaufsliste.html"><span class="nav-icon">🛒</span><span>Einkäufe</span></a>
+          <a class="nav-link" href="aufgaben.html"><span class="nav-icon">☑</span><span>Aufgaben</span></a>
+          <a class="nav-link" href="familienplaner.html"><span class="nav-icon">🗓</span><span>Familienplaner</span></a>
+        </nav>
+      </div>
+
+      <div class="menu-group">
+        <div class="menu-label">Extras</div>
+        <nav class="nav">
+          <a class="nav-link active" href="finanzbericht.html"><span class="nav-icon">↗</span><span>Bericht</span></a>
+          <a class="nav-link" href="finanz_historie.html"><span class="nav-icon">◔</span><span>Historie</span></a>
+          <a class="nav-link" href="beleg_import.html"><span class="nav-icon">↓</span><span>Belege</span></a>
+          <a class="nav-link" href="kindermodus_links.html"><span class="nav-icon">☆</span><span>Kindermodus</span></a>
+        </nav>
+      </div>
+
+      <div class="mode-switch">
+        <div class="mode-pill">
+          <button class="active" type="button">Eltern</button>
+          <button type="button" onclick="window.location.href='kindermodus_links.html'">Kind</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="grid-main">
+        <div class="panel">
+          <div class="section-title">
+            <div class="section-icon">🔒</div>
+            <span>Privatsphäre &amp; Schutz</span>
+          </div>
+
+          <div class="inner-box">
+            <div class="setting-row">
+              <div class="setting-copy">
+                <strong>Geschwisterprofile komplett trennen</strong>
+                <span>Jedes Kind sieht nur die eigenen Aufgaben, Wünsche und Ziele.</span>
+              </div>
+              <div class="toggle"></div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-copy">
+                <strong>Vergleichsansichten deaktivieren</strong>
+                <span>Keine Ranglisten oder Fortschrittsvergleiche zwischen Geschwistern.</span>
+              </div>
+              <div class="toggle"></div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-copy">
+                <strong>Zugriffe protokollieren</strong>
+                <span>Änderungen im Elternbereich werden in der Historie vermerkt.</span>
+              </div>
+              <div class="toggle"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="section-title">
+            <div class="section-icon">🎁</div>
+            <span>Geschenkmodus &amp; Wünsche</span>
+          </div>
+
+          <div class="inner-box">
+            <div class="setting-row">
+              <div class="setting-copy">
+                <strong>Überraschung für Eltern erlauben</strong>
+                <span>Kinder können Wünsche als geheim markieren.</span>
+              </div>
+              <div class="toggle"></div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-copy">
+                <strong>Zugriff anfragen statt direkt öffnen</strong>
+                <span>Eltern müssen sensible Inhalte aktiv anfragen.</span>
+              </div>
+              <div class="toggle"></div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-copy">
+                <strong>Nur Hinweis für Eltern anzeigen</strong>
+                <span>Beispiel: „1 privater Wunsch vorhanden“ statt vollständigem Inhalt.</span>
+              </div>
+              <div class="toggle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:18px;">
+        <div class="section-title">
+          <div class="section-icon">🛡</div>
+          <span>Sicherheit</span>
+        </div>
+
+        <div class="security-grid">
+          <div class="security-card">
+            <div>
+              <strong>Eltern-Login</strong>
+              <span>E-Mail und Passwort für den Zugang zur Familiensteuerung.</span>
+            </div>
+            <div class="status-pill">Aktiv</div>
+          </div>
+
+          <div class="security-card">
+            <div>
+              <strong>2FA für Eltern</strong>
+              <span>Zwei-Faktor-Authentifizierung für beide Elternteile.</span>
+            </div>
+            <div class="status-pill">Pflicht</div>
+          </div>
+
+          <div class="security-card">
+            <div>
+              <strong>Kinder-PIN</strong>
+              <span>Kindgerechte Anmeldung per PIN oder Avatar-Auswahl.</span>
+            </div>
+            <div class="status-pill">Aktiv</div>
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <button class="btn-secondary" type="button" onclick="logoutAdmin()">Logout</button>
+          <button class="btn" type="button">Einstellungen speichern</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const LOGIN_KEY = "haushaltsheld_admin_login_demo";
+
+    function loginAdmin(){
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const code = document.getElementById("code").value.trim();
+      const error = document.getElementById("loginError");
+
+      if (email === "admin@haushaltsheld.de" && password === "1234" && code === "111111"){
+        localStorage.setItem(LOGIN_KEY, "true");
+        document.getElementById("loginOverlay").style.display = "none";
+        error.style.display = "none";
+      } else {
+        error.style.display = "block";
+      }
+    }
+
+    function logoutAdmin(){
+      localStorage.removeItem(LOGIN_KEY);
+      document.getElementById("loginOverlay").style.display = "flex";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("code").value = "";
+    }
+
+    function restoreLoginState(){
+      const loggedIn = localStorage.getItem(LOGIN_KEY) === "true";
+      document.getElementById("loginOverlay").style.display = loggedIn ? "none" : "flex";
+    }
+
+    restoreLoginState();
+  </script>
+</body>
+</html>

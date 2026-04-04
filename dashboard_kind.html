@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haushaltsheld – Kinder Dashboard</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
+
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#fffdfa;
+  --line:#dfd1bc;
+  --text:#2d342f;
+  --muted:#7d8a82;
+  --accent:#6eaf72;
+  --accent-dark:#5b9960;
+  --accent-soft:#eef7ef;
+  --blue-soft:#eef4ff;
+  --yellow-soft:#fcf6e8;
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:"Outfit",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  min-height:100vh;
+  padding:20px;
+}
+
+.wrapper{
+  max-width:1100px;
+  margin:0 auto;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand-icon{
+  width:56px;
+  height:56px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(180deg,#fffdfa 0%, #f4ebde 100%);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow-xs);
+  font-size:1.8rem;
+  overflow:hidden;
+}
+.brand-icon img{width:100%;height:100%;object-fit:cover}
+
+h1{
+  font-size:2rem;
+  line-height:1.08;
+  margin-bottom:4px;
+}
+
+.subtitle{
+  color:var(--muted);
+}
+
+.btn,
+button.btn{
+  border:none;
+  background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:13px 22px;
+  border-radius:16px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  white-space:nowrap;
+  box-shadow:
+    0 4px 0 #4b8250,
+    0 10px 20px rgba(91,153,96,.18),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  letter-spacing:.01em;
+  font-family:inherit;
+  text-decoration:none;
+}
+
+.btn-secondary{
+  border:none;
+  background:linear-gradient(180deg,#fffdfa 0%, #f4ebde 100%);
+  color:var(--text);
+  padding:13px 18px;
+  border-radius:16px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow: var(--shadow-xs);
+  border:1px solid rgba(223,209,188,.95);
+  font-family:inherit;
+  text-decoration:none;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:16px;
+  margin-bottom:18px;
+}
+
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;
+  box-shadow:var(--shadow-sm);
+  padding:20px;
+}
+
+.card h2{
+  font-size:1.05rem;
+  margin-bottom:10px;
+}
+
+.big{
+  font-size:2rem;
+  font-weight:800;
+  line-height:1;
+  margin-bottom:6px;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:.95rem;
+}
+
+.main-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:18px;
+}
+
+.task-list{
+  display:grid;
+  gap:12px;
+  margin-top:12px;
+}
+
+.task{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px;
+  border-radius:20px;
+  background:var(--bg-2);
+  border:1px solid rgba(223,209,188,.8);
+}
+
+.task strong{
+  display:block;
+  margin-bottom:2px;
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:800;
+}
+
+.pill.green{
+  background:var(--accent-soft);
+  color:#517f55;
+  border:1px solid #d8ead9;
+}
+
+.pill.blue{
+  background:var(--blue-soft);
+  color:#607aa7;
+  border:1px solid #d6e2f8;
+}
+
+.pill.yellow{
+  background:var(--yellow-soft);
+  color:#8b6a22;
+  border:1px solid #f0e2b6;
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.section-icon{
+  width:38px;
+  height:38px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:var(--accent-soft);
+  border:1px solid #d8ead9;
+}
+
+.notice{
+  margin-top:12px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:var(--blue-soft);
+  color:#5e7086;
+  border:1px solid #d6e2f8;
+  line-height:1.45;
+}
+
+.empty{
+  max-width:680px;
+  margin:80px auto;
+  text-align:center;
+}
+
+.empty .card{
+  padding:28px;
+}
+
+@media (max-width:980px){
+  .grid, .main-grid{
+    grid-template-columns:1fr;
+  }
+  .topbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrapper" id="app" style="display:none;">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon" id="childAvatar">🧒</div>
+      <div>
+        <h1 id="welcomeTitle">Hallo!</h1>
+        <div class="subtitle" id="welcomeSubtitle">Schön, dass du da bist.</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <a class="btn-secondary" href="kindermodus_links.html">Profil wechseln</a>
+      <a class="btn-secondary" href="admin_links.html">Elternbereich</a>
+      <a class="btn-secondary" href="admin.html">Elternbereich</a>
+      <button class="btn" onclick="logoutChild()">Logout</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>⭐ Mein Tagesziel</h2>
+      <div class="big">3 Aufgaben</div>
+      <div class="muted">Heute kannst du wieder etwas Tolles schaffen.</div>
+    </div>
+
+    <div class="card">
+      <h2>💰 Mein Sparziel</h2>
+      <div class="big">12 €</div>
+      <div class="muted">Du sammelst weiter für deinen Wunsch.</div>
+    </div>
+
+    <div class="card">
+      <h2>🎁 Meine Belohnung</h2>
+      <div class="big">2 offen</div>
+      <div class="muted">Für erledigte Aufgaben wartet etwas Schönes auf dich.</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="card">
+      <div class="section-title">
+        <div class="section-icon">☑</div>
+        <h2>Meine Aufgaben</h2>
+      </div>
+
+      <div class="task-list">
+        <div class="task">
+          <div>
+            <strong>Zimmer aufräumen</strong>
+            <div class="muted">Heute bis 18:00 Uhr</div>
+          </div>
+          <span class="pill green">bereit</span>
+        </div>
+
+        <div class="task">
+          <div>
+            <strong>Zähne putzen</strong>
+            <div class="muted">Morgens und abends</div>
+          </div>
+          <span class="pill blue">wichtig</span>
+        </div>
+
+        <div class="task">
+          <div>
+            <strong>Schultasche kontrollieren</strong>
+            <div class="muted">Vor dem Schlafengehen</div>
+          </div>
+          <span class="pill yellow">heute</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">
+        <div class="section-icon">🔒</div>
+        <h2>Mein Bereich</h2>
+      </div>
+
+      <div class="muted" style="line-height:1.5;">
+        Du siehst hier nur <strong>deine eigenen Daten</strong>. Aufgaben, Wünsche und Fortschritte von Geschwistern bleiben privat.
+      </div>
+
+      <div class="notice">
+        Dieses Dashboard gehört nur zu deinem Profil. Andere Kinder können deinen Bereich nicht sehen.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="empty" id="emptyState" style="display:none;">
+  <div class="card">
+    <h1 style="margin-bottom:10px;">Kein Kinderprofil aktiv</h1>
+    <div class="subtitle" style="margin-bottom:18px;">
+      Bitte melde dich zuerst über den Kindermodus an.
+    </div>
+    <a class="btn" href="kindermodus_links.html">Zum Kinderlogin</a>
+  </div>
+</div>
+
+<script>
+const CHILD_KEY = "hh_active_child";
+
+function logoutChild(){
+  localStorage.removeItem(CHILD_KEY);
+  window.location.href = "kindermodus_links.html";
+}
+
+function loadChild(){
+  const raw = localStorage.getItem(CHILD_KEY);
+  if(!raw){
+    document.getElementById("emptyState").style.display = "block";
+    return;
+  }
+
+  let child;
+  try{
+    child = JSON.parse(raw);
+  } catch(e){
+    document.getElementById("emptyState").style.display = "block";
+    return;
+  }
+
+  document.getElementById("app").style.display = "block";
+  document.getElementById("welcomeTitle").textContent = `Hallo ${child.nickname || child.name}!`;
+  document.getElementById("welcomeSubtitle").textContent = `${child.name} – schön, dass du da bist.`;
+
+  const avatarBox = document.getElementById("childAvatar");
+  if(child.photo){
+    avatarBox.innerHTML = `<img src="${child.photo}" alt="">`;
+  } else {
+    avatarBox.textContent = child.avatar || "🧒";
+  }
+}
+
+loadChild();
+</script>
+</body>
+</html>

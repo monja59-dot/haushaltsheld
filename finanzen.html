@@ -1,636 +1,1855 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 <title>Haushaltsheld – Finanzen</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ki-schnecke.css">
+
 <style>
 :root{
-  --bg:#fdf5ec;--bg2:#fff9f3;--card:#ffffff;--soft:#fff3e4;--soft2:#fde9d4;--line:#e6cdb8;
-  --text:#3a2418;--text2:#6a4432;--muted:#9a7060;
-  --accent:#f07c38;--accent-dark:#d4621e;--accent-soft:#fde8d6;
-  --green:#5ea872;--green-soft:#e6f4ec;--red:#c85858;--red-soft:#fbe8e8;
-  --blue:#5e8ec8;--blue-soft:#e4effc;
-  --shadow-sm:0 2px 10px rgba(70,35,10,.06);--shadow:0 8px 28px rgba(70,35,10,.09);
-  --r-sm:14px;--r:20px;--r-lg:26px;--r-xl:34px;--sidebar-w:248px;
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
+
+  --text:#2d342f;
+  --text2:#556159;
+  --muted:#7d8a82;
+
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#e7f5e8;
+
+  --beige:#f2e6d7;
+  --sand:#e8d7c2;
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
+  --red:#cc6666;
+  --red-soft:#fdeaea;
+  --yellow:#b5882f;
+  --yellow-soft:#fbf4df;
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
+  --brown:#4a3a2a;
+  --brown-dark:#3a2c1f;
+
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+
+  --r-xs:12px;
+  --r-sm:16px;
+  --r:22px;
+  --r-lg:28px;
+  --r-xl:34px;
+
+  --sidebar-w:258px;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Outfit", sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at top right,rgba(255,235,210,.8) 0%,rgba(255,235,210,.3) 25%,transparent 50%),radial-gradient(circle at bottom left,rgba(255,225,195,.6) 0%,transparent 40%);pointer-events:none;z-index:0}
-body::after{content:"";position:fixed;right:20px;bottom:20px;width:min(20vw,220px);height:min(20vw,220px);background:url("assets/schnecke.png") no-repeat center/contain;opacity:.1;pointer-events:none;z-index:0}
+html,body{width:100%;overflow-x:hidden}
 
-.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+body{
+  font-family:"Outfit",sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+}
 
-/* ── Sidebar ── */
-.sidebar{background:linear-gradient(180deg,#fef0e2 0%,#fdf6ee 100%);border-right:1px solid var(--line);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10}
-.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
-.logo-wrap img{width:44px;height:44px;object-fit:contain}
-.logo-name{font-family:"Outfit", sans-serif;font-weight:700;font-size:1.2rem;color:var(--text)}
-.logo-sub{font-size:.72rem;color:var(--muted);margin-top:1px}
-.nav-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:16px 10px 6px}
-.nav a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-sm);text-decoration:none;color:var(--text2);font-family:"Outfit", sans-serif;font-weight:700;font-size:.98rem;transition:all .18s;border:1px solid transparent}
-.nav a:hover{background:var(--soft2);border-color:rgba(230,205,184,.6);transform:translateX(2px)}
-.nav a.active{background:linear-gradient(135deg,#f5975a 0%,#f0c99a 100%);border-color:rgba(220,140,80,.3);box-shadow:0 8px 20px rgba(212,98,30,.18)}
-.nav-icon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.9);border:1px solid rgba(230,205,184,.8);font-size:16px;flex-shrink:0}
-.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
-.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:999px;padding:5px}
-.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:8px 10px;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;transition:.18s;font-family:"Outfit", sans-serif}
-.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 4px 12px rgba(212,98,30,.2)}
+h1,h2,h3,h4,h5,h6{
+  font-family:"Outfit",sans-serif;
+  letter-spacing:-0.03em;
+  line-height:1.15;
+}
 
-/* ── Main ── */
-.main{padding:32px;position:relative;z-index:1;max-width:1600px}
+button,input,select,textarea{font:inherit}
 
-/* ── Topbar ── */
-.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:24px}
-h1{font-family:"Outfit", sans-serif;font-size:2.2rem;font-weight:700;margin-bottom:6px}
-.sub{color:var(--muted);line-height:1.5;max-width:820px}
-.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:12px 18px;border-radius:var(--r-sm);font-size:.92rem;font-weight:700;text-decoration:none;cursor:pointer;box-shadow:0 8px 18px rgba(212,98,30,.2);transition:.18s;display:inline-flex;align-items:center;gap:6px}
-.btn:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(212,98,30,.26)}
-.btn-soft{background:var(--soft);color:var(--text2);border:1px solid var(--line);box-shadow:none}
-.btn-soft:hover{background:var(--soft2);transform:translateY(-1px)}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:700;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2)}
-.badge.child{background:var(--blue-soft);border-color:#c0d8f4;color:#3d6898}
+.app{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:100vh;
+}
 
-/* ── Hero ── */
-.hero{background:linear-gradient(135deg,#fef0e0 0%,#ffe8ce 60%,#fdd9b8 100%);border:1px solid rgba(230,180,130,.4);border-radius:var(--r-xl);padding:28px 32px;display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px;box-shadow:var(--shadow-sm)}
-.hero h2{font-family:"Outfit", sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:8px}
-.hero p{color:var(--text2);line-height:1.6;margin-bottom:14px}
-.hero-tags{display:flex;gap:8px;flex-wrap:wrap}
-.hero-tag{background:rgba(255,255,255,.82);border:1px solid rgba(220,170,120,.4);padding:7px 12px;border-radius:999px;font-size:.84rem;font-weight:700;color:var(--text2)}
+/* Sidebar */
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:28px 18px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+}
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 8px 24px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:8px;
+}
+.logo-wrap img{
+  width:48px;height:48px;object-fit:contain;
+  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
+}
+.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
+.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+.nav-label{
+  font-size:.7rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px;
+}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;
+  text-decoration:none;color:var(--text2);font-weight:700;font-size:.98rem;
+  transition:all .18s ease;border:1px solid transparent;position:relative;
+}
+.nav a:hover{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+  color:var(--text);
+}
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;
+  border-color:rgba(62,142,65,.28);
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.nav a.active .nav-icon{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+}
+.nav-icon{
+  width:36px;height:36px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--accent-dark);
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(54,45,28,.05);
+}
+.nav-icon svg{width:18px;height:18px;stroke:currentColor}
+.sidebar-footer{
+  margin-top:auto;padding-top:18px;border-top:1px solid var(--line);
+}
+.mode-switch{
+  display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);
+  border-radius:999px;padding:5px;box-shadow:var(--shadow-xs);
+}
+.mode-btn{
+  flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;
+  font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease;
+}
+.mode-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+/* Main */
+.main{
+  width:100%;
+  max-width:1580px;
+  padding:32px;
+}
+
+/* Header */
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+.page-header h1{
+  font-size:2.35rem;
+  font-weight:800;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.page-header p{
+  color:var(--muted);
+  font-size:.98rem;
+  max-width:860px;
+}
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.mode-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;
+  font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);
+  color:var(--text2);box-shadow:var(--shadow-xs);
+}
+.mode-badge.child{
+  background:var(--blue-soft);
+  border-color:#cbdcf8;
+  color:#496d9d;
+}
+
+/* Icons */
+.page-title-icon,
+.section-icon,
+.stat-icon{
+  width:34px;height:34px;border-radius:12px;display:inline-grid;place-items:center;
+  background:var(--accent-soft);color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0;
+}
+.page-title-icon svg,.section-icon svg,.stat-icon svg{width:18px;height:18px;stroke:currentColor}
+.stat-icon{width:46px;height:46px;border-radius:14px}
+.stat-icon svg{width:22px;height:22px}
+
+/* Hero */
+.hero{
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
+  border:1px solid rgba(76,175,80,.18);
+  border-radius:30px;
+  padding:28px 30px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:20px;
+  align-items:stretch;
+  margin-bottom:24px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  right:-40px;
+  bottom:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+.hero h2{
+  font-size:1.55rem;
+  font-weight:800;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.hero p{color:var(--text2);line-height:1.65;margin-bottom:16px}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.95);padding:9px 14px;border-radius:999px;
+  font-size:.88rem;font-weight:800;color:var(--text2);box-shadow:0 1px 4px rgba(54,45,28,.04);
+}
+.hero-tag.accent{background:#f8ebda;border-color:#ecd1ad}
 .hero-side{display:grid;gap:12px}
-.mini{background:rgba(255,255,255,.7);border-radius:var(--r-sm);padding:16px;border:1px solid rgba(220,180,140,.35)}
-.mini strong{display:block;margin-bottom:5px;font-size:.95rem}
-.mini span{color:var(--muted);font-size:.87rem;line-height:1.45}
+.mini{
+  background:rgba(255,255,255,.78);
+  border-radius:20px;padding:16px;border:1px solid rgba(223,209,188,.85);box-shadow:var(--shadow-xs);
+}
+.mini strong{display:block;margin-bottom:6px;font-size:.96rem;font-weight:800}
+.mini span{color:var(--muted);font-size:.88rem;line-height:1.55}
 
-/* ── Stats ── */
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px}
-.stat{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);border:1px solid var(--line);padding:20px}
-.stat .stat-icon{font-size:1.4rem;margin-bottom:10px}
-.stat h3{font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
-.stat .value{font-size:1.5rem;font-weight:700;font-family:"Outfit", sans-serif;margin-bottom:4px}
-.stat p{color:var(--muted);font-size:.82rem;line-height:1.4}
+/* Stats */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:16px;
+  margin-bottom:24px;
+}
+.stat{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:26px;
+  padding:20px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.stat::after{
+  content:"";
+  position:absolute;
+  inset:auto -18px -18px auto;
+  width:82px;height:82px;border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+.stat h3{
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin:0 0 8px;
+}
+.stat .value{
+  font-size:2rem;
+  font-weight:800;
+  margin-bottom:4px;
+  letter-spacing:-0.04em;
+}
+.stat p{font-size:.84rem;color:var(--muted);line-height:1.5}
+.plus{color:var(--green)}
+.minus{color:var(--red)}
+.info{color:var(--blue)}
 
-/* ── Grid ── */
-.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
-
-/* ── Cards ── */
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
-.card h2{font-family:"Outfit", sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:6px}
-.card-sub{color:var(--muted);line-height:1.5;margin-bottom:16px;font-size:.9rem}
-
-/* ── Form ── */
-.form-grid,.form-grid-3{display:grid;gap:14px;margin-bottom:14px}
+/* Grid/Cards */
+.grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:18px;
+}
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.card h2{
+  font-size:1.16rem;
+  font-weight:800;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.card-sub{
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:16px;
+  font-size:.9rem;
+}
+.form-grid,.form-grid-3{
+  display:grid;
+  gap:14px;
+  margin-bottom:14px;
+}
 .form-grid{grid-template-columns:repeat(2,1fr)}
 .form-grid-3{grid-template-columns:repeat(3,1fr)}
-.field label{display:block;font-weight:700;font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px}
-.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);background:var(--bg2);border-radius:var(--r-sm);padding:13px 15px;font-size:.94rem;color:var(--text);outline:none;font-family:"Outfit", sans-serif;transition:.18s}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(240,124,56,.12)}
-.field textarea{min-height:80px;resize:vertical}
+.field label{
+  display:block;
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:#fffdf9;
+  border-radius:16px;
+  padding:13px 14px;
+  font-size:.94rem;
+  color:var(--text);
+  outline:none;
+  transition:.18s ease;
+  min-height:48px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:rgba(76,175,80,.7);
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+  background:#fff;
+}
+.field textarea{
+  min-height:96px;
+  resize:vertical;
+}
 
-/* ── List ── */
+/* Buttons */
+.btn,.btn-link,button.btn,a.btn{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:13px 22px;
+  border-radius:16px;
+  font-size:.95rem;
+  font-weight:800;
+  text-decoration:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  white-space:nowrap;
+  box-shadow:
+    0 4px 0 #2f6f33,
+    0 10px 22px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  letter-spacing:.01em;
+}
+.btn:hover,.btn-link:hover,button.btn:hover,a.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 14px 28px rgba(62,142,65,.26),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  filter:brightness(1.02);
+}
+.btn-soft{
+  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
+  color:#4d3c2c !important;
+  border:1.5px solid #d7c0a6 !important;
+  border-radius:16px !important;
+  padding:13px 22px !important;
+  font-size:.95rem !important;
+  font-weight:800 !important;
+  box-shadow:
+    0 4px 0 #c7ae91,
+    0 8px 18px rgba(110,82,40,.10),
+    inset 0 1px 0 rgba(255,255,255,.65) !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+.btn.btn-soft,
+button.btn.btn-soft,
+a.btn.btn-soft{
+  color:#4d3c2c !important;
+}
+.btn-soft span,
+.btn-soft svg{
+  color:#4d3c2c !important;
+  stroke:currentColor !important;
+}
+.btn-soft:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(180deg,#f1e1cf 0%, #e4cfb7 100%) !important;
+  color:#433324 !important;
+  box-shadow:
+    0 6px 0 #c7ae91,
+    0 12px 22px rgba(110,82,40,.12),
+    inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+.btn-soft:hover span,
+.btn-soft:hover svg{
+  color:#433324 !important;
+  stroke:currentColor !important;
+}
+
+/* Lists */
 .list{display:grid;gap:10px}
-.item{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;background:var(--soft);border-radius:var(--r-sm);padding:14px 16px;border:1px solid transparent;transition:.18s}
-.item:hover{background:var(--soft2);border-color:var(--line)}
-.item strong{display:block;margin-bottom:4px;font-size:.94rem}
-.item p{color:var(--muted);font-size:.86rem;line-height:1.4}
-.amount{font-weight:700;white-space:nowrap;font-size:.95rem}
-.plus{color:var(--green)}.minus{color:var(--red)}.info{color:var(--blue)}
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border-radius:20px;
+  padding:14px 16px;
+  border:1px solid transparent;
+  transition:.18s ease;
+}
+.item:hover{
+  border-color:rgba(200,185,165,.9);
+  box-shadow:var(--shadow-xs);
+  transform:translateX(2px);
+}
+.item strong{display:block;margin-bottom:4px;font-size:.96rem;font-weight:800}
+.item p{color:var(--muted);font-size:.87rem;line-height:1.5}
+.amount{font-weight:800;white-space:nowrap;font-size:.95rem;padding-top:2px}
 
-/* ── Helper ── */
-.helper{background:var(--green-soft);color:#3d7050;border-radius:var(--r-sm);padding:14px 16px;line-height:1.55;font-size:.88rem;margin-top:14px;border:1px solid #b8e0c4}
+/* Scanner */
+.scanner-box{
+  background:linear-gradient(180deg,#f7fbf7 0%, #eef7ef 100%);
+  border:1px dashed #c7dbc9;
+  border-radius:24px;
+  padding:18px;
+  margin-top:14px;
+}
+.scanner-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+.scanner-btn{
+  border:1px solid #d8e6da;
+  background:#fff;
+  color:#53665a;
+  padding:14px 16px;
+  border-radius:16px;
+  font-size:.94rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:.18s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:56px;
+  box-shadow:0 1px 0 rgba(255,255,255,.8);
+}
+.scanner-btn:hover{
+  background:#f9fcf9;
+  border-color:#c7dbc9;
+}
+.scanner-actions svg,.scanner-status svg,.scan-card svg,.scan-euro svg{
+  width:18px;height:18px;stroke:currentColor;flex-shrink:0;
+}
+.scanner-status{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.scanner-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  border:1px solid #d8e6da;
+  border-radius:999px;
+  padding:10px 12px;
+  font-size:.88rem;
+  font-weight:700;
+  color:#607068;
+}
+.scanner-preview{
+  margin-bottom:16px;
+  background:#fff;
+  border:1px solid #d8e6da;
+  border-radius:20px;
+  padding:16px;
+}
+.scanner-preview strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:1rem;
+}
+.scanner-preview p{
+  color:var(--muted);
+  font-size:.92rem;
+  line-height:1.6;
+}
+.scanner-preview img{
+  display:none;
+  margin-top:12px;
+  width:100%;
+  max-width:100%;
+  max-height:260px;
+  object-fit:contain;
+  border-radius:14px;
+  border:1px solid #edf2ed;
+  background:#fafcfa;
+}
+.scan-meta{
+  display:grid;
+  grid-template-columns:1.1fr .95fr .95fr;
+  gap:12px;
+}
+.scan-card{
+  background:#fff;
+  border:1px solid #d8e6da;
+  border-radius:18px;
+  padding:14px;
+}
+.scan-card label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:.74rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:9px;
+}
+.scan-card input{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:#fffdf9;
+  border-radius:16px;
+  padding:12px 13px;
+  min-height:48px;
+  outline:none;
+  color:var(--text);
+}
+.scan-card input:focus{
+  border-color:rgba(76,175,80,.7);
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+}
+.scan-euro{
+  position:relative;
+}
+.scan-euro .euro-badge{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:24px;
+  height:24px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  font-size:.9rem;
+  font-weight:900;
+  border:1px solid rgba(76,175,80,.18);
+}
+.scan-euro input{
+  padding-left:46px;
+}
+.scanner-note{
+  margin-top:14px;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.6;
+}
+.hidden-input{display:none}
 
-/* ── Btn Row ── */
-.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+/* Helper */
+.helper{
+  background:linear-gradient(180deg,#eef9f0 0%, #e6f4ea 100%);
+  color:#3f6d4c;
+  border-radius:18px;
+  padding:15px 16px;
+  line-height:1.65;
+  font-size:.9rem;
+  margin-top:14px;
+  border:1px solid #c6e4cf;
+  box-shadow:var(--shadow-xs);
+}
 
-/* ── Child ── */
+/* Child */
 .child-mode .hide-for-child{display:none!important}
 .child-only{display:none}
 .child-mode .child-only{display:block}
 
-/* ── Responsive ── */
-@media(max-width:1300px){.stats{grid-template-columns:repeat(3,1fr)}.grid,.hero{grid-template-columns:1fr}.form-grid,.form-grid-3{grid-template-columns:1fr}}
-@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a{flex:0 1 auto;padding:10px 12px}.nav-label,.sidebar-footer{display:none}}
-@media(max-width:600px){.main{padding:16px}.stats{grid-template-columns:repeat(2,1fr)}}
+/* KI */
+.ki-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:74px;height:74px;border:none;border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9998;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.ki-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
+}
+.ki-fab img{width:40px;height:40px;object-fit:contain}
+.ki-fab-label{
+  position:absolute;bottom:8px;right:10px;color:#fff;font-size:.78rem;font-weight:800;line-height:1;
+}
+.ki-panel{
+  position:fixed;right:22px;bottom:108px;width:min(390px,calc(100vw - 24px));
+  max-height:min(78vh,720px);background:#fff;border:1px solid var(--line);border-radius:28px;
+  overflow:hidden;box-shadow:0 24px 50px rgba(34,48,38,.18);z-index:9999;display:none;
+}
+.ki-panel.open{display:flex;flex-direction:column}
+.ki-head{
+  padding:20px 20px 16px;background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+}
+.ki-head-left{display:flex;gap:12px;align-items:flex-start}
+.ki-head-avatar{
+  width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ki-head-avatar img{width:28px;height:28px;object-fit:contain}
+.ki-head h3{font-size:1.2rem;font-weight:800;margin:0 0 4px}
+.ki-head p{font-size:.95rem;color:var(--text2);margin:0}
+.ki-close{
+  width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1;
+}
+.ki-suggestions{
+  padding:16px 20px 14px;display:flex;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);background:#fff;
+}
+.ki-chip{
+  border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;
+  font-size:.95rem;font-weight:700;color:var(--text2);cursor:pointer;
+}
+.ki-chat{
+  padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px;
+}
+.ki-msg{
+  max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap;
+}
+.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
+.ki-msg.user{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;align-self:flex-end;
+}
+.ki-form{
+  padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px;
+}
+.ki-input{
+  border:1.5px solid var(--line);background:var(--bg-2);border-radius:18px;padding:14px 16px;
+  font-size:.97rem;color:var(--text);outline:none;font-family:inherit;
+}
+.ki-send{
+  border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+}
+.ki-typing{opacity:.8;font-style:italic}
 
-/* ══ Button Upgrade – visible, punchy, warm ══ */
-.btn, button.btn, a.btn {
-  border: none;
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%);
-  color: #fff !important;
-  padding: 13px 22px;
-  border-radius: 16px;
-  font-size: .94rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  /* rich layered shadow */
-  box-shadow:
-    0 4px 0 #a83e0c,
-    0 8px 22px rgba(180,70,10,.32),
-    inset 0 1px 0 rgba(255,255,255,.22);
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-  letter-spacing: .01em;
-  position: relative;
+/* Responsive */
+@media(max-width:1300px){
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .grid,.hero,.form-grid,.form-grid-3{grid-template-columns:1fr}
+  .scan-meta{grid-template-columns:1fr}
 }
-.btn:hover, button.btn:hover, a.btn:hover {
-  background: linear-gradient(135deg, #f99650 0%, #e06520 100%);
-  transform: translateY(-2px);
-  box-shadow:
-    0 6px 0 #a83e0c,
-    0 14px 30px rgba(180,70,10,.36),
-    inset 0 1px 0 rgba(255,255,255,.26);
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{
+    height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0;
+  }
+  .logo-wrap{
+    margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);
+    padding-right:16px;margin-right:16px;
+  }
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
+  .nav a{flex:0 1 auto;padding:10px 12px}
+  .nav-label,.sidebar-footer{display:none}
 }
-.btn:active, button.btn:active, a.btn:active {
-  transform: translateY(1px);
-  box-shadow:
-    0 2px 0 #a83e0c,
-    0 4px 12px rgba(180,70,10,.28),
-    inset 0 1px 0 rgba(255,255,255,.18);
+@media(max-width:700px){
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
 }
-
-/* Soft / secondary button */
-.btn-soft, button.btn-soft, a.btn-soft {
-  background: linear-gradient(135deg, #fff6ee 0%, #fce8d4 100%) !important;
-  color: #8a4a28 !important;
-  border: 1.5px solid #e8c4a0 !important;
-  box-shadow:
-    0 3px 0 #d4a070,
-    0 6px 18px rgba(160,90,40,.14),
-    inset 0 1px 0 rgba(255,255,255,.7) !important;
+@media(max-width:600px){
+  .main{padding:16px}
+  .stats{grid-template-columns:repeat(2,1fr);gap:12px}
+  .card,.stat{padding:18px}
+  .page-header h1{font-size:1.95rem}
+  .scanner-actions{grid-template-columns:1fr}
+  .scanner-btn{width:100%}
+  .scanner-status{flex-direction:column;align-items:stretch}
+  .scanner-pill{width:100%;justify-content:flex-start}
 }
-.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover {
-  background: linear-gradient(135deg, #fde9d4 0%, #f9d8bc 100%) !important;
-  box-shadow:
-    0 5px 0 #d4a070,
-    0 10px 24px rgba(160,90,40,.18),
-    inset 0 1px 0 rgba(255,255,255,.7) !important;
-  transform: translateY(-2px);
+@media(max-width:420px){
+  .stats{grid-template-columns:1fr}
+  .page-header h1{font-size:1.75rem}
+  .mode-badge{width:100%;justify-content:center}
 }
-
-/* mini buttons in task lists */
-.mini-btn {
-  border: 1.5px solid #e6cdb8 !important;
-  background: linear-gradient(135deg, #fffaf5 0%, #fdf0e2 100%) !important;
-  color: #7a4a28 !important;
-  padding: 7px 12px !important;
-  border-radius: 999px !important;
-  font-size: .78rem !important;
-  font-weight: 700 !important;
-  cursor: pointer;
-  transition: all .15s;
-  box-shadow: 0 2px 6px rgba(150,80,20,.12), inset 0 1px 0 rgba(255,255,255,.8) !important;
-}
-.mini-btn:hover {
-  background: linear-gradient(135deg, #fde9d4 0%, #f9d4b4 100%) !important;
-  border-color: #d4956a !important;
-  box-shadow: 0 4px 10px rgba(150,80,20,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
-  transform: translateY(-1px);
-}
-.mini-btn.delete-btn:hover {
-  background: linear-gradient(135deg, #fde8e8 0%, #fac8c8 100%) !important;
-  border-color: #e08080 !important;
-  color: #b03030 !important;
-}
-
-/* Pill mode-switch buttons */
-.mode-btn.active {
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 0 #a83e0c, 0 6px 16px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
-}
-
-/* Pill toggle (finanzbericht / historie) */
-.pill-btn.active {
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 0 #a83e0c, 0 6px 14px rgba(180,70,10,.25) !important;
-}
-
-/* CTA link on dashboard */
-.cta-link {
-  box-shadow: 0 4px 0 #a83e0c, 0 8px 22px rgba(180,70,10,.3), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-.cta-link:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #a83e0c, 0 14px 30px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24) !important;
-}
-
-/* Kid page buttons (Nunito font) */
-.quick-btn {
-  box-shadow: 0 4px 0 #a83e0c, 0 8px 20px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
-}
-.quick-btn:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #a83e0c, 0 14px 28px rgba(180,70,10,.32), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-.add-star-btn {
-  box-shadow: 0 4px 0 #a07000, 0 8px 20px rgba(180,140,0,.28) !important;
-}
-.add-star-btn:hover {
-  transform: scale(1.04) translateY(-1px) !important;
-  box-shadow: 0 6px 0 #a07000, 0 12px 26px rgba(180,140,0,.32) !important;
-}
-
-
-/* ══ Outfit Font System ══ */
-:root {
-  --font-main: "Outfit", sans-serif;
-}
-body {
-  font-family: "Outfit", sans-serif !important;
-  font-size: 16px !important;
-  line-height: 1.6 !important;
-  letter-spacing: -0.01em;
-}
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Outfit", sans-serif !important;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-h1 { font-size: 2.4rem !important; font-weight: 800 !important; }
-h2 { font-size: 1.5rem !important; font-weight: 700 !important; }
-h3 { font-size: 1.15rem !important; font-weight: 700 !important; }
-.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
-.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
-.stat .value, .pocket-amount, .stars-count {
-  font-family: "Outfit", sans-serif !important;
-}
-.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
-.pill-btn, .pill-toggle button, .mode-switch button,
-label, .field label, .form-label, .section-label,
-.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
-select, input, textarea, button, .mini-btn,
-.chip, .hero-tag, .badge, .mode-badge,
-.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
-p, span, div, li, td, th {
-  font-family: "Outfit", sans-serif !important;
-}
-/* Bigger body text */
-p, .sub, .card-sub, .body, .helper, .small-note,
-.ki-note, .mode-note, .section-note, .filter-note {
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-}
-/* Stat values bigger & bolder */
-.stat-value, .stat .value, .stat-val, .pocket-amount {
-  font-size: 2rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em;
-}
-/* Buttons rounded and bold */
-.btn, button.btn, a.btn {
-  font-weight: 800 !important;
-  font-size: 0.95rem !important;
-  letter-spacing: 0.01em;
-  border-radius: 14px !important;
-}
-/* Labels uppercase + spaced */
-.field label, .form-label, .stat-label, .stat-lbl,
-.nav-lbl, .section-label, .opt-name {
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-/* Nav sidebar items */
-.nav a, .nav-item {
-  font-weight: 700 !important;
-  font-size: 0.97rem !important;
-}
-/* Logo name display */
-.logo-name, .s-logo-text {
-  font-size: 1.25rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em;
-}
-/* Input fields */
-input, select, textarea {
-  font-size: 0.95rem !important;
-  font-weight: 500 !important;
-}
-/* Kindermodus — keep Outfit too */
-.wrap, .hero, .savings-card, .pocket-card,
-.tasks-card, .stars-banner, .quick-card,
-.kid-tab, .add-goal-btn, .quick-btn {
-  font-family: "Outfit", sans-serif !important;
-}
-
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="ki-schnecke.css">
 </head>
-<body>
+<body data-page="finanzen">
 <div class="app">
 
-<!-- ════ Sidebar ════ -->
-<aside class="sidebar">
-  <div class="logo-wrap">
-    <img src="assetsschnecke.png" alt="Haushaltsheld">
-    <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Familien-Assistent</div></div>
-  </div>
-  <div class="nav-label">Hauptmenü</div>
-  <nav class="nav">
-    <a href="index.html"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
-    <a href="finanzen.html" class="active"><span class="nav-icon">💰</span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html"><span class="nav-icon">🛒</span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon">🧹</span><span>Aufgaben</span></a>
-    <a href="familienplaner.html"><span class="nav-icon">📅</span><span>Familienplaner</span></a>
-  </nav>
-  <div class="nav-label">Extras</div>
-  <nav class="nav">
-    <a href="finanzbericht.html"><span class="nav-icon">📊</span><span>Bericht</span></a>
-    <a href="finanz_historie.html"><span class="nav-icon">📋</span><span>Historie</span></a>
-    <a href="beleg_import.html"><span class="nav-icon">📥</span><span>Belege</span></a>
-    <a href="kindermodus.html"><span class="nav-icon">⭐</span><span>Kindermodus</span></a>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="mode-switch">
-      <button class="mode-btn active" id="adminModeBtn" type="button">Eltern</button>
-      <button class="mode-btn" id="childModeBtn" type="button">Kind</button>
-    </div>
-  </div>
-</aside>
-
-<!-- ════ Main ════ -->
-<main class="main">
-  <div class="topbar">
-    <div>
-      <h1>Finanzen 💰</h1>
-      <p class="sub">Einnahmen, Fixkosten, Einkäufe und Feierlichkeiten — alles in einer verknüpften Datenbasis.</p>
-    </div>
-    <div class="actions">
-      <a class="btn btn-soft" href="finanzbericht.html">📊 Bericht</a>
-      <a class="btn btn-soft" href="finanz_historie.html">📋 Historie</a>
-      <a class="btn btn-soft" href="beleg_import.html">📥 Beleg</a>
-      <span class="badge" id="modeBadge">🛠️ Elternmodus aktiv</span>
-    </div>
-  </div>
-
-  <section class="hero">
-    <div>
-      <h2>Deine Finanzzentrale</h2>
-      <p>Hier landen Einnahmen, Fixkosten, Einkäufe, digitale Belege und Feierlichkeiten. Alles wird in einer Datenbasis gespeichert und in Historie und Bericht sichtbar.</p>
-      <div class="hero-tags">
-        <span class="hero-tag">🔗 Verknüpft</span>
-        <span class="hero-tag">🎉 Feierlichkeiten</span>
-        <span class="hero-tag">🧠 KI vorbereitet</span>
+  <aside class="sidebar">
+    <div class="logo-wrap">
+      <img src="assetsschnecke.png" alt="Haushaltsheld">
+      <div>
+        <div class="logo-name">Haushaltsheld</div>
+        <div class="logo-sub">Dein Familien-Assistent</div>
       </div>
     </div>
-    <div class="hero-side">
-      <div class="mini"><strong>Feierlichkeiten</strong><span>Mit Anlass-Feld wie Geburtstag Mia, Weihnachten oder Sommerfest.</span></div>
-      <div class="mini"><strong>Verknüpfung</strong><span>Einträge erscheinen automatisch in Finanzbericht und Finanz-Historie.</span></div>
+
+    <div class="nav-label">Hauptmenü</div>
+    <nav class="nav">
+      <a href="index.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10.5 12 3l9 7.5"></path>
+            <path d="M5 9.5V21h14V9.5"></path>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </a>
+      <a href="finanzen.html" class="active">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2"></rect>
+            <path d="M16 12h.01"></path>
+            <path d="M3 10h18"></path>
+          </svg>
+        </span>
+        <span>Finanzen</span>
+      </a>
+      <a href="einkaufsliste.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="20" r="1"></circle>
+            <circle cx="18" cy="20" r="1"></circle>
+            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
+          </svg>
+        </span>
+        <span>Einkäufe</span>
+      </a>
+      <a href="aufgaben.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </span>
+        <span>Aufgaben</span>
+      </a>
+      <a href="familienplaner.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <path d="M16 2v4M8 2v4M3 10h18"></path>
+          </svg>
+        </span>
+        <span>Familienplaner</span>
+      </a>
+    </nav>
+
+    <div class="nav-label">Extras</div>
+    <nav class="nav">
+      <a href="finanzbericht.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"></path>
+            <path d="M7 14l4-4 3 3 5-7"></path>
+          </svg>
+        </span>
+        <span>Bericht</span>
+      </a>
+      <a href="finanz_historie.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8v5l3 2"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+          </svg>
+        </span>
+        <span>Historie</span>
+      </a>
+      <a href="beleg_import.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12"></path>
+            <path d="m7 10 5 5 5-5"></path>
+            <path d="M5 21h14"></path>
+          </svg>
+        </span>
+        <span>Belege</span>
+      </a>
+      <a href="kindermodus.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
+          </svg>
+        </span>
+        <span>Kindermodus</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="mode-switch">
+        <button class="mode-btn active" id="adminViewBtn" type="button">Eltern</button>
+        <button class="mode-btn" id="childViewBtn" type="button">Kind</button>
+      </div>
     </div>
-  </section>
+  </aside>
 
-  <section class="stats hide-for-child">
-    <div class="stat"><div class="stat-icon">💚</div><h3>Einnahmen</h3><div class="value plus" id="statIncome">0 €</div><p>alle Einnahmen</p></div>
-    <div class="stat"><div class="stat-icon">🏠</div><h3>Fixkosten</h3><div class="value minus" id="statFixed">0 €</div><p>Miete, Strom, Abos</p></div>
-    <div class="stat"><div class="stat-icon">🛒</div><h3>Einkauf</h3><div class="value minus" id="statShopping">0 €</div><p>inkl. Einkaufsliste</p></div>
-    <div class="stat"><div class="stat-icon">🎉</div><h3>Feierlichkeiten</h3><div class="value minus" id="statParty">0 €</div><p>Feier-Ausgaben</p></div>
-    <div class="stat"><div class="stat-icon">📊</div><h3>Ergebnis</h3><div class="value" id="statResult">0 €</div><p>Einnahmen minus Ausgaben</p></div>
-  </section>
-
-  <section class="card child-only">
-    <h2>🌱 Deine Übersicht</h2>
-    <div class="list" id="childList"></div>
-  </section>
-
-  <div class="grid">
-    <div>
-      <section class="card">
-        <h2>➕ Neuer Finanz-Eintrag</h2>
-        <p class="card-sub">Feierlichkeiten haben ein eigenes Anlass-Feld und können dadurch nach Geburtstag, Weihnachten oder Sommerfest gefiltert werden.</p>
-
-        <div class="form-grid">
-          <div class="field"><label for="entryTitle">Titel</label><input id="entryTitle" type="text" placeholder="z. B. Warmmiete, Geburtstagsdeko, Gehalt"/></div>
-          <div class="field"><label for="entryDate">Datum</label><input id="entryDate" type="date"/></div>
-        </div>
-        <div class="form-grid-3">
-          <div class="field">
-            <label for="entryType">Typ</label>
-            <select id="entryType">
-              <option value="Ausgabe">Ausgabe</option>
-              <option value="Einnahme">Einnahme</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="entryCategory">Kategorie</label>
-            <select id="entryCategory">
-              <option>Gehalt</option><option>Miete</option><option>Strom</option>
-              <option>Internet</option><option>Versicherung</option><option>Abo</option>
-              <option>Taxi / Uber</option><option>Google / Apple</option>
-              <option>Taschengeld</option><option>Geldgeschenke</option>
-              <option>Freizeit</option><option>Feierlichkeiten</option><option>Sonstiges</option>
-            </select>
-          </div>
-          <div class="field"><label for="entryAmount">Betrag (€)</label><input id="entryAmount" type="number" step="0.01" min="0" placeholder="0.00"/></div>
-        </div>
-        <div class="form-grid-3">
-          <div class="field">
-            <label for="entryPerson">Person</label>
-            <select id="entryPerson"><option>Allgemein</option><option>Monja</option><option>Michael</option><option>Kind 1</option><option>Kind 2</option></select>
-          </div>
-          <div class="field">
-            <label for="entryPayment">Zahlungsart</label>
-            <select id="entryPayment"><option>Überweisung</option><option>Karte</option><option>Bar</option><option>PayPal</option><option>Lastschrift</option><option>Online</option><option>Klarna</option></select>
-          </div>
-          <div class="field">
-            <label for="entryRecurring">Wiederkehrend</label>
-            <select id="entryRecurring"><option value="false">Nein</option><option value="true">Ja</option></select>
-          </div>
-        </div>
-        <div class="field"><label for="entryOccasion">Anlass / Event</label><input id="entryOccasion" type="text" placeholder="z. B. Geburtstag Mia, Weihnachten 2026"/></div>
-        <div class="field"><label for="entryText">Beschreibung</label><textarea id="entryText" placeholder="z. B. Deko und Snacks für Geburtstag, monatliche Warmmiete oder Gehaltseingang"></textarea></div>
-
-        <div class="btn-row">
-          <button class="btn" id="saveEntryBtn" type="button">Eintrag speichern</button>
-          <button class="btn btn-soft" id="fillExampleBtn" type="button">Feier-Beispiel</button>
-        </div>
-        <div class="helper">
-          Automatische Kategorien: Gehalt, Taschengeld, Geldgeschenke → <strong>Einnahme</strong> |
-          Miete, Strom, Internet, Versicherung, Abo → <strong>Fixkosten</strong> |
-          Taxi/Uber → <strong>Mobilität</strong> | Feierlichkeiten → <strong>Feierlichkeiten</strong>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>🧾 Letzte Buchungen</h2>
-        <div class="list" id="recentBookingsList"></div>
-      </section>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>
+          <span class="page-title-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="6" width="18" height="12" rx="2"></rect>
+              <path d="M16 12h.01"></path>
+              <path d="M3 10h18"></path>
+            </svg>
+          </span>
+          <span>Finanzen</span>
+        </h1>
+        <p>Finale Finanzseite mit Anlass-System für Feierlichkeiten, direkter Verbindung zu Historie, Bericht und Einkauf sowie Scanner-Bereich für Belege.</p>
+      </div>
+      <div class="header-right">
+        <a class="btn btn-soft" href="finanzbericht.html"><span>Bericht</span></a>
+        <a class="btn btn-soft" href="finanz_historie.html"><span>Historie</span></a>
+        <a class="btn btn-soft" href="beleg_import.html"><span>Beleg importieren</span></a>
+        <span class="mode-badge" id="modeBadge">Elternmodus aktiv</span>
+      </div>
     </div>
 
-    <div>
-      <section class="card">
-        <h2>🎉 Feierlichkeiten im Blick</h2>
-        <div class="list" id="partyList"></div>
-      </section>
-      <section class="card">
-        <h2>✨ KI-Hinweise</h2>
-        <div class="list" id="tipsList"></div>
-      </section>
-    </div>
-  </div>
-</main>
+    <section class="hero">
+      <div>
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3h18v18H3z"></path>
+              <path d="M8 12h8"></path>
+              <path d="M12 8v8"></path>
+            </svg>
+          </span>
+          <span>Deine Finanzzentrale</span>
+        </h2>
+        <p>Hier landen Einnahmen, Fixkosten, Einkäufe, digitale Belege und Feierlichkeiten. Alles wird in derselben Datenbasis gespeichert und dadurch in Historie und Bericht sichtbar.</p>
+        <div class="hero-tags">
+          <span class="hero-tag">Verknüpft</span>
+          <span class="hero-tag accent">Feierlichkeiten</span>
+          <span class="hero-tag">KI vorbereitet</span>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="mini"><strong>Feierlichkeiten</strong><span>Mit Anlass-Feld wie Geburtstag Mia, Weihnachten 2026 oder Sommerfest.</span></div>
+        <div class="mini"><strong>Verknüpfung</strong><span>Einträge erscheinen automatisch in Finanzbericht und Finanz-Historie.</span></div>
+      </div>
+    </section>
+
+    <section class="stats hide-for-child">
+      <div class="stat">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1v22"></path>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <h3>Einnahmen</h3>
+        <div class="value plus" id="statIncome">0 €</div>
+        <p>alle Einnahmen</p>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18"></path>
+            <path d="M5 21V7l7-4 7 4v14"></path>
+            <path d="M9 9h6"></path>
+          </svg>
+        </div>
+        <h3>Fixkosten</h3>
+        <div class="value minus" id="statFixed">0 €</div>
+        <p>Miete, Strom, Internet, Abo</p>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="20" r="1"></circle>
+            <circle cx="18" cy="20" r="1"></circle>
+            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
+          </svg>
+        </div>
+        <h3>Einkauf</h3>
+        <div class="value minus" id="statShopping">0 €</div>
+        <p>inkl. Einkaufsliste</p>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4"></path>
+            <path d="M12 18v4"></path>
+            <path d="M4.93 4.93l2.83 2.83"></path>
+            <path d="M16.24 16.24l2.83 2.83"></path>
+            <path d="M2 12h4"></path>
+            <path d="M18 12h4"></path>
+            <path d="M4.93 19.07l2.83-2.83"></path>
+            <path d="M16.24 7.76l2.83-2.83"></path>
+          </svg>
+        </div>
+        <h3>Feierlichkeiten</h3>
+        <div class="value minus" id="statParty">0 €</div>
+        <p>eigene Feier-Ausgaben</p>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"></path>
+            <path d="M7 14l4-4 3 3 5-7"></path>
+          </svg>
+        </div>
+        <h3>Ergebnis</h3>
+        <div class="value" id="statResult">0 €</div>
+        <p>Einnahmen minus Ausgaben</p>
+      </div>
+    </section>
+
+    <section class="card child-only">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20"></path>
+            <path d="m5 9 7-7 7 7"></path>
+          </svg>
+        </span>
+        <span>Kinderübersicht</span>
+      </h2>
+      <div class="list" id="childList"></div>
+    </section>
+
+    <section class="grid">
+      <div>
+        <section class="card">
+          <h2>
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+            </span>
+            <span>Neuer Finanz-Eintrag</span>
+          </h2>
+          <p class="card-sub">Feierlichkeiten haben ein eigenes Anlass-Feld und können dadurch später sauber von Weihnachten, Geburtstagen oder Sommerfesten getrennt ausgewertet werden.</p>
+
+          <div class="form-grid">
+            <div class="field"><label for="entryTitle">Titel</label><input id="entryTitle" type="text" placeholder="z. B. Warmmiete, Geburtstagsdeko, Gehalt" /></div>
+            <div class="field"><label for="entryDate">Datum</label><input id="entryDate" type="date" /></div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="field"><label for="entryType">Typ</label><select id="entryType"><option value="Ausgabe">Ausgabe</option><option value="Einnahme">Einnahme</option></select></div>
+            <div class="field">
+              <label for="entryCategory">Kategorie</label>
+              <select id="entryCategory">
+                <option>Gehalt</option>
+                <option>Miete</option>
+                <option>Strom</option>
+                <option>Internet</option>
+                <option>Versicherung</option>
+                <option>Abo</option>
+                <option>Taxi / Uber</option>
+                <option>Google / Apple</option>
+                <option>Taschengeld</option>
+                <option>Geldgeschenke</option>
+                <option>Freizeit</option>
+                <option>Feierlichkeiten</option>
+                <option>Sonstiges</option>
+              </select>
+            </div>
+            <div class="field"><label for="entryAmount">Betrag</label><input id="entryAmount" type="number" step="0.01" placeholder="0.00" /></div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="field"><label for="entryPerson">Person</label><select id="entryPerson"><option>Allgemein</option><option>Monja</option><option>Michael</option><option>Kind 1</option><option>Kind 2</option></select></div>
+            <div class="field"><label for="entryPayment">Zahlungsmethode</label><select id="entryPayment"><option>Überweisung</option><option>Karte</option><option>Bar</option><option>PayPal</option><option>Lastschrift</option><option>Online</option><option>Klarna</option></select></div>
+            <div class="field"><label for="entryRecurring">Wiederkehrend</label><select id="entryRecurring"><option value="true">Ja</option><option value="false">Nein</option></select></div>
+          </div>
+
+          <div class="field"><label for="entryOccasion">Anlass / Event</label><input id="entryOccasion" type="text" placeholder="z. B. Geburtstag Mia, Weihnachten 2026, Sommerfest" /></div>
+          <div class="field"><label for="entryText">Beschreibung</label><textarea id="entryText" placeholder="z. B. Deko und Snacks für Geburtstag, monatliche Warmmiete oder Gehaltseingang"></textarea></div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn" id="saveEntryBtn" type="button">Eintrag speichern</button>
+            <button class="btn btn-soft" id="fillExampleBtn" type="button"><span>Feier-Beispiel</span></button>
+          </div>
+
+          <div class="helper">
+            Automatische Hauptkategorien: Gehalt, Taschengeld und Geldgeschenke → <strong>Einnahme</strong>,
+            Miete, Strom, Internet, Versicherung und Abo → <strong>Fixkosten</strong>,
+            Taxi / Uber → <strong>Mobilität</strong>,
+            Google / Apple → <strong>Online</strong>,
+            Feierlichkeiten → <strong>Feierlichkeiten</strong>.
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7h16"></path>
+                <path d="M7 3h10"></path>
+                <rect x="5" y="7" width="14" height="14" rx="2"></rect>
+                <circle cx="12" cy="14" r="3"></circle>
+              </svg>
+            </span>
+            <span>Scanner & Schnell-Erfassung</span>
+          </h2>
+          <p class="card-sub">Kassenbon fotografieren, Beleg hochladen oder QR-/Barcode-Workflow vorbereiten. Danach kannst du Scan-Daten direkt in das Formular übernehmen.</p>
+
+          <div class="scanner-box">
+            <div class="scanner-actions">
+              <button class="scanner-btn" id="openCameraBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7h4l2-2h4l2 2h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <span>Foto aufnehmen</span>
+              </button>
+
+              <button class="scanner-btn" id="uploadReceiptBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3v12"></path>
+                  <path d="m7 10 5 5 5-5"></path>
+                  <path d="M5 21h14"></path>
+                </svg>
+                <span>Kassenbon hochladen</span>
+              </button>
+
+              <button class="scanner-btn" id="scanQrBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8V3h5"></path>
+                  <path d="M16 3h5v5"></path>
+                  <path d="M21 16v5h-5"></path>
+                  <path d="M8 21H3v-5"></path>
+                  <rect x="7" y="7" width="10" height="10" rx="2"></rect>
+                </svg>
+                <span>QR / Barcode scannen</span>
+              </button>
+
+              <button class="scanner-btn" id="applyScanBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+                <span>Scan übernehmen</span>
+              </button>
+            </div>
+
+            <input class="hidden-input" id="cameraInput" type="file" accept="image/*" capture="environment" />
+            <input class="hidden-input" id="receiptInput" type="file" accept="image/*,.pdf" />
+            <input class="hidden-input" id="qrInput" type="file" accept="image/*" capture="environment" />
+
+            <div class="scanner-status">
+              <div class="scanner-pill" id="scanStatus">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 8v4l3 3"></path>
+                </svg>
+                <span>Kein Beleg ausgewählt</span>
+              </div>
+              <div class="scanner-pill" id="scanType">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 5h18"></path>
+                  <path d="M3 12h18"></path>
+                  <path d="M3 19h18"></path>
+                </svg>
+                <span>Scan-Typ: offen</span>
+              </div>
+              <div class="scanner-pill" id="scanSource">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
+                </svg>
+                <span>Quelle: —</span>
+              </div>
+            </div>
+
+            <div class="scanner-preview">
+              <strong>Scanner-Vorschau</strong>
+              <p id="scanPreviewText">Sobald du ein Bild oder einen Beleg auswählst, erscheint hier eine Vorschau. Mit „Scan übernehmen“ füllst du das Formular schneller vor.</p>
+              <img id="scanPreviewImage" alt="Scanner Vorschau" />
+            </div>
+
+            <div class="scan-meta">
+              <div class="scan-card">
+                <label for="scanMerchant">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9.5 5 4h14l2 5.5"></path>
+                    <path d="M4 9h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9z"></path>
+                  </svg>
+                  Händler
+                </label>
+                <input id="scanMerchant" type="text" placeholder="z. B. REWE, dm, Amazon" />
+              </div>
+
+              <div class="scan-card">
+                <label for="scanAmount">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1v22"></path>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                  Betrag
+                </label>
+                <div class="scan-euro">
+                  <span class="euro-badge">€</span>
+                  <input id="scanAmount" type="number" step="0.01" placeholder="0,00" />
+                </div>
+              </div>
+
+              <div class="scan-card">
+                <label for="scanCode">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 7v10"></path>
+                    <path d="M7 7v10"></path>
+                    <path d="M12 7v10"></path>
+                    <path d="M16 7v10"></path>
+                    <path d="M20 7v10"></path>
+                  </svg>
+                  QR / Code
+                </label>
+                <input id="scanCode" type="text" placeholder="optional" />
+              </div>
+            </div>
+
+            <div class="scanner-note">
+              Kamera, Upload, Foto-Vorschau und QR-/Barcode-Vorbereitung sind eingebaut. Die spätere OCR- oder echte Code-Auslesung kann direkt an diesen Bereich angeschlossen werden.
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12"></path>
+                <path d="M9 3v3"></path>
+                <path d="M15 3v3"></path>
+                <rect x="4" y="6" width="16" height="15" rx="2"></rect>
+                <path d="M8 11h8"></path>
+                <path d="M8 15h5"></path>
+              </svg>
+            </span>
+            <span>Letzte Buchungen</span>
+          </h2>
+          <div class="list" id="recentBookingsList"></div>
+        </section>
+      </div>
+
+      <div>
+        <section class="card">
+          <h2>
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4"></path>
+                <path d="M12 18v4"></path>
+                <path d="M4.93 4.93l2.83 2.83"></path>
+                <path d="M16.24 16.24l2.83 2.83"></path>
+                <path d="M2 12h4"></path>
+                <path d="M18 12h4"></path>
+                <path d="M4.93 19.07l2.83-2.83"></path>
+                <path d="M16.24 7.76l2.83-2.83"></path>
+              </svg>
+            </span>
+            <span>Feierlichkeiten im Blick</span>
+          </h2>
+          <div class="list" id="partyList"></div>
+        </section>
+
+        <section class="card">
+          <h2>
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
+              </svg>
+            </span>
+            <span>KI-Hinweise</span>
+          </h2>
+          <div class="list" id="tipsList"></div>
+        </section>
+      </div>
+    </section>
+  </main>
 </div>
 
-<script>
-// ── Helpers ──────────────────────────────────────────────────────
-function getTodayDate(){ const n=new Date(),o=n.getTimezoneOffset(); return new Date(n.getTime()-o*60000).toISOString().split("T")[0]; }
-function uid(){ return Date.now()+Math.floor(Math.random()*9999); }
-function fmt(v){ return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(v||0); }
-function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assetsschnecke.png" alt="">
+  <span class="ki-fab-label">KI</span>
+</button>
 
-// ── Data ──────────────────────────────────────────────────────────
-function getDefaultFinance(){ return [
-  {id:1,date:"2026-03-01",category:"Gehalt",mainCategory:"Einnahme",title:"Gehalt Monja",text:"monatlicher Geldeingang",payment:"Überweisung",amount:1850,type:"Einnahme",person:"Monja",recurring:true,occasion:""},
-  {id:2,date:"2026-03-03",category:"Miete",mainCategory:"Fixkosten",title:"Warmmiete",text:"monatliche Miete",payment:"Überweisung",amount:720,type:"Ausgabe",person:"Allgemein",recurring:true,occasion:""},
-  {id:3,date:"2026-03-07",category:"Abo",mainCategory:"Fixkosten",title:"Netflix",text:"monatlich",payment:"Lastschrift",amount:13.99,type:"Ausgabe",person:"Allgemein",recurring:true,occasion:""},
-  {id:4,date:"2026-03-14",category:"Feierlichkeiten",mainCategory:"Feierlichkeiten",title:"Geburtstagsdeko",text:"Deko und Kerzen",payment:"Karte",amount:24.90,type:"Ausgabe",person:"Allgemein",recurring:false,occasion:"Geburtstag Mia"}
-]; }
-function getFinanceEntries(){ return JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2")||"null") || getDefaultFinance(); }
-function saveFinanceEntries(e){ localStorage.setItem("haushaltsheld_finance_entries_v2",JSON.stringify(e)); }
-function detectMainCategory(cat){
-  if(["Gehalt","Taschengeld","Geldgeschenke"].includes(cat)) return "Einnahme";
-  if(["Miete","Strom","Internet","Versicherung","Abo"].includes(cat)) return "Fixkosten";
-  if(cat==="Taxi / Uber") return "Mobilität";
-  if(cat==="Google / Apple") return "Online";
-  if(cat==="Freizeit") return "Freizeit";
-  if(cat==="Feierlichkeiten") return "Feierlichkeiten";
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <p id="kiContextText">Ich helfe dir bei Einnahmen, Ausgaben, Feierlichkeiten und Belegen.</p>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+  </div>
+
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo! Ich bin deine Haushaltsheld KI für Finanzen.</div>
+  </div>
+
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Frag mich etwas zu deinen Finanzen..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+
+<script>
+let lastScannedFile = null;
+let lastScannedSource = "";
+let lastScannedType = "";
+let lastScannedCode = "";
+let lastScanFingerprint = "";
+let currentScanSourceKey = "";
+
+function getTodayDate(){
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  return new Date(now.getTime() - offset * 60000).toISOString().split("T")[0];
+}
+function uid(){
+  return Date.now() + Math.floor(Math.random() * 999);
+}
+function formatEuro(value){
+  return new Intl.NumberFormat("de-DE",{
+    style:"currency",
+    currency:"EUR",
+    minimumFractionDigits:0,
+    maximumFractionDigits:2
+  }).format(value || 0);
+}
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function getDefaultFinance(){
+  return [
+    {id:1,date:"2026-03-01",category:"Gehalt",mainCategory:"Einnahme",title:"Gehalt Monja",text:"monatlicher Geldeingang",payment:"Überweisung",amount:1850,type:"Einnahme",person:"Monja",recurring:true,occasion:""},
+    {id:2,date:"2026-03-03",category:"Miete",mainCategory:"Fixkosten",title:"Warmmiete",text:"monatliche Miete",payment:"Überweisung",amount:720,type:"Ausgabe",person:"Allgemein",recurring:true,occasion:""},
+    {id:3,date:"2026-03-07",category:"Abo",mainCategory:"Fixkosten",title:"Netflix",text:"monatlich",payment:"Lastschrift",amount:13.99,type:"Ausgabe",person:"Allgemein",recurring:true,occasion:""},
+    {id:4,date:"2026-03-14",category:"Feierlichkeiten",mainCategory:"Feierlichkeiten",title:"Geburtstagsdeko",text:"Deko und Kerzen",payment:"Karte",amount:24.90,type:"Ausgabe",person:"Allgemein",recurring:false,occasion:"Geburtstag Mia"}
+  ];
+}
+function getFinanceEntries(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "null") || getDefaultFinance();
+}
+function saveFinanceEntries(entries){
+  localStorage.setItem("haushaltsheld_finance_entries_v2", JSON.stringify(entries));
+}
+function getShoppingEntries(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "[]");
+}
+function getImportKeys(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_import_keys_v1") || "[]");
+}
+function saveImportKeys(keys){
+  localStorage.setItem("haushaltsheld_import_keys_v1", JSON.stringify(keys.slice(-200)));
+}
+function makeImportKey(source, date, total, payment, items){
+  return [
+    (source || "").trim().toLowerCase(),
+    date || "",
+    Number(total || 0).toFixed(2),
+    (payment || "").trim().toLowerCase(),
+    (items || "").trim().toLowerCase().replace(/\s+/g," ")
+  ].join("|");
+}
+function buildSourceKey(type, importKey){
+  return type + "|" + importKey;
+}
+function makeScanFingerprint(file, sourceLabel){
+  if(!file) return "";
+  return [
+    sourceLabel || "",
+    file.name || "",
+    file.size || 0,
+    file.type || "",
+    file.lastModified || 0
+  ].join("|");
+}
+function detectMainCategory(category){
+  if(["Gehalt","Taschengeld","Geldgeschenke"].includes(category)) return "Einnahme";
+  if(["Miete","Strom","Internet","Versicherung","Abo"].includes(category)) return "Fixkosten";
+  if(category === "Taxi / Uber") return "Mobilität";
+  if(category === "Google / Apple") return "Online";
+  if(category === "Freizeit") return "Freizeit";
+  if(category === "Feierlichkeiten") return "Feierlichkeiten";
   return "Sonstiges";
 }
-
-// ── Form ──────────────────────────────────────────────────────────
+function resetScannerState(){
+  lastScannedFile = null;
+  lastScannedSource = "";
+  lastScannedType = "";
+  lastScannedCode = "";
+  lastScanFingerprint = "";
+  currentScanSourceKey = "";
+}
 function fillExample(){
-  document.getElementById("entryTitle").value="Geburtstagsdeko";
-  document.getElementById("entryDate").value=getTodayDate();
-  document.getElementById("entryType").value="Ausgabe";
-  document.getElementById("entryCategory").value="Feierlichkeiten";
-  document.getElementById("entryAmount").value="34.90";
-  document.getElementById("entryPerson").value="Allgemein";
-  document.getElementById("entryPayment").value="Karte";
-  document.getElementById("entryRecurring").value="false";
-  document.getElementById("entryOccasion").value="Geburtstag Mia";
-  document.getElementById("entryText").value="Deko, Servietten und kleine Tischdeko";
+  document.getElementById("entryTitle").value = "Geburtstagsdeko";
+  document.getElementById("entryDate").value = getTodayDate();
+  document.getElementById("entryType").value = "Ausgabe";
+  document.getElementById("entryCategory").value = "Feierlichkeiten";
+  document.getElementById("entryAmount").value = "34.90";
+  document.getElementById("entryPerson").value = "Allgemein";
+  document.getElementById("entryPayment").value = "Karte";
+  document.getElementById("entryRecurring").value = "false";
+  document.getElementById("entryOccasion").value = "Geburtstag Mia";
+  document.getElementById("entryText").value = "Deko, Servietten und kleine Tischdeko";
+  currentScanSourceKey = "";
 }
 function clearForm(){
-  document.getElementById("entryTitle").value="";
-  document.getElementById("entryDate").value=getTodayDate();
-  document.getElementById("entryType").value="Ausgabe"; // FIX: default to Ausgabe (neutral)
-  document.getElementById("entryCategory").value="Sonstiges"; // FIX: was "Gehalt" but type was "Ausgabe" — contradiction fixed
-  document.getElementById("entryAmount").value="";
-  document.getElementById("entryPerson").value="Allgemein";
-  document.getElementById("entryPayment").value="Karte";
-  document.getElementById("entryRecurring").value="false";
-  document.getElementById("entryOccasion").value="";
-  document.getElementById("entryText").value="";
+  document.getElementById("entryTitle").value = "";
+  document.getElementById("entryDate").value = getTodayDate();
+  document.getElementById("entryType").value = "Ausgabe";
+  document.getElementById("entryCategory").value = "Gehalt";
+  document.getElementById("entryAmount").value = "";
+  document.getElementById("entryPerson").value = "Allgemein";
+  document.getElementById("entryPayment").value = "Überweisung";
+  document.getElementById("entryRecurring").value = "false";
+  document.getElementById("entryOccasion").value = "";
+  document.getElementById("entryText").value = "";
+  currentScanSourceKey = "";
+}
+function financeEntryExists(importKey, sourceKey){
+  const financeEntries = getFinanceEntries();
+  const shoppingEntries = getShoppingEntries();
+  return financeEntries.some(entry => entry.importKey === importKey || (sourceKey && (entry.sourceKey || "") === sourceKey))
+    || shoppingEntries.some(entry => entry.importKey === importKey || (sourceKey && (entry.sourceKey || "") === sourceKey));
 }
 function addEntry(){
-  const title=document.getElementById("entryTitle").value.trim();
-  const date=document.getElementById("entryDate").value;
-  const category=document.getElementById("entryCategory").value;
-  const amount=parseFloat(document.getElementById("entryAmount").value);
-  const type=document.getElementById("entryType").value;
-  const person=document.getElementById("entryPerson").value;
-  const payment=document.getElementById("entryPayment").value;
-  const recurring=document.getElementById("entryRecurring").value==="true";
-  const occasion=document.getElementById("entryOccasion").value.trim();
-  const text=document.getElementById("entryText").value.trim();
-  // Validation
-  if(!title){alert("Bitte einen Titel eingeben.");return;}
-  if(!date){alert("Bitte ein Datum auswählen.");return;}
-  if(Number.isNaN(amount)||amount<0){alert("Bitte einen gültigen Betrag (≥ 0) eingeben.");return;}
-  const entries=getFinanceEntries();
-  entries.push({id:uid(),date,category,mainCategory:detectMainCategory(category),title,text,payment,amount,type,person,recurring,occasion});
+  const title = document.getElementById("entryTitle").value.trim();
+  const date = document.getElementById("entryDate").value;
+  const category = document.getElementById("entryCategory").value;
+  const amount = parseFloat(document.getElementById("entryAmount").value);
+  const type = document.getElementById("entryType").value;
+  const person = document.getElementById("entryPerson").value;
+  const payment = document.getElementById("entryPayment").value;
+  const recurring = document.getElementById("entryRecurring").value === "true";
+  const occasion = document.getElementById("entryOccasion").value.trim();
+  const text = document.getElementById("entryText").value.trim();
+
+  if(!title || !date || Number.isNaN(amount)){
+    alert("Bitte Titel, Datum und Betrag ausfüllen.");
+    return;
+  }
+
+  let importKey = "";
+  let sourceKey = "";
+
+  if(currentScanSourceKey || lastScanFingerprint){
+    importKey = makeImportKey(title, date, amount, payment, text || title);
+    sourceKey = currentScanSourceKey || buildSourceKey("finance", importKey);
+    const existingKeys = getImportKeys();
+
+    if(existingKeys.includes(importKey) || financeEntryExists(importKey, sourceKey)){
+      alert("Dieser Beleg wurde bereits übernommen und würde sonst doppelt gezählt werden.");
+      return;
+    }
+
+    existingKeys.push(importKey);
+    saveImportKeys(existingKeys);
+  }
+
+  const entries = getFinanceEntries();
+  entries.push({
+    id:uid(),
+    date,
+    category,
+    mainCategory:detectMainCategory(category),
+    title,
+    text,
+    payment,
+    amount,
+    type,
+    person,
+    recurring,
+    occasion,
+    ...(importKey ? {importKey} : {}),
+    ...(sourceKey ? {sourceKey} : {})
+  });
+
   saveFinanceEntries(entries);
   renderAll();
   clearForm();
-  alert("Eintrag gespeichert ✅");
+  resetScannerState();
+  alert("Eintrag gespeichert");
 }
-
-// ── Render ──────────────────────────────────────────────────────────
 function renderAll(){
-  const entries=[...getFinanceEntries()].sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const shopping=JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2")||"[]").reduce((s,e)=>s+Number(e.amount||0),0);
-  const income=entries.filter(e=>e.type==="Einnahme").reduce((s,e)=>s+Number(e.amount||0),0);
-  const fixed=entries.filter(e=>e.mainCategory==="Fixkosten").reduce((s,e)=>s+Number(e.amount||0),0);
-  const party=entries.filter(e=>e.mainCategory==="Feierlichkeiten"||e.category==="Feierlichkeiten").reduce((s,e)=>s+Number(e.amount||0),0);
-  const expenses=entries.filter(e=>e.type==="Ausgabe").reduce((s,e)=>s+Number(e.amount||0),0)+shopping;
-  const result=income-expenses;
+  const entries = [...getFinanceEntries()].sort((a,b)=>new Date(b.date) - new Date(a.date));
+  const shopping = getShoppingEntries().reduce((sum,e)=>sum + Number(e.amount || 0),0);
+  const income = entries.filter(e=>e.type === "Einnahme").reduce((sum,e)=>sum + Number(e.amount || 0),0);
+  const fixed = entries.filter(e=>e.mainCategory === "Fixkosten").reduce((sum,e)=>sum + Number(e.amount || 0),0);
+  const party = entries.filter(e=>e.mainCategory === "Feierlichkeiten" || e.category === "Feierlichkeiten").reduce((sum,e)=>sum + Number(e.amount || 0),0);
+  const expenses = entries.filter(e=>e.type === "Ausgabe").reduce((sum,e)=>sum + Number(e.amount || 0),0) + shopping;
 
-  document.getElementById("statIncome").textContent=fmt(income);
-  document.getElementById("statFixed").textContent=fmt(fixed);
-  document.getElementById("statShopping").textContent=fmt(shopping);
-  document.getElementById("statParty").textContent=fmt(party);
-  const rEl=document.getElementById("statResult");
-  rEl.textContent=fmt(result);
-  rEl.className="value "+(result>=0?"plus":"minus");
+  document.getElementById("statIncome").textContent = formatEuro(income);
+  document.getElementById("statFixed").textContent = formatEuro(fixed);
+  document.getElementById("statShopping").textContent = formatEuro(shopping);
+  document.getElementById("statParty").textContent = formatEuro(party);
 
-  document.getElementById("recentBookingsList").innerHTML=entries.length
-    ? entries.slice(0,6).map(e=>`
+  const resultEl = document.getElementById("statResult");
+  const result = income - expenses;
+  resultEl.textContent = formatEuro(result);
+  resultEl.className = "value " + (result >= 0 ? "plus" : "minus");
+
+  document.getElementById("recentBookingsList").innerHTML = entries.length
+    ? entries.slice(0,6).map(e => `
       <div class="item">
-        <div><strong>${esc(e.title)}</strong><p>${esc(e.category)} · ${new Date(e.date+"T12:00:00").toLocaleDateString("de-DE")} · ${esc(e.payment)}${e.occasion?" · "+esc(e.occasion):""}</p></div>
-        <div class="amount ${e.type==="Einnahme"?"plus":"minus"}">${e.type==="Einnahme"?"+":"–"} ${fmt(e.amount)}</div>
-      </div>`).join("")
+        <div>
+          <strong>${escapeHtml(e.title)}</strong>
+          <p>${escapeHtml(e.category)} · ${new Date(e.date + "T12:00:00").toLocaleDateString("de-DE")} · ${escapeHtml(e.payment)}${e.occasion ? " · " + escapeHtml(e.occasion) : ""}</p>
+        </div>
+        <div class="amount ${e.type === "Einnahme" ? "plus" : "minus"}">${e.type === "Einnahme" ? "+" : "-"} ${formatEuro(e.amount)}</div>
+      </div>
+    `).join("")
     : `<div class="item"><div><strong>Noch keine Buchungen</strong><p>Sobald du speicherst, erscheint der Verlauf hier.</p></div><div class="amount info">—</div></div>`;
 
-  const partyEntries=entries.filter(e=>e.mainCategory==="Feierlichkeiten"||e.category==="Feierlichkeiten");
-  document.getElementById("partyList").innerHTML=partyEntries.length
-    ? partyEntries.slice(0,6).map(e=>`
+  const partyEntries = entries.filter(e=>e.mainCategory === "Feierlichkeiten" || e.category === "Feierlichkeiten");
+  document.getElementById("partyList").innerHTML = partyEntries.length
+    ? partyEntries.slice(0,6).map(e => `
       <div class="item">
-        <div><strong>${esc(e.title)}</strong><p>${esc(e.occasion||"ohne Anlass")} · ${esc(e.text||"Feier-Ausgabe")}</p></div>
-        <div class="amount minus">– ${fmt(e.amount)}</div>
-      </div>`).join("")
-    : `<div class="item"><div><strong>Noch keine Feierlichkeiten</strong><p>Sobald du Geburtstage, Weihnachten oder Feste erfasst, erscheinen sie hier.</p></div><div class="amount info">🎉</div></div>`;
+        <div>
+          <strong>${escapeHtml(e.title)}</strong>
+          <p>${escapeHtml(e.occasion || "ohne Anlass")} · ${escapeHtml(e.text || "Feier-Ausgabe")}</p>
+        </div>
+        <div class="amount minus">- ${formatEuro(e.amount)}</div>
+      </div>
+    `).join("")
+    : `<div class="item"><div><strong>Noch keine Feierlichkeiten</strong><p>Sobald du Geburtstage, Weihnachten oder Feste erfasst, erscheinen sie hier.</p></div><div class="amount info">—</div></div>`;
 
-  const tips=[];
-  if(party>0) tips.push(["Feierlichkeiten separat sichtbar",`Aktuelle Feier-Ausgaben: ${fmt(party)}.`]);
-  if(shopping>0) tips.push(["Einkäufe laufen mit",`Einkaufsliste verknüpft, aktuell ${fmt(shopping)}.`]);
-  const fixedRatio=income>0?fixed/income:0;
-  if(fixedRatio>0.6) tips.push(["Hohe Fixkosten",`Fixkosten liegen bei ${Math.round(fixedRatio*100)} % der Einnahmen.`]);
+  const tips = [];
+  if(party > 0) tips.push(["Feierlichkeiten separat sichtbar",`Aktuell liegen die sichtbaren Feier-Ausgaben bei ${formatEuro(party)}.`]);
+
+  const byOccasion = {};
+  partyEntries.forEach(e=>{
+    const key = e.occasion || "ohne Anlass";
+    byOccasion[key] = (byOccasion[key] || 0) + Number(e.amount || 0);
+  });
+  const topOccasion = Object.entries(byOccasion).sort((a,b)=>b[1]-a[1])[0];
+  if(topOccasion) tips.push(["Stärkster Anlass",`${topOccasion[0]} liegt aktuell bei ${formatEuro(topOccasion[1])}.`]);
+  if(shopping > 0) tips.push(["Einkäufe laufen mit",`Einkaufsliste ist mit Finanzen verknüpft und liegt aktuell bei ${formatEuro(shopping)}.`]);
   if(!tips.length) tips.push(["Alles ruhig","Noch fallen keine besonderen Muster auf. Mit mehr Daten wird die KI hier stärker."]);
-  document.getElementById("tipsList").innerHTML=tips.map(t=>`<div class="item"><div><strong>${esc(t[0])}</strong><p>${esc(t[1])}</p></div><div class="amount info">✨</div></div>`).join("");
 
-  document.getElementById("childList").innerHTML=`
-    <div class="item"><div><strong>Taschengeld & Geschenke</strong><p>Diese Bereiche sind auch für dich sichtbar.</p></div><div class="amount info">💛</div></div>
-    <div class="item"><div><strong>Feierlichkeiten</strong><p>Geburtstage oder Feste — je nach Einstellung sichtbar.</p></div><div class="amount info">🎉</div></div>`;
+  document.getElementById("tipsList").innerHTML = tips.map(t => `
+    <div class="item">
+      <div><strong>${escapeHtml(t[0])}</strong><p>${escapeHtml(t[1])}</p></div>
+      <div class="amount info">Hinweis</div>
+    </div>
+  `).join("");
+
+  document.getElementById("childList").innerHTML = `
+    <div class="item"><div><strong>Taschengeld & Geschenke</strong><p>Diese Bereiche können kindgerecht sichtbar bleiben.</p></div><div class="amount info">Sichtbar</div></div>
+    <div class="item"><div><strong>Feierlichkeiten</strong><p>Geburtstage oder Feste können später je nach Rechte-Einstellung sichtbar sein.</p></div><div class="amount info">Optional</div></div>
+  `;
 }
-
-// ── Mode Toggle ──────────────────────────────────────────────────
-// FIX: Declare adminModeBtn + childModeBtn properly with const
-const adminModeBtn = document.getElementById("adminModeBtn");
-const childModeBtn  = document.getElementById("childModeBtn");
-const modeBadgeEl   = document.getElementById("modeBadge");
-
 function setView(mode){
-  if(mode==="child"){
+  const adminViewBtn = document.getElementById("adminViewBtn");
+  const childViewBtn = document.getElementById("childViewBtn");
+  const modeBadge = document.getElementById("modeBadge");
+
+  if(mode === "child"){
     document.body.classList.add("child-mode");
-    adminModeBtn.classList.remove("active"); childModeBtn.classList.add("active");
-    modeBadgeEl.className="badge child"; modeBadgeEl.textContent="🧒 Kindmodus aktiv";
-  } else {
+    adminViewBtn.classList.remove("active");
+    childViewBtn.classList.add("active");
+    modeBadge.className = "mode-badge child";
+    modeBadge.textContent = "Kindmodus aktiv";
+  }else{
     document.body.classList.remove("child-mode");
-    childModeBtn.classList.remove("active"); adminModeBtn.classList.add("active");
-    modeBadgeEl.className="badge"; modeBadgeEl.textContent="🛠️ Elternmodus aktiv";
+    childViewBtn.classList.remove("active");
+    adminViewBtn.classList.add("active");
+    modeBadge.className = "mode-badge";
+    modeBadge.textContent = "Elternmodus aktiv";
   }
-  localStorage.setItem("haushaltsheld_finance_view",mode);
+  localStorage.setItem("haushaltsheld_finance_view", mode);
 }
 
-// ── Init ──────────────────────────────────────────────────────────
-document.getElementById("entryDate").value=getTodayDate();
-document.getElementById("saveEntryBtn").addEventListener("click",addEntry);
-document.getElementById("fillExampleBtn").addEventListener("click",fillExample);
-adminModeBtn.addEventListener("click",()=>setView("admin"));
-childModeBtn.addEventListener("click",()=>setView("child"));
-renderAll();
-setView(localStorage.getItem("haushaltsheld_finance_view")||"admin");
-</script>
+/* Scanner */
+function setScanState(statusText, typeText, sourceText){
+  document.getElementById("scanStatus").innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M12 8v4l3 3"></path>
+    </svg>
+    <span>${escapeHtml(statusText)}</span>
+  `;
+  document.getElementById("scanType").innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 5h18"></path>
+      <path d="M3 12h18"></path>
+      <path d="M3 19h18"></path>
+    </svg>
+    <span>${escapeHtml(typeText)}</span>
+  `;
+  document.getElementById("scanSource").innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
+    </svg>
+    <span>${escapeHtml(sourceText)}</span>
+  `;
+}
+function resetScanPreview(){
+  const previewImage = document.getElementById("scanPreviewImage");
+  previewImage.style.display = "none";
+  previewImage.removeAttribute("src");
+}
+function populateScanFields(fileName, sourceLabel){
+  const normalized = (fileName || "").toLowerCase();
 
-<script src="ki-schnecke.js"></script>
+  let merchant = "";
+  let amount = "";
+  let code = lastScannedCode || "";
+
+  if(/rewe/.test(normalized)) merchant = "REWE";
+  if(/dm/.test(normalized)) merchant = "dm";
+  if(/aldi/.test(normalized)) merchant = "ALDI";
+  if(/lidl/.test(normalized)) merchant = "LIDL";
+  if(/amazon/.test(normalized)) merchant = "Amazon";
+  if(/rossmann/.test(normalized)) merchant = "Rossmann";
+  if(/ikea/.test(normalized)) merchant = "IKEA";
+  if(/paypal/.test(normalized)) merchant = "PayPal";
+
+  if(/29[,._-]?99|29\.99/.test(normalized)) amount = "29.99";
+  if(/19[,._-]?99|19\.99/.test(normalized)) amount = "19.99";
+  if(/9[,._-]?99|9\.99/.test(normalized)) amount = "9.99";
+
+  if(sourceLabel === "QR / Barcode"){
+    code = lastScannedCode || `QR-${Date.now().toString().slice(-6)}`;
+  }
+
+  document.getElementById("scanMerchant").value = merchant;
+  document.getElementById("scanAmount").value = amount;
+  document.getElementById("scanCode").value = code;
+}
+function handleSelectedFile(file, sourceLabel){
+  if(!file) return;
+
+  lastScannedFile = file;
+  lastScannedSource = sourceLabel;
+  lastScannedType = file.type || "Datei";
+  lastScanFingerprint = makeScanFingerprint(file, sourceLabel);
+  currentScanSourceKey = "";
+
+  setScanState(
+    `Beleg bereit: ${file.name}`,
+    `Scan-Typ: ${file.type || "Datei"}`,
+    `Quelle: ${sourceLabel}`
+  );
+
+  populateScanFields(file.name, sourceLabel);
+
+  const previewText = document.getElementById("scanPreviewText");
+  const previewImage = document.getElementById("scanPreviewImage");
+  previewText.textContent = `Ausgewählt: ${file.name}. Mit „Scan übernehmen“ kannst du jetzt das Formular automatisch vorfüllen.`;
+
+  if(file.type && file.type.startsWith("image/")){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      previewImage.src = e.target.result;
+      previewImage.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  }else{
+    resetScanPreview();
+  }
+}
+function simulateQrScan(){
+  document.getElementById("qrInput").click();
+}
+function applyScannedData(){
+  if(!lastScannedFile && !document.getElementById("scanCode").value.trim()){
+    alert("Bitte zuerst einen Kassenbon fotografieren, hochladen oder einen QR-/Barcode-Scan starten.");
+    return;
+  }
+
+  const fileName = (lastScannedFile?.name || "").toLowerCase();
+  const scanMerchant = document.getElementById("scanMerchant").value.trim();
+  const scanAmount = document.getElementById("scanAmount").value.trim();
+  const scanCode = document.getElementById("scanCode").value.trim();
+
+  document.getElementById("entryDate").value = getTodayDate();
+  document.getElementById("entryType").value = "Ausgabe";
+  document.getElementById("entryPerson").value = "Allgemein";
+  document.getElementById("entryRecurring").value = "false";
+
+  let suggestedTitle = "Beleg-Scan";
+  let suggestedCategory = "Sonstiges";
+  let suggestedAmount = scanAmount || "";
+  let suggestedPayment = "Karte";
+  let suggestedOccasion = "";
+  let suggestedText = "Vorgeschlagene Übernahme aus Scanner.";
+  let merchantText = scanMerchant ? ` Händler: ${scanMerchant}.` : "";
+  let codeText = scanCode ? ` Code: ${scanCode}.` : "";
+
+  if(/geburtstag|party|weihnacht|fest|deko/.test(fileName)){
+    suggestedTitle = scanMerchant ? `${scanMerchant} Feierlichkeiten` : "Beleg-Scan Feierlichkeiten";
+    suggestedCategory = "Feierlichkeiten";
+    suggestedAmount = suggestedAmount || "24.90";
+    suggestedPayment = "Karte";
+    suggestedOccasion = "Geburtstag";
+    suggestedText = `Vorgeschlagene Übernahme aus Beleg-Scan für Feierlichkeiten.${merchantText}${codeText}`;
+  }else if(/miete|rent/.test(fileName)){
+    suggestedTitle = scanMerchant ? `${scanMerchant} Miete` : "Beleg-Scan Miete";
+    suggestedCategory = "Miete";
+    suggestedAmount = suggestedAmount || "720.00";
+    suggestedPayment = "Überweisung";
+    document.getElementById("entryRecurring").value = "true";
+    suggestedText = `Vorgeschlagene Übernahme aus hochgeladenem Mietbeleg.${merchantText}${codeText}`;
+  }else if(/internet|telekom|vodafone/.test(fileName)){
+    suggestedTitle = scanMerchant ? `${scanMerchant} Internet` : "Beleg-Scan Internet";
+    suggestedCategory = "Internet";
+    suggestedAmount = suggestedAmount || "39.99";
+    suggestedPayment = "Lastschrift";
+    document.getElementById("entryRecurring").value = "true";
+    suggestedText = `Vorgeschlagene Übernahme aus Internetrechnung.${merchantText}${codeText}`;
+  }else if(/strom|energie/.test(fileName)){
+    suggestedTitle = scanMerchant ? `${scanMerchant} Strom` : "Beleg-Scan Strom";
+    suggestedCategory = "Strom";
+    suggestedAmount = suggestedAmount || "84.00";
+    suggestedPayment = "Lastschrift";
+    document.getElementById("entryRecurring").value = "true";
+    suggestedText = `Vorgeschlagene Übernahme aus Energiekosten-Beleg.${merchantText}${codeText}`;
+  }else if(scanCode){
+    suggestedTitle = scanMerchant ? `${scanMerchant} QR-Scan` : "QR / Barcode Scan";
+    suggestedCategory = "Sonstiges";
+    suggestedAmount = suggestedAmount || "";
+    suggestedPayment = "Online";
+    suggestedText = `Übernommen aus QR-/Barcode-Workflow.${merchantText}${codeText}`;
+  }else{
+    suggestedTitle = scanMerchant ? `${scanMerchant} Kassenbon` : "Kassenbon-Scan";
+    suggestedCategory = "Sonstiges";
+    suggestedAmount = suggestedAmount || "";
+    suggestedPayment = "Karte";
+    suggestedText = `Vorgeschlagene Übernahme aus Foto- oder Upload-Scan.${merchantText}${codeText}`;
+  }
+
+  document.getElementById("entryTitle").value = suggestedTitle;
+  document.getElementById("entryCategory").value = suggestedCategory;
+  document.getElementById("entryAmount").value = suggestedAmount;
+  document.getElementById("entryPayment").value = suggestedPayment;
+  document.getElementById("entryOccasion").value = suggestedOccasion;
+  document.getElementById("entryText").value = suggestedText;
+
+  const preparedImportKey = makeImportKey(
+    suggestedTitle,
+    document.getElementById("entryDate").value,
+    parseFloat(suggestedAmount || "0"),
+    suggestedPayment,
+    suggestedText
+  );
+  currentScanSourceKey = buildSourceKey("finance", preparedImportKey);
+}
+function setupScanner(){
+  const cameraInput = document.getElementById("cameraInput");
+  const receiptInput = document.getElementById("receiptInput");
+  const qrInput = document.getElementById("qrInput");
+
+  document.getElementById("openCameraBtn").addEventListener("click",()=>cameraInput.click());
+  document.getElementById("uploadReceiptBtn").addEventListener("click",()=>receiptInput.click());
+  document.getElementById("scanQrBtn").addEventListener("click",simulateQrScan);
+  document.getElementById("applyScanBtn").addEventListener("click",applyScannedData);
+
+  cameraInput.addEventListener("change",(event)=>{
+    const file = event.target.files?.[0];
+    handleSelectedFile(file,"Kamera");
+  });
+
+  receiptInput.addEventListener("change",(event)=>{
+    const file = event.target.files?.[0];
+    handleSelectedFile(file,"Upload");
+  });
+
+  qrInput.addEventListener("change",(event)=>{
+    const file = event.target.files?.[0];
+    lastScannedCode = `QR-${Date.now().toString().slice(-6)}`;
+    handleSelectedFile(file || {name:lastScannedCode, type:"image/qr-placeholder", size:0, lastModified:Date.now()}, "QR / Barcode");
+    document.getElementById("scanPreviewText").textContent = "QR-/Barcode-Workflow vorbereitet. Der erkannte oder eingetragene Code kann direkt übernommen werden.";
+    document.getElementById("scanCode").value = lastScannedCode;
+  });
+}
+
+/* KI */
+function getCurrentMode(){
+  return document.body.classList.contains("child-mode") ? "child" : "parent";
+}
+function addKiMessage(role, text){
+  const chat = document.getElementById("kiChat");
+  const msg = document.createElement("div");
+  msg.className = `ki-msg ${role === "user" ? "user" : "bot"}`;
+  msg.textContent = text;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  return msg;
+}
+function setKiSuggestions(){
+  const suggestions = [
+    "Wie kann ich bei Feierlichkeiten sparen?",
+    "Ordne meinen Kassenbon ein",
+    "Welche Fixkosten sollte ich prüfen?",
+    "Hilf mir beim Familienbudget"
+  ];
+  document.getElementById("kiSuggestions").innerHTML = suggestions.map(text => `<button class="ki-chip" type="button">${escapeHtml(text)}</button>`).join("");
+  document.querySelectorAll(".ki-chip").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.getElementById("kiInput").value = btn.textContent.trim();
+      document.getElementById("kiForm").dispatchEvent(new Event("submit",{cancelable:true,bubbles:true}));
+    });
+  });
+}
+async function sendKiMessage(message){
+  addKiMessage("user", message);
+  const typing = addKiMessage("bot", "Ich denke gerade nach ...");
+
+  try{
+    const response = await fetch("/netlify/functions/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        message,
+        page:"finanzen",
+        mode:getCurrentMode()
+      })
+    });
+
+    if(!response.ok){
+      throw new Error("Netzwerkfehler");
+    }
+
+    const data = await response.json().catch(()=>({}));
+    typing.textContent = data.reply || data.message || "Ich bin da und helfe dir gern bei deinen Finanzen, Feierlichkeiten und Belegen.";
+  }catch(error){
+    typing.textContent = "Gerade ist keine Verbindung zur KI möglich. Du kannst trotzdem Einträge anlegen, Belege vorbereiten und später erneut fragen.";
+  }
+}
+function setupKi(){
+  const kiFab = document.getElementById("kiFab");
+  const kiPanel = document.getElementById("kiPanel");
+  const kiClose = document.getElementById("kiClose");
+  const kiForm = document.getElementById("kiForm");
+  const kiInput = document.getElementById("kiInput");
+
+  kiFab.addEventListener("click",()=>kiPanel.classList.add("open"));
+  kiClose.addEventListener("click",()=>kiPanel.classList.remove("open"));
+
+  kiForm.addEventListener("submit",async(event)=>{
+    event.preventDefault();
+    const message = kiInput.value.trim();
+    if(!message) return;
+    kiInput.value = "";
+    await sendKiMessage(message);
+  });
+
+  setKiSuggestions();
+}
+function init(){
+  document.getElementById("entryDate").value = getTodayDate();
+
+  const savedView = localStorage.getItem("haushaltsheld_finance_view") || "parent";
+  setView(savedView);
+
+  document.getElementById("adminViewBtn").addEventListener("click",()=>setView("parent"));
+  document.getElementById("childViewBtn").addEventListener("click",()=>setView("child"));
+  document.getElementById("saveEntryBtn").addEventListener("click",addEntry);
+  document.getElementById("fillExampleBtn").addEventListener("click",fillExample);
+
+  setupScanner();
+  setupKi();
+  renderAll();
+}
+document.addEventListener("DOMContentLoaded",init);
+</script>
 </body>
 </html>

@@ -4,462 +4,1326 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Haushaltsheld – Familienplaner</title>
-<style>
-:root{
-  --bg:#fdf5ec;--card:#fff;--soft:#fff3e4;--soft2:#fde9d4;--line:#e6cdb8;
-  --text:#3a2418;--text2:#6a4432;--muted:#9a7060;
-  --accent:#f07c38;--accent-dark:#d4621e;
-  --birthday:#fde8ef;--birthday-line:#f4b8cc;--birthday-text:#78183c;
-  --vacation:#e4f2fd;--vacation-line:#b0d8f4;--vacation-text:#1e4a78;
-  --doctor:#e4f4ec;--doctor-line:#b8e0c4;--doctor-text:#1a5a36;
-  --event:#fff3e0;--event-line:#f5d080;--event-text:#6a4000;
-  --shadow-sm:0 2px 10px rgba(70,35,10,.06);
-  --r-sm:14px;--r:20px;--r-lg:26px;--r-xl:34px;--sidebar-w:248px;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Outfit", sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
 
-/* ── Sidebar (shared) ── */
-.sidebar{background:linear-gradient(180deg,#fef0e2 0%,#fdf6ee 100%);border-right:1px solid var(--line);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10}
-.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
-.logo-wrap img{width:44px;height:44px;object-fit:contain}
-.logo-name{font-family:"Outfit", sans-serif;font-weight:700;font-size:1.2rem;color:var(--text)}
-.logo-sub{font-size:.72rem;color:var(--muted);margin-top:1px}
-.nav-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:16px 10px 6px}
-.nav a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-sm);text-decoration:none;color:var(--text2);font-family:"Outfit", sans-serif;font-weight:700;font-size:.98rem;transition:all .18s;border:1px solid transparent}
-.nav a:hover{background:var(--soft2);border-color:rgba(230,205,184,.6);transform:translateX(2px)}
-.nav a.active{background:linear-gradient(135deg,#f5975a 0%,#f0c99a 100%);border-color:rgba(220,140,80,.3);box-shadow:0 8px 20px rgba(212,98,30,.18)}
-.nav-icon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.9);border:1px solid rgba(230,205,184,.8);font-size:16px;flex-shrink:0}
-.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
-
-/* ── Main ── */
-.main{padding:32px;max-width:1600px}
-.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:24px}
-.page-header h1{font-family:"Outfit", sans-serif;font-size:2.2rem;font-weight:700;margin-bottom:6px}
-.page-header p{color:var(--muted);font-size:.95rem}
-.btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:11px 16px;border-radius:var(--r-sm);font-size:.9rem;font-weight:700;cursor:pointer;transition:.18s;font-family:"Outfit", sans-serif}
-.btn:hover{transform:translateY(-1px)}
-.btn-soft{background:var(--soft);color:var(--text2);border:1px solid var(--line);box-shadow:none}
-
-/* ── Grid ── */
-.planner-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:24px}
-
-/* ── Category Cards ── */
-.cat-card{border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow-sm);border:1px solid transparent}
-.cat-card h2{font-family:"Outfit", sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.birthday-card{background:var(--birthday);border-color:var(--birthday-line)}
-.birthday-card h2{color:var(--birthday-text)}
-.vacation-card{background:var(--vacation);border-color:var(--vacation-line)}
-.vacation-card h2{color:var(--vacation-text)}
-.doctor-card{background:var(--doctor);border-color:var(--doctor-line)}
-.doctor-card h2{color:var(--doctor-text)}
-.event-card{background:var(--event);border-color:var(--event-line)}
-.event-card h2{color:var(--event-text)}
-
-/* ── Entry Items ── */
-.entry-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
-.entry-item{background:rgba(255,255,255,.85);border-radius:var(--r-sm);padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border:1px solid rgba(255,255,255,.6)}
-.entry-item .entry-info strong{display:block;font-size:.93rem;margin-bottom:3px}
-.entry-item .entry-info small{font-size:.8rem;color:var(--muted);line-height:1.35}
-.entry-item .entry-date{font-size:.82rem;font-weight:700;color:var(--muted);white-space:nowrap;flex-shrink:0}
-.delete-entry{border:none;background:transparent;color:var(--muted);cursor:pointer;padding:4px;border-radius:6px;font-size:.9rem;transition:.18s}
-.delete-entry:hover{color:var(--red)}
-.empty-hint{color:var(--muted);font-size:.86rem;text-align:center;padding:12px;background:rgba(255,255,255,.6);border-radius:var(--r-sm)}
-
-/* ── Add Form ── */
-.add-form{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
-.form-in{flex:1;min-width:110px;border:1.5px solid rgba(255,255,255,.8);background:rgba(255,255,255,.9);border-radius:var(--r-sm);padding:10px 12px;font-size:.87rem;color:var(--text);outline:none;font-family:"Outfit", sans-serif;transition:.18s}
-.form-in:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(240,124,56,.1)}
-.add-btn{border:none;background:rgba(255,255,255,.95);color:var(--text2);border:1.5px solid rgba(255,255,255,.8);padding:10px 14px;border-radius:var(--r-sm);font-size:.86rem;font-weight:700;cursor:pointer;transition:.18s;font-family:"Outfit", sans-serif;white-space:nowrap}
-.add-btn:hover{background:#fff;transform:translateY(-1px)}
-
-/* ── Responsive ── */
-@media(max-width:1200px){.planner-grid{grid-template-columns:1fr}}
-@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a{flex:0 1 auto;padding:10px 12px}.nav-label,.sidebar-footer{display:none}}
-@media(max-width:600px){.main{padding:16px}}
-
-/* ══ Button Upgrade – visible, punchy, warm ══ */
-.btn, button.btn, a.btn {
-  border: none;
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%);
-  color: #fff !important;
-  padding: 13px 22px;
-  border-radius: 16px;
-  font-size: .94rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  /* rich layered shadow */
-  box-shadow:
-    0 4px 0 #a83e0c,
-    0 8px 22px rgba(180,70,10,.32),
-    inset 0 1px 0 rgba(255,255,255,.22);
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-  letter-spacing: .01em;
-  position: relative;
-}
-.btn:hover, button.btn:hover, a.btn:hover {
-  background: linear-gradient(135deg, #f99650 0%, #e06520 100%);
-  transform: translateY(-2px);
-  box-shadow:
-    0 6px 0 #a83e0c,
-    0 14px 30px rgba(180,70,10,.36),
-    inset 0 1px 0 rgba(255,255,255,.26);
-}
-.btn:active, button.btn:active, a.btn:active {
-  transform: translateY(1px);
-  box-shadow:
-    0 2px 0 #a83e0c,
-    0 4px 12px rgba(180,70,10,.28),
-    inset 0 1px 0 rgba(255,255,255,.18);
-}
-
-/* Soft / secondary button */
-.btn-soft, button.btn-soft, a.btn-soft {
-  background: linear-gradient(135deg, #fff6ee 0%, #fce8d4 100%) !important;
-  color: #8a4a28 !important;
-  border: 1.5px solid #e8c4a0 !important;
-  box-shadow:
-    0 3px 0 #d4a070,
-    0 6px 18px rgba(160,90,40,.14),
-    inset 0 1px 0 rgba(255,255,255,.7) !important;
-}
-.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover {
-  background: linear-gradient(135deg, #fde9d4 0%, #f9d8bc 100%) !important;
-  box-shadow:
-    0 5px 0 #d4a070,
-    0 10px 24px rgba(160,90,40,.18),
-    inset 0 1px 0 rgba(255,255,255,.7) !important;
-  transform: translateY(-2px);
-}
-
-/* mini buttons in task lists */
-.mini-btn {
-  border: 1.5px solid #e6cdb8 !important;
-  background: linear-gradient(135deg, #fffaf5 0%, #fdf0e2 100%) !important;
-  color: #7a4a28 !important;
-  padding: 7px 12px !important;
-  border-radius: 999px !important;
-  font-size: .78rem !important;
-  font-weight: 700 !important;
-  cursor: pointer;
-  transition: all .15s;
-  box-shadow: 0 2px 6px rgba(150,80,20,.12), inset 0 1px 0 rgba(255,255,255,.8) !important;
-}
-.mini-btn:hover {
-  background: linear-gradient(135deg, #fde9d4 0%, #f9d4b4 100%) !important;
-  border-color: #d4956a !important;
-  box-shadow: 0 4px 10px rgba(150,80,20,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
-  transform: translateY(-1px);
-}
-.mini-btn.delete-btn:hover {
-  background: linear-gradient(135deg, #fde8e8 0%, #fac8c8 100%) !important;
-  border-color: #e08080 !important;
-  color: #b03030 !important;
-}
-
-/* Pill mode-switch buttons */
-.mode-btn.active {
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 0 #a83e0c, 0 6px 16px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
-}
-
-/* Pill toggle (finanzbericht / historie) */
-.pill-btn.active {
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 0 #a83e0c, 0 6px 14px rgba(180,70,10,.25) !important;
-}
-
-/* CTA link on dashboard */
-.cta-link {
-  box-shadow: 0 4px 0 #a83e0c, 0 8px 22px rgba(180,70,10,.3), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-.cta-link:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #a83e0c, 0 14px 30px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24) !important;
-}
-
-/* Kid page buttons (Nunito font) */
-.quick-btn {
-  box-shadow: 0 4px 0 #a83e0c, 0 8px 20px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
-}
-.quick-btn:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #a83e0c, 0 14px 28px rgba(180,70,10,.32), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-.add-star-btn {
-  box-shadow: 0 4px 0 #a07000, 0 8px 20px rgba(180,140,0,.28) !important;
-}
-.add-star-btn:hover {
-  transform: scale(1.04) translateY(-1px) !important;
-  box-shadow: 0 6px 0 #a07000, 0 12px 26px rgba(180,140,0,.32) !important;
-}
-
-
-/* ══ Outfit Font System ══ */
-:root {
-  --font-main: "Outfit", sans-serif;
-}
-body {
-  font-family: "Outfit", sans-serif !important;
-  font-size: 16px !important;
-  line-height: 1.6 !important;
-  letter-spacing: -0.01em;
-}
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Outfit", sans-serif !important;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-h1 { font-size: 2.4rem !important; font-weight: 800 !important; }
-h2 { font-size: 1.5rem !important; font-weight: 700 !important; }
-h3 { font-size: 1.15rem !important; font-weight: 700 !important; }
-.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
-.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
-.stat .value, .pocket-amount, .stars-count {
-  font-family: "Outfit", sans-serif !important;
-}
-.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
-.pill-btn, .pill-toggle button, .mode-switch button,
-label, .field label, .form-label, .section-label,
-.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
-select, input, textarea, button, .mini-btn,
-.chip, .hero-tag, .badge, .mode-badge,
-.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
-p, span, div, li, td, th {
-  font-family: "Outfit", sans-serif !important;
-}
-/* Bigger body text */
-p, .sub, .card-sub, .body, .helper, .small-note,
-.ki-note, .mode-note, .section-note, .filter-note {
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-}
-/* Stat values bigger & bolder */
-.stat-value, .stat .value, .stat-val, .pocket-amount {
-  font-size: 2rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em;
-}
-/* Buttons rounded and bold */
-.btn, button.btn, a.btn {
-  font-weight: 800 !important;
-  font-size: 0.95rem !important;
-  letter-spacing: 0.01em;
-  border-radius: 14px !important;
-}
-/* Labels uppercase + spaced */
-.field label, .form-label, .stat-label, .stat-lbl,
-.nav-lbl, .section-label, .opt-name {
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-/* Nav sidebar items */
-.nav a, .nav-item {
-  font-weight: 700 !important;
-  font-size: 0.97rem !important;
-}
-/* Logo name display */
-.logo-name, .s-logo-text {
-  font-size: 1.25rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em;
-}
-/* Input fields */
-input, select, textarea {
-  font-size: 0.95rem !important;
-  font-weight: 500 !important;
-}
-/* Kindermodus — keep Outfit too */
-.wrap, .hero, .savings-card, .pocket-card,
-.tasks-card, .stars-banner, .quick-card,
-.kid-tab, .add-goal-btn, .quick-btn {
-  font-family: "Outfit", sans-serif !important;
-}
-
-</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="ki-schnecke.css">
+
+<style>
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
+
+  --text:#2d342f;
+  --text2:#556159;
+  --muted:#7d8a82;
+
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#e7f5e8;
+
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
+  --red:#cc6666;
+  --red-soft:#fdeaea;
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
+  --yellow:#b5882f;
+  --yellow-soft:#fbf4df;
+  --brown:#4d3c2c;
+  --brown-dark:#433324;
+
+  --birthday:#fdeef3;
+  --birthday-line:#efcad6;
+  --birthday-text:#7a3550;
+
+  --vacation:#eaf4ff;
+  --vacation-line:#cfe0f8;
+  --vacation-text:#35608e;
+
+  --doctor:#ebf7ee;
+  --doctor-line:#cce5d3;
+  --doctor-text:#2f6a43;
+
+  --event:#fff5e8;
+  --event-line:#eed9b8;
+  --event-text:#8a6030;
+
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+
+  --sidebar-w:258px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+
+body{
+  font-family:"Outfit",sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family:"Outfit",sans-serif;
+  letter-spacing:-0.03em;
+  line-height:1.15;
+}
+
+button,input,select,textarea{font:inherit}
+
+.app{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:100vh;
+}
+
+/* Sidebar */
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:28px 18px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+}
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 8px 24px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:8px;
+}
+.logo-wrap img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
+}
+.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
+.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+.nav-label{
+  font-size:.7rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--muted);
+  padding:16px 10px 6px;
+}
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 13px;
+  border-radius:18px;
+  text-decoration:none;
+  color:var(--text2);
+  font-weight:700;
+  font-size:.98rem;
+  transition:all .18s ease;
+  border:1px solid transparent;
+}
+.nav a:hover{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+  color:var(--text);
+}
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;
+  border-color:rgba(62,142,65,.28);
+  box-shadow:
+    0 5px 0 #2f6f33,
+    0 14px 26px rgba(62,142,65,.20),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+.nav a.active .nav-icon{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+}
+.nav-icon{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--accent-dark);
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(54,45,28,.05);
+}
+.nav-icon svg{width:18px;height:18px;stroke:currentColor}
+.sidebar-footer{
+  margin-top:auto;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+}
+.mode-switch{
+  display:flex;
+  gap:6px;
+  background:rgba(255,255,255,.86);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px;
+  box-shadow:var(--shadow-xs);
+}
+.mode-btn{
+  flex:1;
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  padding:9px 12px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+}
+.mode-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  box-shadow:
+    0 3px 0 #2f6f33,
+    0 8px 18px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+/* Main */
+.main{
+  width:100%;
+  max-width:1580px;
+  padding:32px;
+}
+
+/* Header */
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+.page-header h1{
+  font-size:2.35rem;
+  font-weight:800;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.page-header p{
+  color:var(--muted);
+  font-size:.98rem;
+  max-width:860px;
+}
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.mode-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:.88rem;
+  background:var(--soft);
+  border:1px solid var(--line);
+  color:var(--text2);
+  box-shadow:var(--shadow-xs);
+}
+.mode-badge.child{
+  background:var(--blue-soft);
+  border-color:#cbdcf8;
+  color:#496d9d;
+}
+
+/* Icons */
+.page-title-icon,
+.section-icon{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:inline-grid;
+  place-items:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.16);
+  box-shadow:var(--shadow-xs);
+  flex-shrink:0;
+}
+.page-title-icon svg,.section-icon svg{width:18px;height:18px;stroke:currentColor}
+
+/* Hero */
+.hero{
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
+  border:1px solid rgba(76,175,80,.18);
+  border-radius:30px;
+  padding:28px 30px;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:20px;
+  align-items:stretch;
+  margin-bottom:24px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  right:-40px;
+  bottom:-40px;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+.hero h2{
+  font-size:1.55rem;
+  font-weight:800;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.hero p{
+  color:var(--text2);
+  line-height:1.65;
+  margin-bottom:16px;
+}
+.hero-tags{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.95);
+  padding:9px 14px;
+  border-radius:999px;
+  font-size:.88rem;
+  font-weight:800;
+  color:var(--text2);
+  box-shadow:0 1px 4px rgba(54,45,28,.04);
+}
+.hero-tag.accent{
+  background:#f8ebda;
+  border-color:#ecd1ad;
+}
+.hero-side{
+  display:grid;
+  gap:12px;
+}
+.mini{
+  background:rgba(255,255,255,.78);
+  border-radius:20px;
+  padding:16px;
+  border:1px solid rgba(223,209,188,.85);
+  box-shadow:var(--shadow-xs);
+}
+.mini strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:.96rem;
+  font-weight:800;
+}
+.mini span{
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.55;
+}
+
+/* Grid */
+.planner-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+/* Category Cards */
+.cat-card{
+  border-radius:28px;
+  padding:24px;
+  box-shadow:var(--shadow-sm);
+  border:1px solid transparent;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.cat-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+.cat-card h2{
+  font-size:1.16rem;
+  font-weight:800;
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.birthday-card{background:linear-gradient(180deg,#fff8fb 0%, var(--birthday) 100%);border-color:var(--birthday-line)}
+.birthday-card h2{color:var(--birthday-text)}
+.vacation-card{background:linear-gradient(180deg,#f8fbff 0%, var(--vacation) 100%);border-color:var(--vacation-line)}
+.vacation-card h2{color:var(--vacation-text)}
+.doctor-card{background:linear-gradient(180deg,#f9fdf9 0%, var(--doctor) 100%);border-color:var(--doctor-line)}
+.doctor-card h2{color:var(--doctor-text)}
+.event-card{background:linear-gradient(180deg,#fffaf4 0%, var(--event) 100%);border-color:var(--event-line)}
+.event-card h2{color:var(--event-text)}
+
+/* Entry Items */
+.entry-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:16px;
+}
+.entry-item{
+  background:rgba(255,255,255,.9);
+  border-radius:18px;
+  padding:14px 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 1px 0 rgba(255,255,255,.65);
+}
+.entry-info strong{
+  display:block;
+  font-size:.95rem;
+  margin-bottom:4px;
+  color:var(--text);
+}
+.entry-info small{
+  display:block;
+  font-size:.84rem;
+  color:var(--muted);
+  line-height:1.45;
+}
+.entry-date{
+  font-size:.82rem;
+  font-weight:800;
+  color:var(--text2);
+  white-space:nowrap;
+}
+.entry-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.delete-entry{
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#fff 0%, #fff8f8 100%);
+  color:var(--muted);
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(223,209,188,.7);
+  box-shadow:var(--shadow-xs);
+  transition:.18s ease;
+}
+.delete-entry svg{
+  width:16px;
+  height:16px;
+  stroke:currentColor;
+}
+.delete-entry:hover{
+  color:var(--red);
+  border-color:#e2bbbb;
+  background:var(--red-soft);
+}
+.empty-hint{
+  color:var(--muted);
+  font-size:.88rem;
+  text-align:center;
+  padding:14px;
+  background:rgba(255,255,255,.62);
+  border-radius:18px;
+  border:1px dashed rgba(223,209,188,.9);
+}
+
+/* Add Form */
+.add-form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:2px;
+}
+.form-in{
+  width:100%;
+  border:1.5px solid rgba(255,255,255,.8);
+  background:rgba(255,255,255,.92);
+  border-radius:16px;
+  padding:12px 13px;
+  font-size:.9rem;
+  color:var(--text);
+  outline:none;
+  font-family:"Outfit",sans-serif;
+  transition:.18s ease;
+  min-height:48px;
+}
+.form-in:focus{
+  border-color:rgba(76,175,80,.7);
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+  background:#fff;
+}
+.add-form .wide{
+  grid-column:1 / -1;
+}
+
+/* Buttons */
+.btn,
+button.btn,
+a.btn{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:13px 22px;
+  border-radius:16px;
+  font-size:.95rem !important;
+  font-weight:800 !important;
+  text-decoration:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  white-space:nowrap;
+  box-shadow:
+    0 4px 0 #2f6f33,
+    0 10px 22px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  letter-spacing:.01em;
+}
+.btn:hover,
+button.btn:hover,
+a.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 14px 28px rgba(62,142,65,.26),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  filter:brightness(1.02);
+}
+.btn:active,
+button.btn:active,
+a.btn:active{
+  transform:translateY(1px);
+  box-shadow:
+    0 2px 0 #2f6f33,
+    0 6px 14px rgba(62,142,65,.18),
+    inset 0 1px 0 rgba(255,255,255,.16);
+}
+.btn-soft{
+  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
+  color:var(--brown) !important;
+  border:1.5px solid #d7c0a6 !important;
+  border-radius:16px !important;
+  box-shadow:
+    0 4px 0 #c7ae91,
+    0 8px 18px rgba(110,82,40,.10),
+    inset 0 1px 0 rgba(255,255,255,.65) !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+.btn.btn-soft,
+button.btn.btn-soft,
+a.btn.btn-soft,
+.btn-soft span,
+.btn-soft svg{
+  color:var(--brown) !important;
+  stroke:currentColor !important;
+}
+.btn-soft:hover,
+button.btn-soft:hover,
+a.btn-soft:hover{
+  background:linear-gradient(180deg,#f1e1cf 0%, #e4cfb7 100%) !important;
+  color:var(--brown-dark) !important;
+  box-shadow:
+    0 6px 0 #c7ae91,
+    0 12px 22px rgba(110,82,40,.12),
+    inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+.btn-soft:hover span,
+.btn-soft:hover svg{
+  color:var(--brown-dark) !important;
+  stroke:currentColor !important;
+}
+
+/* KI */
+.ki-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:74px;
+  height:74px;
+  border:none;
+  border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9998;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.ki-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
+}
+.ki-fab img{width:40px;height:40px;object-fit:contain}
+.ki-fab-label{
+  position:absolute;
+  bottom:8px;
+  right:10px;
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1;
+}
+.ki-panel{
+  position:fixed;
+  right:22px;
+  bottom:108px;
+  width:min(390px,calc(100vw - 24px));
+  max-height:min(78vh,720px);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 24px 50px rgba(34,48,38,.18);
+  z-index:9999;
+  display:none;
+}
+.ki-panel.open{display:flex;flex-direction:column}
+.ki-head{
+  padding:20px 20px 16px;
+  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.ki-head-left{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.ki-head-avatar{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.ki-head-avatar img{
+  width:28px;
+  height:28px;
+  object-fit:contain;
+}
+.ki-head h3{
+  font-size:1.2rem !important;
+  font-weight:800 !important;
+  margin:0 0 4px;
+}
+.ki-head p{
+  font-size:.95rem !important;
+  color:var(--text2);
+  margin:0;
+}
+.ki-close{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  flex-shrink:0;
+  color:var(--text2);
+  font-size:1.8rem;
+  line-height:1;
+}
+.ki-suggestions{
+  padding:16px 20px 14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+.ki-chip{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--text2);
+  cursor:pointer;
+}
+.ki-chat{
+  padding:18px 16px;
+  overflow:auto;
+  background:#fffaf4;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-height:220px;
+}
+.ki-msg{
+  max-width:84%;
+  padding:14px 16px;
+  border-radius:20px;
+  font-size:.97rem;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+.ki-msg.bot{
+  background:#f7eee0;
+  border:1px solid #ebd3b5;
+  color:#5f4332;
+}
+.ki-msg.user{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  align-self:flex-end;
+}
+.ki-form{
+  padding:14px;
+  border-top:1px solid var(--line);
+  background:#fff;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+}
+.ki-input{
+  border:1.5px solid var(--line);
+  background:var(--bg-2);
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:.97rem;
+  color:var(--text);
+  outline:none;
+  font-family:inherit;
+}
+.ki-send{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  border-radius:18px;
+  padding:0 18px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+}
+.ki-typing{opacity:.8;font-style:italic}
+
+/* Responsive */
+@media(max-width:1200px){
+  .planner-grid,.hero{grid-template-columns:1fr}
+}
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{
+    height:auto;
+    position:relative;
+    flex-direction:row;
+    flex-wrap:wrap;
+    padding:16px;
+    gap:0;
+  }
+  .logo-wrap{
+    margin-bottom:0;
+    padding-bottom:0;
+    border-bottom:none;
+    border-right:1px solid var(--line);
+    padding-right:16px;
+    margin-right:16px;
+  }
+  .nav{
+    flex-direction:row;
+    flex-wrap:wrap;
+    flex:1;
+  }
+  .nav a{
+    flex:0 1 auto;
+    padding:10px 12px;
+  }
+  .nav-label,.sidebar-footer{display:none}
+}
+@media(max-width:700px){
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+}
+@media(max-width:600px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.95rem}
+  .cat-card{padding:18px;border-radius:24px}
+  .add-form{grid-template-columns:1fr}
+  .add-form .wide{grid-column:auto}
+}
+@media(max-width:420px){
+  .page-header h1{font-size:1.75rem}
+  .mode-badge{width:100%;justify-content:center}
+}
+</style>
 </head>
-<body>
+<body data-page="familienplaner">
 <div class="app">
 
-<!-- ════ Sidebar ════ -->
 <aside class="sidebar">
   <div class="logo-wrap">
     <img src="assetsschnecke.png" alt="Haushaltsheld">
-    <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Familien-Assistent</div></div>
+    <div>
+      <div class="logo-name">Haushaltsheld</div>
+      <div class="logo-sub">Dein Familien-Assistent</div>
+    </div>
   </div>
+
   <div class="nav-label">Hauptmenü</div>
   <nav class="nav">
-    <a href="index.html"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
-    <a href="finanzen.html"><span class="nav-icon">💰</span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html"><span class="nav-icon">🛒</span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon">🧹</span><span>Aufgaben</span></a>
-    <a href="familienplaner.html" class="active"><span class="nav-icon">📅</span><span>Familienplaner</span></a>
+    <a href="index.html">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10.5 12 3l9 7.5"></path>
+          <path d="M5 9.5V21h14V9.5"></path>
+        </svg>
+      </span>
+      <span>Dashboard</span>
+    </a>
+    <a href="finanzen.html">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="6" width="18" height="12" rx="2"></rect>
+          <path d="M16 12h.01"></path>
+          <path d="M3 10h18"></path>
+        </svg>
+      </span>
+      <span>Finanzen</span>
+    </a>
+    <a href="einkaufsliste.html">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="20" r="1"></circle>
+          <circle cx="18" cy="20" r="1"></circle>
+          <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
+        </svg>
+      </span>
+      <span>Einkäufe</span>
+    </a>
+    <a href="aufgaben.html">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+      </span>
+      <span>Aufgaben</span>
+    </a>
+    <a href="familienplaner.html" class="active">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+          <path d="M16 2v4M8 2v4M3 10h18"></path>
+        </svg>
+      </span>
+      <span>Familienplaner</span>
+    </a>
   </nav>
+
   <div class="nav-label">Extras</div>
   <nav class="nav">
-    <a href="finanzbericht.html"><span class="nav-icon">📊</span><span>Bericht</span></a>
-    <a href="finanz_historie.html"><span class="nav-icon">📋</span><span>Historie</span></a>
-    <a href="beleg_import.html"><span class="nav-icon">📥</span><span>Belege</span></a>
-    <a href="kindermodus.html"><span class="nav-icon">⭐</span><span>Kindermodus</span></a>
+    <a href="finanzbericht.html">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"></path>
+          <path d="M7 14l4-4 3 3 5-7"></path>
+        </svg>
+      </span>
+      <span>Bericht</span>
+    </a>
+    <a href="finanz_historie.html">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8v5l3 2"></path>
+          <circle cx="12" cy="12" r="9"></circle>
+        </svg>
+      </span>
+      <span>Historie</span>
+    </a>
+    <a href="beleg_import.html">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12"></path>
+          <path d="m7 10 5 5 5-5"></path>
+          <path d="M5 21h14"></path>
+        </svg>
+      </span>
+      <span>Belege</span>
+    </a>
+    <a href="kindermodus.html">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
+        </svg>
+      </span>
+      <span>Kindermodus</span>
+    </a>
   </nav>
+
   <div class="sidebar-footer">
-    <div style="color:var(--muted);font-size:.8rem;padding:0 4px">Familienplaner — alle Termine im Blick</div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="adminModeBtn" type="button">Eltern</button>
+      <button class="mode-btn" id="childModeBtn" type="button">Kind</button>
+    </div>
   </div>
 </aside>
 
-<!-- ════ Main ════ -->
 <main class="main">
   <div class="page-header">
     <div>
-      <h1>Familienplaner 📅</h1>
-      <p>Geburtstage, Urlaub, Arzttermine und Familienfeiern — gespeichert und immer im Blick.</p>
+      <h1>
+        <span class="page-title-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <path d="M16 2v4M8 2v4M3 10h18"></path>
+          </svg>
+        </span>
+        <span>Familienplaner</span>
+      </h1>
+      <p>Geburtstage, Urlaub, Arzttermine und Feiern übersichtlich an einem Ort – weich, klar und familienfreundlich.</p>
+    </div>
+    <div class="header-right">
+      <a class="btn btn-soft" href="index.html"><span>Zum Dashboard</span></a>
+      <a class="btn btn-soft" href="aufgaben.html"><span>Zu Aufgaben</span></a>
+      <span class="mode-badge" id="modeBadge">📅 Planermodus aktiv</span>
     </div>
   </div>
 
-  <div class="planner-grid">
+  <section class="hero">
+    <div>
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <path d="M16 2v4M8 2v4M3 10h18"></path>
+          </svg>
+        </span>
+        <span>Alles Wichtige im Blick</span>
+      </h2>
+      <p>Plane Geburtstage, Reisen, Arzttermine und Familienfeiern zentral. Die Termine bleiben gespeichert und sind für deine Familie schnell erreichbar.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Geburtstage</span>
+        <span class="hero-tag">Urlaub & Reisen</span>
+        <span class="hero-tag accent">Familientermine</span>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="mini"><strong>Übersichtlich</strong><span>Jede Kategorie hat ihren eigenen Bereich für einen schnellen Überblick.</span></div>
+      <div class="mini"><strong>Dauerhaft gespeichert</strong><span>Einträge bleiben in deinem Browser erhalten und können jederzeit ergänzt oder gelöscht werden.</span></div>
+    </div>
+  </section>
 
-    <!-- Geburtstage -->
-    <div class="cat-card birthday-card">
-      <h2>🎂 Geburtstage</h2>
+  <section class="planner-grid">
+    <section class="cat-card birthday-card">
+      <h2>
+        <span class="section-icon" style="background:#fff4f8;color:var(--birthday-text);border-color:rgba(239,202,214,.65);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v6"></path>
+            <path d="M8 8h8"></path>
+            <path d="M6 10h12l-1 10H7L6 10Z"></path>
+            <path d="M8 14h8"></path>
+          </svg>
+        </span>
+        <span>Geburtstage</span>
+      </h2>
+
       <div class="entry-list" id="birthdayList"></div>
-      <div class="add-form">
-        <input class="form-in" type="text" id="bName" placeholder="Name (z. B. Mama)"/>
-        <input class="form-in" type="text" id="bDate" placeholder="Datum (z. B. 12.04)"/>
-        <input class="form-in" type="text" id="bNote" placeholder="Notiz (optional)"/>
-        <button class="add-btn" onclick="addEntry('birthday')" type="button">+ Hinzufügen</button>
-      </div>
-    </div>
 
-    <!-- Urlaub -->
-    <div class="cat-card vacation-card">
-      <h2>🏖️ Urlaub & Reisen</h2>
+      <div class="add-form">
+        <input class="form-in" type="text" id="bName" placeholder="Name (z. B. Mama)" />
+        <input class="form-in" type="text" id="bDate" placeholder="Datum (z. B. 12.04)" />
+        <input class="form-in wide" type="text" id="bNote" placeholder="Notiz (optional)" />
+        <button class="btn" onclick="addEntry('birthday')" type="button">Hinzufügen</button>
+      </div>
+    </section>
+
+    <section class="cat-card vacation-card">
+      <h2>
+        <span class="section-icon" style="background:#f4f8ff;color:var(--vacation-text);border-color:rgba(207,224,248,.75);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20h16"></path>
+            <path d="M8 20v-6"></path>
+            <path d="M16 20v-6"></path>
+            <path d="M12 4v10"></path>
+            <path d="M7 9c2-1 3-1 5 0"></path>
+            <path d="M12 9c2-1 3-1 5 0"></path>
+          </svg>
+        </span>
+        <span>Urlaub & Reisen</span>
+      </h2>
+
       <div class="entry-list" id="vacationList"></div>
-      <div class="add-form">
-        <input class="form-in" type="text" id="vName" placeholder="Wohin? (z. B. Ostsee)"/>
-        <input class="form-in" type="text" id="vDate" placeholder="Wann? (z. B. Juli)"/>
-        <input class="form-in" type="text" id="vNote" placeholder="Notiz"/>
-        <button class="add-btn" onclick="addEntry('vacation')" type="button">+ Hinzufügen</button>
-      </div>
-    </div>
 
-    <!-- Arzt -->
-    <div class="cat-card doctor-card">
-      <h2>🩺 Arzttermine</h2>
+      <div class="add-form">
+        <input class="form-in" type="text" id="vName" placeholder="Wohin? (z. B. Ostsee)" />
+        <input class="form-in" type="text" id="vDate" placeholder="Wann? (z. B. Juli)" />
+        <input class="form-in wide" type="text" id="vNote" placeholder="Notiz" />
+        <button class="btn" onclick="addEntry('vacation')" type="button">Hinzufügen</button>
+      </div>
+    </section>
+
+    <section class="cat-card doctor-card">
+      <h2>
+        <span class="section-icon" style="background:#f4fbf6;color:var(--doctor-text);border-color:rgba(204,229,211,.8);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"></path>
+            <path d="M5 12h14"></path>
+            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+          </svg>
+        </span>
+        <span>Arzttermine</span>
+      </h2>
+
       <div class="entry-list" id="doctorList"></div>
-      <div class="add-form">
-        <input class="form-in" type="text" id="dName" placeholder="Wer? (z. B. Kinderarzt)"/>
-        <input class="form-in" type="date" id="dDate"/>
-        <input class="form-in" type="text" id="dNote" placeholder="Notiz"/>
-        <button class="add-btn" onclick="addEntry('doctor')" type="button">+ Hinzufügen</button>
-      </div>
-    </div>
 
-    <!-- Feiern & Termine -->
-    <div class="cat-card event-card">
-      <h2>🎉 Feiern & Termine</h2>
+      <div class="add-form">
+        <input class="form-in" type="text" id="dName" placeholder="Wer? (z. B. Kinderarzt)" />
+        <input class="form-in" type="date" id="dDate" />
+        <input class="form-in wide" type="text" id="dNote" placeholder="Notiz" />
+        <button class="btn" onclick="addEntry('doctor')" type="button">Hinzufügen</button>
+      </div>
+    </section>
+
+    <section class="cat-card event-card">
+      <h2>
+        <span class="section-icon" style="background:#fffaf2;color:var(--event-text);border-color:rgba(238,217,184,.85);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4"></path>
+            <path d="M12 18v4"></path>
+            <path d="M4.93 4.93l2.83 2.83"></path>
+            <path d="M16.24 16.24l2.83 2.83"></path>
+            <path d="M2 12h4"></path>
+            <path d="M18 12h4"></path>
+          </svg>
+        </span>
+        <span>Feiern & Termine</span>
+      </h2>
+
       <div class="entry-list" id="eventList"></div>
-      <div class="add-form">
-        <input class="form-in" type="text" id="eName" placeholder="Was? (z. B. Grillabend)"/>
-        <input class="form-in" type="text" id="eDate" placeholder="Wann? (z. B. Samstag)"/>
-        <input class="form-in" type="text" id="eNote" placeholder="Notiz"/>
-        <button class="add-btn" onclick="addEntry('event')" type="button">+ Hinzufügen</button>
-      </div>
-    </div>
 
-  </div>
+      <div class="add-form">
+        <input class="form-in" type="text" id="eName" placeholder="Was? (z. B. Grillabend)" />
+        <input class="form-in" type="text" id="eDate" placeholder="Wann? (z. B. Samstag)" />
+        <input class="form-in wide" type="text" id="eNote" placeholder="Notiz" />
+        <button class="btn" onclick="addEntry('event')" type="button">Hinzufügen</button>
+      </div>
+    </section>
+  </section>
 </main>
 </div>
 
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assetsschnecke.png" alt="">
+  <span class="ki-fab-label">KI</span>
+</button>
+
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <p id="kiContextText">Ich helfe dir beim Planen von Terminen, Geburtstagen, Urlaub und Familienfeiern.</p>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+  </div>
+
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI für den Familienplaner.</div>
+  </div>
+
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Frag mich etwas zum Familienplaner..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+
 <script>
-// FIX: Familienplaner is now dynamic with localStorage instead of static HTML
 const CATS = {
-  birthday: { key:"bName", dateKey:"bDate", noteKey:"bNote", listId:"birthdayList",
-    defaults:[{name:"Mama",date:"12.04",note:"Geschenk planen"},{name:"Oma",date:"28.04",note:""}] },
-  vacation: { key:"vName", dateKey:"vDate", noteKey:"vNote", listId:"vacationList",
-    defaults:[{name:"Sommerurlaub",date:"Juli",note:"Budget planen"}] },
-  doctor:   { key:"dName", dateKey:"dDate", noteKey:"dNote", listId:"doctorList",
-    defaults:[{name:"Kinderarzt",date:"2026-05-05",note:""}] },
-  event:    { key:"eName", dateKey:"eDate", noteKey:"eNote", listId:"eventList",
-    defaults:[{name:"Grillabend",date:"Samstag",note:"Alle einladen"}] },
+  birthday: {
+    key:"bName",
+    dateKey:"bDate",
+    noteKey:"bNote",
+    listId:"birthdayList",
+    defaults:[
+      {name:"Mama",date:"12.04",note:"Geschenk planen"},
+      {name:"Oma",date:"28.04",note:""}
+    ]
+  },
+  vacation: {
+    key:"vName",
+    dateKey:"vDate",
+    noteKey:"vNote",
+    listId:"vacationList",
+    defaults:[
+      {name:"Sommerurlaub",date:"Juli",note:"Budget planen"}
+    ]
+  },
+  doctor: {
+    key:"dName",
+    dateKey:"dDate",
+    noteKey:"dNote",
+    listId:"doctorList",
+    defaults:[
+      {name:"Kinderarzt",date:"2026-05-05",note:""}
+    ]
+  },
+  event: {
+    key:"eName",
+    dateKey:"eDate",
+    noteKey:"eNote",
+    listId:"eventList",
+    defaults:[
+      {name:"Grillabend",date:"Samstag",note:"Alle einladen"}
+    ]
+  }
 };
 
-function storageKey(cat){ return "hh_planner_"+cat; }
-
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function storageKey(cat){
+  return "hh_planner_" + cat;
+}
 function getData(cat){
   const stored = localStorage.getItem(storageKey(cat));
   if(stored) return JSON.parse(stored);
   return [...CATS[cat].defaults];
 }
-function saveData(cat, data){ localStorage.setItem(storageKey(cat), JSON.stringify(data)); }
-
-function fmtDate(s){
-  if(!s) return "";
-  const d=new Date(s);
-  if(!isNaN(d.getTime())&&s.includes("-")) return d.toLocaleDateString("de-DE");
-  return s;
+function saveData(cat, data){
+  localStorage.setItem(storageKey(cat), JSON.stringify(data));
 }
-
+function fmtDate(value){
+  if(!value) return "";
+  const d = new Date(value);
+  if(!Number.isNaN(d.getTime()) && value.includes("-")){
+    return d.toLocaleDateString("de-DE");
+  }
+  return value;
+}
+function deleteIcon(){
+  return `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 6h18"></path>
+      <path d="M8 6V4h8v2"></path>
+      <path d="M19 6l-1 14H6L5 6"></path>
+      <path d="M10 11v6"></path>
+      <path d="M14 11v6"></path>
+    </svg>
+  `;
+}
 function renderCat(cat){
   const data = getData(cat);
   const el = document.getElementById(CATS[cat].listId);
+
   if(!data.length){
-    el.innerHTML=`<div class="empty-hint">Noch keine Einträge. Trag deinen ersten ein!</div>`;
+    el.innerHTML = `<div class="empty-hint">Noch keine Einträge. Trag deinen ersten ein!</div>`;
     return;
   }
-  el.innerHTML = data.map((e,i)=>`
+
+  el.innerHTML = data.map((entry,index)=>`
     <div class="entry-item">
       <div class="entry-info">
-        <strong>${e.name}</strong>
-        ${e.note?`<small>${e.note}</small>`:""}
+        <strong>${escapeHtml(entry.name)}</strong>
+        ${entry.note ? `<small>${escapeHtml(entry.note)}</small>` : ``}
       </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="entry-date">${fmtDate(e.date)}</span>
-        <button class="delete-entry" onclick="deleteEntry('${cat}',${i})" type="button" title="Löschen">🗑️</button>
+      <div class="entry-actions">
+        <span class="entry-date">${escapeHtml(fmtDate(entry.date))}</span>
+        <button class="delete-entry" onclick="deleteEntry('${cat}',${index})" type="button" title="Löschen">${deleteIcon()}</button>
       </div>
-    </div>`).join("");
+    </div>
+  `).join("");
 }
-
-function renderAll(){ Object.keys(CATS).forEach(renderCat); }
-
+function renderAll(){
+  Object.keys(CATS).forEach(renderCat);
+}
 function addEntry(cat){
   const cfg = CATS[cat];
-  const name  = document.getElementById(cfg.key).value.trim();
-  const date  = document.getElementById(cfg.dateKey).value.trim();
-  const note  = document.getElementById(cfg.noteKey).value.trim();
-  if(!name){ alert("Bitte mindestens einen Namen eingeben."); return; }
+  const name = document.getElementById(cfg.key).value.trim();
+  const date = document.getElementById(cfg.dateKey).value.trim();
+  const note = document.getElementById(cfg.noteKey).value.trim();
+
+  if(!name){
+    alert("Bitte mindestens einen Namen eingeben.");
+    return;
+  }
+
   const data = getData(cat);
   data.push({name,date,note});
   saveData(cat,data);
-  document.getElementById(cfg.key).value="";
-  document.getElementById(cfg.dateKey).value="";
-  document.getElementById(cfg.noteKey).value="";
+
+  document.getElementById(cfg.key).value = "";
+  document.getElementById(cfg.dateKey).value = "";
+  document.getElementById(cfg.noteKey).value = "";
+
   renderCat(cat);
 }
-
-function deleteEntry(cat,i){
+function deleteEntry(cat,index){
   const data = getData(cat);
-  data.splice(i,1);
+  data.splice(index,1);
   saveData(cat,data);
   renderCat(cat);
 }
 
+/* KI */
+(function(){
+  const page = "familienplaner";
+  const fab = document.getElementById("kiFab");
+  const panel = document.getElementById("kiPanel");
+  const closeBtn = document.getElementById("kiClose");
+  const form = document.getElementById("kiForm");
+  const input = document.getElementById("kiInput");
+  const chat = document.getElementById("kiChat");
+  const suggestions = document.getElementById("kiSuggestions");
+  const contextText = document.getElementById("kiContextText");
+  const welcome = document.getElementById("kiWelcomeMsg");
+
+  const pageSettings = {
+    context: "Ich helfe dir beim Planen von Terminen, Geburtstagen, Urlaub und Familienfeiern.",
+    suggestions: [
+      "Hilf mir bei der Planung eines Kindergeburtstags.",
+      "Was sollte ich für einen Sommerurlaub früh eintragen?",
+      "Mach mir eine kleine Checkliste für einen Arzttermin."
+    ]
+  };
+
+  contextText.textContent = pageSettings.context;
+  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI für den Familienplaner.";
+
+  suggestions.innerHTML = pageSettings.suggestions.map(text =>
+    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
+  ).join("");
+
+  suggestions.querySelectorAll(".ki-chip").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      input.value = btn.textContent.trim();
+      input.focus();
+    });
+  });
+
+  function addMsg(role, text){
+    const div = document.createElement("div");
+    div.className = "ki-msg " + role;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage(message){
+    addMsg("user", message);
+    const loading = addMsg("bot", "Ich denke kurz nach …");
+    loading.classList.add("ki-typing");
+
+    try{
+      const response = await fetch("/.netlify/functions/chat", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          message,
+          page,
+          mode: "parent"
+        })
+      });
+
+      const data = await response.json();
+      loading.remove();
+      addMsg("bot", data.reply || "Ich konnte gerade nichts Sinnvolles antworten.");
+    }catch(err){
+      loading.remove();
+      addMsg("bot", "Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.");
+    }
+  }
+
+  fab.addEventListener("click",()=>{
+    panel.classList.add("open");
+    input.focus();
+  });
+  closeBtn.addEventListener("click",()=>{
+    panel.classList.remove("open");
+  });
+
+  document.addEventListener("keydown",(e)=>{
+    if(e.key === "Escape") panel.classList.remove("open");
+  });
+
+  form.addEventListener("submit",async(e)=>{
+    e.preventDefault();
+    const message = input.value.trim();
+    if(!message) return;
+    input.value = "";
+    await sendMessage(message);
+  });
+})();
+
 renderAll();
 </script>
-
-<script src="ki-schnecke.js"></script>
 </body>
 </html>

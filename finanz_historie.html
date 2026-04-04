@@ -1,353 +1,1253 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Haushaltsheld – Finanz Historie</title>
-  <style>
-    :root{--bg:#fdf5ec;--card:#fff;--soft:#fff3e8;--line:#e6cdb8;--text:#433028;--muted:#9a7060;--accent:#f07c38;--accent-dark:#d4621e;--green:#70a781;--red:#d27777;--yellow:#d7a647;--blue:#7ea5d8;--shadow:0 8px 28px rgba(70,35,10,.09);--radius-lg:22px}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:"Outfit", sans-serif;background:var(--bg);color:var(--text);padding:24px}
-    .wrap{padding-top:8px;max-width:1600px;margin:0 auto}
-    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
-    .title-box h1{font-size:2rem;margin-bottom:6px}.title-box p{color:var(--muted);line-height:1.5;max-width:860px}
-    .header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-    .btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:12px 16px;border-radius:16px;font-size:.95rem;font-weight:700;text-decoration:none;cursor:pointer;box-shadow:0 10px 22px rgba(217,111,48,.16)}
-    .btn-soft{background:#fff3e8;color:#7c5848;border:1px solid #efcfbb;box-shadow:none}
-    .pill-toggle{background:rgba(255,255,255,.92);border:1px solid rgba(236,215,199,.95);border-radius:999px;padding:6px;display:inline-flex;gap:6px;box-shadow:0 8px 18px rgba(90,55,29,.05)}
-    .pill-btn{border:none;background:transparent;color:var(--text);padding:11px 18px;border-radius:999px;font-size:.94rem;font-weight:700;cursor:pointer;font-family:"Outfit", sans-serif}
-    .pill-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:white}
-    .mode-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;font-weight:700;font-size:.92rem;border:1px solid rgba(236,215,199,.9);background:#fff5ec;color:#8d5a33}
-    .mode-badge.child{background:#eef7ff;color:#5d7698}
-    .mode-note{color:var(--muted);line-height:1.5;margin-bottom:18px}
-    .filter-card,.summary-card,.table-card,.ai-card{background:var(--card);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;margin-bottom:18px}
-    .filter-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;gap:12px;align-items:end}
-    .form-group{display:flex;flex-direction:column;gap:8px}.form-group label{font-size:.92rem;font-weight:700}
-    .form-group input,.form-group select{width:100%;border:1px solid var(--line);background:var(--soft);border-radius:14px;padding:12px 14px;font-size:.95rem;color:var(--text);outline:none}
-    .summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-    .mini-card{background:var(--soft);border-radius:16px;padding:16px}.mini-card h3{font-size:.96rem;margin-bottom:8px}.mini-card .value{font-size:1.4rem;font-weight:700;margin-bottom:4px}.mini-card p{color:var(--muted);font-size:.9rem;line-height:1.4}
-    .green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}
-    .ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .ai-box{background:var(--soft);border-radius:16px;padding:16px}.ai-box strong{display:block;margin-bottom:6px;font-size:.98rem}.ai-box p{color:var(--muted);line-height:1.5;font-size:.92rem}
-    table{width:100%;border-collapse:collapse;background:#fffdfb;border-radius:16px;overflow:hidden}
-    th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:.93rem;vertical-align:top} th{background:var(--soft);font-size:.9rem}
-    .amount-plus{color:var(--green);font-weight:700}.amount-minus{color:var(--red);font-weight:700}
-    .tag{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#efe6dd;color:#7b5a43;font-size:.8rem;font-weight:700;white-space:nowrap}
-    .child-mode .hide-for-child{display:none !important}.child-mode h1,.child-mode h2,.child-mode .pill-btn,.child-mode .mode-badge{font-family:"Outfit", sans-serif}
-    .no-results{color:var(--muted);text-align:center;padding:20px}
-    @media(max-width:1600px){.filter-grid{grid-template-columns:repeat(2,1fr)}.summary-grid,.ai-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:760px){body{padding:16px}.summary-grid,.ai-grid,.filter-grid{grid-template-columns:1fr}.topbar{flex-direction:column}.header-actions{justify-content:flex-start}th,td{padding:10px;font-size:.86rem}}
-    @media print{body{background:#fff;padding:0}.header-actions,.filter-card,.mode-note{display:none !important}.filter-card,.summary-card,.table-card,.ai-card{box-shadow:none}.wrap{padding-top:8px;max-width:none}}
-  
-.page-topnav{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  background:linear-gradient(135deg,#fef0e2 0%,#fdf6ee 100%);
-  border-bottom:1px solid #e6cdb8;padding:14px 28px;
-  position:sticky;top:0;z-index:100;
-}
-.topnav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:"Outfit", sans-serif;font-weight:700;font-size:1.1rem;color:#3a2418;}
-.topnav-links{display:flex;gap:4px;flex-wrap:wrap}
-.topnav-links a{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:10px;text-decoration:none;color:#6a4432;font-weight:700;font-size:.82rem;transition:.18s;}
-.topnav-links a:hover{background:#fde9d4;color:#3a2418}
-.topnav-links a.active-page{background:linear-gradient(135deg,#f5975a 0%,#f0c99a 100%);color:#3a2418}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Haushaltsheld – Finanz Historie</title>
 
-
-/* ══ Button Upgrade – visible, punchy, warm ══ */
-.btn, button.btn, a.btn {
-  border: none;
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%);
-  color: #fff !important;
-  padding: 13px 22px;
-  border-radius: 16px;
-  font-size: .94rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  /* rich layered shadow */
-  box-shadow:
-    0 4px 0 #a83e0c,
-    0 8px 22px rgba(180,70,10,.32),
-    inset 0 1px 0 rgba(255,255,255,.22);
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-  letter-spacing: .01em;
-  position: relative;
-}
-.btn:hover, button.btn:hover, a.btn:hover {
-  background: linear-gradient(135deg, #f99650 0%, #e06520 100%);
-  transform: translateY(-2px);
-  box-shadow:
-    0 6px 0 #a83e0c,
-    0 14px 30px rgba(180,70,10,.36),
-    inset 0 1px 0 rgba(255,255,255,.26);
-}
-.btn:active, button.btn:active, a.btn:active {
-  transform: translateY(1px);
-  box-shadow:
-    0 2px 0 #a83e0c,
-    0 4px 12px rgba(180,70,10,.28),
-    inset 0 1px 0 rgba(255,255,255,.18);
-}
-
-/* Soft / secondary button */
-.btn-soft, button.btn-soft, a.btn-soft {
-  background: linear-gradient(135deg, #fff6ee 0%, #fce8d4 100%) !important;
-  color: #8a4a28 !important;
-  border: 1.5px solid #e8c4a0 !important;
-  box-shadow:
-    0 3px 0 #d4a070,
-    0 6px 18px rgba(160,90,40,.14),
-    inset 0 1px 0 rgba(255,255,255,.7) !important;
-}
-.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover {
-  background: linear-gradient(135deg, #fde9d4 0%, #f9d8bc 100%) !important;
-  box-shadow:
-    0 5px 0 #d4a070,
-    0 10px 24px rgba(160,90,40,.18),
-    inset 0 1px 0 rgba(255,255,255,.7) !important;
-  transform: translateY(-2px);
-}
-
-/* mini buttons in task lists */
-.mini-btn {
-  border: 1.5px solid #e6cdb8 !important;
-  background: linear-gradient(135deg, #fffaf5 0%, #fdf0e2 100%) !important;
-  color: #7a4a28 !important;
-  padding: 7px 12px !important;
-  border-radius: 999px !important;
-  font-size: .78rem !important;
-  font-weight: 700 !important;
-  cursor: pointer;
-  transition: all .15s;
-  box-shadow: 0 2px 6px rgba(150,80,20,.12), inset 0 1px 0 rgba(255,255,255,.8) !important;
-}
-.mini-btn:hover {
-  background: linear-gradient(135deg, #fde9d4 0%, #f9d4b4 100%) !important;
-  border-color: #d4956a !important;
-  box-shadow: 0 4px 10px rgba(150,80,20,.18), inset 0 1px 0 rgba(255,255,255,.8) !important;
-  transform: translateY(-1px);
-}
-.mini-btn.delete-btn:hover {
-  background: linear-gradient(135deg, #fde8e8 0%, #fac8c8 100%) !important;
-  border-color: #e08080 !important;
-  color: #b03030 !important;
-}
-
-/* Pill mode-switch buttons */
-.mode-btn.active {
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 0 #a83e0c, 0 6px 16px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
-}
-
-/* Pill toggle (finanzbericht / historie) */
-.pill-btn.active {
-  background: linear-gradient(135deg, #f5893f 0%, #d45c18 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 3px 0 #a83e0c, 0 6px 14px rgba(180,70,10,.25) !important;
-}
-
-/* CTA link on dashboard */
-.cta-link {
-  box-shadow: 0 4px 0 #a83e0c, 0 8px 22px rgba(180,70,10,.3), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-.cta-link:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #a83e0c, 0 14px 30px rgba(180,70,10,.34), inset 0 1px 0 rgba(255,255,255,.24) !important;
-}
-
-/* Kid page buttons (Nunito font) */
-.quick-btn {
-  box-shadow: 0 4px 0 #a83e0c, 0 8px 20px rgba(180,70,10,.28), inset 0 1px 0 rgba(255,255,255,.2) !important;
-}
-.quick-btn:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #a83e0c, 0 14px 28px rgba(180,70,10,.32), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-.add-star-btn {
-  box-shadow: 0 4px 0 #a07000, 0 8px 20px rgba(180,140,0,.28) !important;
-}
-.add-star-btn:hover {
-  transform: scale(1.04) translateY(-1px) !important;
-  box-shadow: 0 6px 0 #a07000, 0 12px 26px rgba(180,140,0,.32) !important;
-}
-
-
-/* ══ Outfit Font System ══ */
-:root {
-  --font-main: "Outfit", sans-serif;
-}
-body {
-  font-family: "Outfit", sans-serif !important;
-  font-size: 16px !important;
-  line-height: 1.6 !important;
-  letter-spacing: -0.01em;
-}
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Outfit", sans-serif !important;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-h1 { font-size: 2.4rem !important; font-weight: 800 !important; }
-h2 { font-size: 1.5rem !important; font-weight: 700 !important; }
-h3 { font-size: 1.15rem !important; font-weight: 700 !important; }
-.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
-.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
-.stat .value, .pocket-amount, .stars-count {
-  font-family: "Outfit", sans-serif !important;
-}
-.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
-.pill-btn, .pill-toggle button, .mode-switch button,
-label, .field label, .form-label, .section-label,
-.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
-select, input, textarea, button, .mini-btn,
-.chip, .hero-tag, .badge, .mode-badge,
-.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
-p, span, div, li, td, th {
-  font-family: "Outfit", sans-serif !important;
-}
-/* Bigger body text */
-p, .sub, .card-sub, .body, .helper, .small-note,
-.ki-note, .mode-note, .section-note, .filter-note {
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-}
-/* Stat values bigger & bolder */
-.stat-value, .stat .value, .stat-val, .pocket-amount {
-  font-size: 2rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.03em;
-}
-/* Buttons rounded and bold */
-.btn, button.btn, a.btn {
-  font-weight: 800 !important;
-  font-size: 0.95rem !important;
-  letter-spacing: 0.01em;
-  border-radius: 14px !important;
-}
-/* Labels uppercase + spaced */
-.field label, .form-label, .stat-label, .stat-lbl,
-.nav-lbl, .section-label, .opt-name {
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-/* Nav sidebar items */
-.nav a, .nav-item {
-  font-weight: 700 !important;
-  font-size: 0.97rem !important;
-}
-/* Logo name display */
-.logo-name, .s-logo-text {
-  font-size: 1.25rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em;
-}
-/* Input fields */
-input, select, textarea {
-  font-size: 0.95rem !important;
-  font-weight: 500 !important;
-}
-/* Kindermodus — keep Outfit too */
-.wrap, .hero, .savings-card, .pocket-card,
-.tasks-card, .stars-banner, .quick-card,
-.kid-tab, .add-goal-btn, .quick-btn {
-  font-family: "Outfit", sans-serif !important;
-}
-
-</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="ki-schnecke.css">
+
+<style>
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
+
+  --text:#2d342f;
+  --text2:#556159;
+  --muted:#7d8a82;
+
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#e7f5e8;
+
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
+  --red:#cc6666;
+  --red-soft:#fdeaea;
+  --yellow:#b5882f;
+  --yellow-soft:#fbf4df;
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
+
+  --brown:#4d3c2c;
+  --brown-dark:#433324;
+
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+
+  --sidebar-w:258px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+
+body{
+  font-family:"Outfit",sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family:"Outfit",sans-serif;
+  letter-spacing:-0.03em;
+  line-height:1.15;
+}
+
+button,input,select,textarea{font:inherit}
+
+.app{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:100vh;
+}
+
+/* Sidebar */
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:28px 18px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+}
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 8px 24px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:8px;
+}
+.logo-wrap img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
+}
+.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
+.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+.nav-label{
+  font-size:.7rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--muted);
+  padding:16px 10px 6px;
+}
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 13px;
+  border-radius:18px;
+  text-decoration:none;
+  color:var(--text2);
+  font-weight:700;
+  font-size:.98rem;
+  transition:all .18s ease;
+  border:1px solid transparent;
+}
+.nav a:hover{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+  color:var(--text);
+}
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;
+  border-color:rgba(62,142,65,.28);
+  box-shadow:
+    0 5px 0 #2f6f33,
+    0 14px 26px rgba(62,142,65,.20),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+.nav a.active .nav-icon{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+}
+.nav-icon{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--accent-dark);
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(54,45,28,.05);
+}
+.nav-icon svg{width:18px;height:18px;stroke:currentColor}
+.sidebar-footer{
+  margin-top:auto;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+}
+.mode-switch{
+  display:flex;
+  gap:6px;
+  background:rgba(255,255,255,.86);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px;
+  box-shadow:var(--shadow-xs);
+}
+.mode-btn{
+  flex:1;
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  padding:9px 12px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+}
+.mode-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  box-shadow:
+    0 3px 0 #2f6f33,
+    0 8px 18px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+/* Main */
+.main{
+  width:100%;
+  max-width:1580px;
+  padding:32px;
+}
+
+/* Header */
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+.page-header h1{
+  font-size:2.35rem;
+  font-weight:800;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.page-header p{
+  color:var(--muted);
+  font-size:.98rem;
+  max-width:920px;
+}
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.mode-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:.88rem;
+  background:var(--soft);
+  border:1px solid var(--line);
+  color:var(--text2);
+  box-shadow:var(--shadow-xs);
+}
+.mode-badge.child{
+  background:var(--blue-soft);
+  border-color:#cbdcf8;
+  color:#496d9d;
+}
+.mode-note{
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:18px;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(223,209,188,.75);
+  border-radius:18px;
+  padding:14px 16px;
+}
+
+/* Icons */
+.page-title-icon,
+.section-icon,
+.stat-icon{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:inline-grid;
+  place-items:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.16);
+  box-shadow:var(--shadow-xs);
+  flex-shrink:0;
+}
+.page-title-icon svg,.section-icon svg,.stat-icon svg{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+}
+.stat-icon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+}
+.stat-icon svg{
+  width:21px;
+  height:21px;
+}
+
+/* Hero */
+.hero{
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
+  border:1px solid rgba(76,175,80,.18);
+  border-radius:30px;
+  padding:28px 30px;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:20px;
+  align-items:stretch;
+  margin-bottom:24px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  right:-40px;
+  bottom:-40px;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+.hero h2{
+  font-size:1.55rem;
+  font-weight:800;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.hero p{
+  color:var(--text2);
+  line-height:1.65;
+  margin-bottom:16px;
+}
+.hero-tags{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.95);
+  padding:9px 14px;
+  border-radius:999px;
+  font-size:.88rem;
+  font-weight:800;
+  color:var(--text2);
+  box-shadow:0 1px 4px rgba(54,45,28,.04);
+}
+.hero-tag.accent{
+  background:#f8ebda;
+  border-color:#ecd1ad;
+}
+.hero-side{
+  display:grid;
+  gap:12px;
+}
+.mini{
+  background:rgba(255,255,255,.78);
+  border-radius:20px;
+  padding:16px;
+  border:1px solid rgba(223,209,188,.85);
+  box-shadow:var(--shadow-xs);
+}
+.mini strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:.96rem;
+  font-weight:800;
+}
+.mini span{
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.55;
+}
+
+/* Cards */
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+.card h2{
+  font-size:1.16rem;
+  font-weight:800;
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.card-sub{
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:16px;
+  font-size:.9rem;
+}
+
+/* Filter */
+.filter-grid{
+  display:grid;
+  grid-template-columns:2fr repeat(5,1fr);
+  gap:12px;
+  align-items:end;
+}
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.form-group label{
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.form-group input,
+.form-group select{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:#fffdf9;
+  border-radius:16px;
+  padding:13px 14px;
+  font-size:.94rem;
+  color:var(--text);
+  outline:none;
+  transition:.18s ease;
+  min-height:48px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+}
+.form-group input:focus,
+.form-group select:focus{
+  border-color:rgba(76,175,80,.7);
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+  background:#fff;
+}
+
+/* Summary */
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+}
+.mini-card{
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border-radius:20px;
+  padding:18px;
+  border:1px solid rgba(223,209,188,.7);
+}
+.mini-card h3{
+  font-size:.85rem;
+  margin-bottom:8px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.mini-card .value{
+  font-size:1.7rem;
+  font-weight:800;
+  margin-bottom:4px;
+  letter-spacing:-0.03em;
+}
+.mini-card p{
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.45;
+}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.yellow{color:var(--yellow)}
+.blue{color:var(--blue)}
+
+/* AI */
+.ai-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.ai-box{
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border-radius:18px;
+  padding:16px;
+  border:1px solid rgba(223,209,188,.7);
+}
+.ai-box strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:.98rem;
+  color:var(--text);
+}
+.ai-box p{
+  color:var(--muted);
+  line-height:1.55;
+  font-size:.92rem;
+}
+
+/* Table */
+.table-wrap{
+  overflow:auto;
+  border-radius:20px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fffdfb;
+  border-radius:20px;
+  overflow:hidden;
+}
+th,td{
+  padding:13px 14px;
+  text-align:left;
+  border-bottom:1px solid var(--line);
+  font-size:.92rem;
+  vertical-align:top;
+}
+th{
+  background:var(--soft);
+  font-size:.8rem;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+tbody tr:hover td{
+  background:#fbfdfb;
+}
+.amount-plus{color:var(--green);font-weight:800}
+.amount-minus{color:var(--red);font-weight:800}
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#efe6dd;
+  color:#7b5a43;
+  font-size:.8rem;
+  font-weight:800;
+  white-space:nowrap;
+}
+.no-results{
+  color:var(--muted);
+  text-align:center;
+  padding:20px;
+}
+
+/* Buttons */
+.btn,
+button.btn,
+a.btn{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:13px 22px;
+  border-radius:16px;
+  font-size:.95rem !important;
+  font-weight:800 !important;
+  text-decoration:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  white-space:nowrap;
+  box-shadow:
+    0 4px 0 #2f6f33,
+    0 10px 22px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  letter-spacing:.01em;
+}
+.btn:hover,
+button.btn:hover,
+a.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 14px 28px rgba(62,142,65,.26),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  filter:brightness(1.02);
+}
+.btn:active,
+button.btn:active,
+a.btn:active{
+  transform:translateY(1px);
+  box-shadow:
+    0 2px 0 #2f6f33,
+    0 6px 14px rgba(62,142,65,.18),
+    inset 0 1px 0 rgba(255,255,255,.16);
+}
+.btn-soft{
+  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
+  color:var(--brown) !important;
+  border:1.5px solid #d7c0a6 !important;
+  border-radius:16px !important;
+  box-shadow:
+    0 4px 0 #c7ae91,
+    0 8px 18px rgba(110,82,40,.10),
+    inset 0 1px 0 rgba(255,255,255,.65) !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+.btn.btn-soft,
+button.btn.btn-soft,
+a.btn.btn-soft,
+.btn-soft span,
+.btn-soft svg{
+  color:var(--brown) !important;
+  stroke:currentColor !important;
+}
+.btn-soft:hover,
+button.btn-soft:hover,
+a.btn-soft:hover{
+  background:linear-gradient(180deg,#f1e1cf 0%, #e4cfb7 100%) !important;
+  color:var(--brown-dark) !important;
+  box-shadow:
+    0 6px 0 #c7ae91,
+    0 12px 22px rgba(110,82,40,.12),
+    inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+.btn-soft:hover span,
+.btn-soft:hover svg{
+  color:var(--brown-dark) !important;
+  stroke:currentColor !important;
+}
+
+/* Child mode */
+.child-mode .hide-for-child{display:none !important}
+
+/* KI */
+.ki-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:74px;
+  height:74px;
+  border:none;
+  border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9998;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.ki-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
+}
+.ki-fab img{width:40px;height:40px;object-fit:contain}
+.ki-fab-label{
+  position:absolute;
+  bottom:8px;
+  right:10px;
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1;
+}
+.ki-panel{
+  position:fixed;
+  right:22px;
+  bottom:108px;
+  width:min(390px,calc(100vw - 24px));
+  max-height:min(78vh,720px);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 24px 50px rgba(34,48,38,.18);
+  z-index:9999;
+  display:none;
+}
+.ki-panel.open{display:flex;flex-direction:column}
+.ki-head{
+  padding:20px 20px 16px;
+  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.ki-head-left{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.ki-head-avatar{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.ki-head-avatar img{
+  width:28px;
+  height:28px;
+  object-fit:contain;
+}
+.ki-head h3{
+  font-size:1.2rem !important;
+  font-weight:800 !important;
+  margin:0 0 4px;
+}
+.ki-head p{
+  font-size:.95rem !important;
+  color:var(--text2);
+  margin:0;
+}
+.ki-close{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  flex-shrink:0;
+  color:var(--text2);
+  font-size:1.8rem;
+  line-height:1;
+}
+.ki-suggestions{
+  padding:16px 20px 14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+.ki-chip{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--text2);
+  cursor:pointer;
+}
+.ki-chat{
+  padding:18px 16px;
+  overflow:auto;
+  background:#fffaf4;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-height:220px;
+}
+.ki-msg{
+  max-width:84%;
+  padding:14px 16px;
+  border-radius:20px;
+  font-size:.97rem;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+.ki-msg.bot{
+  background:#f7eee0;
+  border:1px solid #ebd3b5;
+  color:#5f4332;
+}
+.ki-msg.user{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  align-self:flex-end;
+}
+.ki-form{
+  padding:14px;
+  border-top:1px solid var(--line);
+  background:#fff;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+}
+.ki-input{
+  border:1.5px solid var(--line);
+  background:var(--bg-2);
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:.97rem;
+  color:var(--text);
+  outline:none;
+  font-family:inherit;
+}
+.ki-send{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  border-radius:18px;
+  padding:0 18px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+}
+.ki-typing{opacity:.8;font-style:italic}
+
+/* Responsive */
+@media(max-width:1500px){
+  .filter-grid{grid-template-columns:repeat(3,1fr)}
+  .summary-grid{grid-template-columns:repeat(3,1fr)}
+  .ai-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:1200px){
+  .hero{grid-template-columns:1fr}
+  .filter-grid{grid-template-columns:repeat(2,1fr)}
+  .summary-grid,.ai-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{
+    height:auto;
+    position:relative;
+    flex-direction:row;
+    flex-wrap:wrap;
+    padding:16px;
+    gap:0;
+  }
+  .logo-wrap{
+    margin-bottom:0;
+    padding-bottom:0;
+    border-bottom:none;
+    border-right:1px solid var(--line);
+    padding-right:16px;
+    margin-right:16px;
+  }
+  .nav{
+    flex-direction:row;
+    flex-wrap:wrap;
+    flex:1;
+  }
+  .nav a{
+    flex:0 1 auto;
+    padding:10px 12px;
+  }
+  .nav-label,.sidebar-footer{display:none}
+}
+@media(max-width:760px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.95rem}
+  .filter-grid,.summary-grid,.ai-grid{grid-template-columns:1fr}
+  th,td{padding:10px;font-size:.86rem}
+}
+@media(max-width:700px){
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+}
+@media print{
+  body{background:#fff}
+  .sidebar,.header-right,.mode-note,.ki-fab,.ki-panel{display:none !important}
+  .app{display:block}
+  .main{padding:0;max-width:none}
+  .card,.hero{box-shadow:none}
+}
+</style>
 </head>
-<body>
-<nav class="page-topnav">
-  <a href="index.html" class="topnav-logo">🦸 Haushaltsheld</a>
-  <div class="topnav-links">
-    <a href="index.html">🏠</a>
-    <a href="finanzen.html">💰 Finanzen</a>
-    <a href="einkaufsliste.html">🛒 Einkäufe</a>
-    <a href="aufgaben.html">🧹 Aufgaben</a>
-    <a href="familienplaner.html">📅 Planer</a>
-    <a href="finanzbericht.html">📊 Bericht</a>
-    <a href="finanz_historie.html">📋 Historie</a>
-    <a href="beleg_import.html">📥 Belege</a>
-    <a href="kindermodus.html">⭐ Kinder</a>
-  </div>
-</nav>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="title-box">
-        <h1>Finanz Historie</h1>
-        <p>Die Historie liest jetzt dieselben Einträge wie der Finanzbericht. Wiederkehrende Positionen wie Miete, Strom, Internet, Versicherung und Gehalt sind automatisch sauber kategorisiert.</p>
-      </div>
-      <div class="header-actions">
-        <a class="btn btn-soft" href="datenzentrale.html">Datenzentrale</a>
-        <button class="btn btn-soft" type="button" onclick="window.print()">🖨️ Drucken</button>
-        <div class="mode-badge" id="modeBadge">🛠️ Elternmodus aktiv</div>
-        <div class="pill-toggle">
-          <button class="pill-btn active" id="adminViewBtn" type="button">Eltern</button>
-          <button class="pill-btn" id="childViewBtn" type="button">Kind</button>
-        </div>
+<body data-page="finanz_historie">
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="logo-wrap">
+      <img src="assetsschnecke.png" alt="Haushaltsheld">
+      <div>
+        <div class="logo-name">Haushaltsheld</div>
+        <div class="logo-sub">Dein Familien-Assistent</div>
       </div>
     </div>
 
+    <div class="nav-label">Hauptmenü</div>
+    <nav class="nav">
+      <a href="index.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10.5 12 3l9 7.5"></path>
+            <path d="M5 9.5V21h14V9.5"></path>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </a>
+      <a href="finanzen.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2"></rect>
+            <path d="M16 12h.01"></path>
+            <path d="M3 10h18"></path>
+          </svg>
+        </span>
+        <span>Finanzen</span>
+      </a>
+      <a href="einkaufsliste.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="20" r="1"></circle>
+            <circle cx="18" cy="20" r="1"></circle>
+            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
+          </svg>
+        </span>
+        <span>Einkäufe</span>
+      </a>
+      <a href="aufgaben.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </span>
+        <span>Aufgaben</span>
+      </a>
+      <a href="familienplaner.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+            <path d="M16 2v4M8 2v4M3 10h18"></path>
+          </svg>
+        </span>
+        <span>Familienplaner</span>
+      </a>
+    </nav>
+
+    <div class="nav-label">Extras</div>
+    <nav class="nav">
+      <a href="finanzbericht.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"></path>
+            <path d="M7 14l4-4 3 3 5-7"></path>
+          </svg>
+        </span>
+        <span>Bericht</span>
+      </a>
+      <a href="finanz_historie.html" class="active">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8v5l3 2"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+          </svg>
+        </span>
+        <span>Historie</span>
+      </a>
+      <a href="beleg_import.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12"></path>
+            <path d="m7 10 5 5 5-5"></path>
+            <path d="M5 21h14"></path>
+          </svg>
+        </span>
+        <span>Belege</span>
+      </a>
+      <a href="kindermodus.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
+          </svg>
+        </span>
+        <span>Kindermodus</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="mode-switch">
+        <button class="mode-btn active" id="adminViewBtn" type="button">Eltern</button>
+        <button class="mode-btn" id="childViewBtn" type="button">Kind</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>
+          <span class="page-title-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 8v5l3 2"></path>
+              <circle cx="12" cy="12" r="9"></circle>
+            </svg>
+          </span>
+          <span>Finanz Historie</span>
+        </h1>
+        <p>Die Historie liest dieselben Einträge wie Bericht, Finanzen und Einkaufsliste. Wiederkehrende Kosten, Einkäufe und Einnahmen bleiben sauber kategorisiert und auswertbar.</p>
+      </div>
+
+      <div class="header-right">
+        <a class="btn btn-soft" href="finanzen.html"><span>Zu Finanzen</span></a>
+        <a class="btn btn-soft" href="finanzbericht.html"><span>Zum Bericht</span></a>
+        <button class="btn btn-soft" type="button" onclick="window.print()"><span>Drucken</span></button>
+        <div class="mode-badge" id="modeBadge">Elternmodus aktiv</div>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div>
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12h18"></path>
+              <path d="M12 3v18"></path>
+            </svg>
+          </span>
+          <span>Bewegungen nachvollziehen</span>
+        </h2>
+        <p>Filtere nach Typ, Hauptkategorie, Unterkategorie, Person oder Zahlungsart. So erkennst du schnell wiederkehrende Kosten, Einkaufsmuster und Einnahmen.</p>
+        <div class="hero-tags">
+          <span class="hero-tag">Gemeinsame Datenbasis</span>
+          <span class="hero-tag">Filterbar</span>
+          <span class="hero-tag accent">Kindersicht möglich</span>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="mini"><strong>Einheitlich verknüpft</strong><span>Historie, Bericht und Finanzseite greifen auf dieselben Daten zu.</span></div>
+        <div class="mini"><strong>Klare Kategorien</strong><span>Fixkosten, Einkauf, Freizeit und Einnahmen bleiben sauber getrennt sichtbar.</span></div>
+      </div>
+    </section>
+
     <p class="mode-note" id="modeNote">Im Elternmodus ist die komplette Historie sichtbar. Im Kindermodus werden nur freigegebene Bereiche angezeigt.</p>
 
-    <section class="filter-card">
+    <section class="card">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 4h18"></path>
+            <path d="M6 12h12"></path>
+            <path d="M10 20h4"></path>
+          </svg>
+        </span>
+        <span>Filter</span>
+      </h2>
+
       <div class="filter-grid">
-        <div class="form-group"><label for="searchInput">Suche</label><input type="text" id="searchInput" placeholder="z. B. Uber, Oma, Miete"></div>
-        <div class="form-group"><label for="typeFilter">Typ</label><select id="typeFilter"><option value="all">Alle</option><option value="Einnahme">Einnahmen</option><option value="Ausgabe">Ausgaben</option></select></div>
-        <div class="form-group"><label for="mainCategoryFilter">Hauptkategorie</label><select id="mainCategoryFilter"><option value="all">Alle</option><option value="Einnahme">Einnahme</option><option value="Fixkosten">Fixkosten</option><option value="Mobilität">Mobilität</option><option value="Online">Online</option><option value="Freizeit">Freizeit</option><option value="Einkauf">Einkauf</option></select></div>
-        <div class="form-group"><label for="categoryFilter">Unterkategorie</label><select id="categoryFilter"><option value="all">Alle</option><option value="Gehalt">Gehalt</option><option value="Miete">Miete</option><option value="Strom">Strom</option><option value="Internet">Internet</option><option value="Versicherung">Versicherung</option><option value="Abo">Abo</option><option value="Einkauf">Einkauf</option><option value="Taxi / Uber">Taxi / Uber</option><option value="Google / Apple">Google / Apple</option><option value="Taschengeld">Taschengeld</option><option value="Geldgeschenke">Geldgeschenke</option><option value="Freizeit">Freizeit</option></select></div>
-        <div class="form-group"><label for="personFilter">Person</label><select id="personFilter"><option value="all">Alle</option><option value="Allgemein">Allgemein</option><option value="Monja">Monja</option><option value="Michael">Michael</option><option value="Kind 1">Kind 1</option><option value="Kind 2">Kind 2</option></select></div>
-        <div class="form-group"><label for="paymentFilter">Zahlung</label><select id="paymentFilter"><option value="all">Alle</option><option value="Überweisung">Überweisung</option><option value="Karte">Karte</option><option value="Bar">Bar</option><option value="PayPal">PayPal</option><option value="Lastschrift">Lastschrift</option><option value="Online">Online</option></select></div>
+        <div class="form-group">
+          <label for="searchInput">Suche</label>
+          <input type="text" id="searchInput" placeholder="z. B. Uber, Oma, Miete">
+        </div>
+
+        <div class="form-group">
+          <label for="typeFilter">Typ</label>
+          <select id="typeFilter">
+            <option value="all">Alle</option>
+            <option value="Einnahme">Einnahmen</option>
+            <option value="Ausgabe">Ausgaben</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="mainCategoryFilter">Hauptkategorie</label>
+          <select id="mainCategoryFilter">
+            <option value="all">Alle</option>
+            <option value="Einnahme">Einnahme</option>
+            <option value="Fixkosten">Fixkosten</option>
+            <option value="Mobilität">Mobilität</option>
+            <option value="Online">Online</option>
+            <option value="Freizeit">Freizeit</option>
+            <option value="Feierlichkeiten">Feierlichkeiten</option>
+            <option value="Einkauf">Einkauf</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="categoryFilter">Unterkategorie</label>
+          <select id="categoryFilter">
+            <option value="all">Alle</option>
+            <option value="Gehalt">Gehalt</option>
+            <option value="Miete">Miete</option>
+            <option value="Strom">Strom</option>
+            <option value="Internet">Internet</option>
+            <option value="Versicherung">Versicherung</option>
+            <option value="Abo">Abo</option>
+            <option value="Einkauf">Einkauf</option>
+            <option value="Taxi / Uber">Taxi / Uber</option>
+            <option value="Google / Apple">Google / Apple</option>
+            <option value="Taschengeld">Taschengeld</option>
+            <option value="Geldgeschenke">Geldgeschenke</option>
+            <option value="Freizeit">Freizeit</option>
+            <option value="Feierlichkeiten">Feierlichkeiten</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="personFilter">Person</label>
+          <select id="personFilter">
+            <option value="all">Alle</option>
+            <option value="Allgemein">Allgemein</option>
+            <option value="Monja">Monja</option>
+            <option value="Michael">Michael</option>
+            <option value="Kind 1">Kind 1</option>
+            <option value="Kind 2">Kind 2</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="paymentFilter">Zahlung</label>
+          <select id="paymentFilter">
+            <option value="all">Alle</option>
+            <option value="Überweisung">Überweisung</option>
+            <option value="Karte">Karte</option>
+            <option value="Bar">Bar</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Lastschrift">Lastschrift</option>
+            <option value="Online">Online</option>
+          </select>
+        </div>
       </div>
     </section>
 
-    <section class="summary-card">
+    <section class="card">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"></path>
+            <path d="M7 14l4-4 3 3 5-7"></path>
+          </svg>
+        </span>
+        <span>Zusammenfassung</span>
+      </h2>
+
       <div class="summary-grid">
-        <div class="mini-card"><h3>Treffer</h3><div class="value blue" id="countValue">0</div><p>sichtbare Einträge</p></div>
-        <div class="mini-card"><h3>Einnahmen</h3><div class="value green" id="incomeValue">0 €</div><p>aktueller Filter</p></div>
-        <div class="mini-card hide-for-child"><h3>Fixkosten</h3><div class="value yellow" id="fixedValue">0 €</div><p>wiederkehrend kategorisiert</p></div>
-        <div class="mini-card hide-for-child"><h3>Ausgaben</h3><div class="value red" id="expenseValue">0 €</div><p>gesamt sichtbare Ausgaben</p></div>
-        <div class="mini-card"><h3>Saldo</h3><div class="value yellow" id="balanceValue">0 €</div><p>im aktuellen Filter</p></div>
+        <div class="mini-card">
+          <h3>Treffer</h3>
+          <div class="value blue" id="countValue">0</div>
+          <p>Sichtbare Einträge</p>
+        </div>
+
+        <div class="mini-card">
+          <h3>Einnahmen</h3>
+          <div class="value green" id="incomeValue">0 €</div>
+          <p>Im aktuellen Filter</p>
+        </div>
+
+        <div class="mini-card hide-for-child">
+          <h3>Fixkosten</h3>
+          <div class="value yellow" id="fixedValue">0 €</div>
+          <p>Wiederkehrend erkannt</p>
+        </div>
+
+        <div class="mini-card hide-for-child">
+          <h3>Ausgaben</h3>
+          <div class="value red" id="expenseValue">0 €</div>
+          <p>Gesamt sichtbare Ausgaben</p>
+        </div>
+
+        <div class="mini-card">
+          <h3>Saldo</h3>
+          <div class="value yellow" id="balanceValue">0 €</div>
+          <p>Im aktuellen Filter</p>
+        </div>
       </div>
     </section>
 
-    <section class="ai-card" data-permission-block="showTips">
-      <h2 style="margin-bottom:14px;">🤖 KI-Auswertung der Historie</h2>
+    <section class="card" data-permission-block="showTips">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18h6"></path>
+            <path d="M10 22h4"></path>
+            <path d="M12 2a7 7 0 0 0-4 12.7c.6.4 1 1 1.2 1.8h5.6c.2-.8.6-1.4 1.2-1.8A7 7 0 0 0 12 2Z"></path>
+          </svg>
+        </span>
+        <span>KI-Auswertung der Historie</span>
+      </h2>
+
       <div class="ai-grid" id="aiGrid">
         <div class="ai-box"><strong>KI lädt</strong><p>Die Hinweise werden vorbereitet.</p></div>
       </div>
     </section>
 
-    <section class="table-card">
-      <h2 style="margin-bottom:14px;">📋 Buchungshistorie</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Datum</th>
-            <th>Hauptkategorie</th>
-            <th>Unterkategorie</th>
-            <th>Beschreibung</th>
-            <th class="hide-for-child">Person</th>
-            <th class="hide-for-child">Zahlung</th>
-            <th class="hide-for-child">wiederkehrend</th>
-            <th>Typ</th>
-            <th>Betrag</th>
-          </tr>
-        </thead>
-        <tbody id="historyTableBody"></tbody>
-      </table>
+    <section class="card">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 6h13"></path>
+            <path d="M8 12h13"></path>
+            <path d="M8 18h13"></path>
+            <path d="M3 6h.01"></path>
+            <path d="M3 12h.01"></path>
+            <path d="M3 18h.01"></path>
+          </svg>
+        </span>
+        <span>Buchungshistorie</span>
+      </h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Hauptkategorie</th>
+              <th>Unterkategorie</th>
+              <th>Beschreibung</th>
+              <th class="hide-for-child">Person</th>
+              <th class="hide-for-child">Zahlung</th>
+              <th class="hide-for-child">Wiederkehrend</th>
+              <th>Typ</th>
+              <th>Betrag</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody"></tbody>
+        </table>
+      </div>
     </section>
+  </main>
+</div>
+
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assetsschnecke.png" alt="">
+  <span class="ki-fab-label">KI</span>
+</button>
+
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <p id="kiContextText">Ich helfe dir beim Verstehen deiner Finanz-Historie, Muster und Ausgaben.</p>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
   </div>
+
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI für die Finanz-Historie.</div>
+  </div>
+
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Frag mich etwas zu deiner Historie..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
 
 <script>
 const adminViewBtn = document.getElementById("adminViewBtn");
@@ -363,11 +1263,32 @@ const personFilter = document.getElementById("personFilter");
 const paymentFilter = document.getElementById("paymentFilter");
 
 function formatEuro(value){
-  return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(value || 0);
+  return new Intl.NumberFormat("de-DE",{
+    style:"currency",
+    currency:"EUR",
+    minimumFractionDigits:0,
+    maximumFractionDigits:2
+  }).format(value || 0);
+}
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 function loadPermissions(){
   const stored = localStorage.getItem("haushaltsheld_child_permissions");
-  return stored ? JSON.parse(stored) : {showShopping:true,showPocketMoney:true,showGiftMoney:true,showBookings:false,showSubscriptions:false,showPets:false,showTips:true};
+  return stored ? JSON.parse(stored) : {
+    showShopping:true,
+    showPocketMoney:true,
+    showGiftMoney:true,
+    showBookings:false,
+    showSubscriptions:false,
+    showPets:false,
+    showTips:true
+  };
 }
 function getDefaultFinance(){
   return [
@@ -391,23 +1312,68 @@ function getDefaultShopping(){
     { id: 103, date: "2026-03-23", title: "Kleine Extras", text: "Snacks, Eis", payment: "Bar", amount: 9.80, person: "Allgemein", type: "Ausgabe" }
   ];
 }
+function normalizeAmount(value){
+  return parseFloat(String(value ?? "0").replace(",", ".")) || 0;
+}
+function dedupeKeyFromEntry(entry){
+  return entry.importKey || entry.sourceKey || [
+    (entry.mainCategory || "").trim().toLowerCase(),
+    (entry.category || "").trim().toLowerCase(),
+    (entry.title || "").trim().toLowerCase(),
+    (entry.text || "").trim().toLowerCase().replace(/\s+/g," "),
+    entry.date || "",
+    normalizeAmount(entry.amount).toFixed(2),
+    (entry.payment || "").trim().toLowerCase(),
+    (entry.person || "").trim().toLowerCase()
+  ].join("|");
+}
 function getCombinedEntries(){
-  const finance = JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "null") || getDefaultFinance();
-  const shopping = JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "null") || getDefaultShopping();
-  const shoppingMapped = shopping.map(item => ({
+  const financeRaw = JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "null") || getDefaultFinance();
+  const shoppingRaw = JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "null") || getDefaultShopping();
+
+  const finance = financeRaw.map(item => ({
+    id: item.id,
+    date: item.date,
+    mainCategory: item.mainCategory || "Sonstiges",
+    category: item.category || "Sonstiges",
+    title: item.title || "Eintrag",
+    text: item.text || "",
+    payment: item.payment || item.method || "—",
+    amount: normalizeAmount(item.amount),
+    type: item.type || "Ausgabe",
+    person: item.person || item.buyer || "Allgemein",
+    recurring: !!item.recurring,
+    importKey: item.importKey || "",
+    sourceKey: item.sourceKey || ""
+  }));
+
+  const shoppingMapped = shoppingRaw.map(item => ({
     id: item.id,
     date: item.date,
     mainCategory: "Einkauf",
-    category: "Einkauf",
-    title: item.title,
-    text: item.text || "",
-    payment: item.payment || "Karte",
-    amount: parseFloat(String(item.amount || "0").replace(",", ".")) || 0,
+    category: item.category || "Einkauf",
+    title: item.title || item.store || "Einkauf",
+    text: item.text || item.items || item.note || "",
+    payment: item.payment || item.method || "Karte",
+    amount: normalizeAmount(item.amount ?? item.total),
     type: "Ausgabe",
-    person: item.person || "Allgemein",
-    recurring: false
+    person: item.person || item.buyer || "Allgemein",
+    recurring: false,
+    importKey: item.importKey || "",
+    sourceKey: item.sourceKey || ""
   }));
-  return [...finance, ...shoppingMapped];
+
+  const merged = [];
+  const seen = new Set();
+
+  [...finance, ...shoppingMapped].forEach(entry => {
+    const key = dedupeKeyFromEntry(entry);
+    if(seen.has(key)) return;
+    seen.add(key);
+    merged.push(entry);
+  });
+
+  return merged;
 }
 function allowedInChild(entry){
   const permissions = loadPermissions();
@@ -427,21 +1393,32 @@ function applyFilters(entries){
 
   return entries.filter(entry => {
     if(document.body.classList.contains("child-mode") && !allowedInChild(entry)) return false;
-    const haystack = [entry.title, entry.text, entry.category, entry.mainCategory, entry.person, entry.payment].join(" ").toLowerCase();
+
+    const haystack = [
+      entry.title,
+      entry.text,
+      entry.category,
+      entry.mainCategory,
+      entry.person,
+      entry.payment
+    ].join(" ").toLowerCase();
+
     if(search && !haystack.includes(search)) return false;
     if(type !== "all" && entry.type !== type) return false;
     if(mainCategory !== "all" && entry.mainCategory !== mainCategory) return false;
     if(category !== "all" && entry.category !== category) return false;
     if(person !== "all" && entry.person !== person) return false;
     if(payment !== "all" && entry.payment !== payment) return false;
+
     return true;
-  }).sort((a,b) => new Date(b.date) - new Date(a.date));
+  }).sort((a,b) => new Date(b.date + "T12:00:00") - new Date(a.date + "T12:00:00"));
 }
 function renderSummary(entries){
   const income = entries.filter(e => e.type === "Einnahme").reduce((sum,e)=>sum + Number(e.amount || 0),0);
   const fixed = entries.filter(e => e.mainCategory === "Fixkosten").reduce((sum,e)=>sum + Number(e.amount || 0),0);
   const expenses = entries.filter(e => e.type === "Ausgabe").reduce((sum,e)=>sum + Number(e.amount || 0),0);
   const balance = income - expenses;
+
   document.getElementById("countValue").textContent = entries.length;
   document.getElementById("incomeValue").textContent = formatEuro(income);
   document.getElementById("fixedValue").textContent = formatEuro(fixed);
@@ -451,22 +1428,26 @@ function renderSummary(entries){
 function renderTable(entries){
   const body = document.getElementById("historyTableBody");
   body.innerHTML = "";
+
+  const colspan = document.body.classList.contains("child-mode") ? 6 : 9;
+
   if(!entries.length){
-    body.innerHTML = '<tr><td colspan="9" class="no-results">Keine passenden Einträge gefunden.</td></tr>';
+    body.innerHTML = `<tr><td colspan="${colspan}" class="no-results">Keine passenden Einträge gefunden.</td></tr>`;
     return;
   }
+
   entries.forEach(entry => {
     const amountClass = entry.type === "Einnahme" ? "amount-plus" : "amount-minus";
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${new Date(entry.date + "T12:00:00").toLocaleDateString("de-DE")}</td>
-      <td>${entry.mainCategory}</td>
-      <td>${entry.category}</td>
-      <td><strong>${entry.title}</strong><br><span style="color:var(--muted)">${entry.text || ""}</span></td>
-      <td class="hide-for-child">${entry.person || "—"}</td>
-      <td class="hide-for-child">${entry.payment || "—"}</td>
+      <td>${escapeHtml(entry.mainCategory || "—")}</td>
+      <td>${escapeHtml(entry.category || "—")}</td>
+      <td><strong>${escapeHtml(entry.title || "—")}</strong><br><span style="color:var(--muted)">${escapeHtml(entry.text || "")}</span></td>
+      <td class="hide-for-child">${escapeHtml(entry.person || "—")}</td>
+      <td class="hide-for-child">${escapeHtml(entry.payment || "—")}</td>
       <td class="hide-for-child">${entry.recurring ? "ja" : "nein"}</td>
-      <td><span class="tag">${entry.type}</span></td>
+      <td><span class="tag">${escapeHtml(entry.type || "—")}</span></td>
       <td class="${amountClass}">${entry.type === "Einnahme" ? "+" : "-"} ${formatEuro(entry.amount)}</td>
     `;
     body.appendChild(tr);
@@ -476,7 +1457,11 @@ function renderAi(entries){
   const aiGrid = document.getElementById("aiGrid");
   const expenseEntries = entries.filter(e => e.type === "Ausgabe");
   const byMainCategory = {};
-  expenseEntries.forEach(entry => { byMainCategory[entry.mainCategory] = (byMainCategory[entry.mainCategory] || 0) + Number(entry.amount || 0); });
+
+  expenseEntries.forEach(entry => {
+    byMainCategory[entry.mainCategory] = (byMainCategory[entry.mainCategory] || 0) + Number(entry.amount || 0);
+  });
+
   const topCategory = Object.entries(byMainCategory).sort((a,b)=>b[1]-a[1])[0];
   const fixedTotal = byMainCategory["Fixkosten"] || 0;
   const shoppingTotal = byMainCategory["Einkauf"] || 0;
@@ -484,22 +1469,41 @@ function renderAi(entries){
 
   const hints = [];
   if(topCategory){
-    hints.push({title:"Stärkster Kostenblock", text:`${topCategory[0]} ist aktuell der größte sichtbare Ausgabenbereich mit ${formatEuro(topCategory[1])}.`});
+    hints.push({
+      title:"Stärkster Kostenblock",
+      text:`${topCategory[0]} ist aktuell der größte sichtbare Ausgabenbereich mit ${formatEuro(topCategory[1])}.`
+    });
   }
   if(fixedTotal > 0){
-    hints.push({title:"Wiederkehrende Kosten sauber erkannt", text:`Fixkosten liegen aktuell bei ${formatEuro(fixedTotal)}. Miete, Strom, Internet, Versicherung und Abos sind jetzt getrennt von variablen Ausgaben sichtbar.`});
+    hints.push({
+      title:"Wiederkehrende Kosten erkannt",
+      text:`Fixkosten liegen aktuell bei ${formatEuro(fixedTotal)}. Miete, Strom, Internet, Versicherung und Abos sind sauber getrennt sichtbar.`
+    });
   }
   if(shoppingTotal > 0){
-    hints.push({title:"Einkauf ist verknüpft", text:`Einkäufe aus der Einkaufsliste laufen direkt mit in die Historie und liegen aktuell bei ${formatEuro(shoppingTotal)}.`});
+    hints.push({
+      title:"Einkäufe laufen mit",
+      text:`Einkäufe aus der Einkaufsliste erscheinen direkt in der Historie und liegen aktuell bei ${formatEuro(shoppingTotal)}.`
+    });
   }
   if(incomeTotal > 0){
-    hints.push({title:"Einnahmenseite klarer", text:`Gehalt, Taschengeld und Geldgeschenke sind jetzt separat lesbar und nicht mehr vermischt.`});
+    hints.push({
+      title:"Einnahmen klarer",
+      text:`Gehalt, Taschengeld und Geldgeschenke sind jetzt separat lesbar und nicht mehr vermischt.`
+    });
   }
+  if(!hints.length){
+    hints.push({
+      title:"Noch wenig Daten",
+      text:"Sobald mehr Einträge vorhanden sind, erkennt die Historie klarere Muster und Schwerpunkte."
+    });
+  }
+
   aiGrid.innerHTML = "";
-  hints.slice(0,3).forEach(h => {
+  hints.slice(0,3).forEach(hint => {
     const box = document.createElement("div");
     box.className = "ai-box";
-    box.innerHTML = `<strong>${h.title}</strong><p>${h.text}</p>`;
+    box.innerHTML = `<strong>${escapeHtml(hint.title)}</strong><p>${escapeHtml(hint.text)}</p>`;
     aiGrid.appendChild(box);
   });
 }
@@ -509,7 +1513,7 @@ function applyPermissionBlocks(){
     const key = block.dataset.permissionBlock;
     if(document.body.classList.contains("child-mode")){
       block.style.display = permissions[key] ? "block" : "none";
-    } else {
+    }else{
       block.style.display = "block";
     }
   });
@@ -526,30 +1530,123 @@ function setView(mode){
     document.body.classList.add("child-mode");
     adminViewBtn.classList.remove("active");
     childViewBtn.classList.add("active");
-    modeBadge.textContent = "🧒 Kindmodus aktiv";
+    modeBadge.textContent = "Kindmodus aktiv";
     modeBadge.className = "mode-badge child";
     modeNote.textContent = "Im Kindermodus werden nur freigegebene Bereiche angezeigt. Persönliche Finanzdetails bleiben verborgen.";
-  } else {
+  }else{
     document.body.classList.remove("child-mode");
     childViewBtn.classList.remove("active");
     adminViewBtn.classList.add("active");
-    modeBadge.textContent = "🛠️ Elternmodus aktiv";
+    modeBadge.textContent = "Elternmodus aktiv";
     modeBadge.className = "mode-badge";
     modeNote.textContent = "Im Elternmodus ist die komplette Historie sichtbar. Im Kindermodus werden nur freigegebene Bereiche angezeigt.";
   }
+
   localStorage.setItem("haushaltsheld_finance_view", mode);
   renderAll();
 }
+
 [searchInput,typeFilter,mainCategoryFilter,categoryFilter,personFilter,paymentFilter].forEach(el => {
   el.addEventListener("input", renderAll);
   el.addEventListener("change", renderAll);
 });
+
 adminViewBtn.addEventListener("click", () => setView("admin"));
 childViewBtn.addEventListener("click", () => setView("child"));
-renderAll();
+
+/* KI */
+(function(){
+  const page = "finanz_historie";
+  const fab = document.getElementById("kiFab");
+  const panel = document.getElementById("kiPanel");
+  const closeBtn = document.getElementById("kiClose");
+  const form = document.getElementById("kiForm");
+  const input = document.getElementById("kiInput");
+  const chat = document.getElementById("kiChat");
+  const suggestions = document.getElementById("kiSuggestions");
+  const contextText = document.getElementById("kiContextText");
+  const welcome = document.getElementById("kiWelcomeMsg");
+
+  const pageSettings = {
+    context: "Ich helfe dir beim Verstehen deiner Finanz-Historie, Muster und Ausgaben.",
+    suggestions: [
+      "Was fällt dir in meiner Historie auf?",
+      "Welche Kosten sind wiederkehrend?",
+      "Wo könnte ich sparen?"
+    ]
+  };
+
+  contextText.textContent = pageSettings.context;
+  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI für die Finanz-Historie.";
+
+  suggestions.innerHTML = pageSettings.suggestions.map(text =>
+    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
+  ).join("");
+
+  suggestions.querySelectorAll(".ki-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      input.value = btn.textContent.trim();
+      input.focus();
+    });
+  });
+
+  function addMsg(role, text){
+    const div = document.createElement("div");
+    div.className = "ki-msg " + role;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage(message){
+    addMsg("user", message);
+    const loading = addMsg("bot", "Ich denke kurz nach …");
+    loading.classList.add("ki-typing");
+
+    try{
+      const response = await fetch("/.netlify/functions/chat", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          message,
+          page,
+          mode: document.body.classList.contains("child-mode") ? "child" : "parent"
+        })
+      });
+
+      const data = await response.json();
+      loading.remove();
+      addMsg("bot", data.reply || "Ich konnte gerade nichts Sinnvolles antworten.");
+    }catch(err){
+      loading.remove();
+      addMsg("bot", "Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.");
+    }
+  }
+
+  fab.addEventListener("click",()=>{
+    panel.classList.add("open");
+    input.focus();
+  });
+
+  closeBtn.addEventListener("click",()=>{
+    panel.classList.remove("open");
+  });
+
+  document.addEventListener("keydown",(e)=>{
+    if(e.key === "Escape") panel.classList.remove("open");
+  });
+
+  form.addEventListener("submit",async(e)=>{
+    e.preventDefault();
+    const message = input.value.trim();
+    if(!message) return;
+    input.value = "";
+    await sendMessage(message);
+  });
+})();
+
 setView(localStorage.getItem("haushaltsheld_finance_view") || "admin");
 </script>
-
-<script src="ki-schnecke.js"></script>
 </body>
 </html>
