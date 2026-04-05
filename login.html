@@ -4,9 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Haushaltsheld – Login</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --bg:#f7f2e9;
@@ -20,46 +22,155 @@
   --shadow-lg:0 18px 48px rgba(54,45,28,.12);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Outfit",sans-serif;background:linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-.login-card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:32px;box-shadow:var(--shadow-lg);padding:40px 32px;width:100%;max-width:520px;}
-.login-header{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;margin-bottom:28px;}
+body{
+  font-family:"Outfit",sans-serif;
+  background:linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login-card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:32px;
+  box-shadow:var(--shadow-lg);
+  padding:40px 32px;
+  width:100%;
+  max-width:520px;
+}
+
+.login-header{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:28px;
+}
+
 .logo-img{width:64px;height:64px;}
-.login-title{font-size:1.8rem;font-weight:800;}
+
+.login-title{
+  font-size:1.8rem;
+  font-weight:800;
+}
+
 .login-form{display:grid;gap:16px;}
+
 .form-group{display:grid;gap:8px;}
-.form-group label{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;}
-.form-group input{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-radius:18px;padding:14px 16px;font-size:.95rem;}
+
+.form-group label{
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+.form-group input{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:#fffdf9;
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:.95rem;
+}
+
 .user-selector{display:grid;gap:12px;}
-.user-btn{padding:16px;border:1.5px solid var(--line);background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);border-radius:18px;font-weight:700;cursor:pointer;text-align:left;}
-.user-btn.active{background:linear-gradient(135deg,var(--accent) 0%, var(--accent-dark) 100%);color:#fff;}
-.btn-login{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:14px 22px;border-radius:18px;font-weight:800;cursor:pointer;width:100%;margin-top:10px;}
-.error-msg{display:none;padding:13px 16px;border-radius:18px;background:var(--red-soft);color:#a45656;font-weight:800;margin-bottom:16px;}
+
+.user-btn{
+  padding:16px;
+  border:1.5px solid var(--line);
+  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
+  border-radius:18px;
+  font-weight:700;
+  cursor:pointer;
+  text-align:left;
+}
+
+.user-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%, var(--accent-dark) 100%);
+  color:#fff;
+}
+
+.btn-login{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  padding:14px 22px;
+  border-radius:18px;
+  font-weight:800;
+  cursor:pointer;
+  width:100%;
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.error-msg{
+  display:none;
+  padding:13px 16px;
+  border-radius:18px;
+  background:var(--red-soft);
+  color:#a45656;
+  font-weight:800;
+  margin-bottom:16px;
+}
+
 .error-msg.show{display:block;}
-.demo-note{background:var(--blue-soft);border:1px solid rgba(107,150,217,.14);border-radius:18px;padding:14px 16px;color:#58739c;font-weight:700;font-size:.88rem;margin-top:16px;}
+
+.demo-note{
+  background:var(--blue-soft);
+  border:1px solid rgba(107,150,217,.14);
+  border-radius:18px;
+  padding:14px 16px;
+  color:#58739c;
+  font-weight:700;
+  font-size:.88rem;
+  margin-top:16px;
+}
 </style>
 </head>
+
 <body>
+
 <div class="login-card">
   <div class="login-header">
     <img src="assetsschnecke.png" alt="Haushaltsheld" class="logo-img">
     <h1 class="login-title">Haushaltsheld</h1>
   </div>
+
   <div class="error-msg" id="errorMsg"></div>
+
   <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+    
     <div class="form-group">
       <label for="familyCode">Familien-Code</label>
-      <input type="password" id="familyCode" maxlength="6" inputmode="numeric" value="424242" required />
+      <input type="password" id="familyCode" maxlength="6" value="424242" required />
     </div>
+
     <div class="form-group">
       <label>Wer bist du?</label>
       <div class="user-selector" id="userSelector"></div>
     </div>
+
     <div class="form-group">
       <label for="pin">PIN</label>
-      <input type="password" id="pin" maxlength="4" inputmode="numeric" required />
+      <input type="password" id="pin" maxlength="4" required />
     </div>
-    <button type="submit" class="btn-login">Anmelden</button>
+
+    <button type="submit" class="btn-login">
+      <i data-feather="log-in"></i>
+      Anmelden
+    </button>
+
   </form>
+
   <div class="demo-note">
     🔐 Anna (Eltern) PIN: 1234 | Leo (Kind) PIN: 5678
   </div>
@@ -68,7 +179,7 @@ body{font-family:"Outfit",sans-serif;background:linear-gradient(180deg,#fbf7f1 0
 <script>
 let selectedUser = null;
 
-// Nur einmal beim Start: Demo-Nutzer erstellen
+// Demo Nutzer
 if (!localStorage.getItem('haushaltsheld_users')) {
   const demoUsers = [
     { name: 'Anna', age: 38, role: 'parent', pin: '1234', rights: null },
@@ -94,11 +205,10 @@ users.forEach((user, index) => {
   userSelector.appendChild(btn);
 });
 
-// Login-Funktion
+// Login
 function handleLogin(event) {
   event.preventDefault();
-  
-  const familyCode = document.getElementById('familyCode').value;
+
   const pin = document.getElementById('pin').value;
   const error = document.getElementById('errorMsg');
 
@@ -111,14 +221,13 @@ function handleLogin(event) {
   }
 
   const user = users[selectedUser];
-  
+
   if (user.pin !== pin) {
     error.textContent = '❌ PIN falsch';
     error.classList.add('show');
     return;
   }
 
-  // Speichern und Weiterleitung
   localStorage.setItem('haushaltsheld_user', JSON.stringify({
     name: user.name,
     role: user.role,
@@ -132,5 +241,12 @@ function handleLogin(event) {
   }
 }
 </script>
+
+<!-- ICONS -->
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+  feather.replace();
+</script>
+
 </body>
 </html>
