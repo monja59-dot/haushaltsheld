@@ -1,441 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Haushaltsheld – Kindermodus</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ki-schnecke.css">
-
-<style>
-:root{
-  --bg:#f7f2e9;
-  --bg-2:#fdf9f3;
-  --card:#ffffff;
-  --soft:#f6efe4;
-  --soft2:#efe3d2;
-  --line:#dfd1bc;
-
-  --text:#2d342f;
-  --text2:#556159;
-  --muted:#7d8a82;
-
-  --accent:#4CAF50;
-  --accent-dark:#3E8E41;
-  --accent-soft:#e7f5e8;
-
-  --blue:#6b96d9;
-  --blue-soft:#e9f1ff;
-  --red:#cc6666;
-  --red-soft:#fdeaea;
-  --green:#5ca66f;
-  --green-soft:#e7f4ea;
-  --yellow:#b5882f;
-  --yellow-soft:#fbf4df;
-  --brown:#4d3c2c;
-  --brown-dark:#433324;
-
-  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
-  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
-  --shadow:0 12px 34px rgba(54,45,28,.10);
-  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
-
-  --sidebar-w:258px;
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;overflow-x:hidden}
-
-body{
-  font-family:"Outfit",sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
-    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-  color:var(--text);
-  min-height:100vh;
-  font-size:16px;
-  line-height:1.6;
-  letter-spacing:-0.01em;
-}
-
-h1,h2,h3,h4,h5,h6{
-  font-family:"Outfit",sans-serif;
-  letter-spacing:-0.03em;
-  line-height:1.15;
-}
-
-button,input,select,textarea{font:inherit}
-
-.app{
-  display:grid;
-  grid-template-columns:var(--sidebar-w) 1fr;
-  min-height:100vh;
-}
-
-.sidebar{
-  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
-  border-right:1px solid rgba(223,209,188,.85);
-  padding:28px 18px 24px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
-  z-index:10;
-  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
-}
-
-.logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 8px 24px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:8px;
-}
-
-.logo-wrap img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
-}
-
-.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
-.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
-
-.nav-label{
-  font-size:.7rem;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  color:var(--muted);
-  padding:16px 10px 6px;
-}
-
-.nav{display:flex;flex-direction:column;gap:4px}
-.nav a{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px 13px;
-  border-radius:18px;
-  text-decoration:none;
-  color:var(--text2);
-  font-weight:700;
-  font-size:.98rem;
-  transition:all .18s ease;
-  border:1px solid transparent;
-}
-
-.nav a:hover{
-  background:rgba(255,255,255,.72);
-  border-color:rgba(223,209,188,.9);
-  transform:translateX(2px);
-  box-shadow:var(--shadow-xs);
-  color:var(--text);
-}
-
-.nav a.active{
-  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
-  color:#fff;
-  border-color:rgba(62,142,65,.28);
-  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
-}
-
-.nav-icon{
-  width:36px;
-  height:36px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.92);
-  color:var(--accent-dark);
-  flex-shrink:0;
-  box-shadow:0 2px 8px rgba(54,45,28,.05);
-}
-
-.nav-icon svg{width:18px;height:18px;stroke:currentColor}
-
-.sidebar-footer{
-  margin-top:auto;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-  display:grid;
-  gap:10px;
-}
-
-.user-info{
-  background:rgba(255,255,255,.7);
-  border:1px solid rgba(223,209,188,.7);
-  border-radius:16px;
-  padding:12px 14px;
-  font-size:.8rem;
-  margin-bottom:8px;
-}
-
-.user-info strong{
-  display:block;
-  font-weight:800;
-  color:var(--text);
-  margin-bottom:4px;
-}
-
-.user-info span{
-  display:block;
-  color:var(--muted);
-  font-size:.75rem;
-}
-
-.logout-btn{
-  width:100%;
-  border:1.5px solid #ddcbb4;
-  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
-  color:#665646;
-  padding:10px 12px;
-  border-radius:16px;
-  font-size:.88rem;
-  font-weight:800;
-  cursor:pointer;
-  transition:.18s ease;
-  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72);
-}
-
-.logout-btn:hover{
-  transform:translateY(-2px);
-  background:linear-gradient(135deg,#f1e1cf 0%, #e4cfb7 100%);
-}
-
-.main{
-  width:100%;
-  max-width:1580px;
-  padding:32px;
-}
-
-.page-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:18px;
-  flex-wrap:wrap;
-  margin-bottom:22px;
-}
-
-.page-header h1{
-  font-size:2.35rem;
-  font-weight:800;
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.page-header p{
-  color:var(--muted);
-  font-size:.98rem;
-  max-width:860px;
-}
-
-.page-title-icon{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  display:inline-grid;
-  place-items:center;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-  border:1px solid rgba(76,175,80,.16);
-  box-shadow:var(--shadow-xs);
-  flex-shrink:0;
-}
-
-.page-title-icon svg{width:18px;height:18px;stroke:currentColor}
-
-.hero{
-  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
-  border:1px solid rgba(76,175,80,.18);
-  border-radius:30px;
-  padding:28px 30px;
-  display:grid;
-  grid-template-columns:1fr 150px;
-  gap:24px;
-  align-items:center;
-  margin-bottom:24px;
-  box-shadow:var(--shadow-sm);
-  position:relative;
-  overflow:hidden;
-}
-
-.hero::after{
-  content:"";
-  position:absolute;
-  right:-40px;
-  bottom:-40px;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  background:rgba(76,175,80,.07);
-  pointer-events:none;
-}
-
-.hero h2{
-  font-size:1.6rem;
-  font-weight:800;
-  margin-bottom:10px;
-}
-
-.hero p{
-  color:var(--text2);
-  line-height:1.65;
-  max-width:720px;
-  margin-bottom:18px;
-}
-
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-  margin-bottom:24px;
-}
-
-.stat-card{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:26px;
-  padding:20px;
-  box-shadow:var(--shadow-sm);
-  transition:transform .18s ease, box-shadow .18s ease;
-  position:relative;
-  overflow:hidden;
-}
-
-.stat-card::after{
-  content:"";
-  position:absolute;
-  inset:auto -18px -18px auto;
-  width:82px;
-  height:82px;
-  border-radius:50%;
-  background:rgba(76,175,80,.07);
-  pointer-events:none;
-}
-
-.stat-card:hover{
-  transform:translateY(-2px);
-  box-shadow:var(--shadow);
-}
-
-.stat-card .stat-icon{
-  width:46px;
-  height:46px;
-  display:grid;
-  place-items:center;
-  border-radius:14px;
-  margin-bottom:12px;
-  background:var(--accent-soft);
-  border:1px solid rgba(76,175,80,.18);
-  color:var(--accent-dark);
-  box-shadow:var(--shadow-xs);
-}
-
-.stat-card .stat-icon svg{
-  width:22px;
-  height:22px;
-  stroke:currentColor;
-  stroke-width:2.1;
-}
-
-.stat-card .stat-label{
-  font-size:.72rem;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  margin-bottom:8px;
-}
-
-.stat-card .stat-value{
-  font-size:2rem;
-  font-weight:800;
-  margin-bottom:4px;
-  letter-spacing:-0.04em;
-}
-
-.stat-card .stat-sub{
-  font-size:.84rem;
-  color:var(--muted);
-}
-
-.card{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:28px;
-  padding:24px;
-  margin-bottom:18px;
-  box-shadow:var(--shadow-sm);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:var(--shadow);
-}
-
-.card h2{
-  font-size:1.16rem;
-  font-weight:800;
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.card-sub{
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:16px;
-  font-size:.9rem;
-}
-
-@media(max-width:1200px){
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-}
-
-@media(max-width:960px){
-  .app{grid-template-columns:1fr}
-  .sidebar{
-    height:auto;
-    position:relative;
-    flex-direction:row;
-    flex-wrap:wrap;
-    padding:16px;
-    gap:0;
-  }
-  .logo-wrap{
-    margin-bottom:0;
-    padding-bottom:0;
-    border-bottom:none;
-    border-right:1px solid var(--line);
-    padding-right:16px;
-    margin-right:16px;
-  }
-  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
-  .nav a{flex:0 1 auto;padding:10px 12px}
-  .nav-label,.sidebar-footer{display:none}
-}
-
-@media(max-width:600px){
-  .main{padding:16px}
-  .page-header h1{font-size:1.95rem}
-  .stats-grid{<!DOCTYPE html>
-<html lang="de">
-<head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Haushaltsheld – Kindermodus</title>
@@ -443,238 +8,100 @@ button,input,select,textarea{font:inherit}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f7f2e9; --card:#ffffff; --soft:#f6efe4; --line:#dfd1bc;
-  --text:#2d342f; --text2:#556159; --muted:#7d8a82;
-  --accent:#4CAF50; --accent-dark:#3E8E41; --accent-soft:#e7f5e8;
-  --blue:#6b96d9; --blue-soft:#e9f1ff; --yellow:#b5882f; --yellow-soft:#fbf4df;
-  --pink:#f8ecf5; --pink-line:#e6cadf;
-  --shadow-xs:0 2px 8px rgba(54,45,28,.05); --shadow-sm:0 6px 18px rgba(54,45,28,.08);
-  --shadow:0 12px 34px rgba(54,45,28,.10); --sidebar-w:258px;
-}
+:root{--bg:#f7f2e9;--text:#2d342f;--muted:#7d8a82;--accent:#4CAF50;--accent-dark:#3E8E41;--line:#dfd1bc;--shadow-sm:0 6px 18px rgba(54,45,28,.08);--sidebar-w:258px;}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;overflow-x:hidden}
-body{
-  font-family:"Outfit",sans-serif;
-  background:radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%), linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-  color:var(--text); min-height:100vh; font-size:16px; line-height:1.6; letter-spacing:-0.01em;
-}
-button,input,select,textarea{font:inherit}
-.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
-.sidebar{
-  background:linear-gradient(180deg,#FBFDFB 0%,#F2F7F2 100%); border-right:1px solid var(--line);
-  padding:24px 16px 20px; display:flex; flex-direction:column; gap:4px; position:sticky; top:0; height:100vh; overflow-y:auto;
-}
-.logo-wrap{display:flex;align-items:center;gap:11px;padding:0 6px 20px;border-bottom:1px solid var(--line);margin-bottom:10px}
-.logo-img{width:46px;height:46px;border-radius:15px;overflow:hidden;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--shadow-xs)}
-.logo-img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
-.logo-name{font-weight:800;font-size:1.12rem;color:var(--text);line-height:1.2}
-.logo-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
-.nav-lbl{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:12px 10px 5px}
-.nav{display:flex;flex-direction:column;gap:3px}
-.nav a{
-  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);
-  font-weight:700;font-size:.96rem;border:1px solid transparent;transition:all .18s ease;
-}
-.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}
-.nav a.active{
-  background:linear-gradient(135deg,#58b95d 0%,#3e8e41 100%); color:#fff !important; border-color:rgba(62,142,65,.28);
-  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
-}
-.nav-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)}
-.nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
-.nav-icon svg{width:18px;height:18px;stroke:currentColor}
-.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
-.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}
-.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer}
-.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
-.main{width:100%;max-width:1600px;padding:32px}
-.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:20px}
-.page-header h1{font-size:2.4rem;font-weight:900;line-height:1.05;margin-bottom:10px}
-.page-header p{color:var(--muted);max-width:760px}
-.header-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)}
-.btn-line{border:1px solid var(--line);background:rgba(255,255,255,.85);color:var(--text);padding:12px 16px;border-radius:16px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:var(--shadow-xs)}
-.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;margin-bottom:20px}
-.hero-card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;box-shadow:var(--shadow-sm)}
-.hero-card h2{font-size:1.35rem;font-weight:900;margin-bottom:10px}
-.hero-card p{color:var(--text2);margin-bottom:14px}
-.hero-meta{display:flex;gap:10px;flex-wrap:wrap}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;font-weight:800;font-size:.84rem;background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(76,175,80,.16)}
-.child-card{background:linear-gradient(180deg,#fff9fd 0%, #fffdfc 100%);border:1px solid var(--pink-line)}
-.child-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.avatar{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(180deg,#fff 0%,#f6efe4 100%);border:1px solid var(--line);box-shadow:var(--shadow-xs);font-size:1.8rem}
-.child-name{font-size:1.2rem;font-weight:900}
-.child-role{color:var(--muted);font-size:.9rem}
-.child-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
-.mini{background:rgba(255,255,255,.9);border:1px solid rgba(223,209,188,.8);border-radius:18px;padding:14px;box-shadow:var(--shadow-xs)}
-.mini strong{display:block;font-size:.92rem;margin-bottom:4px}
-.mini span{color:var(--muted);font-size:.88rem}
-.tiles{display:grid;grid-template-columns:repeat(2,minmax(240px,1fr));gap:16px;margin-bottom:20px}
-.tile{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:26px;padding:22px;text-decoration:none;color:inherit;box-shadow:var(--shadow-sm);transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
-.tile:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:rgba(76,175,80,.28)}
-.tile-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.tile-icon{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;border:1px solid rgba(223,209,188,.92);box-shadow:var(--shadow-xs);background:#fff}
-.tile-icon svg{width:22px;height:22px;stroke:currentColor}
-.c-green{color:var(--accent-dark);background:var(--accent-soft)}
-.c-blue{color:#4e78b5;background:var(--blue-soft)}
-.c-yellow{color:#8a6b20;background:var(--yellow-soft)}
-.c-pink{color:#a4558d;background:var(--pink)}
-.tile h3{font-size:1.1rem;font-weight:900}
-.tile p{color:var(--text2);font-size:.94rem;line-height:1.55}
-.tile small{display:inline-block;margin-top:12px;color:var(--muted);font-weight:800}
-.note{background:rgba(255,255,255,.72);border:1px solid rgba(223,209,188,.78);border-radius:22px;padding:18px;color:var(--text2);box-shadow:var(--shadow-xs)}
-.note strong{display:block;color:var(--text);margin-bottom:6px}
-@media (max-width:1080px){.hero,.tiles{grid-template-columns:1fr}}
-@media (max-width:920px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.main{padding:22px}.page-header h1{font-size:2rem}}
-@media (max-width:640px){.main{padding:16px}.page-header h1{font-size:1.75rem}.child-grid,.tiles{grid-template-columns:1fr}}
+body{font-family:"Outfit",sans-serif;background:linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);color:var(--text);min-height:100vh;font-size:16px;line-height:1.6;}
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh;}
+.sidebar{background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);border-right:1px solid rgba(223,209,188,.85);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px;}
+.logo-wrap img{width:48px;height:48px;}
+.logo-name{font-weight:800;font-size:1.25rem;color:var(--text);}
+.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--muted);padding:16px 10px 6px;}
+.nav{display:flex;flex-direction:column;gap:4px;}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--muted);font-weight:700;transition:.18s ease;}
+.nav a.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;}
+.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);}
+.logout-btn{width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;}
+.logout-btn:hover{transform:translateY(-2px);}
+.main{width:100%;max-width:1580px;padding:32px;}
+.page-header h1{font-size:2.35rem;font-weight:800;margin-bottom:8px;}
+.page-header p{color:var(--muted);font-size:.98rem;max-width:760px;}
+.hero{background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);border:1px solid rgba(76,175,80,.18);border-radius:30px;padding:28px 30px;margin-bottom:24px;box-shadow:var(--shadow-sm);}
+.hero h2{font-size:1.6rem;font-weight:800;margin-bottom:10px;}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm);}
+.card h2{font-size:1.16rem;font-weight:800;margin-bottom:18px;}
+@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;}}
+@media(max-width:600px){.main{padding:16px}.page-header h1{font-size:1.95rem}}
 </style>
-<style id="hh-auth-style">.login-overlay{position:fixed;inset:0;background:rgba(247,242,233,.82);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99999}.login-card{width:min(100%,620px);background:linear-gradient(180deg,#ffffff 0%,#fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:32px;box-shadow:0 18px 48px rgba(54,45,28,.12);padding:26px}.login-top{margin-bottom:16px}.login-title{display:flex;align-items:center;gap:12px;margin-bottom:12px}.login-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:#e7f5e8;border:1px solid rgba(76,175,80,.16);color:#3E8E41;font-size:1.35rem}.login-headline{font-weight:800;font-size:1.18rem;color:#2d342f}.login-sub{color:#7d8a82;font-size:.94rem}.field{display:grid;gap:8px;margin-top:12px}.field label{font-size:.93rem;color:#556159;font-weight:800}.field input{width:100%;border:1px solid #dfd1bc;border-radius:18px;background:#fffdf9;padding:14px 16px;font:inherit}.login-error{display:none;margin-top:12px;padding:12px 14px;border-radius:16px;background:linear-gradient(180deg,#fff1f1 0%, #fdeaea 100%);border:1px solid #efc1c1;color:#a14d4d;font-weight:700;font-size:.9rem}.login-error.show{display:block}.form-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.profile-pick-list{display:grid;gap:12px;margin-top:18px}.profile-pick-card{border:1px solid #dfd1bc;background:rgba(255,255,255,.92);border-radius:20px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:14px}.profile-pick-card strong{display:block;font-size:1rem}.profile-pick-card span{display:block;color:#7d8a82;font-size:.88rem}.helper-note{margin-top:14px;color:#7d8a82;font-size:.88rem;line-height:1.55}.hidden{display:none !important}.pin-box{margin-top:16px;padding:16px;border-radius:20px;background:rgba(255,255,255,.86);border:1px solid rgba(223,209,188,.9)}</style>
 </head>
-<body data-page="kindermodus">
+<body>
 <div class="app">
   <aside class="sidebar">
     <div class="logo-wrap">
-      <div class="logo-img"><img src="assets/assetsschnecke.png" alt="Haushaltsheld"></div>
-      <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Kindermodus</div></div>
+      <img src="assetsschnecke.png" alt="Haushaltsheld">
+      <div>
+        <div class="logo-name">Haushaltsheld</div>
+      </div>
     </div>
 
-    <div class="nav-lbl">Kinderbereich</div>
+    <div class="nav-label">Mein Bereich</div>
     <nav class="nav">
-      <a href="kindermodus.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"></path><path d="M5 10v10h14V10"></path></svg></span><span>Familienstart</span></a>
-      <a href="kind_aufgaben.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span>Meine Aufgaben</span></a>
-      <a href="kind_mein_geld.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M16 12h.01"></path></svg></span><span>Mein Geld</span></a>
-      <a href="kind_sparziel.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></span><span>Meine Sparziele</span></a>
-      <a href="kind_wuensche.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path></svg></span><span>Meine Wünsche</span></a>
-      <a href="kind_chat.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span><span>Familienchat</span></a>
-    </nav>
-
-    <div class="nav-lbl">Elternbereich</div>
-    <nav class="nav">
-      <a href="index.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"></path><path d="M5 10v10h14V10"></path></svg></span><span>Zum Dashboard</span></a>
-      <a href="rechte.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4Z"></path><path d="M9.5 12l1.7 1.7L14.8 10"></path></svg></span><span>Familienrechte</span></a>
+      <a href="kindermodus.html" class="active">🏠 Familienstart</a>
+      <a href="kind_aufgaben.html">✓ Meine Aufgaben</a>
+      <a href="kind_mein_geld.html">💰 Mein Geld</a>
     </nav>
 
     <div class="sidebar-footer">
-      <div class="mode-switch">
-        <button class="mode-btn" type="button" onclick="window.location.href='index.html'">Eltern</button>
-        <button class="mode-btn active" type="button">Kind</button>
+      <div style="padding:12px;background:rgba(255,255,255,.7);border-radius:16px;border:1px solid var(--line);margin-bottom:8px;font-size:.8rem;">
+        <strong id="childName">Willkommen</strong><br>
+        <span style="color:var(--muted);">Kindermodus</span>
       </div>
+      <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
     </div>
   </aside>
 
   <main class="main">
     <div class="page-header">
-      <div>
-        <div style="font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Familienstart</div>
-        <h1>Willkommen <span id="childName">Kind 1</span> 👋</h1>
-        <p>Hier findest du alles, was zu deinem Bereich gehört: Aufgaben, Geld, Sparziele, Wünsche, Familienchat und deine KI-Hilfe.</p>
-      </div>
-      <div class="header-right">
-        <span class="badge">Kindermodus aktiv</span>
-        <a class="btn-line" href="index.html">Zum Elternbereich</a>
-      </div>
+      <h1>👋 Willkommen <span id="childGreeting">Kind</span>!</h1>
+      <p>Hier ist dein Familienbereich.</p>
     </div>
 
     <section class="hero">
-      <div class="hero-card">
-        <h2>Dein Bereich auf einen Blick</h2>
-        <p>Im Kindermodus soll es persönlich, freundlich und klar sein. Du kannst hier direkt in deine wichtigsten Bereiche springen, ohne dass die Seite mit Elternfunktionen voll ist.</p>
-        <div class="hero-meta">
-          <span class="pill">KI offen</span>
-          <span class="pill">Chat offen</span>
-          <span class="pill">Aufgaben offen</span>
-          <span class="pill">Wünsche offen</span>
-          <span class="pill">Sparziele offen</span>
-        </div>
-      </div>
-
-      <div class="hero-card child-card">
-        <div class="child-top">
-          <div class="avatar">🧒</div>
-          <div>
-            <div class="child-name" id="childNameCard">Kind 1</div>
-            <div class="child-role">Dein persönlicher Familienbereich</div>
-          </div>
-        </div>
-        <div class="child-grid">
-          <div class="mini"><strong>Heute wichtig</strong><span>Schau in deine Aufgaben und wirf einen Blick auf deine Ziele.</span></div>
-          <div class="mini"><strong>Offene Hilfe</strong><span>Chat und KI bleiben für dich immer erreichbar.</span></div>
-        </div>
-      </div>
+      <h2>Dein Bereich wartet auf dich!</h2>
+      <p>Hier findest du deine Aufgaben, dein Geld und alles weitere was zu dir gehört.</p>
     </section>
 
-    <section class="tiles">
-      <a class="tile" href="kind_aufgaben.html"><div class="tile-head"><div class="tile-icon c-green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div><h3>Meine Aufgaben</h3></div><p>Sieh deine Aufgaben, hake Dinge ab und sammle Fortschritte.</p><small>Direkt öffnen</small></a>
-      <a class="tile" href="kind_mein_geld.html"><div class="tile-head"><div class="tile-icon c-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M16 12h.01"></path></svg></div><h3>Mein Geld</h3></div><p>Sieh deinen Geldbereich, wenn er freigegeben ist, und behalte deinen Überblick.</p><small>Geld & Einträge</small></a>
-      <a class="tile" href="kind_sparziel.html"><div class="tile-head"><div class="tile-icon c-yellow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></div><h3>Meine Sparziele</h3></div><p>Lege Ziele an und sieh, wie weit du schon gekommen bist.</p><small>Ziele & Fortschritt</small></a>
-      <a class="tile" href="kind_wuensche.html"><div class="tile-head"><div class="tile-icon c-pink"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path></svg></div><h3>Meine Wünsche</h3></div><p>Notiere Wünsche, Ideen und kleine Herzenssachen für später.</p><small>Wunschliste öffnen</small></a>
-      <a class="tile" href="kind_chat.html"><div class="tile-head"><div class="tile-icon c-green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div><h3>Familienchat</h3></div><p>Sprich mit deiner Familie, frag nach Hilfe oder antworte auf Nachrichten.</p><small>Immer offen</small></a>
-      <div class="tile"><div class="tile-head"><div class="tile-icon c-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01"></path><path d="M11 12h1v4h1"></path></svg></div><h3>Deine KI-Hilfe</h3></div><p>KI bleibt im Kindermodus immer offen. Später kannst du sie auf allen Kinderseiten gleich nutzen.</p><small>Offen für Kinder</small></div>
+    <section class="card">
+      <h2>🎯 Mein Bereich</h2>
+      <p>Nutze die Navigation, um zu deinen Bereichen zu gehen.</p>
     </section>
-
-    <div class="note">
-      <strong>Wichtig für die Verbindung mit deinen Kinderseiten</strong>
-      <span>Diese Seite setzt beim Öffnen automatisch das aktive Kind und speichert es unter <code>hh_active_child</code>. Dadurch bleiben Aufgaben, Sparziele, Wünsche, Chat und Geldbereich miteinander verbunden.</span>
-    </div>
   </main>
 </div>
 
-<script src="js/permissions.js"></script>
-<script src="js/app.js"></script>
 <script>
-(function () {
-  "use strict";
-  const ACTIVE_CHILD_KEY = "hh_active_child";
-  function setActiveChild(child) {
-    localStorage.setItem(ACTIVE_CHILD_KEY, JSON.stringify(child));
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('haushaltsheld_user'));
+  if (!user || user.role !== 'child') {
+    window.location.href = 'login.html';
+    return false;
   }
-
-  function getActiveChild() {
-    try {
-      return JSON.parse(localStorage.getItem(ACTIVE_CHILD_KEY) || "null");
-    } catch (error) {
-      return null;
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const appAvailable = !!window.HHApp;
-    let current = appAvailable ? window.HHApp.getCurrentUser() : null;
-
-    }
-
-    setActiveChild(current);
-
-    const child = getActiveChild() || DEFAULT_CHILD;
-    const nameEls = [document.getElementById("childName"), document.getElementById("childNameCard")];
-    nameEls.forEach((el) => {
-      if (el) el.textContent = child.name || "Kind";
-    });
-  });
-})();
-</script>
-
-<div id="familyGate" class="login-overlay" style="display:none;"><div class="login-card"><div class="login-top"><div class="login-title"><div class="login-icon">🔐</div><div><div class="login-headline">Kinderbereich öffnen</div><div class="login-sub">Bitte zuerst den Familiencode und danach dein eigenes Profil mit deinem PIN öffnen.</div></div></div></div><div class="field"><label for="familyCodeInput">Familiencode</label><input id="familyCodeInput" type="password" inputmode="numeric" placeholder="482178"></div><div id="familyCodeError" class="login-error">Der Familiencode ist leider falsch.</div><div id="childStep" class="hidden"><div class="helper-note">Wähle jetzt dein eigenes Kinderprofil aus. Geschwister bleiben getrennt.</div><div id="childProfileList" class="profile-pick-list"></div><div id="childPinBox" class="pin-box hidden"><strong id="childPinTitle">PIN eingeben</strong><div class="field"><label for="profilePinInput">Eigener PIN</label><input id="profilePinInput" type="password" inputmode="numeric" placeholder="PIN eingeben"></div><div id="profilePinError" class="login-error">Der PIN passt nicht zu diesem Profil.</div><div class="form-actions"><button class="btn" type="button" onclick="submitProfilePin()">Kinderbereich öffnen</button><a class="btn-soft" href="index.html">Zum Elternbereich</a></div></div></div><div class="form-actions"><button class="btn" type="button" onclick="handleFamilyLogin()">Weiter</button><a class="btn-soft" href="index.html">Zum Elternbereich</a></div></div></div>
-<script>
-(function(){
-function hhReadJson(key, fallback){try{const parsed=JSON.parse(localStorage.getItem(key));return parsed ?? fallback;}catch(error){return fallback;}}
-function hhSeedBaseData(){
- if(!hhReadJson("haushaltsheld_family_access",null)){localStorage.setItem("haushaltsheld_family_access",JSON.stringify({code:"482178",enabled:true}));}
- if(!hhReadJson("haushaltsheld_parent_profiles_demo",null)){localStorage.setItem("haushaltsheld_parent_profiles_demo",JSON.stringify([{id:"parent-1",name:"Mama",pin:"2468",role:"parent"},{id:"parent-2",name:"Papa",pin:"1357",role:"parent"}]));}
- if(!hhReadJson("haushaltsheld_child_profiles_demo",null)){localStorage.setItem("haushaltsheld_child_profiles_demo",JSON.stringify([{id:"child-1",name:"Leo",pin:"1111",age:10,role:"child"},{id:"child-2",name:"Mia",pin:"2222",age:8,role:"child"},{id:"child-3",name:"Lina",pin:"3333",age:6,role:"child"}]));}
+  
+  document.getElementById('childName').textContent = user.name;
+  document.getElementById('childGreeting').textContent = user.name;
+  return true;
 }
 
-let selectedProfile=null;
-function isUnlocked(){const gate=hhReadJson("haushaltsheld_family_gate",null);return !!(gate&&gate.granted);}
-function getSession(){return hhReadJson("haushaltsheld_session",null);}
-function hideGate(){const gate=document.getElementById("familyGate"); if(gate) gate.style.display="none";}
-function showGate(){const gate=document.getElementById("familyGate"); if(gate) gate.style.display="flex";}
-window.handleFamilyLogin=function(){hhSeedBaseData();const access=hhReadJson("haushaltsheld_family_access",{code:"482178"});const value=(document.getElementById("familyCodeInput")?.value||"").trim();const error=document.getElementById("familyCodeError");if(value===String(access.code||"").trim()){localStorage.setItem("haushaltsheld_family_gate",JSON.stringify({granted:true,grantedAt:Date.now()})); if(error) error.classList.remove("show"); showChildStep();} else {if(error) error.classList.add("show");}};
-function showChildStep(){const step=document.getElementById("childStep"); if(step) step.classList.remove("hidden"); const list=document.getElementById("childProfileList"); const children=hhReadJson("haushaltsheld_child_profiles_demo",[]); if(!list) return; list.innerHTML=children.map(child=>`<div class="profile-pick-card"><div><strong>${child.name}</strong><span>Eigenes Profil · eigener PIN · geschützter Kinderbereich</span></div><button class="btn" type="button" data-profile-id="${child.id}">Auswählen</button></div>`).join(""); list.querySelectorAll("[data-profile-id]").forEach(btn=>btn.addEventListener("click",function(){selectedProfile=children.find(c=>c.id===btn.getAttribute("data-profile-id"))||null; document.getElementById("childPinBox")?.classList.remove("hidden"); document.getElementById("childPinTitle").textContent=(selectedProfile?.name||"Profil")+" · eigenen PIN eingeben"; document.getElementById("profilePinInput").value=""; document.getElementById("profilePinError")?.classList.remove("show");}));}
-window.submitProfilePin=function(){const pin=(document.getElementById("profilePinInput")?.value||"").trim(); const error=document.getElementById("profilePinError"); if(!selectedProfile || pin!==String(selectedProfile.pin||"").trim()){if(error) error.classList.add("show"); return;} localStorage.setItem("haushaltsheld_session",JSON.stringify({isLoggedIn:true,role:"child",area:"child",userId:selectedProfile.id,name:selectedProfile.name})); localStorage.setItem("hh_active_child",JSON.stringify(selectedProfile)); hideGate(); ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=selectedProfile.name||"Kind";});};
-document.addEventListener("DOMContentLoaded",function(){hhSeedBaseData(); const session=getSession(); if(isUnlocked() && session && session.role==="child"){hideGate(); const children=hhReadJson("haushaltsheld_child_profiles_demo",[]); const activeChild=children.find(entry=>entry.id===session.userId); if(activeChild){localStorage.setItem("hh_active_child",JSON.stringify(activeChild)); ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=activeChild.name||"Kind";});} } else {showGate(); if(isUnlocked()) showChildStep();} });
-})();
+function handleLogout() {
+  if (confirm('Möchten Sie sich abmelden?')) {
+    localStorage.removeItem('haushaltsheld_user');
+    window.location.href = 'login.html';
+  }
+}
+
+// Einmalig beim Laden checken
+if (!checkAuth()) {
+  document.body.style.display = 'none';
+}
 </script>
 </body>
 </html>
