@@ -1,6 +1,441 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Haushaltsheld – Kindermodus</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ki-schnecke.css">
+
+<style>
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
+
+  --text:#2d342f;
+  --text2:#556159;
+  --muted:#7d8a82;
+
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#e7f5e8;
+
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
+  --red:#cc6666;
+  --red-soft:#fdeaea;
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
+  --yellow:#b5882f;
+  --yellow-soft:#fbf4df;
+  --brown:#4d3c2c;
+  --brown-dark:#433324;
+
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+
+  --sidebar-w:258px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+
+body{
+  font-family:"Outfit",sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family:"Outfit",sans-serif;
+  letter-spacing:-0.03em;
+  line-height:1.15;
+}
+
+button,input,select,textarea{font:inherit}
+
+.app{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:100vh;
+}
+
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:28px 18px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+}
+
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 8px 24px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:8px;
+}
+
+.logo-wrap img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
+}
+
+.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
+.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+
+.nav-label{
+  font-size:.7rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--muted);
+  padding:16px 10px 6px;
+}
+
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 13px;
+  border-radius:18px;
+  text-decoration:none;
+  color:var(--text2);
+  font-weight:700;
+  font-size:.98rem;
+  transition:all .18s ease;
+  border:1px solid transparent;
+}
+
+.nav a:hover{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+  color:var(--text);
+}
+
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;
+  border-color:rgba(62,142,65,.28);
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.nav-icon{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--accent-dark);
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(54,45,28,.05);
+}
+
+.nav-icon svg{width:18px;height:18px;stroke:currentColor}
+
+.sidebar-footer{
+  margin-top:auto;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  display:grid;
+  gap:10px;
+}
+
+.user-info{
+  background:rgba(255,255,255,.7);
+  border:1px solid rgba(223,209,188,.7);
+  border-radius:16px;
+  padding:12px 14px;
+  font-size:.8rem;
+  margin-bottom:8px;
+}
+
+.user-info strong{
+  display:block;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:4px;
+}
+
+.user-info span{
+  display:block;
+  color:var(--muted);
+  font-size:.75rem;
+}
+
+.logout-btn{
+  width:100%;
+  border:1.5px solid #ddcbb4;
+  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
+  color:#665646;
+  padding:10px 12px;
+  border-radius:16px;
+  font-size:.88rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72);
+}
+
+.logout-btn:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(135deg,#f1e1cf 0%, #e4cfb7 100%);
+}
+
+.main{
+  width:100%;
+  max-width:1580px;
+  padding:32px;
+}
+
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+
+.page-header h1{
+  font-size:2.35rem;
+  font-weight:800;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.page-header p{
+  color:var(--muted);
+  font-size:.98rem;
+  max-width:860px;
+}
+
+.page-title-icon{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:inline-grid;
+  place-items:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.16);
+  box-shadow:var(--shadow-xs);
+  flex-shrink:0;
+}
+
+.page-title-icon svg{width:18px;height:18px;stroke:currentColor}
+
+.hero{
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
+  border:1px solid rgba(76,175,80,.18);
+  border-radius:30px;
+  padding:28px 30px;
+  display:grid;
+  grid-template-columns:1fr 150px;
+  gap:24px;
+  align-items:center;
+  margin-bottom:24px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  right:-40px;
+  bottom:-40px;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+
+.hero h2{
+  font-size:1.6rem;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.hero p{
+  color:var(--text2);
+  line-height:1.65;
+  max-width:720px;
+  margin-bottom:18px;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.stat-card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:26px;
+  padding:20px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .18s ease, box-shadow .18s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.stat-card::after{
+  content:"";
+  position:absolute;
+  inset:auto -18px -18px auto;
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+
+.stat-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+
+.stat-card .stat-icon{
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  margin-bottom:12px;
+  background:var(--accent-soft);
+  border:1px solid rgba(76,175,80,.18);
+  color:var(--accent-dark);
+  box-shadow:var(--shadow-xs);
+}
+
+.stat-card .stat-icon svg{
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+  stroke-width:2.1;
+}
+
+.stat-card .stat-label{
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+
+.stat-card .stat-value{
+  font-size:2rem;
+  font-weight:800;
+  margin-bottom:4px;
+  letter-spacing:-0.04em;
+}
+
+.stat-card .stat-sub{
+  font-size:.84rem;
+  color:var(--muted);
+}
+
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+
+.card h2{
+  font-size:1.16rem;
+  font-weight:800;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.card-sub{
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:16px;
+  font-size:.9rem;
+}
+
+@media(max-width:1200px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{
+    height:auto;
+    position:relative;
+    flex-direction:row;
+    flex-wrap:wrap;
+    padding:16px;
+    gap:0;
+  }
+  .logo-wrap{
+    margin-bottom:0;
+    padding-bottom:0;
+    border-bottom:none;
+    border-right:1px solid var(--line);
+    padding-right:16px;
+    margin-right:16px;
+  }
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
+  .nav a{flex:0 1 auto;padding:10px 12px}
+  .nav-label,.sidebar-footer{display:none}
+}
+
+@media(max-width:600px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.95rem}
+  .stats-grid{<!DOCTYPE html>
+<html lang="de">
+<head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Haushaltsheld – Kindermodus</title>
