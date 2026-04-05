@@ -666,7 +666,7 @@ tbody tr:hover td{background:#fbfdfb}
 
   <aside class="sidebar">
     <div class="logo-wrap">
-      <img src="assetsschnecke.png" alt="Haushaltsheld">
+      <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
       <div>
         <div class="logo-name">Haushaltsheld</div>
         <div class="logo-sub">Dein Familien-Assistent</div>
@@ -1024,7 +1024,7 @@ tbody tr:hover td{background:#fbfdfb}
           </div>
 
           <div class="helper">
-            Variante A ist aktiv: Die Entscheidung wird nie automatisch getroffen. Du bestimmst immer zuerst selbst, ob ein Beleg ein Finanz-Eintrag oder ein Einkauf ist.
+            Variante A ist aktiv: Die Entscheidung wird nie automatisch getroffen. Du bestimmst immer zuerst selbst, ob ein Beleg ein Finanz-Eintrag oder ein Einkauf ist. Nach dem Speichern geht es automatisch in den passenden Bereich zurück.
           </div>
 
           <div class="warning">
@@ -1112,14 +1112,14 @@ tbody tr:hover td{background:#fbfdfb}
 </div>
 
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assetsschnecke.png" alt="">
+  <img src="assets/assetsschnecke.png" alt="">
   <span class="ki-fab-label">KI</span>
 </button>
 
 <section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
   <div class="ki-head">
     <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assetsschnecke.png" alt=""></div>
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
         <h3>Haushaltsheld KI</h3>
         <p id="kiContextText">Ich helfe dir bei Datenlogik, Beleg-Zuordnung und Doppeltzählungsschutz.</p>
@@ -1381,7 +1381,7 @@ function saveAsFinance(){
   pendingScannerTransfer = null;
   renderAll();
   resetForm();
-  alert("Als Finanz-Eintrag gespeichert ✅");
+  window.location.href = "finanzen.html";
 }
 
 function saveAsShopping(){
@@ -1438,7 +1438,7 @@ function saveAsShopping(){
   pendingScannerTransfer = null;
   renderAll();
   resetForm();
-  alert("Zur Einkaufsliste gespeichert ✅");
+  window.location.href = "einkaufsliste.html";
 }
 
 function renderLatestFinance(){
@@ -1550,7 +1550,7 @@ function setView(mode){
     modeBadge.className = "mode-badge";
     modeBadge.textContent = "Elternmodus aktiv";
   }
-  localStorage.setItem("haushaltsheld_finance_view", mode);
+  localStorage.setItem("haushaltsheld_mode", mode === "child" ? "child" : "parent");
 }
 
 function renderAll(){
@@ -1569,7 +1569,7 @@ childViewBtn.addEventListener("click",()=>setView("child"));
 
 document.getElementById("dateField").value = getTodayDate();
 applyScannerDraftToForm();
-setView(localStorage.getItem("haushaltsheld_finance_view") || "admin");
+setView(localStorage.getItem("haushaltsheld_mode") === "child" ? "child" : "admin");
 renderAll();
 
 /* KI */

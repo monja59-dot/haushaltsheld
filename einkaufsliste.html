@@ -895,6 +895,78 @@ a.btn-soft:hover{
 }
 .ki-typing{opacity:.8;font-style:italic}
 
+
+.ai-report-filter{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:16px;
+}
+.ai-report-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:8px 0 18px;
+}
+.ai-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:16px;
+}
+.ai-stat{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:var(--shadow-xs);
+}
+.ai-stat strong{
+  display:block;
+  font-size:.8rem;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-bottom:6px;
+}
+.ai-stat span{
+  display:block;
+  font-size:1.2rem;
+  font-weight:800;
+  color:var(--text);
+}
+.ai-report-box{
+  background:rgba(255,255,255,.7);
+  border:1px solid rgba(223,209,188,.85);
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:14px;
+}
+.ai-report-box h3{
+  font-size:1rem;
+  margin-bottom:10px;
+}
+.ai-report-box p{
+  color:var(--text2);
+  margin-bottom:10px;
+}
+.ai-report-box ul{
+  margin:0;
+  padding-left:18px;
+  color:var(--text2);
+}
+.ai-report-box li+li{
+  margin-top:8px;
+}
+.ai-report-note{
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.6;
+}
+@media(max-width:960px){
+  .ai-report-filter,.ai-stats{grid-template-columns:1fr}
+}
+
 /* Responsive */
 @media(max-width:1300px){
   .grid,.hero,.form-grid,.form-grid-3{grid-template-columns:1fr}
@@ -952,7 +1024,7 @@ a.btn-soft:hover{
 
 <aside class="sidebar">
   <div class="logo-wrap">
-    <img src="assetsschnecke.png" alt="Haushaltsheld">
+    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
     <div>
       <div class="logo-name">Haushaltsheld</div>
       <div class="logo-sub">Dein Familien-Assistent</div>
@@ -1076,6 +1148,7 @@ a.btn-soft:hover{
     <div class="header-right">
       <a class="btn btn-soft" href="finanzen.html"><span>Zu Finanzen</span></a>
       <a class="btn btn-soft" href="finanz_historie.html"><span>Zur Historie</span></a>
+      <button class="btn btn-soft" id="printShoppingAiBtn" type="button"><span>KI-Bericht drucken</span></button>
       <span class="mode-badge" id="modeBadge">🛒 Einkaufsmodus aktiv</span>
     </div>
   </div>
@@ -1313,20 +1386,98 @@ a.btn-soft:hover{
         </h2>
         <div class="list" id="partyShoppingList"></div>
       </section>
+
+      <section class="card" id="shoppingAiReportCard">
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12h6"></path>
+              <path d="M12 9v6"></path>
+              <path d="M4.2 19.8a10 10 0 1 1 15.6 0"></path>
+            </svg>
+          </span>
+          <span>KI-Auswertung Einkaufsverhalten</span>
+        </h2>
+        <p class="card-sub">Diese Auswertung liest deine echten Einkaufsdaten, erkennt Muster und macht daraus einen druckbaren KI-Bericht.</p>
+
+        <div class="ai-report-filter">
+          <div class="field">
+            <label for="shoppingAiPeriod">Zeitraum</label>
+            <select id="shoppingAiPeriod">
+              <option value="all">Kompletter Zeitraum</option>
+              <option value="today">Heute</option>
+              <option value="this_week">Diese Woche</option>
+              <option value="last_week">Letzte Woche</option>
+              <option value="this_month">Dieser Monat</option>
+              <option value="last_month">Letzter Monat</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="shoppingAiCategory">Kategorie</label>
+            <select id="shoppingAiCategory">
+              <option value="all">Alle Kategorien</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="shoppingAiStore">Geschäft</label>
+            <select id="shoppingAiStore">
+              <option value="all">Alle Geschäfte</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ai-report-actions">
+          <button class="btn" id="refreshShoppingAiBtn" type="button">KI-Bericht aktualisieren</button>
+          <button class="btn btn-soft" id="saveShoppingAiFilterBtn" type="button"><span>Filter merken</span></button>
+          <button class="btn btn-soft" id="printShoppingAiBtnCard" type="button"><span>KI-Bericht drucken</span></button>
+        </div>
+
+        <div class="ai-stats">
+          <div class="ai-stat"><strong>Anzahl Einkäufe</strong><span id="shoppingAiCount">0</span></div>
+          <div class="ai-stat"><strong>Durchschnitt</strong><span id="shoppingAiAverage">0 €</span></div>
+          <div class="ai-stat"><strong>Gesamtausgaben</strong><span id="shoppingAiTotal">0 €</span></div>
+        </div>
+
+        <div id="shoppingAiPrintable">
+          <div class="ai-report-box">
+            <h3>Zusammenfassung</h3>
+            <p id="shoppingAiSummary">Noch keine Auswertung vorhanden.</p>
+          </div>
+
+          <div class="ai-report-box">
+            <h3>KI-Bewertung</h3>
+            <p id="shoppingAiEvaluation">Sobald Einkäufe vorhanden sind, analysiert die KI hier dein Einkaufsverhalten.</p>
+          </div>
+
+          <div class="ai-report-box">
+            <h3>Empfehlung</h3>
+            <p id="shoppingAiRecommendation">Mit mehr Daten kann die KI gezieltere Empfehlungen ableiten.</p>
+          </div>
+
+          <div class="ai-report-box">
+            <h3>So kannst du das bündeln</h3>
+            <ul id="shoppingAiTips">
+              <li>Einkäufe gesammelt planen.</li>
+            </ul>
+          </div>
+
+          <p class="ai-report-note" id="shoppingAiMeta">Die KI-Auswertung nutzt dieselbe gemeinsame Einkaufsdatenbasis wie deine Liste und bleibt dadurch sauber auswertbar.</p>
+        </div>
+      </section>
     </div>
   </section>
 </main>
 </div>
 
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assetsschnecke.png" alt="">
+  <img src="assets/assetsschnecke.png" alt="">
   <span class="ki-fab-label">KI</span>
 </button>
 
 <section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
   <div class="ki-head">
     <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assetsschnecke.png" alt=""></div>
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
         <h3>Haushaltsheld KI</h3>
         <p id="kiContextText">Ich helfe dir beim Planen von Einkäufen, Spontankäufen und Feierlichkeiten.</p>
@@ -1508,7 +1659,7 @@ function savePurchase(){
   renderAll();
   clearPurchaseForm();
   resetScannerState();
-  alert("Einkauf gespeichert ✅");
+  window.location.href = "einkaufsliste.html";
 }
 function renderAll(){
   const purchases = [...getSharedShoppingEntries()].sort((a,b)=>{
@@ -1730,18 +1881,290 @@ function setupScanner(){
   });
 }
 
+
+function getPrintFilter(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_print_filter_v1") || "{}");
+}
+function saveShoppingAiFilter(){
+  const filter = {
+    scope: "shopping_ai",
+    period: document.getElementById("shoppingAiPeriod").value,
+    category: document.getElementById("shoppingAiCategory").value,
+    store: document.getElementById("shoppingAiStore").value
+  };
+  localStorage.setItem("haushaltsheld_shopping_ai_filter_v1", JSON.stringify(filter));
+  localStorage.setItem("haushaltsheld_print_filter_v1", JSON.stringify(filter));
+}
+function loadShoppingAiFilter(){
+  const own = JSON.parse(localStorage.getItem("haushaltsheld_shopping_ai_filter_v1") || "null");
+  const fallback = getPrintFilter();
+  return own || fallback || {};
+}
+function startOfDay(date){
+  const d = new Date(date);
+  d.setHours(0,0,0,0);
+  return d;
+}
+function endOfDay(date){
+  const d = new Date(date);
+  d.setHours(23,59,59,999);
+  return d;
+}
+function getDateRange(period){
+  const now = new Date();
+  const today = startOfDay(now);
+  const day = today.getDay();
+  const mondayOffset = day === 0 ? 6 : day - 1;
+
+  if(period === "today"){
+    return {start: startOfDay(today), end: endOfDay(today)};
+  }
+  if(period === "this_week"){
+    const start = new Date(today);
+    start.setDate(today.getDate() - mondayOffset);
+    return {start: startOfDay(start), end: endOfDay(now)};
+  }
+  if(period === "last_week"){
+    const thisWeekStart = new Date(today);
+    thisWeekStart.setDate(today.getDate() - mondayOffset);
+    const start = new Date(thisWeekStart);
+    start.setDate(thisWeekStart.getDate() - 7);
+    const end = new Date(thisWeekStart);
+    end.setDate(thisWeekStart.getDate() - 1);
+    return {start: startOfDay(start), end: endOfDay(end)};
+  }
+  if(period === "this_month"){
+    const start = new Date(today.getFullYear(), today.getMonth(), 1);
+    return {start: startOfDay(start), end: endOfDay(now)};
+  }
+  if(period === "last_month"){
+    const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    const end = new Date(today.getFullYear(), today.getMonth(), 0);
+    return {start: startOfDay(start), end: endOfDay(end)};
+  }
+  return null;
+}
+function parseShoppingDate(entry){
+  const value = entry.date || entry.createdAt || entry.updatedAt || getTodayDate();
+  return new Date(String(value).slice(0,10) + "T12:00:00");
+}
+function fillShoppingAiSelects(entries){
+  const categorySelect = document.getElementById("shoppingAiCategory");
+  const storeSelect = document.getElementById("shoppingAiStore");
+  const currentCategory = categorySelect.value || "all";
+  const currentStore = storeSelect.value || "all";
+
+  const categories = [...new Set(entries.map(e => e.category).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"de"));
+  const stores = [...new Set(entries.map(e => e.store).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"de"));
+
+  categorySelect.innerHTML = '<option value="all">Alle Kategorien</option>' + categories.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
+  storeSelect.innerHTML = '<option value="all">Alle Geschäfte</option>' + stores.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
+
+  categorySelect.value = categories.includes(currentCategory) ? currentCategory : "all";
+  storeSelect.value = stores.includes(currentStore) ? currentStore : "all";
+}
+function getFilteredShoppingAiEntries(){
+  const entries = getSharedShoppingEntries();
+  const period = document.getElementById("shoppingAiPeriod").value;
+  const category = document.getElementById("shoppingAiCategory").value;
+  const store = document.getElementById("shoppingAiStore").value;
+  const range = getDateRange(period);
+
+  return entries.filter(entry => {
+    const entryDate = parseShoppingDate(entry);
+    if(range && (entryDate < range.start || entryDate > range.end)) return false;
+    if(category !== "all" && (entry.category || "") !== category) return false;
+    if(store !== "all" && (entry.store || "") !== store) return false;
+    return true;
+  });
+}
+function buildShoppingAiReport(entries){
+  const total = entries.reduce((sum,e)=>sum + Number(e.total ?? e.amount ?? 0),0);
+  const average = entries.length ? total / entries.length : 0;
+
+  const byStore = {};
+  const byCategory = {};
+  const byDate = {};
+  let spontaneousCount = 0;
+  let partyCount = 0;
+
+  entries.forEach(entry => {
+    const amount = Number(entry.total ?? entry.amount ?? 0);
+    const store = entry.store || "Unbekannt";
+    const category = entry.category || "Ohne Kategorie";
+    const dayKey = String(entry.date || "").slice(0,10) || getTodayDate();
+
+    byStore[store] = (byStore[store] || 0) + amount;
+    byCategory[category] = (byCategory[category] || 0) + amount;
+    byDate[dayKey] = (byDate[dayKey] || 0) + 1;
+
+    if((entry.purchaseType || "").toLowerCase().includes("spontan") || category === "Kiosk / Spontan"){
+      spontaneousCount += 1;
+    }
+    if((entry.purchaseType || "").toLowerCase().includes("feier") || category === "Feierlichkeiten"){
+      partyCount += 1;
+    }
+  });
+
+  const topStore = Object.entries(byStore).sort((a,b)=>b[1]-a[1])[0];
+  const topCategory = Object.entries(byCategory).sort((a,b)=>b[1]-a[1])[0];
+  const duplicateDays = Object.values(byDate).filter(count => count > 1).length;
+  const smallBuys = entries.filter(e => Number(e.total ?? e.amount ?? 0) > 0 && Number(e.total ?? e.amount ?? 0) <= 20).length;
+
+  const summary = entries.length
+    ? `Im ausgewählten Zeitraum wurden ${entries.length} Einkäufe mit Gesamtausgaben von ${formatEuro(total)} erfasst. Der durchschnittliche Einkaufswert lag bei ${formatEuro(average)}.`
+    : "Noch keine passenden Einkäufe für diese Auswahl vorhanden.";
+
+  let evaluation = "Sobald mehr Einkaufsdaten vorhanden sind, kann die KI dein Verhalten klarer auswerten.";
+  let recommendation = "Lege zuerst einige Einkäufe an oder übernimm Scanner-Daten in die Einkaufsliste.";
+  let tips = [
+    "Einkaufsliste vor dem Einkauf vervollständigen.",
+    "Spontane Nachkäufe möglichst sammeln statt einzeln fahren."
+  ];
+
+  if(entries.length){
+    const parts = [];
+    if(topCategory){
+      parts.push(`Die stärkste Kategorie ist ${topCategory[0]} mit ${formatEuro(topCategory[1])}.`);
+    }
+    if(topStore){
+      parts.push(`Am häufigsten bzw. stärksten wurde bei ${topStore[0]} eingekauft (${formatEuro(topStore[1])}).`);
+    }
+    if(smallBuys >= 3){
+      parts.push(`Es wurden ${smallBuys} kleinere Einkäufe erkannt, was auf Nachkäufe oder spontane Besorgungen hindeuten kann.`);
+    }
+    if(duplicateDays >= 2){
+      parts.push(`An mehreren Tagen gab es mehr als einen Einkauf. Das spricht eher gegen gebündelte Wocheneinkäufe.`);
+    }
+    if(spontaneousCount > 0){
+      parts.push(`${spontaneousCount} Einkäufe wurden als spontan markiert.`);
+    }
+    if(partyCount > 0){
+      parts.push(`${partyCount} Einkäufe liefen im Bereich Feierlichkeiten und lassen sich dadurch separat auswerten.`);
+    }
+    evaluation = parts.join(" ") || evaluation;
+
+    if(smallBuys >= 3 || duplicateDays >= 2){
+      recommendation = "Einkäufe stärker bündeln und fehlende Artikel zuerst in der Einkaufsliste sammeln.";
+      tips = [
+        "Nur 1 bis 2 feste Einkaufstage pro Woche festlegen.",
+        "Fehlende Produkte erst in der Liste sammeln und nicht sofort einzeln kaufen.",
+        "Vor dem Einkauf Angebote und Vorräte kurz prüfen.",
+        "Spontankäufe separat markieren und am Monatsende prüfen."
+      ];
+    } else if(topCategory && /Lebensmittel/i.test(topCategory[0])) {
+      recommendation = "Lebensmittel-Einkäufe besser vorplanen, damit weniger kleine Nachkäufe entstehen.";
+      tips = [
+        "Mahlzeiten grob für mehrere Tage planen.",
+        "Grundartikel gesammelt einkaufen.",
+        "Vorräte kurz prüfen, bevor erneut gekauft wird.",
+        "Snacks und Kleinteile gezielt auf eine Liste setzen."
+      ];
+    } else {
+      recommendation = "Das Einkaufsverhalten wirkt schon recht geordnet. Mit mehr Daten werden die Hinweise noch präziser.";
+      tips = [
+        "Geschäfte und Kategorien weiter sauber pflegen.",
+        "Belege oder Scanner-Daten direkt zuordnen.",
+        "Spontane Einkäufe deutlich markieren.",
+        "Regelmäßig die stärksten Kategorien prüfen."
+      ];
+    }
+  }
+
+  return {
+    total, average, topStore: topStore ? topStore[0] : "—", topCategory: topCategory ? topCategory[0] : "—",
+    count: entries.length, summary, evaluation, recommendation, tips
+  };
+}
+function renderShoppingAiReport(){
+  const allEntries = getSharedShoppingEntries();
+  fillShoppingAiSelects(allEntries);
+  const entries = getFilteredShoppingAiEntries();
+  const report = buildShoppingAiReport(entries);
+
+  document.getElementById("shoppingAiCount").textContent = String(report.count);
+  document.getElementById("shoppingAiAverage").textContent = formatEuro(report.average);
+  document.getElementById("shoppingAiTotal").textContent = formatEuro(report.total);
+  document.getElementById("shoppingAiSummary").textContent = report.summary;
+  document.getElementById("shoppingAiEvaluation").textContent = report.evaluation;
+  document.getElementById("shoppingAiRecommendation").textContent = report.recommendation;
+  document.getElementById("shoppingAiTips").innerHTML = report.tips.map(t => `<li>${escapeHtml(t)}</li>`).join("");
+
+  const periodLabel = document.getElementById("shoppingAiPeriod").selectedOptions[0]?.textContent || "Kompletter Zeitraum";
+  document.getElementById("shoppingAiMeta").textContent = `Zeitraum: ${periodLabel} · Geschäft: ${report.topStore} · Stärkste Kategorie: ${report.topCategory}. Diese Auswertung nutzt dieselbe gemeinsame Einkaufsdatenbasis wie deine Liste.`;
+}
+function printShoppingAiReport(){
+  renderShoppingAiReport();
+  const printHtml = document.getElementById("shoppingAiPrintable").innerHTML;
+  const count = document.getElementById("shoppingAiCount").textContent;
+  const avg = document.getElementById("shoppingAiAverage").textContent;
+  const total = document.getElementById("shoppingAiTotal").textContent;
+  const periodLabel = document.getElementById("shoppingAiPeriod").selectedOptions[0]?.textContent || "Kompletter Zeitraum";
+
+  const win = window.open("", "_blank", "width=980,height=760");
+  win.document.write(`
+    <html>
+      <head>
+        <title>Haushaltsheld – KI-Auswertung Einkaufsverhalten</title>
+        <style>
+          body{font-family:Arial,sans-serif;padding:28px;color:#2d342f}
+          h1{font-size:28px;margin:0 0 10px}
+          .meta{margin-bottom:20px;color:#556159}
+          .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+          .stat{border:1px solid #dfd1bc;border-radius:14px;padding:14px}
+          .stat strong{display:block;font-size:12px;text-transform:uppercase;color:#7d8a82;margin-bottom:6px}
+          .stat span{font-size:22px;font-weight:700}
+          .box{border:1px solid #dfd1bc;border-radius:14px;padding:16px;margin-top:14px}
+          .box h3{margin:0 0 10px}
+          ul{padding-left:20px}
+        </style>
+      </head>
+      <body>
+        <h1>🧠 KI-Auswertung Einkaufsverhalten</h1>
+        <div class="meta">Zeitraum: ${periodLabel}</div>
+        <div class="stats">
+          <div class="stat"><strong>Anzahl Einkäufe</strong><span>${count}</span></div>
+          <div class="stat"><strong>Durchschnitt</strong><span>${avg}</span></div>
+          <div class="stat"><strong>Gesamtausgaben</strong><span>${total}</span></div>
+        </div>
+        ${printHtml}
+      </body>
+    </html>
+  `);
+  win.document.close();
+  win.focus();
+  setTimeout(()=>win.print(), 250);
+}
+function applyShoppingAiStoredFilter(){
+  const filter = loadShoppingAiFilter();
+  const period = filter.period || "all";
+  document.getElementById("shoppingAiPeriod").value = period;
+}
+
 /* Init */
 document.getElementById("date").value = getTodayDate();
 document.getElementById("savePurchaseBtn").addEventListener("click",savePurchase);
 document.getElementById("examplePurchaseBtn").addEventListener("click",fillExample);
 setupScanner();
+applyShoppingAiStoredFilter();
+document.getElementById("refreshShoppingAiBtn").addEventListener("click", renderShoppingAiReport);
+document.getElementById("saveShoppingAiFilterBtn").addEventListener("click", () => {
+  saveShoppingAiFilter();
+  renderShoppingAiReport();
+});
+document.getElementById("printShoppingAiBtn").addEventListener("click", printShoppingAiReport);
+document.getElementById("printShoppingAiBtnCard").addEventListener("click", printShoppingAiReport);
+document.getElementById("shoppingAiPeriod").addEventListener("change", renderShoppingAiReport);
+document.getElementById("shoppingAiCategory").addEventListener("change", renderShoppingAiReport);
+document.getElementById("shoppingAiStore").addEventListener("change", renderShoppingAiReport);
 renderAll();
+renderShoppingAiReport();
 </script>
 
 <script>
 (function(){
   const page = document.body.dataset.page || "allgemein";
-  const modeGetter = () => "parent";
+  const modeGetter = () => localStorage.getItem("haushaltsheld_mode") || "parent";
 
   const fab = document.getElementById("kiFab");
   const panel = document.getElementById("kiPanel");

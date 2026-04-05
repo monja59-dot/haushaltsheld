@@ -1084,14 +1084,16 @@ input, select, textarea{
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <link rel="stylesheet" href="ki-schnecke.css">
+<style id="hh-auth-style">.login-overlay{position:fixed;inset:0;background:rgba(247,242,233,.82);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99999}.login-card{width:min(100%,620px);background:linear-gradient(180deg,#ffffff 0%,#fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:32px;box-shadow:0 18px 48px rgba(54,45,28,.12);padding:26px}.login-top{margin-bottom:16px}.login-title{display:flex;align-items:center;gap:12px;margin-bottom:12px}.login-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:#e7f5e8;border:1px solid rgba(76,175,80,.16);color:#3E8E41;font-size:1.35rem}.login-headline{font-weight:800;font-size:1.18rem;color:#2d342f}.login-sub{color:#7d8a82;font-size:.94rem}.field{display:grid;gap:8px;margin-top:12px}.field label{font-size:.93rem;color:#556159;font-weight:800}.field input{width:100%;border:1px solid #dfd1bc;border-radius:18px;background:#fffdf9;padding:14px 16px;font:inherit}.login-error{display:none;margin-top:12px;padding:12px 14px;border-radius:16px;background:linear-gradient(180deg,#fff1f1 0%, #fdeaea 100%);border:1px solid #efc1c1;color:#a14d4d;font-weight:700;font-size:.9rem}.login-error.show{display:block}.form-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.profile-pick-list{display:grid;gap:12px;margin-top:18px}.profile-pick-card{border:1px solid #dfd1bc;background:rgba(255,255,255,.92);border-radius:20px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:14px}.profile-pick-card strong{display:block;font-size:1rem}.profile-pick-card span{display:block;color:#7d8a82;font-size:.88rem}.helper-note{margin-top:14px;color:#7d8a82;font-size:.88rem;line-height:1.55}.hidden{display:none !important}.pin-box{margin-top:16px;padding:16px;border-radius:20px;background:rgba(255,255,255,.86);border:1px solid rgba(223,209,188,.9)}</style>
 </head>
 <body data-page="dashboard">
 <div class="app">
 
+
 <!-- ════ Sidebar ════ -->
 <aside class="sidebar">
   <div class="logo-wrap">
-   <img src="assetsschnecke.png" alt="Haushaltsheld">
+<img src="assets/assetsschnecke.png" alt="Haushaltsheld">
     <div>
       <div class="logo-name">Haushaltsheld</div>
       <div class="logo-sub">Dein Familien-Assistent</div>
@@ -1127,8 +1129,16 @@ input, select, textarea{
 <main class="main">
   <div class="page-header">
     <div>
-      <h1>Willkommen zurück</h1>
+      <h1>Willkommen <span data-current-user-name></span> 👋</h1>
+<select data-user-switcher></select>
       <p>Dein ruhiger Überblick über Haushalt, Aufgaben und Alltag.</p>
+<div data-parent-only>
+  👩 Nur für Eltern sichtbar
+</div>
+
+<div data-child-only>
+  👶 Nur für Kinder sichtbar
+</div>
     </div>
     <span class="mode-badge" id="modeBadge"><i data-lucide="wrench"></i>Elternmodus aktiv</span>
   </div>
@@ -1146,7 +1156,74 @@ input, select, textarea{
       </div>
     </div>
     <div class="hero-img">
-      <img src="assets/schnecke.png" alt="Schnecke">
+      <link rel="stylesheet" href="ki-schnecke.css">
+    </div>
+  </section>
+
+
+  <!-- ════ Familien-Startbereich ════ -->
+  <section id="familyWelcomeSection" style="margin-bottom:24px;">
+    <div class="card" style="background:linear-gradient(180deg,#f7fcf7 0%, #eef8ef 100%); border:1px solid rgba(76,175,80,.24);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
+        <div>
+          <div style="font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Familienstart</div>
+          <h2 id="welcomeTextTop" style="margin:0 0 6px 0;font-size:1.8rem;font-weight:800;">Willkommen</h2>
+          <div id="todayDateTop" style="color:var(--text2);font-weight:700;"></div>
+        </div>
+
+        <div class="mode-badge" style="align-self:flex-start;">
+          <i data-lucide="bell-ring"></i>
+          <span>Push: <span id="pushStatusTop">nicht aktiv</span></span>
+        </div>
+      </div>
+
+      <div id="motivationTextTop" style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:18px;">
+        Gemeinsam schaffen wir alles 💚
+      </div>
+
+      <div class="content-grid" style="margin-bottom:0;">
+        <div class="card" style="padding:18px;">
+          <div class="card-title"><i data-lucide="users"></i>Wer ist gerade in der App?</div>
+          <div class="list-items" id="activeUsersTop">
+            <div class="list-row"><span>Noch niemand aktiv</span><span>—</span></div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div class="card-title"><i data-lucide="calendar-days"></i>Termine</div>
+          <div class="list-items" id="appointmentsTop">
+            <div class="list-row"><span>Keine Termine eingetragen</span><span>📅</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-grid" style="margin-top:18px;margin-bottom:0;">
+        <div class="card" style="padding:18px;">
+          <div class="card-title"><i data-lucide="message-circle"></i>Familien-Chat</div>
+          <div class="list-items" id="chatPreviewTop">
+            <div class="list-row"><span>Keine neuen Nachrichten</span><span>💬</span></div>
+          </div>
+          <a class="cta-link" href="admin_chat.html">Zum Chat →</a>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div class="card-title"><i data-lucide="sparkles"></i>Hinweise für heute</div>
+          <div class="list-items">
+            <div class="list-row">
+              <span>Neue Chat-Nachrichten</span>
+              <span id="chatCountTop">0 offen</span>
+            </div>
+            <div class="list-row">
+              <span>Aufgaben für Eltern</span>
+              <span id="waitingTaskCountTop">0 warten</span>
+            </div>
+            <div class="list-row">
+              <span>Benachrichtigungen</span>
+              <span id="pushPermissionTop">nicht freigegeben</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1326,9 +1403,192 @@ function setMode(mode){
 adminBtn.addEventListener("click",()=>setMode("admin"));
 childBtn.addEventListener("click",()=>{ setMode("child"); window.location.href = "kindermodus_links.html"; });
 
+
+// ── Familien-Startbereich ────────────────────────────────────────
+const HH_ONLINE_USERS_KEY = "hh_online_users";
+const HH_APPOINTMENTS_KEY = "hh_termine";
+
+function getCurrentDisplayName(){
+  const child = JSON.parse(localStorage.getItem("hh_active_child") || "null");
+  if(child && (child.name || child.nickname)) return child.name || child.nickname;
+  return "Monja";
+}
+
+function renderTopWelcome(){
+  const el = document.getElementById("welcomeTextTop");
+  if(!el) return;
+  el.textContent = "Willkommen " + getCurrentDisplayName();
+}
+
+function renderTopDate(){
+  const el = document.getElementById("todayDateTop");
+  if(!el) return;
+  const d = new Date();
+  el.textContent = d.toLocaleDateString("de-DE", {
+    weekday:"long", day:"numeric", month:"long", year:"numeric"
+  });
+}
+
+function getWaitingParentTasks(){
+  return getTasks().filter(t => t && t.status === "waiting_parent");
+}
+
+function getUnreadThreads(){
+  const threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
+  return (Array.isArray(threads) ? threads : []).filter(t => t && t.unreadForParent);
+}
+
+function renderTopMotivation(){
+  const el = document.getElementById("motivationTextTop");
+  if(!el) return;
+
+  const unreadChats = getUnreadThreads().length;
+  const waitingTasks = getWaitingParentTasks().length;
+  const openTasks = getTasks().filter(t => !t.done).length;
+
+  let text = "Gemeinsam schaffen wir alles 💚";
+  if(waitingTasks > 0) text = "Heute wartet mindestens eine Aufgabe auf eure Rückmeldung 💚";
+  else if(unreadChats > 0) text = "Es gibt neue Nachrichten in eurem Familien-Chat 💬";
+  else if(openTasks >= 5) text = "Heute packt ihr gemeinsam viel an – Schritt für Schritt 💪";
+  else if(openTasks === 0) text = "Alles sieht ruhig aus – genießt euren Tag zusammen 🌞";
+  else text = "Ein kleiner Schritt ist auch Fortschritt ✨";
+
+  el.textContent = text;
+}
+
+function rememberOnlineUser(){
+  const now = Date.now();
+  const me = getCurrentDisplayName();
+  let users = JSON.parse(localStorage.getItem(HH_ONLINE_USERS_KEY) || "[]");
+  users = Array.isArray(users) ? users : [];
+
+  const cutoff = now - 5 * 60 * 1000;
+  users = users.filter(u => u && u.name && Number(u.lastSeen || 0) >= cutoff);
+
+  const existing = users.find(u => u.name === me);
+  if(existing) existing.lastSeen = now;
+  else users.push({ name: me, lastSeen: now });
+
+  localStorage.setItem(HH_ONLINE_USERS_KEY, JSON.stringify(users));
+}
+
+function renderOnlineUsers(){
+  const box = document.getElementById("activeUsersTop");
+  if(!box) return;
+
+  const now = Date.now();
+  const cutoff = now - 5 * 60 * 1000;
+  let users = JSON.parse(localStorage.getItem(HH_ONLINE_USERS_KEY) || "[]");
+  users = Array.isArray(users) ? users.filter(u => u && u.name && Number(u.lastSeen || 0) >= cutoff) : [];
+
+  if(!users.length){
+    box.innerHTML = '<div class="list-row"><span>Noch niemand aktiv</span><span>—</span></div>';
+    return;
+  }
+
+  box.innerHTML = users.map(u => {
+    const mins = Math.floor((now - Number(u.lastSeen || 0)) / 60000);
+    const when = mins <= 0 ? "jetzt" : "vor " + mins + " Min";
+    return '<div class="list-row"><span>' + esc(u.name) + '</span><span>' + when + '</span></div>';
+  }).join("");
+}
+
+function getAppointments(){
+  const items = JSON.parse(localStorage.getItem(HH_APPOINTMENTS_KEY) || "[]");
+  return Array.isArray(items) ? items : [];
+}
+
+function renderAppointmentsTop(){
+  const box = document.getElementById("appointmentsTop");
+  if(!box) return;
+
+  const items = getAppointments().slice(0,3);
+  if(!items.length){
+    box.innerHTML = '<div class="list-row"><span>Keine Termine eingetragen</span><span>📅</span></div>';
+    return;
+  }
+
+  box.innerHTML = items.map(item =>
+    '<div class="list-row"><span>' + esc(item.date || "ohne Datum") + ' – ' + esc(item.text || "Termin") + '</span><span>📌</span></div>'
+  ).join("");
+}
+
+function renderChatPreviewTop(){
+  const box = document.getElementById("chatPreviewTop");
+  if(!box) return;
+
+  const unread = getUnreadThreads();
+  if(!unread.length){
+    box.innerHTML = '<div class="list-row"><span>Keine neuen Nachrichten</span><span>💬</span></div>';
+    return;
+  }
+
+  box.innerHTML = unread.slice(0,3).map(thread => {
+    const last = (thread.messages || []).slice(-1)[0] || {};
+    return '<div class="list-row"><span>' + esc(thread.childName || "Kind") + ': ' + esc(last.text || "Neue Nachricht") + '</span><span>📩</span></div>';
+  }).join("");
+}
+
+function renderTopCounters(){
+  const chatEl = document.getElementById("chatCountTop");
+  const taskEl = document.getElementById("waitingTaskCountTop");
+  if(chatEl) chatEl.textContent = getUnreadThreads().length + " offen";
+  if(taskEl) taskEl.textContent = getWaitingParentTasks().length + " warten";
+}
+
+function renderPushTop(){
+  const statusEl = document.getElementById("pushStatusTop");
+  const permEl = document.getElementById("pushPermissionTop");
+  if(!statusEl || !permEl) return;
+
+  if(!("Notification" in window)){
+    statusEl.textContent = "nicht unterstützt";
+    permEl.textContent = "nicht unterstützt";
+    return;
+  }
+
+  if(Notification.permission === "granted"){
+    statusEl.textContent = "aktiv";
+    permEl.textContent = "aktiv";
+  }else if(Notification.permission === "denied"){
+    statusEl.textContent = "blockiert";
+    permEl.textContent = "blockiert";
+  }else{
+    statusEl.textContent = "nicht freigegeben";
+    permEl.textContent = "nicht freigegeben";
+  }
+}
+
+
 // ── Init ──────────────────────────────────────────────────────────
 loadStats();
 loadTasks();
+renderTopWelcome();
+renderTopDate();
+rememberOnlineUser();
+renderOnlineUsers();
+renderAppointmentsTop();
+renderChatPreviewTop();
+renderTopMotivation();
+renderTopCounters();
+renderPushTop();
+
+window.addEventListener("storage", () => {
+  rememberOnlineUser();
+  renderOnlineUsers();
+  renderAppointmentsTop();
+  renderChatPreviewTop();
+  renderTopMotivation();
+  renderTopCounters();
+  renderPushTop();
+});
+
+setInterval(() => {
+  rememberOnlineUser();
+  renderOnlineUsers();
+  renderTopCounters();
+}, 5000);
+
 setMode(localStorage.getItem("haushaltsheld_mode")||"admin");
 if (window.lucide) lucide.createIcons();
 </script>
@@ -1453,7 +1713,7 @@ if (window.lucide) lucide.createIcons();
 
 <!-- ===== KI-Schnecke ===== -->
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/schnecke.png" alt="">
+ <img src="assets/assetsschnecke.png">
   <span class="ki-fab-label">KI</span>
 </button>
 
@@ -1481,5 +1741,30 @@ if (window.lucide) lucide.createIcons();
   </form>
 </section>
 
+<script src="js/permissions.js"></script>
+<script src="js/app.js"></script>
+
+
+<div id="familyGate" class="login-overlay" style="display:none;"><div class="login-card"><div class="login-top"><div class="login-title"><div class="login-icon">🔐</div><div><div class="login-headline">Elternbereich öffnen</div><div class="login-sub">Bitte zuerst den Familiencode und danach den eigenen PIN eingeben.</div></div></div></div><div class="field"><label for="familyCodeInput">Familiencode</label><input id="familyCodeInput" type="password" inputmode="numeric" placeholder="482178"></div><div id="familyCodeError" class="login-error">Der Familiencode ist leider falsch.</div><div id="parentStep" class="hidden"><div class="helper-note">Wähle dein Elternprofil. Danach wird direkt dein Dashboard geöffnet.</div><div id="parentProfileList" class="profile-pick-list"></div><div id="parentPinBox" class="pin-box hidden"><strong id="parentPinTitle">PIN eingeben</strong><div class="field"><label for="profilePinInput">Eigener PIN</label><input id="profilePinInput" type="password" inputmode="numeric" placeholder="PIN eingeben"></div><div id="profilePinError" class="login-error">Der PIN passt nicht zu diesem Profil.</div><div class="form-actions"><button class="btn" type="button" onclick="submitProfilePin()">Dashboard öffnen</button></div></div></div><div class="form-actions"><button class="btn" type="button" onclick="handleFamilyLogin()">Weiter</button></div></div></div>
+<script>
+(function(){
+function hhReadJson(key, fallback){try{const parsed=JSON.parse(localStorage.getItem(key));return parsed ?? fallback;}catch(error){return fallback;}}
+function hhSeedBaseData(){
+ if(!hhReadJson("haushaltsheld_family_access",null)){localStorage.setItem("haushaltsheld_family_access",JSON.stringify({code:"482178",enabled:true}));}
+ if(!hhReadJson("haushaltsheld_parent_profiles_demo",null)){localStorage.setItem("haushaltsheld_parent_profiles_demo",JSON.stringify([{id:"parent-1",name:"Mama",pin:"2468",role:"parent"},{id:"parent-2",name:"Papa",pin:"1357",role:"parent"}]));}
+ if(!hhReadJson("haushaltsheld_child_profiles_demo",null)){localStorage.setItem("haushaltsheld_child_profiles_demo",JSON.stringify([{id:"child-1",name:"Leo",pin:"1111",age:10,role:"child"},{id:"child-2",name:"Mia",pin:"2222",age:8,role:"child"},{id:"child-3",name:"Lina",pin:"3333",age:6,role:"child"}]));}
+}
+
+let selectedProfile=null;
+function isUnlocked(){const gate=hhReadJson("haushaltsheld_family_gate",null);return !!(gate&&gate.granted);}
+function getSession(){return hhReadJson("haushaltsheld_session",null);}
+function hideGate(){const gate=document.getElementById("familyGate"); if(gate) gate.style.display="none";}
+function showGate(){const gate=document.getElementById("familyGate"); if(gate) gate.style.display="flex";}
+window.handleFamilyLogin=function(){hhSeedBaseData();const access=hhReadJson("haushaltsheld_family_access",{code:"482178"});const value=(document.getElementById("familyCodeInput")?.value||"").trim();const error=document.getElementById("familyCodeError");if(value===String(access.code||"").trim()){localStorage.setItem("haushaltsheld_family_gate",JSON.stringify({granted:true,grantedAt:Date.now()})); if(error) error.classList.remove("show"); showParentStep();} else {if(error) error.classList.add("show");}};
+function showParentStep(){const step=document.getElementById("parentStep"); if(step) step.classList.remove("hidden"); const list=document.getElementById("parentProfileList"); const parents=hhReadJson("haushaltsheld_parent_profiles_demo",[]); if(!list) return; list.innerHTML=parents.map(parent=>`<div class="profile-pick-card"><div><strong>${parent.name}</strong><span>Eigener Elternzugang · eigener PIN</span></div><button class="btn" type="button" data-profile-id="${parent.id}">Auswählen</button></div>`).join(""); list.querySelectorAll("[data-profile-id]").forEach(btn=>btn.addEventListener("click",function(){selectedProfile=parents.find(p=>p.id===btn.getAttribute("data-profile-id"))||null; document.getElementById("parentPinBox")?.classList.remove("hidden"); document.getElementById("parentPinTitle").textContent=(selectedProfile?.name||"Profil")+" · eigenen PIN eingeben"; document.getElementById("profilePinInput").value=""; document.getElementById("profilePinError")?.classList.remove("show");}));}
+window.submitProfilePin=function(){const pin=(document.getElementById("profilePinInput")?.value||"").trim(); const error=document.getElementById("profilePinError"); if(!selectedProfile || pin!==String(selectedProfile.pin||"").trim()){if(error) error.classList.add("show"); return;} localStorage.setItem("haushaltsheld_session",JSON.stringify({isLoggedIn:true,role:"parent",area:"parent",userId:selectedProfile.id,name:selectedProfile.name})); hideGate();};
+document.addEventListener("DOMContentLoaded",function(){hhSeedBaseData(); const session=getSession(); if(isUnlocked() && session && session.role==="parent") hideGate(); else {showGate(); if(isUnlocked()) showParentStep();} });
+})();
+</script>
 </body>
 </html>

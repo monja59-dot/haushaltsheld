@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Haushaltsheld – Belegimport</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ki-schnecke.css">
+
+<style>
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
+
+  --text:#223026;
+  --text2:#4e5f52;
+  --muted:#728375;
+
+  --accent:#4CAF50;
+  --accent-dark:#357A38;
+  --accent-soft:#e8f5e9;
+
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
+  --red:#cc6666;
+  --red-soft:#fdeaea;
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
+
+  --brown:#4d3c2c;
+  --brown-dark:#433324;
+
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;overflow-x:hidden}
+
+body{
+  font-family:"Outfit", sans-serif;
+  min-height:100vh;
+  margin:0;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, #f7f2e9 100%);
+  background-attachment:fixed;
+  background-repeat:no-repeat;
+  color:#223026;
+  letter-spacing:-0.01em;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family:"Outfit", sans-serif;
+  letter-spacing:-0.03em;
+  line-height:1.15;
+}
+
+button,input,select,textarea{font:inherit}
+
+.wrap{
+  max-width:1440px;
+  margin:auto;
+  padding:34px 26px 90px;
+  background:transparent;
+}
+
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+.page-header h1{
+  font-size:2.2rem;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:8px;
+}
+.page-header p{
+  color:var(--muted);
+  font-size:1rem;
+}
+.page-title-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.18);
+  box-shadow:var(--shadow-xs);
+  flex-shrink:0;
+}
+.page-title-icon svg{
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+}
+
+.header-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.btn,
+button.btn,
+a.btn{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:13px 22px;
+  border-radius:16px;
+  font-size:.95rem !important;
+  font-weight:800 !important;
+  text-decoration:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  white-space:nowrap;
+  box-shadow:
+    0 4px 0 #2D6830,
+    0 10px 22px rgba(76,175,80,.26),
+    inset 0 1px 0 rgba(255,255,255,.18);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  letter-spacing:.01em;
+}
+.btn:hover,
+button.btn:hover,
+a.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #2D6830,
+    0 14px 28px rgba(76,175,80,.30),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  filter:brightness(1.02);
+}
+.btn:active,
+button.btn:active,
+a.btn:active{
+  transform:translateY(1px);
+  box-shadow:
+    0 2px 0 #2D6830,
+    0 4px 10px rgba(76,175,80,.2),
+    inset 0 1px 0 rgba(255,255,255,.14);
+}
+.btn-soft,
+button.btn-soft,
+a.btn-soft{
+  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
+  color:var(--brown) !important;
+  border:1.5px solid #d7c0a6 !important;
+  border-radius:16px !important;
+  box-shadow:
+    0 4px 0 #c7ae91,
+    0 8px 18px rgba(110,82,40,.10),
+    inset 0 1px 0 rgba(255,255,255,.65) !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+.btn.btn-soft,
+button.btn.btn-soft,
+a.btn.btn-soft,
+.btn-soft span,
+.btn-soft svg{
+  color:var(--brown) !important;
+  stroke:currentColor !important;
+}
+.btn-soft:hover,
+button.btn-soft:hover,
+a.btn-soft:hover{
+  background:linear-gradient(180deg,#f1e1cf 0%, #e4cfb7 100%) !important;
+  color:var(--brown-dark) !important;
+  box-shadow:
+    0 6px 0 #c7ae91,
+    0 12px 22px rgba(110,82,40,.12),
+    inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+.btn-soft:hover span,
+.btn-soft:hover svg{
+  color:var(--brown-dark) !important;
+  stroke:currentColor !important;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:18px;
+}
+
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(214,226,214,.95);
+  border-radius:28px;
+  padding:22px;
+  box-shadow:0 10px 24px rgba(34,48,38,.08), 0 2px 6px rgba(34,48,38,.04);
+  margin-bottom:18px;
+}
+.card h2{
+  font-size:1.24rem;
+  font-weight:800;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.card-sub{
+  color:var(--muted);
+  margin-bottom:16px;
+}
+
+.section-icon{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.18);
+  box-shadow:var(--shadow-xs);
+  flex-shrink:0;
+}
+.section-icon svg{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+}
+
+.choice-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.choice{
+  padding:16px 16px;
+  border-radius:18px;
+  border:1.5px solid #ddcbb4;
+  cursor:pointer;
+  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
+  color:#665646;
+  font-weight:700;
+  transition:.15s ease;
+  box-shadow:
+    0 3px 0 #cdb394,
+    0 8px 18px rgba(110,82,40,.10),
+    inset 0 1px 0 rgba(255,255,255,.72);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:58px;
+}
+.choice svg{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+  flex-shrink:0;
+}
+.choice:hover{
+  transform:translateY(-2px);
+}
+.choice.active{
+  background:linear-gradient(135deg,#4CAF50 0%, #357A38 100%);
+  color:#fff;
+  border-color:#3E8E41;
+  box-shadow:
+    0 4px 0 #2f6f33,
+    0 12px 22px rgba(62,142,65,.25),
+    inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+.form-grid,
+.form-grid-3{
+  display:grid;
+  gap:14px;
+  margin-bottom:14px;
+}
+.form-grid{grid-template-columns:repeat(2,1fr)}
+.form-grid-3{grid-template-columns:repeat(3,1fr)}
+
+.field label{
+  display:block;
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:#FAFCFA;
+  border-radius:16px;
+  padding:13px 14px;
+  font-size:.94rem;
+  color:var(--text);
+  outline:none;
+  transition:.18s ease;
+  min-height:48px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:rgba(76,175,80,.7);
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+  background:#fff;
+}
+.field textarea{
+  min-height:96px;
+  resize:vertical;
+}
+
+.helper{
+  background:var(--green-soft);
+  color:#2a6030;
+  border-radius:18px;
+  padding:15px 16px;
+  line-height:1.6;
+  font-size:.92rem;
+  margin-top:14px;
+  border:1px solid #B8DDB8;
+  box-shadow:var(--shadow-xs);
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  background:var(--soft);
+  border-radius:18px;
+  padding:14px 16px;
+  margin-bottom:10px;
+}
+.item strong{
+  display:block;
+  margin-bottom:4px;
+}
+.item p{
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.5;
+}
+.amount{
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:800;
+  background:var(--green-soft);
+  color:#2e6032;
+  border:1px solid #B8DDB8;
+}
+
+.scanner-box{
+  background:linear-gradient(180deg,#f7fbf7 0%, #eef7ef 100%);
+  border:1px dashed #c7dbc9;
+  border-radius:24px;
+  padding:18px;
+  margin-top:14px;
+}
+.scanner-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+.scanner-btn{
+  border:1px solid #d8e6da;
+  background:#fff;
+  color:#53665a;
+  padding:14px 16px;
+  border-radius:16px;
+  font-size:.94rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:.18s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:56px;
+  box-shadow:0 1px 0 rgba(255,255,255,.8);
+}
+.scanner-btn:hover{
+  background:#f9fcf9;
+  border-color:#c7dbc9;
+}
+.scanner-actions svg,.scanner-status svg,.scan-card svg{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+  flex-shrink:0;
+}
+.scanner-status{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.scanner-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  border:1px solid #d8e6da;
+  border-radius:999px;
+  padding:10px 12px;
+  font-size:.88rem;
+  font-weight:700;
+  color:#607068;
+}
+.scanner-preview{
+  margin-bottom:16px;
+  background:#fff;
+  border:1px solid #d8e6da;
+  border-radius:20px;
+  padding:16px;
+}
+.scanner-preview strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:1rem;
+}
+.scanner-preview p{
+  color:var(--muted);
+  font-size:.92rem;
+  line-height:1.6;
+}
+.scanner-preview img{
+  display:none;
+  margin-top:12px;
+  width:100%;
+  max-width:100%;
+  max-height:260px;
+  object-fit:contain;
+  border-radius:14px;
+  border:1px solid #edf2ed;
+  background:#fafcfa;
+}
+.scan-meta{
+  display:grid;
+  grid-template-columns:1.1fr .95fr .95fr;
+  gap:12px;
+}
+.scan-card{
+  background:#fff;
+  border:1px solid #d8e6da;
+  border-radius:18px;
+  padding:14px;
+}
+.scan-card label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:.74rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:9px;
+}
+.scan-card input{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:#fffdf9;
+  border-radius:16px;
+  padding:12px 13px;
+  min-height:48px;
+  outline:none;
+  color:var(--text);
+}
+.scan-card input:focus{
+  border-color:rgba(76,175,80,.7);
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+}
+.scan-euro{
+  position:relative;
+}
+.scan-euro .euro-badge{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:24px;
+  height:24px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  font-size:.9rem;
+  font-weight:900;
+  border:1px solid rgba(76,175,80,.18);
+}
+.scan-euro input{padding-left:46px}
+.scanner-note{
+  margin-top:14px;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.6;
+}
+.hidden-input{display:none}
+
+/* KI */
+.ki-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:74px;
+  height:74px;
+  border:none;
+  border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9998;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.ki-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
+}
+.ki-fab img{width:40px;height:40px;object-fit:contain}
+.ki-fab-label{
+  position:absolute;
+  bottom:8px;
+  right:10px;
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1;
+}
+.ki-panel{
+  position:fixed;
+  right:22px;
+  bottom:108px;
+  width:min(390px,calc(100vw - 24px));
+  max-height:min(78vh,720px);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 24px 50px rgba(34,48,38,.18);
+  z-index:9999;
+  display:none;
+}
+.ki-panel.open{display:flex;flex-direction:column}
+.ki-head{
+  padding:20px 20px 16px;
+  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.ki-head-left{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.ki-head-avatar{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.ki-head-avatar img{
+  width:28px;
+  height:28px;
+  object-fit:contain;
+}
+.ki-head h3{
+  font-size:1.2rem !important;
+  font-weight:800 !important;
+  margin:0 0 4px;
+}
+.ki-head p{
+  font-size:.95rem !important;
+  color:var(--text2);
+  margin:0;
+}
+.ki-close{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  flex-shrink:0;
+  color:var(--text2);
+  font-size:1.8rem;
+  line-height:1;
+}
+.ki-suggestions{
+  padding:16px 20px 14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+.ki-chip{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--text2);
+  cursor:pointer;
+}
+.ki-chat{
+  padding:18px 16px;
+  overflow:auto;
+  background:#fffaf4;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-height:220px;
+}
+.ki-msg{
+  max-width:84%;
+  padding:14px 16px;
+  border-radius:20px;
+  font-size:.97rem;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+.ki-msg.bot{
+  background:#f7eee0;
+  border:1px solid #ebd3b5;
+  color:#5f4332;
+}
+.ki-msg.user{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  align-self:flex-end;
+}
+.ki-form{
+  padding:14px;
+  border-top:1px solid var(--line);
+  background:#fff;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+}
+.ki-input{
+  border:1.5px solid var(--line);
+  background:var(--bg-2);
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:.97rem;
+  color:var(--text);
+  outline:none;
+  font-family:inherit;
+}
+.ki-send{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  border-radius:18px;
+  padding:0 18px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+}
+.ki-typing{opacity:.8;font-style:italic}
+
+@media(max-width:1200px){
+  .grid,.form-grid,.form-grid-3,.scan-meta{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .wrap{padding:20px 16px 90px}
+  .page-header h1{font-size:1.9rem}
+  .choice-grid,.scanner-actions{grid-template-columns:1fr}
+  .scanner-status{flex-direction:column;align-items:stretch}
+}
+@media(max-width:700px){
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+}
+</style>
+</head>
+<body data-page="beleg_import">
+
+<div class="wrap">
+
+  <div class="page-header">
+    <div>
+      <h1>
+        <span class="page-title-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+            <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"></path>
+            <path d="M9 9h1"></path>
+            <path d="M9 13h6"></path>
+            <path d="M9 17h6"></path>
+          </svg>
+        </span>
+        <span>Beleg importieren</span>
+      </h1>
+      <p>Foto, Screenshot, PDF oder digitaler Kassenbon – mit Scanner-Vorbereitung, Vorschlagsprüfung und sauberer Verknüpfung zur Datenzentrale.</p>
+    </div>
+
+    <div class="header-actions">
+      <a class="btn btn-soft" href="datenzentrale.html"><span>🗂️ Datenzentrale</span></a>
+      <a class="btn btn-soft" href="finanzen.html"><span>💰 Finanzen</span></a>
+      <a class="btn btn-soft" href="einkaufsliste.html"><span>🛒 Einkauf</span></a>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <section class="card">
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 7h16"></path>
+              <path d="M7 3h10"></path>
+              <rect x="5" y="7" width="14" height="14" rx="2"></rect>
+              <circle cx="12" cy="14" r="3"></circle>
+            </svg>
+          </span>
+          <span>Scanner & Schnell-Erfassung</span>
+        </h2>
+        <p class="card-sub">Beleg fotografieren, hochladen oder QR-/Barcode-Workflow vorbereiten. Der Scan füllt nur das Formular vor und speichert noch nichts doppelt.</p>
+
+        <div class="scanner-box">
+          <div class="scanner-actions">
+            <button class="scanner-btn" id="openCameraBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7h4l2-2h4l2 2h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+              <span>Foto aufnehmen</span>
+            </button>
+
+            <button class="scanner-btn" id="uploadReceiptBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v12"></path>
+                <path d="m7 10 5 5 5-5"></path>
+                <path d="M5 21h14"></path>
+              </svg>
+              <span>Kassenbon hochladen</span>
+            </button>
+
+            <button class="scanner-btn" id="scanQrBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 8V3h5"></path>
+                <path d="M16 3h5v5"></path>
+                <path d="M21 16v5h-5"></path>
+                <path d="M8 21H3v-5"></path>
+                <rect x="7" y="7" width="10" height="10" rx="2"></rect>
+              </svg>
+              <span>QR / Barcode scannen</span>
+            </button>
+
+            <button class="scanner-btn" id="applyScanBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Scan übernehmen</span>
+            </button>
+          </div>
+
+          <input class="hidden-input" id="cameraInput" type="file" accept="image/*" capture="environment" />
+          <input class="hidden-input" id="receiptInput" type="file" accept="image/*,.pdf" />
+          <input class="hidden-input" id="qrInput" type="file" accept="image/*" capture="environment" />
+
+          <div class="scanner-status">
+            <div class="scanner-pill" id="scanStatus">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 8v4l3 3"></path>
+              </svg>
+              <span>Kein Beleg ausgewählt</span>
+            </div>
+            <div class="scanner-pill" id="scanType">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 5h18"></path>
+                <path d="M3 12h18"></path>
+                <path d="M3 19h18"></path>
+              </svg>
+              <span>Scan-Typ: offen</span>
+            </div>
+            <div class="scanner-pill" id="scanSource">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
+              </svg>
+              <span>Quelle: —</span>
+            </div>
+          </div>
+
+          <div class="scanner-preview">
+            <strong>Scanner-Vorschau</strong>
+            <p id="scanPreviewText">Sobald du ein Bild oder einen Beleg auswählst, erscheint hier eine Vorschau. Mit „Scan übernehmen“ füllst du das Formular schneller vor.</p>
+            <img id="scanPreviewImage" alt="Scanner Vorschau" />
+          </div>
+
+          <div class="scan-meta">
+            <div class="scan-card">
+              <label for="scanMerchant">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9.5 5 4h14l2 5.5"></path>
+                  <path d="M4 9h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9z"></path>
+                </svg>
+                Händler
+              </label>
+              <input id="scanMerchant" type="text" placeholder="z. B. REWE, dm, Amazon" />
+            </div>
+
+            <div class="scan-card">
+              <label for="scanAmount">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 1v22"></path>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                Betrag
+              </label>
+              <div class="scan-euro">
+                <span class="euro-badge">€</span>
+                <input id="scanAmount" type="number" step="0.01" placeholder="0,00" />
+              </div>
+            </div>
+
+            <div class="scan-card">
+              <label for="scanCode">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7v10"></path>
+                  <path d="M7 7v10"></path>
+                  <path d="M12 7v10"></path>
+                  <path d="M16 7v10"></path>
+                  <path d="M20 7v10"></path>
+                </svg>
+                QR / Code
+              </label>
+              <input id="scanCode" type="text" placeholder="optional" />
+            </div>
+          </div>
+
+          <div class="scanner-note">
+            Kamera, Upload, Foto-Vorschau und QR-/Barcode-Vorbereitung sind eingebaut. Ein Scan übernimmt Daten nur in das Formular – gespeichert wird erst nach deiner bewussten Weitergabe an die Datenzentrale.
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14"></path>
+              <path d="M5 12h14"></path>
+            </svg>
+          </span>
+          <span>Import-Art</span>
+        </h2>
+
+        <div class="choice-grid">
+          <button class="choice active" type="button" data-import-type="foto">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 7h4l2-2h4l2 2h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <span>Foto</span>
+          </button>
+
+          <button class="choice" type="button" data-import-type="screenshot">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="14" rx="2"></rect>
+              <path d="M8 21h8"></path>
+              <path d="M12 18v3"></path>
+            </svg>
+            <span>Screenshot</span>
+          </button>
+
+          <button class="choice" type="button" data-import-type="pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+              <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"></path>
+            </svg>
+            <span>PDF</span>
+          </button>
+
+          <button class="choice" type="button" data-import-type="mail">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+              <path d="m3 7 9 6 9-6"></path>
+            </svg>
+            <span>Online / E-Mail</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3h18v18H3z"></path>
+              <path d="M8 12h8"></path>
+              <path d="M12 8v8"></path>
+            </svg>
+          </span>
+          <span>Vorschlag prüfen</span>
+        </h2>
+        <p class="card-sub">Die App schlägt vor – du bestätigst. So bleibt der Import sicher, sauber und ohne Doppelerfassung.</p>
+
+        <div class="field">
+          <label for="receiptFile">Datei hochladen</label>
+          <input id="receiptFile" type="file" accept="image/*,.pdf" />
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="receiptSource">Quelle / Geschäft</label>
+            <input id="receiptSource" type="text" placeholder="z. B. Netto-App, Penny-App, Rewe" />
+          </div>
+
+          <div class="field">
+            <label for="receiptDate">Datum</label>
+            <input id="receiptDate" type="date" />
+          </div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="field">
+            <label for="receiptTotal">Gesamtbetrag</label>
+            <input id="receiptTotal" type="number" step="0.01" placeholder="0,00" />
+          </div>
+
+          <div class="field">
+            <label for="receiptMainCategory">Hauptkategorie</label>
+            <select id="receiptMainCategory">
+              <option>Einkauf</option>
+              <option>Fixkosten</option>
+              <option>Mobilität</option>
+              <option>Online</option>
+              <option>Freizeit</option>
+              <option>Feierlichkeiten</option>
+              <option>Sonstiges</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="receiptCategory">Unterkategorie</label>
+            <select id="receiptCategory">
+              <option>Lebensmittel</option>
+              <option>Drogerie</option>
+              <option>Haushalt</option>
+              <option>Haustier</option>
+              <option>Tanken</option>
+              <option>Google / Apple</option>
+              <option>Freizeit</option>
+              <option>Feierlichkeiten</option>
+              <option>Sonstiges</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="field">
+            <label for="receiptPayment">Zahlung</label>
+            <select id="receiptPayment">
+              <option>Karte</option>
+              <option>Bar</option>
+              <option>PayPal</option>
+              <option>Lastschrift</option>
+              <option>Online</option>
+              <option>Überweisung</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="receiptPerson">Person</label>
+            <select id="receiptPerson">
+              <option>Allgemein</option>
+              <option>Monja</option>
+              <option>Michael</option>
+              <option>Kind 1</option>
+              <option>Kind 2</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="receiptToShopping">Auch im Einkauf speichern</label>
+            <select id="receiptToShopping">
+              <option value="yes">Ja</option>
+              <option value="no">Nein</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="receiptOccasion">Anlass / Event</label>
+          <input id="receiptOccasion" type="text" placeholder="z. B. Geburtstag Mia, Weihnachten 2026, Sommerfest" />
+        </div>
+
+        <div class="field">
+          <label for="receiptItems">Erkannte Artikel / Inhalt</label>
+          <textarea id="receiptItems" placeholder="z. B. Milch, Brot, Kerzen, Servietten"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="receiptNote">Import-Hinweis</label>
+          <textarea id="receiptNote" placeholder="z. B. Screenshot aus Netto-App erkannt oder digitaler Kassenzettel geprüft"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn" id="exampleBtn" type="button">Feier-Beispiel</button>
+          <button class="btn btn-soft" id="clearBtn" type="button"><span>Zurücksetzen</span></button>
+          <button class="btn" id="saveBtn" type="button">Vorschlag übernehmen</button>
+        </div>
+
+        <div class="helper">
+          Scanner und Formular erzeugen hier nur einen Übergabe-Vorschlag für die Datenzentrale. Nach dem Übernehmen wirst du automatisch zur Datenzentrale weitergeleitet und entscheidest dort manuell: Finanzen oder Einkauf.
+        </div>
+      </section>
+    </div>
+
+    <div>
+      <section class="card">
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6"></path>
+              <path d="M10 22h4"></path>
+              <path d="M12 2a7 7 0 0 0-4 12.7c.6.4 1 1 1.2 1.8h5.6c.2-.8.6-1.4 1.2-1.8A7 7 0 0 0 12 2Z"></path>
+            </svg>
+          </span>
+          <span>Import-Ziele</span>
+        </h2>
+
+        <div class="item">
+          <div>
+            <strong>Scanner-Workflow</strong>
+            <p>Beleg wird zuerst geprüft und erst danach als Vorschlag an die Datenzentrale übergeben.</p>
+          </div>
+          <div class="badge">aktiv</div>
+        </div>
+
+        <div class="item">
+          <div>
+            <strong>Keine Doppelerfassung</strong>
+            <p>Gleicher Scan oder gleicher Inhalt wird nicht erneut vorbereitet.</p>
+          </div>
+          <div class="badge">gesichert</div>
+        </div>
+
+        <div class="item">
+          <div>
+            <strong>Variante A</strong>
+            <p>Keine automatische Speicherung in Finanzen oder Einkauf.</p>
+          </div>
+          <div class="badge">bereit</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 8v5l3 2"></path>
+              <circle cx="12" cy="12" r="9"></circle>
+            </svg>
+          </span>
+          <span>Letzte Importe</span>
+        </h2>
+
+        <div id="recentImportList"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+  <span class="ki-fab-label">KI</span>
+</button>
+
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <p id="kiContextText">Ich helfe dir beim Importieren, Prüfen und Zuordnen von Belegen.</p>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+  </div>
+
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI für den Belegimport.</div>
+  </div>
+
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Frag mich etwas zum Belegimport..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+
+<script>
+const choiceButtons = document.querySelectorAll("[data-import-type]");
+let currentImportType = "foto";
+let lastScannedFile = null;
+let lastScannedCode = "";
+let lastScanFingerprint = "";
+
+function uid(){
+  return Date.now() + Math.floor(Math.random() * 999);
+}
+function getTodayDate(){
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  return new Date(now.getTime() - offset * 60000).toISOString().split("T")[0];
+}
+function formatEuro(value){
+  return new Intl.NumberFormat("de-DE", {
+    style:"currency",
+    currency:"EUR",
+    minimumFractionDigits:0,
+    maximumFractionDigits:2
+  }).format(value || 0);
+}
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function getFinanceEntries(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "[]");
+}
+function getShoppingEntries(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "[]");
+}
+function getImports(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_recent_receipts") || "[]");
+}
+function saveImports(entries){
+  localStorage.setItem("haushaltsheld_recent_receipts", JSON.stringify(entries));
+}
+function getImportKeys(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_import_keys_v1") || "[]");
+}
+function makeImportKey(source, date, total, payment, items){
+  return [
+    (source || "").trim().toLowerCase(),
+    date || "",
+    Number(total || 0).toFixed(2),
+    (payment || "").trim().toLowerCase(),
+    (items || "").trim().toLowerCase().replace(/\s+/g," ")
+  ].join("|");
+}
+function buildSourceKey(type, fingerprint, importKey){
+  return [
+    type || "scanner",
+    (fingerprint || "").trim(),
+    (importKey || "").trim()
+  ].join("|");
+}
+function getScannerTransfer(){
+  return JSON.parse(localStorage.getItem("haushaltsheld_scanner_transfer_v1") || "null");
+}
+function saveScannerTransfer(data){
+  localStorage.setItem("haushaltsheld_scanner_transfer_v1", JSON.stringify(data));
+}
+function setImportType(type){
+  currentImportType = type;
+  choiceButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.importType === type));
+}
+function setScanState(statusText, typeText, sourceText){
+  document.getElementById("scanStatus").innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M12 8v4l3 3"></path>
+    </svg>
+    <span>${escapeHtml(statusText)}</span>
+  `;
+  document.getElementById("scanType").innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 5h18"></path>
+      <path d="M3 12h18"></path>
+      <path d="M3 19h18"></path>
+    </svg>
+    <span>${escapeHtml(typeText)}</span>
+  `;
+  document.getElementById("scanSource").innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
+    </svg>
+    <span>${escapeHtml(sourceText)}</span>
+  `;
+}
+function resetScanPreview(){
+  const previewImage = document.getElementById("scanPreviewImage");
+  previewImage.style.display = "none";
+  previewImage.removeAttribute("src");
+}
+function populateScanFields(fileName, sourceLabel){
+  const normalized = (fileName || "").toLowerCase();
+  let merchant = "";
+  let amount = "";
+  let code = lastScannedCode || "";
+
+  if(/rewe/.test(normalized)) merchant = "REWE";
+  if(/dm/.test(normalized)) merchant = "dm";
+  if(/aldi/.test(normalized)) merchant = "ALDI";
+  if(/lidl/.test(normalized)) merchant = "LIDL";
+  if(/penny/.test(normalized)) merchant = "PENNY";
+  if(/netto/.test(normalized)) merchant = "Netto";
+  if(/amazon/.test(normalized)) merchant = "Amazon";
+  if(/rossmann/.test(normalized)) merchant = "Rossmann";
+  if(/ikea/.test(normalized)) merchant = "IKEA";
+
+  if(/29[,._-]?99|29\.99/.test(normalized)) amount = "29.99";
+  if(/19[,._-]?99|19\.99/.test(normalized)) amount = "19.99";
+  if(/9[,._-]?99|9\.99/.test(normalized)) amount = "9.99";
+
+  if(sourceLabel === "QR / Barcode"){
+    code = lastScannedCode || `QR-${Date.now().toString().slice(-6)}`;
+  }
+
+  document.getElementById("scanMerchant").value = merchant;
+  document.getElementById("scanAmount").value = amount;
+  document.getElementById("scanCode").value = code;
+}
+function makeFileFingerprint(file, sourceLabel){
+  if(!file){
+    return "";
+  }
+  return [
+    sourceLabel || "",
+    file.name || "",
+    file.size || 0,
+    file.type || "",
+    file.lastModified || 0
+  ].join("|");
+}
+function handleSelectedFile(file, sourceLabel){
+  if(!file) return;
+
+  lastScannedFile = file;
+  lastScanFingerprint = makeFileFingerprint(file, sourceLabel);
+
+  setScanState(
+    `Beleg bereit: ${file.name}`,
+    `Scan-Typ: ${file.type || "Datei"}`,
+    `Quelle: ${sourceLabel}`
+  );
+
+  populateScanFields(file.name, sourceLabel);
+
+  const previewText = document.getElementById("scanPreviewText");
+  const previewImage = document.getElementById("scanPreviewImage");
+  previewText.textContent = `Ausgewählt: ${file.name}. Mit „Scan übernehmen“ kannst du jetzt das Formular automatisch vorfüllen.`;
+
+  document.getElementById("receiptFile").value = "";
+
+  if(file.type && file.type.startsWith("image/")){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      previewImage.src = e.target.result;
+      previewImage.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  }else{
+    resetScanPreview();
+  }
+}
+function simulateQrScan(){
+  document.getElementById("qrInput").click();
+}
+function applyScannedData(){
+  if(!lastScannedFile && !document.getElementById("scanCode").value.trim()){
+    alert("Bitte zuerst einen Kassenbon fotografieren, hochladen oder einen QR-/Barcode-Scan starten.");
+    return;
+  }
+
+  const fileName = (lastScannedFile?.name || "").toLowerCase();
+  const scanMerchant = document.getElementById("scanMerchant").value.trim();
+  const scanAmount = document.getElementById("scanAmount").value.trim();
+  const scanCode = document.getElementById("scanCode").value.trim();
+
+  document.getElementById("receiptDate").value = getTodayDate();
+  document.getElementById("receiptSource").value = scanMerchant || "";
+  document.getElementById("receiptTotal").value = scanAmount || "";
+  document.getElementById("receiptPayment").value = scanCode ? "Online" : "Karte";
+  document.getElementById("receiptPerson").value = "Allgemein";
+  document.getElementById("receiptToShopping").value = "yes";
+
+  let mainCategory = "Einkauf";
+  let category = "Lebensmittel";
+  let occasion = "";
+  let items = "Scanner-Vorschlag aus Beleg";
+  let note = "Daten aus Scanner übernommen.";
+
+  if(/geburtstag|party|weihnacht|fest|deko/.test(fileName)){
+    mainCategory = "Feierlichkeiten";
+    category = "Feierlichkeiten";
+    occasion = "Geburtstag";
+    items = "Deko, Snacks oder Feier-Zubehör";
+    note = `Scanner-Vorschlag für Feierlichkeiten.${scanCode ? " Code: " + scanCode : ""}`;
+  }else if(/dm|rossmann/.test(fileName)){
+    mainCategory = "Einkauf";
+    category = "Drogerie";
+    items = "Drogerie-Einkauf";
+  }else if(/rewe|aldi|lidl|edeka|netto|penny/.test(fileName)){
+    mainCategory = "Einkauf";
+    category = "Lebensmittel";
+    items = "Lebensmittel-Einkauf";
+  }else if(/google|apple/.test(fileName)){
+    mainCategory = "Online";
+    category = "Google / Apple";
+    items = "Digitaler Kauf";
+    document.getElementById("receiptToShopping").value = "no";
+  }else if(scanCode){
+    mainCategory = "Sonstiges";
+    category = "Sonstiges";
+    items = "QR-/Barcode-Scan übernommen";
+    note = `Code übernommen: ${scanCode}`;
+  }
+
+  document.getElementById("receiptMainCategory").value = mainCategory;
+  document.getElementById("receiptCategory").value = category;
+  document.getElementById("receiptOccasion").value = occasion;
+  document.getElementById("receiptItems").value = items;
+  document.getElementById("receiptNote").value = note;
+}
+function syncReceiptUploadPreview(file){
+  if(!file) return;
+  handleSelectedFile(file, "Direkt-Upload");
+}
+function fillExample(){
+  document.getElementById("receiptDate").value = getTodayDate();
+  document.getElementById("receiptTotal").value = "36.80";
+  document.getElementById("receiptPayment").value = "Karte";
+  document.getElementById("receiptPerson").value = "Allgemein";
+  document.getElementById("receiptToShopping").value = "yes";
+  document.getElementById("receiptOccasion").value = "Geburtstag Mia";
+  document.getElementById("receiptMainCategory").value = "Feierlichkeiten";
+  document.getElementById("receiptCategory").value = "Feierlichkeiten";
+
+  if(currentImportType === "screenshot"){
+    document.getElementById("receiptSource").value = "Netto-App";
+    document.getElementById("receiptItems").value = "Chips, Saft, Servietten";
+    document.getElementById("receiptNote").value = "Digitaler Kassenbon aus der Netto-App.";
+  } else if(currentImportType === "pdf"){
+    document.getElementById("receiptSource").value = "dm PDF-Beleg";
+    document.getElementById("receiptItems").value = "Kerzen, Geschenkpapier, Deko";
+    document.getElementById("receiptNote").value = "PDF-Beleg für Feier-Zubehör.";
+  } else {
+    document.getElementById("receiptSource").value = "Rewe";
+    document.getElementById("receiptItems").value = "Kuchen, Getränke, Servietten";
+    document.getElementById("receiptNote").value = "Beleg für Feier-Einkauf.";
+  }
+}
+function clearAll(){
+  document.getElementById("receiptFile").value = "";
+  document.getElementById("receiptSource").value = "";
+  document.getElementById("receiptDate").value = getTodayDate();
+  document.getElementById("receiptTotal").value = "";
+  document.getElementById("receiptMainCategory").value = "Einkauf";
+  document.getElementById("receiptCategory").value = "Lebensmittel";
+  document.getElementById("receiptPayment").value = "Karte";
+  document.getElementById("receiptPerson").value = "Allgemein";
+  document.getElementById("receiptToShopping").value = "yes";
+  document.getElementById("receiptOccasion").value = "";
+  document.getElementById("receiptItems").value = "";
+  document.getElementById("receiptNote").value = "";
+  document.getElementById("scanMerchant").value = "";
+  document.getElementById("scanAmount").value = "";
+  document.getElementById("scanCode").value = "";
+  lastScannedFile = null;
+  lastScannedCode = "";
+  lastScanFingerprint = "";
+  resetScanPreview();
+  setScanState("Kein Beleg ausgewählt", "Scan-Typ: offen", "Quelle: —");
+  document.getElementById("scanPreviewText").textContent = "Sobald du ein Bild oder einen Beleg auswählst, erscheint hier eine Vorschau. Mit „Scan übernehmen“ füllst du das Formular schneller vor.";
+}
+function buildFallbackScanFingerprint(source, date, total, payment, items, note){
+  return [
+    "manual",
+    currentImportType,
+    (source || "").trim().toLowerCase(),
+    date || "",
+    Number(total || 0).toFixed(2),
+    (payment || "").trim().toLowerCase(),
+    (items || "").trim().toLowerCase().replace(/\s+/g," "),
+    (note || "").trim().toLowerCase().replace(/\s+/g," ")
+  ].join("|");
+}
+function existsInFinalTargets(importKey){
+  const financeEntries = getFinanceEntries();
+  const shoppingEntries = getShoppingEntries();
+
+  return financeEntries.some(entry => entry.importKey === importKey)
+    || shoppingEntries.some(entry => entry.importKey === importKey);
+}
+function existsInRecentImports(importKey, sourceKey){
+  const imports = getImports();
+  return imports.some(entry =>
+    entry.importKey === importKey ||
+    (sourceKey && entry.sourceKey === sourceKey)
+  );
+}
+
+function goToDatazentrale(){
+  window.location.href = "datenzentrale.html";
+}
+
+function saveImport(){
+  const source = document.getElementById("receiptSource").value.trim();
+  const date = document.getElementById("receiptDate").value;
+  const total = parseFloat(document.getElementById("receiptTotal").value);
+  const mainCategory = document.getElementById("receiptMainCategory").value;
+  const category = document.getElementById("receiptCategory").value;
+  const payment = document.getElementById("receiptPayment").value;
+  const person = document.getElementById("receiptPerson").value;
+  const toShopping = document.getElementById("receiptToShopping").value === "yes";
+  const occasion = document.getElementById("receiptOccasion").value.trim();
+  const items = document.getElementById("receiptItems").value.trim();
+  const note = document.getElementById("receiptNote").value.trim();
+
+  if(!source || !date || Number.isNaN(total) || total < 0){
+    alert("Bitte Quelle, Datum und Gesamtbetrag ausfüllen.");
+    return;
+  }
+
+  const scanFingerprint = lastScanFingerprint || buildFallbackScanFingerprint(source, date, total, payment, items, note);
+  const importKey = makeImportKey(source, date, total, payment, items || note);
+  const sourceKey = buildSourceKey("scanner", scanFingerprint, importKey);
+  const existingKeys = getImportKeys();
+  const existingTransfer = getScannerTransfer();
+
+  if(existingKeys.includes(importKey) || existsInFinalTargets(importKey)){
+    alert("Dieser Beleg wurde bereits übernommen und würde sonst doppelt gezählt werden.");
+    return;
+  }
+
+  if(existsInRecentImports(importKey, sourceKey)){
+    alert("Dieser Scanner-Vorschlag wurde bereits vorbereitet.");
+    return;
+  }
+
+  if(existingTransfer && (existingTransfer.importKey === importKey || existingTransfer.sourceKey === sourceKey)){
+    alert("Dieser Scanner-Vorschlag liegt bereits zur Übernahme in der Datenzentrale bereit.");
+    return;
+  }
+
+  const transferPayload = {
+    id:uid(),
+    source,
+    date,
+    total,
+    amount:total,
+    mainCategory,
+    category,
+    payment,
+    person,
+    toShopping,
+    occasion,
+    items,
+    note,
+    importType:currentImportType,
+    importKey,
+    sourceKey,
+    scanFingerprint,
+    status:"prepared",
+    createdAt:new Date().toISOString()
+  };
+
+  saveScannerTransfer(transferPayload);
+
+  const imports = getImports();
+  imports.unshift({
+    id:transferPayload.id,
+    source,
+    date,
+    total,
+    mainCategory,
+    category,
+    occasion,
+    items,
+    importType:currentImportType,
+    importKey,
+    sourceKey,
+    status:"prepared"
+  });
+  saveImports(imports.slice(0,12));
+
+  renderImports();
+  clearAll();
+  goToDatazentrale();
+}
+function renderImports(){
+  const imports = getImports();
+  const labels = {
+    foto:"Foto",
+    screenshot:"Screenshot",
+    pdf:"PDF",
+    mail:"E-Mail / Online"
+  };
+
+  document.getElementById("recentImportList").innerHTML = imports.length
+    ? imports.map(entry => `
+      <div class="item">
+        <div>
+          <strong>${escapeHtml(entry.source)}</strong>
+          <p>${new Date(entry.date + "T12:00:00").toLocaleDateString("de-DE")} · ${escapeHtml(labels[entry.importType] || "Import")} · ${escapeHtml(entry.mainCategory)} / ${escapeHtml(entry.category)}${entry.occasion ? " · " + escapeHtml(entry.occasion) : ""}${entry.items ? " · " + escapeHtml(entry.items) : ""}${entry.status === "prepared" ? " · bereit für Datenzentrale" : ""}</p>
+        </div>
+        <div class="amount">${formatEuro(entry.total)}</div>
+      </div>
+    `).join("")
+    : `<div class="item"><div><strong>Noch keine Importe</strong><p>Sobald du einen Vorschlag übernimmst, erscheint er hier.</p></div><div class="amount">📥</div></div>`;
+}
+function setupScanner(){
+  const cameraInput = document.getElementById("cameraInput");
+  const receiptInput = document.getElementById("receiptInput");
+  const qrInput = document.getElementById("qrInput");
+  const receiptFile = document.getElementById("receiptFile");
+
+  document.getElementById("openCameraBtn").addEventListener("click", () => cameraInput.click());
+  document.getElementById("uploadReceiptBtn").addEventListener("click", () => receiptInput.click());
+  document.getElementById("scanQrBtn").addEventListener("click", simulateQrScan);
+  document.getElementById("applyScanBtn").addEventListener("click", applyScannedData);
+
+  cameraInput.addEventListener("change", event => {
+    const file = event.target.files?.[0];
+    handleSelectedFile(file, "Kamera");
+  });
+
+  receiptInput.addEventListener("change", event => {
+    const file = event.target.files?.[0];
+    handleSelectedFile(file, "Upload");
+  });
+
+  qrInput.addEventListener("change", event => {
+    const file = event.target.files?.[0];
+    lastScannedCode = `QR-${Date.now().toString().slice(-6)}`;
+    handleSelectedFile(file || {name:lastScannedCode, type:"image/qr-placeholder", size:0, lastModified:Date.now()}, "QR / Barcode");
+    document.getElementById("scanPreviewText").textContent = "QR-/Barcode-Workflow vorbereitet. Der erkannte oder eingetragene Code kann direkt übernommen werden.";
+    document.getElementById("scanCode").value = lastScannedCode;
+  });
+
+  receiptFile.addEventListener("change", event => {
+    const file = event.target.files?.[0];
+    syncReceiptUploadPreview(file);
+  });
+}
+
+/* KI */
+(function(){
+  const page = "beleg_import";
+  const fab = document.getElementById("kiFab");
+  const panel = document.getElementById("kiPanel");
+  const closeBtn = document.getElementById("kiClose");
+  const form = document.getElementById("kiForm");
+  const input = document.getElementById("kiInput");
+  const chat = document.getElementById("kiChat");
+  const suggestions = document.getElementById("kiSuggestions");
+  const contextText = document.getElementById("kiContextText");
+  const welcome = document.getElementById("kiWelcomeMsg");
+
+  const pageSettings = {
+    context: "Ich helfe dir beim Importieren, Prüfen und Zuordnen von Belegen.",
+    suggestions: [
+      "Wie ordne ich einen digitalen Kassenzettel ein?",
+      "Soll das in Einkauf oder Finanzen gespeichert werden?",
+      "Woran erkenne ich doppelte Belege?"
+    ]
+  };
+
+  contextText.textContent = pageSettings.context;
+  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI für den Belegimport.";
+
+  suggestions.innerHTML = pageSettings.suggestions.map(text =>
+    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
+  ).join("");
+
+  suggestions.querySelectorAll(".ki-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      input.value = btn.textContent.trim();
+      input.focus();
+    });
+  });
+
+  function addMsg(role, text){
+    const div = document.createElement("div");
+    div.className = "ki-msg " + role;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage(message){
+    addMsg("user", message);
+    const loading = addMsg("bot", "Ich denke kurz nach …");
+    loading.classList.add("ki-typing");
+
+    try{
+      const response = await fetch("/netlify/functions/chat", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          message,
+          page,
+          mode:"parent"
+        })
+      });
+
+      const data = await response.json();
+      loading.remove();
+      addMsg("bot", data.reply || "Ich konnte gerade nichts Sinnvolles antworten.");
+    }catch(err){
+      loading.remove();
+      addMsg("bot", "Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.");
+    }
+  }
+
+  fab.addEventListener("click", () => {
+    panel.classList.add("open");
+    input.focus();
+  });
+
+  closeBtn.addEventListener("click", () => {
+    panel.classList.remove("open");
+  });
+
+  document.addEventListener("keydown", e => {
+    if(e.key === "Escape") panel.classList.remove("open");
+  });
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const message = input.value.trim();
+    if(!message) return;
+    input.value = "";
+    await sendMessage(message);
+  });
+})();
+
+choiceButtons.forEach(btn => btn.addEventListener("click", () => setImportType(btn.dataset.importType)));
+document.getElementById("exampleBtn").addEventListener("click", fillExample);
+document.getElementById("clearBtn").addEventListener("click", clearAll);
+document.getElementById("saveBtn").addEventListener("click", saveImport);
+
+document.getElementById("receiptDate").value = getTodayDate();
+setupScanner();
+renderImports();
+</script>
+</body>
+</html>

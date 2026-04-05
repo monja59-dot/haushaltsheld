@@ -770,7 +770,7 @@ a.btn.btn-soft{
 
   <aside class="sidebar">
     <div class="logo-wrap">
-      <img src="assetsschnecke.png" alt="Haushaltsheld">
+     <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
       <div>
         <div class="logo-name">Haushaltsheld</div>
         <div class="logo-sub">Dein Familien-Assistent</div>
@@ -1256,14 +1256,14 @@ a.btn.btn-soft{
 </div>
 
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assetsschnecke.png" alt="">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
   <span class="ki-fab-label">KI</span>
 </button>
 
 <section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
   <div class="ki-head">
     <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assetsschnecke.png" alt=""></div>
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
         <h3>Haushaltsheld KI</h3>
         <p id="kiContextText">Ich helfe dir bei Einnahmen, Ausgaben, Feierlichkeiten und Belegen.</p>
@@ -1466,7 +1466,7 @@ function addEntry(){
   renderAll();
   clearForm();
   resetScannerState();
-  alert("Eintrag gespeichert");
+  window.location.href = "finanz_historie.html";
 }
 function renderAll(){
   const entries = [...getFinanceEntries()].sort((a,b)=>new Date(b.date) - new Date(a.date));
@@ -1554,7 +1554,7 @@ function setView(mode){
     modeBadge.className = "mode-badge";
     modeBadge.textContent = "Elternmodus aktiv";
   }
-  localStorage.setItem("haushaltsheld_finance_view", mode);
+  localStorage.setItem("haushaltsheld_mode", mode === "child" ? "child" : "parent");
 }
 
 /* Scanner */
@@ -1837,7 +1837,7 @@ function setupKi(){
 function init(){
   document.getElementById("entryDate").value = getTodayDate();
 
-  const savedView = localStorage.getItem("haushaltsheld_finance_view") || "parent";
+  const savedView = localStorage.getItem("haushaltsheld_mode") === "child" ? "child" : "parent";
   setView(savedView);
 
   document.getElementById("adminViewBtn").addEventListener("click",()=>setView("parent"));
@@ -1851,5 +1851,8 @@ function init(){
 }
 document.addEventListener("DOMContentLoaded",init);
 </script>
+
+<script src="js/app.js"></script>
+
 </body>
 </html>

@@ -756,12 +756,185 @@ a.btn-soft:hover{
 .ki-typing{opacity:.8;font-style:italic}
 
 /* Responsive */
+
+.report-filter{
+  margin-bottom:24px;
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;
+  padding:22px 24px;
+  box-shadow:var(--shadow-sm);
+}
+.report-filter h2{
+  font-size:1.12rem;
+  font-weight:800;
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.report-filter-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:14px;
+}
+.report-filter .form-group{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.report-filter .form-group label{
+  font-size:.8rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.report-filter .form-group input,
+.report-filter .form-group select{
+  min-height:52px;
+  border:1.5px solid var(--line);
+  background:var(--bg-2);
+  border-radius:18px;
+  padding:14px 16px;
+  color:var(--text);
+  outline:none;
+}
+.report-filter .form-group input:focus,
+.report-filter .form-group select:focus{
+  border-color:rgba(76,175,80,.42);
+  box-shadow:0 0 0 4px rgba(76,175,80,.08);
+}
+.report-filter-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+.report-filter-note{
+  margin-top:14px;
+  color:var(--muted);
+  line-height:1.6;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(223,209,188,.75);
+  border-radius:18px;
+  padding:14px 16px;
+}
+
+
+.ai-report-section{
+  margin-top:18px;
+}
+.ai-report-wrap{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:18px;
+}
+.ai-report-card,
+.ai-report-side{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:24px;
+  padding:22px;
+  box-shadow:var(--shadow-sm);
+}
+.ai-report-card h3,
+.ai-report-side h3{
+  font-size:1.05rem;
+  font-weight:800;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.ai-report-card p,
+.ai-report-side p{
+  color:var(--text2);
+}
+.ai-bullet-list{
+  list-style:none;
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+.ai-bullet-list li{
+  background:var(--bg-2);
+  border:1px solid rgba(223,209,188,.7);
+  border-radius:16px;
+  padding:12px 14px;
+}
+.ai-text-block{
+  background:rgba(255,255,255,.65);
+  border-left:4px solid var(--accent);
+  border-radius:18px;
+  padding:16px 18px;
+  line-height:1.75;
+  color:var(--text);
+  white-space:pre-line;
+}
+.ai-kpis{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:14px;
+}
+.ai-kpi{
+  background:var(--bg-2);
+  border:1px solid rgba(223,209,188,.72);
+  border-radius:18px;
+  padding:14px;
+}
+.ai-kpi strong{
+  display:block;
+  font-size:.82rem;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:6px;
+}
+.ai-kpi span{
+  font-size:1.15rem;
+  font-weight:800;
+  color:var(--text);
+}
+.ai-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:16px;
+}
+.ai-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.16);
+  font-weight:800;
+  font-size:.88rem;
+  margin-top:14px;
+}
+.ai-empty-note{
+  background:var(--yellow-soft);
+  border:1px solid rgba(181,136,47,.18);
+  color:var(--brown-dark);
+  border-radius:18px;
+  padding:14px 16px;
+  line-height:1.6;
+}
+.hide-print-ai{display:none;}
+
 @media(max-width:1500px){
   .report-meta{grid-template-columns:repeat(2,1fr)}
   .summary-grid{grid-template-columns:repeat(3,1fr)}
+  .report-filter-grid{grid-template-columns:repeat(3,1fr)}
+  .ai-report-wrap{grid-template-columns:1fr}
 }
 @media(max-width:1200px){
   .hero{grid-template-columns:1fr}
+  .report-filter-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:960px){
   .app{grid-template-columns:1fr}
@@ -795,7 +968,8 @@ a.btn-soft:hover{
 @media(max-width:760px){
   .main{padding:16px}
   .page-header h1{font-size:1.95rem}
-  .summary-grid,.report-meta{grid-template-columns:1fr}
+  .summary-grid,.report-meta,.report-filter-grid,.ai-kpis{grid-template-columns:1fr}
+  .ai-report-wrap{grid-template-columns:1fr}
 }
 @media(max-width:700px){
   .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
@@ -815,7 +989,7 @@ a.btn-soft:hover{
 
   <aside class="sidebar">
     <div class="logo-wrap">
-      <img src="assetsschnecke.png" alt="Haushaltsheld">
+      <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
       <div>
         <div class="logo-name">Haushaltsheld</div>
         <div class="logo-sub">Dein Familien-Assistent</div>
@@ -939,7 +1113,7 @@ a.btn-soft:hover{
       <div class="header-right">
         <a class="btn btn-soft" href="finanzen.html"><span>Zu Finanzen</span></a>
         <a class="btn btn-soft" href="finanz_historie.html"><span>Zur Historie</span></a>
-        <button class="btn btn-soft" type="button" onclick="window.print()"><span>Drucken</span></button>
+        <button class="btn btn-soft" id="printReportBtn" type="button"><span>Gefiltert drucken</span></button>
         <div class="mode-badge" id="modeBadge">Elternmodus aktiv</div>
       </div>
     </div>
@@ -970,6 +1144,69 @@ a.btn-soft:hover{
 
     <p class="mode-note" id="modeNote">Im Elternmodus wird der komplette Finanzbericht angezeigt. Im Kindermodus werden nur die freigegebenen Bereiche druckbar sichtbar.</p>
 
+    <p class="mode-note" id="reportLockedNote" style="display:none;">Der Finanzbericht ist im Kindermodus aktuell nicht freigegeben.</p>
+
+    <section class="report-filter">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16"></path>
+            <path d="M7 12h10"></path>
+            <path d="M10 18h4"></path>
+          </svg>
+        </span>
+        <span>Druck- und Berichtsfilter</span>
+      </h2>
+
+      <div class="report-filter-grid">
+        <div class="form-group">
+          <label for="reportAreaFilter">Bereich</label>
+          <select id="reportAreaFilter">
+            <option value="alle">Alles</option>
+            <option value="finanzen">Nur Finanzen</option>
+            <option value="einkauf">Nur Einkäufe</option>
+            <option value="einnahmen">Nur Einnahmen</option>
+            <option value="ausgaben">Nur Ausgaben</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reportRangeFilter">Zeitraum</label>
+          <select id="reportRangeFilter">
+            <option value="all">Komplett</option>
+            <option value="heute">Heute</option>
+            <option value="diese_woche">Diese Woche</option>
+            <option value="letzte_woche">Letzte Woche</option>
+            <option value="dieser_monat">Dieser Monat</option>
+            <option value="letzter_monat">Letzter Monat</option>
+            <option value="benutzerdefiniert">Benutzerdefiniert</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reportDateFrom">Von</label>
+          <input type="date" id="reportDateFrom">
+        </div>
+
+        <div class="form-group">
+          <label for="reportDateTo">Bis</label>
+          <input type="date" id="reportDateTo">
+        </div>
+
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-soft" id="saveReportFilterBtn" type="button"><span>Filter speichern</span></button>
+        </div>
+      </div>
+
+      <div class="report-filter-actions">
+        <button class="btn btn-soft" id="resetReportFilterBtn" type="button"><span>Zurücksetzen</span></button>
+        <button class="btn btn-soft" id="printReportNowBtn" type="button"><span>Bericht drucken</span></button>
+      </div>
+
+      <p class="report-filter-note" id="reportFilterInfo">Dieser Bericht übernimmt denselben globalen Druckfilter wie die Finanz-Historie.</p>
+    </section>
+
     <section class="report-meta">
       <div class="meta-box">
         <strong>Berichtszeitraum</strong>
@@ -996,13 +1233,13 @@ a.btn-soft:hover{
         <p>Gesamte Einnahmen</p>
       </div>
 
-      <div class="summary-card hide-for-child">
+      <div class="summary-card" data-permission-block="showFixed">
         <h3>Fixkosten</h3>
         <div class="value yellow" id="summaryFixed">0 €</div>
         <p>Miete, Strom, Internet, Versicherung, Abo</p>
       </div>
 
-      <div class="summary-card hide-for-child">
+      <div class="summary-card" data-permission-block="showVariable">
         <h3>Variable Ausgaben</h3>
         <div class="value red" id="summaryVariable">0 €</div>
         <p>Freizeit, Taxi, Online etc.</p>
@@ -1020,10 +1257,78 @@ a.btn-soft:hover{
         <p>Separat ausgewiesen</p>
       </div>
 
-      <div class="summary-card hide-for-child">
+      <div class="summary-card" data-permission-block="showFinanceResult">
         <h3>Ergebnis</h3>
         <div class="value" id="summaryResult">0 €</div>
         <p>Einnahmen minus Ausgaben</p>
+      </div>
+    </section>
+
+
+    <section class="section ai-report-section" id="aiReportSection" data-permission-block="showFinanceReport">
+      <h2>
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.5 2A3.5 3.5 0 0 0 6 5.5c0 1.3.71 2.44 1.76 3.04A4.5 4.5 0 0 0 6 12a4.5 4.5 0 0 0 1.44 3.29"></path>
+            <path d="M14.5 2A3.5 3.5 0 0 1 18 5.5c0 1.3-.71 2.44-1.76 3.04A4.5 4.5 0 0 1 18 12a4.5 4.5 0 0 1-1.44 3.29"></path>
+            <path d="M9.5 22h5"></path>
+            <path d="M12 17v5"></path>
+            <path d="M8.5 9.5c.8.8 1.86 1.25 3.5 1.25s2.7-.45 3.5-1.25"></path>
+            <path d="M8 14c1 .67 2.2 1 4 1s3-.33 4-1"></path>
+          </svg>
+        </span>
+        <span>KI-Auswertung mit echten Daten</span>
+      </h2>
+      <p class="subtitle">Dieser Bericht wird direkt aus deinen Finanz- und Einkaufseinträgen erzeugt. Der globale Druckfilter wird automatisch übernommen.</p>
+
+      <div id="aiEmptyNote" class="ai-empty-note" style="display:none;">
+        Für eine sinnvolle KI-Auswertung braucht Haushaltsheld echte Einträge im ausgewählten Zeitraum. Sobald Daten vorhanden sind, wird der Bericht automatisch aufgebaut.
+      </div>
+
+      <div class="ai-report-wrap" id="aiReportWrap">
+        <div class="ai-report-card">
+          <h3>
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 6h13"></path>
+                <path d="M8 12h13"></path>
+                <path d="M8 18h13"></path>
+                <path d="M3 6h.01"></path>
+                <path d="M3 12h.01"></path>
+                <path d="M3 18h.01"></path>
+              </svg>
+            </span>
+            <span>KI-Bewertung</span>
+          </h3>
+          <div class="ai-text-block" id="aiNarrativeText">Die KI-Auswertung wird geladen …</div>
+          <div class="ai-actions">
+            <button class="btn secondary" type="button" id="refreshAiReportBtn"><span>KI-Bericht aktualisieren</span></button>
+            <button class="btn primary" type="button" id="printAiReportBtn"><span>KI-Bericht drucken</span></button>
+          </div>
+          <div class="ai-badge" id="aiReportBadge">Datenquelle wird geprüft …</div>
+        </div>
+
+        <div class="ai-report-side">
+          <h3>
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"></path>
+                <path d="m19 9-5 5-4-4-3 3"></path>
+              </svg>
+            </span>
+            <span>Analyse & Empfehlungen</span>
+          </h3>
+
+          <div class="ai-kpis">
+            <div class="ai-kpi"><strong>Anzahl Einkäufe</strong><span id="aiCountPurchases">0</span></div>
+            <div class="ai-kpi"><strong>Ø Einkaufswert</strong><span id="aiAveragePurchase">0 €</span></div>
+            <div class="ai-kpi"><strong>Häufigstes Geschäft</strong><span id="aiTopShop">—</span></div>
+            <div class="ai-kpi"><strong>Stärkste Kategorie</strong><span id="aiTopCategory">—</span></div>
+          </div>
+
+          <ul class="ai-bullet-list" id="aiAnalysisList"></ul>
+          <ul class="ai-bullet-list" id="aiRecommendationList"></ul>
+        </div>
       </div>
     </section>
 
@@ -1073,7 +1378,7 @@ a.btn-soft:hover{
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="incomeSection">
       <h2>
         <span class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1098,7 +1403,7 @@ a.btn-soft:hover{
       </div>
     </section>
 
-    <section class="section hide-for-child" id="fixedSection">
+    <section class="section" id="fixedSection" data-permission-block="showFixed">
       <h2>
         <span class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1124,7 +1429,7 @@ a.btn-soft:hover{
       </div>
     </section>
 
-    <section class="section hide-for-child">
+    <section class="section" id="variableSection" data-permission-block="showVariable">
       <h2>
         <span class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1231,14 +1536,14 @@ a.btn-soft:hover{
 </div>
 
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assetsschnecke.png" alt="">
+  <img src="assets/assetsschnecke.png" alt="">
   <span class="ki-fab-label">KI</span>
 </button>
 
 <section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
   <div class="ki-head">
     <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assetsschnecke.png" alt=""></div>
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
         <h3>Haushaltsheld KI</h3>
         <p id="kiContextText">Ich helfe dir beim Verstehen deines Finanzberichts und deiner Monatswerte.</p>
@@ -1265,6 +1570,139 @@ const childViewBtn = document.getElementById("childViewBtn");
 const modeBadge = document.getElementById("modeBadge");
 const modeNote = document.getElementById("modeNote");
 
+
+function getTodayIso(){
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  return new Date(now.getTime() - offset * 60000).toISOString().split("T")[0];
+}
+function toDateOnly(dateString){
+  return new Date((dateString || getTodayIso()) + "T12:00:00");
+}
+function getStartOfWeek(date){
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  d.setHours(0,0,0,0);
+  return d;
+}
+function getEndOfWeek(date){
+  const d = getStartOfWeek(date);
+  d.setDate(d.getDate() + 6);
+  d.setHours(23,59,59,999);
+  return d;
+}
+function getStartOfMonth(date){
+  const d = new Date(date.getFullYear(), date.getMonth(), 1);
+  d.setHours(0,0,0,0);
+  return d;
+}
+function getEndOfMonth(date){
+  const d = new Date(date.getFullYear(), date.getMonth()+1, 0);
+  d.setHours(23,59,59,999);
+  return d;
+}
+function toIsoDate(date){
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,"0");
+  const d = String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+function getDefaultPrintFilter(){
+  return {
+    area:"alle",
+    range:"all",
+    from:"",
+    to:""
+  };
+}
+function loadPrintFilter(){
+  try{
+    return {...getDefaultPrintFilter(), ...(JSON.parse(localStorage.getItem(PRINT_FILTER_KEY) || "{}") || {})};
+  }catch{
+    return getDefaultPrintFilter();
+  }
+}
+function savePrintFilter(){
+  const data = {
+    area: printAreaFilter.value,
+    range: dateRangeFilter.value,
+    from: dateFromFilter.value,
+    to: dateToFilter.value
+  };
+  localStorage.setItem(PRINT_FILTER_KEY, JSON.stringify(data));
+  updatePrintFilterUi();
+  return data;
+}
+function resolveDateRange(range, from, to){
+  const today = toDateOnly(getTodayIso());
+  if(range === "heute"){
+    return {start: toDateOnly(getTodayIso()), end: toDateOnly(getTodayIso())};
+  }
+  if(range === "diese_woche"){
+    return {start: getStartOfWeek(today), end: getEndOfWeek(today)};
+  }
+  if(range === "letzte_woche"){
+    const ref = getStartOfWeek(today);
+    ref.setDate(ref.getDate() - 1);
+    return {start: getStartOfWeek(ref), end: getEndOfWeek(ref)};
+  }
+  if(range === "dieser_monat"){
+    return {start: getStartOfMonth(today), end: getEndOfMonth(today)};
+  }
+  if(range === "letzter_monat"){
+    const ref = new Date(today.getFullYear(), today.getMonth()-1, 15);
+    return {start: getStartOfMonth(ref), end: getEndOfMonth(ref)};
+  }
+  if(range === "benutzerdefiniert"){
+    return {
+      start: from ? toDateOnly(from) : null,
+      end: to ? toDateOnly(to) : null
+    };
+  }
+  return {start:null, end:null};
+}
+function getRangeLabel(filter){
+  const labels = {
+    all:"Kompletter Zeitraum",
+    heute:"Heute",
+    diese_woche:"Diese Woche",
+    letzte_woche:"Letzte Woche",
+    dieser_monat:"Dieser Monat",
+    letzter_monat:"Letzter Monat",
+    benutzerdefiniert:"Benutzerdefiniert"
+  };
+  if(filter.range === "benutzerdefiniert"){
+    const from = filter.from || "offen";
+    const to = filter.to || "offen";
+    return `${from} bis ${to}`;
+  }
+  return labels[filter.range] || "Kompletter Zeitraum";
+}
+function getAreaLabel(area){
+  const labels = {
+    alle:"alles",
+    finanzen:"nur Finanzen",
+    einkauf:"nur Einkäufe",
+    einnahmen:"nur Einnahmen",
+    ausgaben:"nur Ausgaben"
+  };
+  return labels[area] || "alles";
+}
+function updatePrintFilterUi(){
+  const filter = loadPrintFilter();
+  printAreaFilter.value = filter.area;
+  dateRangeFilter.value = filter.range;
+  dateFromFilter.value = filter.from || "";
+  dateToFilter.value = filter.to || "";
+  const custom = filter.range === "benutzerdefiniert";
+  dateFromFilter.disabled = !custom;
+  dateToFilter.disabled = !custom;
+  printPreviewChip.textContent = `Druckvorschau: ${getRangeLabel(filter)} · ${getAreaLabel(filter.area)}`;
+  globalFilterInfo.innerHTML = `<strong>Globale Druckfilter:</strong> ${getRangeLabel(filter)} · ${getAreaLabel(filter.area)}. Diese Auswahl gilt auch für Finanzbericht und spätere Druckansichten.`;
+}
+
 function formatEuro(value){
   return new Intl.NumberFormat("de-DE",{
     style:"currency",
@@ -1282,17 +1720,51 @@ function escapeHtml(value){
     .replaceAll("'","&#039;");
 }
 function loadPermissions(){
-  const stored = localStorage.getItem("haushaltsheld_child_permissions");
-  return stored ? JSON.parse(stored) : {
+  const defaults = {
     showShopping:true,
     showPocketMoney:true,
     showGiftMoney:true,
     showBookings:false,
     showSubscriptions:false,
     showPets:false,
-    showTips:true
+    showTips:true,
+    showFinanceReport:true,
+    showParentIncome:false,
+    showIncome:false,
+    showFixed:false,
+    showVariable:false,
+    showFinanceResult:true
   };
+
+  const stored = safeJsonParse(localStorage.getItem("haushaltsheld_child_permissions"), {});
+  return { ...defaults, ...(stored || {}) };
 }
+
+function isChildMode(){
+  return document.body.classList.contains("child-mode");
+}
+
+function normalizeText(value){
+  return String(value ?? "").trim().toLowerCase();
+}
+
+function shouldIncludeIncomeInChildMode(entry, permissions){
+  const category = normalizeText(entry.category);
+  const title = normalizeText(entry.title);
+  const textValue = normalizeText(entry.text);
+
+  const isPocket = category.includes("taschengeld") || title.includes("taschengeld") || textValue.includes("taschengeld");
+  if(isPocket) return permissions.showPocketMoney;
+
+  const isGift = category.includes("geldgeschenk") || category.includes("geldgeschenke") || title.includes("geldgeschenk") || textValue.includes("geburtstagsgeld");
+  if(isGift) return permissions.showGiftMoney;
+
+  const isParentIncome = category.includes("gehalt") || title.includes("gehalt") || textValue.includes("gehalt");
+  if(isParentIncome) return permissions.showParentIncome;
+
+  return permissions.showIncome;
+}
+
 function getDefaultFinance(){
   return [
     { id: 1, date: "2026-03-01", category: "Gehalt", mainCategory: "Einnahme", title: "Gehalt Monja", text: "monatlicher Geldeingang", payment: "Überweisung", amount: 1850, type: "Einnahme", person: "Monja", recurring: true },
@@ -1315,11 +1787,190 @@ function getDefaultShopping(){
     { id: 103, date: "2026-03-23", title: "Kleine Extras", text: "Snacks, Eis", payment: "Bar", amount: 9.80, person: "Allgemein", type: "Ausgabe" }
   ];
 }
+const PRINT_FILTER_KEY = "haushaltsheld_print_filter_v1";
+
 function loadData(){
   const finance = JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "null") || getDefaultFinance();
   const shopping = JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "null") || getDefaultShopping();
   return {finance, shopping};
 }
+const reportAreaFilter = document.getElementById("reportAreaFilter");
+const reportRangeFilter = document.getElementById("reportRangeFilter");
+const reportDateFrom = document.getElementById("reportDateFrom");
+const reportDateTo = document.getElementById("reportDateTo");
+const saveReportFilterBtn = document.getElementById("saveReportFilterBtn");
+const resetReportFilterBtn = document.getElementById("resetReportFilterBtn");
+const printReportBtn = document.getElementById("printReportBtn");
+const printReportNowBtn = document.getElementById("printReportNowBtn");
+const reportFilterInfo = document.getElementById("reportFilterInfo");
+
+function syncReportFilterUi(){
+  const filter = loadPrintFilter();
+  reportAreaFilter.value = filter.area;
+  reportRangeFilter.value = filter.range;
+  reportDateFrom.value = filter.from || "";
+  reportDateTo.value = filter.to || "";
+  const custom = filter.range === "benutzerdefiniert";
+  reportDateFrom.disabled = !custom;
+  reportDateTo.disabled = !custom;
+  reportFilterInfo.innerHTML = `<strong>Aktiver Druckfilter:</strong> ${getRangeLabel(filter)} · ${getAreaLabel(filter.area)}.`;
+}
+function saveReportFilter(){
+  localStorage.setItem(PRINT_FILTER_KEY, JSON.stringify({
+    area: reportAreaFilter.value,
+    range: reportRangeFilter.value,
+    from: reportDateFrom.value,
+    to: reportDateTo.value
+  }));
+  syncReportFilterUi();
+}
+
+
+function getNumericAmount(value){
+  return parseFloat(String(value ?? "0").replace(",", ".")) || 0;
+}
+function getShoppingCategory(entry){
+  return entry.category || entry.purchaseCategory || entry.purchaseType || entry.typeLabel || entry.mainCategory || "Einkauf";
+}
+function getShoppingStore(entry){
+  return entry.store || entry.title || entry.merchant || entry.shop || "Unbekannt";
+}
+function countBy(rows, getter){
+  const map = {};
+  rows.forEach(row => {
+    const key = getter(row);
+    if(!key) return;
+    map[key] = (map[key] || 0) + 1;
+  });
+  return map;
+}
+function sumBy(rows, getter){
+  const map = {};
+  rows.forEach(row => {
+    const key = getter(row);
+    if(!key) return;
+    map[key] = (map[key] || 0) + getNumericAmount(row.amount);
+  });
+  return map;
+}
+function getTopEntry(map){
+  const entries = Object.entries(map).sort((a,b)=>b[1]-a[1]);
+  return entries[0] || null;
+}
+function buildAiReportData({incomeRows,fixedRows,variableRows,shoppingRows,pocketRows,giftRows,incomeTotal,fixedTotal,variableTotal,shoppingTotal,result,printFilter}){
+  const totalVisibleExpenses = fixedTotal + variableTotal + shoppingTotal;
+  const categoryTotals = sumBy([...variableRows, ...shoppingRows], row => row.category || row.title || 'Sonstiges');
+  const storeCounts = countBy(shoppingRows, row => row.store || row.title || 'Unbekannt');
+  const topCategoryEntry = getTopEntry(categoryTotals);
+  const topStoreEntry = getTopEntry(storeCounts);
+  const purchaseCount = shoppingRows.length;
+  const averagePurchase = purchaseCount ? shoppingTotal / purchaseCount : 0;
+  const smallPurchases = shoppingRows.filter(row => getNumericAmount(row.amount) > 0 && getNumericAmount(row.amount) <= 20);
+  const spontaneousRate = purchaseCount ? Math.round((smallPurchases.length / purchaseCount) * 100) : 0;
+  const rowsByDay = countBy(shoppingRows, row => row.date || 'ohne Datum');
+  const multiBuyDays = Object.entries(rowsByDay).filter(([,count]) => count > 1);
+  const fixedShare = totalVisibleExpenses ? Math.round((fixedTotal / totalVisibleExpenses) * 100) : 0;
+  const shoppingShare = totalVisibleExpenses ? Math.round((shoppingTotal / totalVisibleExpenses) * 100) : 0;
+  const variableShare = totalVisibleExpenses ? Math.round((variableTotal / totalVisibleExpenses) * 100) : 0;
+  const hasData = incomeRows.length || fixedRows.length || variableRows.length || shoppingRows.length || pocketRows.length || giftRows.length;
+
+  let narrative = `Im Zeitraum ${getRangeLabel(printFilter)} wurden `;
+  if(purchaseCount){
+    narrative += `${purchaseCount} Einkäufe mit einem durchschnittlichen Einkaufswert von ${formatEuro(averagePurchase)} erfasst. `;
+  } else {
+    narrative += `keine Einkäufe erfasst. `;
+  }
+  if(topCategoryEntry){
+    narrative += `Die stärkste Ausgabenkategorie ist ${topCategoryEntry[0]} mit ${formatEuro(topCategoryEntry[1])}. `;
+  }
+  if(topStoreEntry){
+    narrative += `Am häufigsten wurde bei ${topStoreEntry[0]} eingekauft. `;
+  }
+  if(result >= 0){
+    narrative += `Der sichtbare Saldo ist positiv und liegt aktuell bei ${formatEuro(result)}. `;
+  } else {
+    narrative += `Der sichtbare Saldo ist negativ und liegt aktuell bei ${formatEuro(result)}. `;
+  }
+  if(smallPurchases.length >= 3){
+    narrative += `Es gibt mehrere kleinere Einkäufe, was auf Nachkaufverhalten oder spontane Ausgaben hindeutet. `;
+  }
+  if(multiBuyDays.length){
+    narrative += `An ${multiBuyDays.length} Tagen wurden mehrere Einkäufe am selben Tag erfasst. Das spricht dafür, dass Einkäufe noch besser gebündelt werden können.`;
+  } else if(purchaseCount > 0){
+    narrative += `Die Einkäufe wirken bereits relativ gebündelt und übersichtlich.`;
+  }
+
+  const analysis = [];
+  analysis.push(`Einnahmen sichtbar: ${formatEuro(incomeTotal)} · Gesamtausgaben sichtbar: ${formatEuro(totalVisibleExpenses)}.`);
+  if(topCategoryEntry) analysis.push(`Stärkste Kategorie: ${topCategoryEntry[0]} mit ${formatEuro(topCategoryEntry[1])}.`);
+  if(topStoreEntry) analysis.push(`Häufigstes Geschäft: ${topStoreEntry[0]} mit ${topStoreEntry[1]} Einkauf${topStoreEntry[1] === 1 ? '' : 'en'}.`);
+  if(purchaseCount) analysis.push(`Durchschnittlicher Einkaufswert: ${formatEuro(averagePurchase)} bei ${purchaseCount} Einkauf${purchaseCount === 1 ? '' : 'en'}.`);
+  if(smallPurchases.length) analysis.push(`${smallPurchases.length} kleinere Einkäufe bis 20 € wurden erkannt (${spontaneousRate}% der Einkäufe).`);
+  if(multiBuyDays.length) analysis.push(`Mehrfachkäufe an einem Tag: ${multiBuyDays.map(([day,count]) => `${day} (${count})`).join(', ')}.`);
+  if(fixedTotal > 0) analysis.push(`Fixkosten machen rund ${fixedShare}% der sichtbaren Ausgaben aus.`);
+  if(variableTotal > 0) analysis.push(`Variable Ausgaben liegen bei rund ${variableShare}% der sichtbaren Ausgaben.`);
+  if(shoppingTotal > 0) analysis.push(`Einkäufe liegen bei rund ${shoppingShare}% der sichtbaren Ausgaben.`);
+
+  const recommendations = [];
+  if(smallPurchases.length >= 3 || multiBuyDays.length){
+    recommendations.push('Einkäufe stärker bündeln und 1 bis 2 feste Einkaufstage pro Woche nutzen.');
+  }
+  if(topStoreEntry && purchaseCount >= 3){
+    recommendations.push(`Für ${topStoreEntry[0]} lohnt sich eine feste Standardliste, damit Nachkäufe seltener werden.`);
+  }
+  if(topCategoryEntry){
+    recommendations.push(`Die Kategorie ${topCategoryEntry[0]} aktiv beobachten und vor dem Einkauf mit einer Liste absichern.`);
+  }
+  if(result < 0){
+    recommendations.push('Den negativen Saldo zuerst über variable Ausgaben und spontane Käufe entschärfen.');
+  } else {
+    recommendations.push('Den positiven Saldo teilweise als Sparpuffer oder Rücklage fest einplanen.');
+  }
+  if(fixedShare >= 60){
+    recommendations.push('Bei sehr hohen Fixkosten zuerst laufende Verträge, Abos und wiederkehrende Zahlungen prüfen.');
+  }
+
+  return {
+    hasData,
+    purchaseCount,
+    averagePurchase,
+    topShop: topStoreEntry ? topStoreEntry[0] : '—',
+    topCategory: topCategoryEntry ? topCategoryEntry[0] : '—',
+    narrative,
+    analysis,
+    recommendations
+  };
+}
+function renderAiReport(data){
+  const emptyNote = document.getElementById('aiEmptyNote');
+  const wrap = document.getElementById('aiReportWrap');
+  document.getElementById('aiCountPurchases').textContent = String(data.purchaseCount || 0);
+  document.getElementById('aiAveragePurchase').textContent = formatEuro(data.averagePurchase || 0);
+  document.getElementById('aiTopShop').textContent = escapeHtml(data.topShop || '—');
+  document.getElementById('aiTopCategory').textContent = escapeHtml(data.topCategory || '—');
+  document.getElementById('aiNarrativeText').textContent = data.narrative || 'Noch keine KI-Auswertung verfügbar.';
+  document.getElementById('aiReportBadge').textContent = `Aktiver KI-Bericht: ${getRangeLabel(loadPrintFilter())} · ${getAreaLabel(loadPrintFilter().area)}`;
+
+  const analysisTarget = document.getElementById('aiAnalysisList');
+  const recommendationTarget = document.getElementById('aiRecommendationList');
+  analysisTarget.innerHTML = '';
+  recommendationTarget.innerHTML = '';
+
+  (data.analysis || []).forEach(item => {
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>Analyse:</strong> ${escapeHtml(item)}`;
+    analysisTarget.appendChild(li);
+  });
+  (data.recommendations || []).forEach(item => {
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>Empfehlung:</strong> ${escapeHtml(item)}`;
+    recommendationTarget.appendChild(li);
+  });
+
+  emptyNote.style.display = data.hasData ? 'none' : 'block';
+  wrap.style.display = data.hasData ? 'grid' : 'none';
+}
+
 function addRows(targetId, rows, label){
   const target = document.getElementById(targetId);
   target.innerHTML = "";
@@ -1350,19 +2001,69 @@ function addRows(targetId, rows, label){
   return total;
 }
 function renderReport(){
+  const permissions = loadPermissions();
+  const childMode = isChildMode();
   const {finance, shopping} = loadData();
+  const printFilter = loadPrintFilter();
+  const {start, end} = resolveDateRange(printFilter.range, printFilter.from, printFilter.to);
 
-  const incomeRows = finance.filter(x => x.type === "Einnahme");
-  const fixedRows = finance.filter(x => x.mainCategory === "Fixkosten");
-  const variableRows = finance.filter(x => x.type === "Ausgabe" && x.mainCategory !== "Fixkosten");
-  const pocketRows = finance.filter(x => x.category === "Taschengeld");
-  const giftRows = finance.filter(x => x.category === "Geldgeschenke");
-  const shoppingRows = shopping.map(x => ({
-    category:"Einkauf",
-    title:x.title || x.store || "Einkauf",
-    text:x.text || x.items || x.note || "",
-    amount:parseFloat(String(x.amount ?? x.total ?? "0").replace(",", ".")) || 0
-  }));
+  const inRange = (rowDate) => {
+    if(!start && !end) return true;
+    const date = toDateOnly(rowDate);
+    if(start && date < start) return false;
+    if(end && date > end) return false;
+    return true;
+  };
+
+  let incomeRows = finance.filter(x => x.type === "Einnahme" && inRange(x.date));
+  let fixedRows = finance.filter(x => x.mainCategory === "Fixkosten" && inRange(x.date));
+  let variableRows = finance.filter(x => x.type === "Ausgabe" && x.mainCategory !== "Fixkosten" && inRange(x.date));
+  let pocketRows = finance.filter(x => x.category === "Taschengeld" && inRange(x.date));
+  let giftRows = finance.filter(x => x.category === "Geldgeschenke" && inRange(x.date));
+  let shoppingRows = shopping
+    .filter(x => inRange(x.date))
+    .map(x => ({
+      category:"Einkauf",
+      title:x.title || x.store || "Einkauf",
+      text:x.text || x.items || x.note || "",
+      amount:parseFloat(String(x.amount ?? x.total ?? "0").replace(",", ".")) || 0
+    }));
+
+  if(printFilter.area === "finanzen"){
+    shoppingRows = [];
+  }else if(printFilter.area === "einkauf"){
+    incomeRows = [];
+    fixedRows = [];
+    variableRows = [];
+    pocketRows = [];
+    giftRows = [];
+  }else if(printFilter.area === "einnahmen"){
+    fixedRows = [];
+    variableRows = [];
+    shoppingRows = [];
+  }else if(printFilter.area === "ausgaben"){
+    incomeRows = [];
+    pocketRows = [];
+    giftRows = [];
+  }
+
+  if(childMode){
+    if(!permissions.showFinanceReport){
+      incomeRows = [];
+      fixedRows = [];
+      variableRows = [];
+      pocketRows = [];
+      giftRows = [];
+      shoppingRows = [];
+    } else {
+      incomeRows = incomeRows.filter(entry => shouldIncludeIncomeInChildMode(entry, permissions));
+      fixedRows = permissions.showFixed ? fixedRows : [];
+      variableRows = permissions.showVariable ? variableRows : [];
+      pocketRows = permissions.showPocketMoney ? pocketRows : [];
+      giftRows = permissions.showGiftMoney ? giftRows : [];
+      shoppingRows = permissions.showShopping ? shoppingRows : [];
+    }
+  }
 
   const incomeTotal = addRows("incomeBody", incomeRows, "Summe Einnahmen");
   const fixedTotal = addRows("fixedBody", fixedRows, "Summe Fixkosten");
@@ -1379,25 +2080,55 @@ function renderReport(){
   document.getElementById("summaryShopping").textContent = formatEuro(shoppingTotal);
   document.getElementById("summaryPocket").textContent = formatEuro(pocketTotal);
   document.getElementById("summaryResult").textContent = formatEuro(result);
+  document.getElementById("summaryResult").className = "value " + (result >= 0 ? "green" : "red");
 
   document.getElementById("childPocket").textContent = formatEuro(pocketTotal);
   document.getElementById("childGifts").textContent = formatEuro(giftTotal);
   document.getElementById("childShopping").textContent = formatEuro(shoppingTotal);
 
-  document.getElementById("reportDate").textContent = new Date().toLocaleString("de-DE");
+  document.getElementById("reportDate").textContent = `${new Date().toLocaleString("de-DE")} · ${getRangeLabel(printFilter)}`;
+  document.querySelector(".report-meta .meta-box strong").nextElementSibling.textContent = `${getRangeLabel(printFilter)} · ${getAreaLabel(printFilter.area)}`;
+
+  const aiReportData = buildAiReportData({
+    incomeRows,
+    fixedRows,
+    variableRows,
+    shoppingRows,
+    pocketRows,
+    giftRows,
+    incomeTotal,
+    fixedTotal,
+    variableTotal,
+    shoppingTotal,
+    result,
+    printFilter
+  });
+  renderAiReport(aiReportData);
+
+  const incomeSection = document.getElementById("incomeSection");
+  const reportLockedNote = document.getElementById("reportLockedNote");
+
+  if(childMode && !permissions.showFinanceReport){
+    reportLockedNote.style.display = "block";
+    incomeSection.style.display = "none";
+  } else {
+    reportLockedNote.style.display = "none";
+    const hasIncomeView = !childMode || permissions.showPocketMoney || permissions.showGiftMoney || permissions.showParentIncome || permissions.showIncome;
+    incomeSection.style.display = hasIncomeView ? "block" : "none";
+  }
 }
+
 function applyPermissions(){
   const permissions = loadPermissions();
+  const childMode = isChildMode();
 
   document.querySelectorAll("[data-permission-block]").forEach(block => {
     const key = block.dataset.permissionBlock;
-    if(document.body.classList.contains("child-mode")){
-      block.style.display = permissions[key] ? "block" : "none";
-    }else{
-      block.style.display = "block";
-    }
+    const shouldShow = childMode ? Boolean(permissions[key]) : true;
+    block.style.display = shouldShow ? getDisplayStyle(block) : "none";
   });
 }
+
 function setReportView(mode){
   if(mode === "child"){
     document.body.classList.add("child-mode");
@@ -1418,11 +2149,44 @@ function setReportView(mode){
   }
 
   localStorage.setItem("haushaltsheld_finance_view", mode);
+  renderReport();
   applyPermissions();
 }
 
 adminViewBtn.addEventListener("click", () => setReportView("admin"));
 childViewBtn.addEventListener("click", () => setReportView("child"));
+
+[reportAreaFilter,reportRangeFilter,reportDateFrom,reportDateTo].forEach(el => {
+  el.addEventListener("change", () => {
+    saveReportFilter();
+    renderReport();
+  });
+});
+saveReportFilterBtn.addEventListener("click", () => {
+  saveReportFilter();
+  renderReport();
+});
+resetReportFilterBtn.addEventListener("click", () => {
+  localStorage.setItem(PRINT_FILTER_KEY, JSON.stringify(getDefaultPrintFilter()));
+  syncReportFilterUi();
+  renderReport();
+});
+function runReportPrint(){
+  saveReportFilter();
+  renderReport();
+  window.print();
+}
+printReportBtn.addEventListener("click", runReportPrint);
+printReportNowBtn.addEventListener("click", runReportPrint);
+document.getElementById("refreshAiReportBtn").addEventListener("click", () => {
+  saveReportFilter();
+  renderReport();
+});
+document.getElementById("printAiReportBtn").addEventListener("click", () => {
+  saveReportFilter();
+  renderReport();
+  window.print();
+});
 
 /* KI */
 (function(){
@@ -1516,6 +2280,7 @@ childViewBtn.addEventListener("click", () => setReportView("child"));
   });
 })();
 
+syncReportFilterUi();
 renderReport();
 setReportView(localStorage.getItem("haushaltsheld_finance_view") || "admin");
 </script>

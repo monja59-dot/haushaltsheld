@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – Kinderrechte</title>
+<style>
+body{font-family:Arial;background:#fdf9f4;margin:0;padding:20px;color:#2d342f}
+.card{background:#fff;border-radius:16px;padding:20px;margin-bottom:20px;border:1px solid #e6cdb8}
+h1{margin-bottom:10px}
+p{color:#6a746d}
+.select,.money-input{padding:10px;border-radius:10px;border:1px solid #ccc;width:100%;background:#fff}
+.toggle{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:10px 0;padding:12px;background:#f5fbf5;border-radius:12px;border:1px solid #e2eee2}
+.toggle small{display:block;color:#7d8a82;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.group-title{font-size:1rem;font-weight:700;margin-bottom:8px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<h1>Kinderrechte verwalten</h1>
+<p>Hier steuerst du jetzt auch Zahlungsarten und ob Sterne direkt in Geld umgewandelt werden dürfen.</p>
+
+<div class="card">
+  <label>Kind auswählen:</label>
+  <select id="childSelect" class="select"></select>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="group-title">Allgemeine Rechte</div>
+    <div id="rightsBox"></div>
+  </div>
+
+  <div class="card">
+    <div class="group-title">Zahlungsarten in „Mein Geld“</div>
+    <div id="paymentsBox"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="group-title">Sterne in Geld umwandeln</div>
+  <div class="toggle">
+    <div>
+      <strong>Direkte Umwandlung erlauben</strong>
+      <small>Wenn aktiv, sieht das Kind auf der Seite „Mein Geld“ die Umwandlung.</small>
+    </div>
+    <input type="checkbox" id="allowStarMoney" onchange="toggleCurrent('allowStarMoney', this.checked)">
+  </div>
+
+  <div class="toggle">
+    <div style="flex:1;">
+      <strong>Standard-Geldwert in €</strong>
+      <small>Dieser Wert wird im Formular vorausgefüllt. Das Kind kann ihn bei Bedarf noch ändern.</small>
+    </div>
+    <div style="width:180px;">
+      <input type="number" class="money-input" id="starMoneyValue" min="0.01" step="0.01" onchange="setNumberCurrent('starMoneyValue', this.value)" placeholder="1.00">
+    </div>
+  </div>
+</div>
+
+<script>
+function getChildren(){ return JSON.parse(localStorage.getItem("hh_children_profiles") || "[]"); }
+function getPermissions(id){ return JSON.parse(localStorage.getItem("perm_"+id) || "{}"); }
+function setPermissions(id,data){ localStorage.setItem("perm_"+id, JSON.stringify(data)); }
+function currentId(){ return document.getElementById("childSelect").value; }
+function toggleCurrent(key,val){ const id = currentId(); const perms = getPermissions(id); perms[key] = val; setPermissions(id, perms); }
+function setNumberCurrent(key,val){ const id = currentId(); const perms = getPermissions(id); perms[key] = Number(val || 0); setPermissions(id, perms); }
+
+function renderChildren(){
+  const select = document.getElementById("childSelect");
+  const kids = getChildren();
+  select.innerHTML = kids.map(k => `<option value="${k.id}">${k.name || k.nickname || 'Kind'}</option>`).join("");
+  select.onchange = renderRights;
+  renderRights();
+}
+
+function renderRights(){
+  const id = currentId();
+  const perms = getPermissions(id);
+
+  const rights = [
+    {key:"showMoney", label:"Eigenes Geld sehen", note:"Seite „Mein Geld“ sichtbar lassen."},
+    {key:"showShopping", label:"Einkäufe sehen", note:"Für spätere Einkaufsbereiche."},
+    {key:"showFixed", label:"Fixkosten sehen", note:"Nur falls du das später nutzt."},
+    {key:"allowScan", label:"Belege scannen", note:"Scanner-Bereich auf der Kindseite anzeigen."},
+    {key:"allowReward", label:"Belohnung auswählen", note:"Sterne-Belohnungen nutzen."},
+    {key:"requireApproval", label:"Eltern müssen zustimmen", note:"Für Freigaben im Belohnungssystem."},
+    {key:"allowAI", label:"KI nutzen", note:"KI-Bereich anzeigen."}
+  ];
+
+  const payments = [
+    {key:"allowCash", label:"Bar"},
+    {key:"allowCard", label:"Karte"},
+    {key:"allowPayPal", label:"PayPal"},
+    {key:"allowKlarna", label:"Klarna"},
+    {key:"allowAppPayment", label:"App"},
+    {key:"allowGiftPayment", label:"Geschenk"}
+  ];
+
+  document.getElementById("rightsBox").innerHTML = rights.map(r => `
+    <div class="toggle">
+      <div><strong>${r.label}</strong><small>${r.note}</small></div>
+      <input type="checkbox" ${perms[r.key] ? "checked" : ""} onchange="toggleCurrent('${r.key}', this.checked)">
+    </div>
+  `).join("");
+
+  document.getElementById("paymentsBox").innerHTML = payments.map(r => `
+    <div class="toggle">
+      <div><strong>${r.label}</strong><small>Diese Zahlungsart darf das Kind auswählen.</small></div>
+      <input type="checkbox" ${r.key in perms ? (perms[r.key] ? "checked" : "") : "checked"} onchange="toggleCurrent('${r.key}', this.checked)">
+    </div>
+  `).join("");
+
+  document.getElementById("allowStarMoney").checked = !!perms.allowStarMoney;
+  document.getElementById("starMoneyValue").value = perms.starMoneyValue ? Number(perms.starMoneyValue).toFixed(2) : "1.00";
+}
+
+renderChildren();
+</script>
+</body>
+</html>

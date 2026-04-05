@@ -366,7 +366,7 @@ button,input,select,textarea{font:inherit}
 /* Overview cards */
 .summary-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:14px;
   margin-bottom:18px;
 }
@@ -796,59 +796,92 @@ a.btn.btn-soft,
   .summary-grid{grid-template-columns:1fr}
   .profile-grid{grid-template-columns:1fr}
 }
+
+.request-list{
+  display:grid;
+  gap:12px;
+}
+.request-item{
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:var(--shadow-xs);
+}
+.request-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:10px;
+}
+.request-name{
+  font-size:1rem;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:4px;
+}
+.request-meta{
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.55;
+}
+.request-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:.76rem;
+  font-weight:800;
+  white-space:nowrap;
+  border:1px solid transparent;
+}
+.request-badge.offen{
+  background:var(--blue-soft);
+  color:#496d9d;
+  border-color:#cbdcf8;
+}
+.request-badge.genehmigt{
+  background:var(--green-soft);
+  color:var(--green);
+  border-color:#bddfca;
+}
+.request-badge.abgelehnt{
+  background:var(--red-soft);
+  color:var(--red);
+  border-color:#efc1c1;
+}
+.request-badge.später{
+  background:var(--yellow-soft);
+  color:var(--yellow);
+  border-color:#ead7a2;
+}
+.request-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.request-empty{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px dashed rgba(223,209,188,.95);
+  border-radius:22px;
+  padding:18px;
+  color:var(--muted);
+  text-align:center;
+  line-height:1.6;
+}
+
 </style>
 </head>
 <body data-page="admin">
-
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-card">
-    <div class="login-top">
-      <div class="login-title">
-        <div class="login-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="10" rx="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-        </div>
-        <div>
-          <div class="login-headline">Eltern-Login</div>
-          <div class="login-sub">Geschützter Zugang zum Bereich Familienrechte.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="adminEmail">E-Mail</label>
-      <input id="adminEmail" type="email" placeholder="admin@haushaltsheld.de">
-    </div>
-
-    <div class="field">
-      <label for="adminPassword">Passwort</label>
-      <input id="adminPassword" type="password" placeholder="••••••••">
-    </div>
-
-    <div class="field">
-      <label for="adminCode">2FA-Code</label>
-      <input id="adminCode" type="text" inputmode="numeric" placeholder="111111">
-    </div>
-
-    <div class="form-actions">
-      <button class="btn" type="button" id="loginBtn">Einloggen</button>
-    </div>
-
-    <div class="login-error" id="loginError">Login fehlgeschlagen. Bitte überprüfe E-Mail, Passwort und 2FA-Code.</div>
-
-    <div class="login-help">
-      Demo-Zugang: <strong>admin@haushaltsheld.de</strong> · Passwort: <strong>1234</strong> · 2FA: <strong>111111</strong>
-    </div>
-  </div>
-</div>
 
 <div class="app">
 
   <aside class="sidebar">
     <div class="logo-wrap">
-      <img src="assetsschnecke.png" alt="Haushaltsheld">
+    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
       <div>
         <div class="logo-name">Haushaltsheld</div>
         <div class="logo-sub">Dein Familien-Assistent</div>
@@ -953,6 +986,15 @@ a.btn.btn-soft,
         </span>
         <span>Familienrechte</span>
       </a>
+
+      <a href="admin_chat.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </span>
+        <span>Familien-Chat</span>
+      </a>
     </nav>
 
     <div class="sidebar-footer">
@@ -1041,6 +1083,12 @@ a.btn.btn-soft,
         <h3>Finanzsicht</h3>
         <div class="value" id="sumFinance">0</div>
         <p>aktive Freigaben für Kinder</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Familien-Chat</h3>
+        <div class="value" id="sumChat">0</div>
+        <p>neue oder offene Chats</p>
       </div>
     </section>
 
@@ -1395,13 +1443,69 @@ a.btn.btn-soft,
 
       <div class="save-note" id="saveNote">Die Familienrechte wurden gespeichert.</div>
     </section>
-  </main>
+  
+
+
+  <section class="card">
+    <h2 class="card-title">
+      <span class="section-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+      </span>
+      <span>Aufgaben warten auf Eltern</span>
+    </h2>
+    <p class="card-sub">
+      Hier erscheinen Aufgaben, die Kinder als fertig gemeldet haben. Erst nach eurer Bestätigung werden Sterne gutgeschrieben.
+    </p>
+
+    <div id="taskApprovalList" class="request-list"></div>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">
+      <span class="section-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </span>
+      <span>Familien-Chat</span>
+    </h2>
+    <p class="card-sub">
+      Hier siehst du die letzten Nachrichten der Kinder, offene Chats und gelangst direkt in den vollständigen Chatbereich.
+    </p>
+
+    <div class="footer-actions" style="justify-content:flex-start; margin-bottom:16px;">
+      <a class="btn btn-soft" href="admin_chat.html">Zum vollständigen Chat</a>
+    </div>
+
+    <div id="chatPreviewList" class="request-list"></div>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">
+      <span class="section-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      </span>
+      <span>Belohnungsanfragen der Kinder</span>
+    </h2>
+    <p class="card-sub">
+      Hier siehst du, wenn ein Kind nach 10 Sternen eine Auswahl getroffen hat. Die Auswahl ist erst gültig, wenn Mama oder Papa sie bestätigen.
+    </p>
+
+    <div id="rewardRequestList" class="request-list"></div>
+  </section>
+
+</main>
 </div>
 
 <script>
 const STORAGE_KEY = "haushaltsheld_child_permissions";
 const PROFILE_KEY = "haushaltsheld_child_profiles_demo";
-const ADMIN_LOGIN_KEY = "haushaltsheld_admin_login_demo";
+
 
 const defaultPermissions = {
   showShopping: true,
@@ -1475,6 +1579,56 @@ function saveProfiles(list){
 function setToggleState(toggle, state){
   toggle.classList.toggle("active", !!state);
   toggle.setAttribute("aria-pressed", state ? "true" : "false");
+}
+
+
+const CHAT_STORAGE_KEY = "hh_family_chat_threads";
+
+function loadChatThreads(){
+  return safeJsonParse(localStorage.getItem(CHAT_STORAGE_KEY), []).sort((a,b)=>new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+}
+function formatChatStatus(status){
+  if(status === "done") return "Erledigt";
+  if(status === "working") return "In Bearbeitung";
+  if(status === "read") return "Gelesen";
+  return "Offen";
+}
+function formatChatStatusClass(status){
+  if(status === "done") return "genehmigt";
+  if(status === "working") return "später";
+  if(status === "read") return "offen";
+  return "offen";
+}
+function renderChatPreview(){
+  const list = document.getElementById("chatPreviewList");
+  if(!list) return;
+  const threads = loadChatThreads();
+  if(!threads.length){
+    list.innerHTML = '<div class="request-empty">Noch keine Chat-Nachrichten vorhanden.<br>Sobald ein Kind einen Chat startet, erscheint die Vorschau hier.</div>';
+    return;
+  }
+  list.innerHTML = threads.slice(0,6).map(thread => {
+    const last = (thread.messages || []).slice(-1)[0];
+    const status = String(thread.status || "open");
+    return `
+      <div class="request-item">
+        <div class="request-head">
+          <div>
+            <div class="request-name">${escapeHtml(thread.childName || "Kind")} · ${escapeHtml(thread.title || "Chat")}</div>
+            <div class="request-meta">
+              Kategorie: <strong>${escapeHtml(thread.category || "allgemein")}</strong><br>
+              Letzte Nachricht: ${escapeHtml(last ? last.text : "Noch keine Nachricht")}<br>
+              Aktualisiert: ${escapeHtml(formatRequestDate(thread.updatedAt || thread.createdAt))}
+            </div>
+          </div>
+          <span class="request-badge ${formatChatStatusClass(status)}">${formatChatStatus(status)}</span>
+        </div>
+        <div class="request-actions">
+          <a class="btn btn-soft" href="admin_chat.html">Im Chat öffnen</a>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 function renderToggles(){
@@ -1579,10 +1733,13 @@ function updateSummary(){
     "showVariable"
   ].filter(key => values[key]).length;
 
+  const chatCount = loadChatThreads().filter(thread => thread.unreadForParent || thread.status !== "done").length;
+
   document.getElementById("sumParent").textContent = String(parentCount);
   document.getElementById("sumChild").textContent = String(childCount);
   document.getElementById("sumApproval").textContent = String(approvalCount);
   document.getElementById("sumFinance").textContent = String(financeCount);
+  document.getElementById("sumChat").textContent = String(chatCount);
 }
 
 function showSavedNote(){
@@ -1601,53 +1758,21 @@ function escapeHtml(value){
     .replaceAll("'","&#039;");
 }
 
-function loginAdmin(){
-  const email = document.getElementById("adminEmail").value.trim();
-  const password = document.getElementById("adminPassword").value.trim();
-  const code = document.getElementById("adminCode").value.trim();
-  const error = document.getElementById("loginError");
-
-  if(email === "admin@haushaltsheld.de" && password === "1234" && code === "111111"){
-    localStorage.setItem(ADMIN_LOGIN_KEY, "true");
-    document.getElementById("loginOverlay").style.display = "none";
-    error.classList.remove("show");
-  }else{
+else{
     error.classList.add("show");
   }
 }
 
-function logoutAdmin(){
-  localStorage.removeItem(ADMIN_LOGIN_KEY);
-  document.getElementById("loginOverlay").style.display = "flex";
-  document.getElementById("adminEmail").value = "";
-  document.getElementById("adminPassword").value = "";
-  document.getElementById("adminCode").value = "";
-  document.getElementById("loginError").classList.remove("show");
-}
 
-function restoreLoginState(){
-  const loggedIn = localStorage.getItem(ADMIN_LOGIN_KEY) === "true";
-  document.getElementById("loginOverlay").style.display = loggedIn ? "none" : "flex";
-}
 
-document.getElementById("loginBtn").addEventListener("click", loginAdmin);
-document.getElementById("logoutBtn").addEventListener("click", logoutAdmin);
 
-document.getElementById("adminCode").addEventListener("keydown", (e) => {
-  if(e.key === "Enter") loginAdmin();
-});
-document.getElementById("adminPassword").addEventListener("keydown", (e) => {
-  if(e.key === "Enter") loginAdmin();
-});
-document.getElementById("adminEmail").addEventListener("keydown", (e) => {
-  if(e.key === "Enter") loginAdmin();
-});
 
 document.getElementById("saveBtn").addEventListener("click", () => {
   savePermissions(collectToggleValues());
   updateSummary();
   showSavedNote();
 });
+
 
 document.getElementById("resetBtn").addEventListener("click", () => {
   savePermissions(defaultPermissions);
@@ -1657,6 +1782,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 });
 
 document.getElementById("addProfileBtn").addEventListener("click", () => {
+
   const profiles = loadProfiles();
   const nextNumber = profiles.length + 1;
   profiles.push({
@@ -1667,10 +1793,187 @@ document.getElementById("addProfileBtn").addEventListener("click", () => {
   renderProfiles();
 });
 
+
+function loadAllTasks(){
+  return safeJsonParse(localStorage.getItem("haushaltsheld_tasks"), []);
+}
+function saveAllTasks(items){
+  localStorage.setItem("haushaltsheld_tasks", JSON.stringify(items));
+}
+function getTaskStatusLabel(status){
+  if(status === "done") return "Genehmigt";
+  if(status === "in_progress") return "Zurück an Kind";
+  if(status === "waiting_parent") return "Wartet auf Eltern";
+  return "Offen";
+}
+function renderTaskApprovals(){
+  const list = document.getElementById("taskApprovalList");
+  if(!list) return;
+
+  const tasks = loadAllTasks()
+    .map((task, index) => ({ ...task, _index:index }))
+    .filter(task => task && task.status === "waiting_parent");
+
+  if(!tasks.length){
+    list.innerHTML = '<div class="request-empty">Aktuell wartet keine Aufgabe auf eure Bestätigung.</div>';
+    return;
+  }
+
+  list.innerHTML = tasks.map(task => `
+    <div class="request-item">
+      <div class="request-head">
+        <div>
+          <div class="request-name">${escapeHtml(task.childName || task.person || "Kind")} · ${escapeHtml(task.text || "Aufgabe")}</div>
+          <div class="request-meta">
+            Kategorie: <strong>${escapeHtml(task.category || "Aufgabe")}</strong><br>
+            Status: ${escapeHtml(getTaskStatusLabel(task.status))}<br>
+            Gemeldet am: ${escapeHtml(formatRequestDate(task.updatedAt || task.date))}
+          </div>
+        </div>
+        <span class="request-badge später">Wartet auf Eltern</span>
+      </div>
+      <div class="request-actions">
+        <button class="btn" type="button" onclick="approveTaskByParent(${task._index})">Bestätigen</button>
+        <button class="btn btn-soft" type="button" onclick="sendTaskBackToChild(${task._index})">Zurück ans Kind</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function approveTaskByParent(index){
+  const tasks = loadAllTasks();
+  if(!tasks[index]) return;
+
+  const task = tasks[index];
+  const wasAlreadyDone = task.status === "done";
+
+  task.status = "done";
+  task.done = true;
+  task.waitingForParent = false;
+  task.updatedAt = new Date().toISOString();
+  saveAllTasks(tasks);
+
+  if(!wasAlreadyDone){
+    const childKey = "hh_kid_" + (task.childId || task.childName || task.person || "kind") + "_stars";
+    const currentStars = Number(safeJsonParse(localStorage.getItem(childKey), 0) || 0);
+    localStorage.setItem(childKey, JSON.stringify(currentStars + 1));
+  }
+
+  renderTaskApprovals();
+  showSavedNote();
+}
+
+function sendTaskBackToChild(index){
+  const tasks = loadAllTasks();
+  if(!tasks[index]) return;
+
+  tasks[index].status = "in_progress";
+  tasks[index].done = false;
+  tasks[index].waitingForParent = false;
+  tasks[index].updatedAt = new Date().toISOString();
+  saveAllTasks(tasks);
+
+  renderTaskApprovals();
+  showSavedNote();
+}
+
 renderToggles();
 renderProfiles();
 updateSummary();
+renderChatPreview();
+renderRewardRequests();
+renderTaskApprovals();
 restoreLoginState();
+
+window.addEventListener("storage", () => {
+  updateSummary();
+  renderChatPreview();
+  renderRewardRequests();
+  renderTaskApprovals();
+});
 </script>
+
+<script src="js/permissions.js"></script>
+<script src="js/app.js"></script>
+
+
+
+
+<script>
+function getFamilyAccess() {
+  return JSON.parse(localStorage.getItem("haushaltsheld_family_access")) || {
+    code: "482178",
+    enabled: true
+  };
+}
+
+function isFamilyUnlocked() {
+  try {
+    const gate = JSON.parse(localStorage.getItem("haushaltsheld_family_gate"));
+    return !!(gate && gate.granted);
+  } catch (error) {
+    return false;
+  }
+}
+
+function unlockFamily(inputCode) {
+  const access = getFamilyAccess();
+  if (String(inputCode || "").trim() === String(access.code || "").trim()) {
+    localStorage.setItem("haushaltsheld_family_gate", JSON.stringify({
+      granted: true,
+      grantedAt: Date.now()
+    }));
+    return true;
+  }
+  return false;
+}
+
+function handleFamilyLogin() {
+  const input = document.getElementById("familyCodeInput");
+  const error = document.getElementById("familyCodeError");
+  const value = input ? input.value : "";
+
+  if (unlockFamily(value)) {
+    location.reload();
+    return;
+  }
+
+  if (error) error.classList.add("show");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const gate = document.getElementById("familyGate");
+  if (gate && !isFamilyUnlocked()) {
+    gate.style.display = "flex";
+  }
+});
+</script>
+
+
+<div id="familyGate" class="login-overlay" style="display:none;">
+  <div class="login-card">
+    <div class="login-top">
+      <div class="login-title">
+        <div class="login-icon">🔐</div>
+        <div>
+          <div class="login-headline">Familienzugang</div>
+          <div class="login-sub">Bitte gib den Familiencode ein, um Haushaltsheld zu öffnen.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="familyCodeInput">Familiencode</label>
+      <input id="familyCodeInput" type="password" inputmode="numeric" placeholder="Familiencode eingeben">
+    </div>
+
+    <div id="familyCodeError" class="login-error">Der Familiencode ist leider falsch.</div>
+
+    <div class="form-actions">
+      <button class="btn" type="button" onclick="handleFamilyLogin()">Zugang öffnen</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

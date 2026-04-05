@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mein Geld – Haushaltsheld</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
+
+  --text:#2d342f;
+  --text2:#556159;
+  --muted:#7d8a82;
+
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#e7f5e8;
+
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
+  --yellow:#b5882f;
+  --yellow-soft:#fbf4df;
+  --red:#cc6666;
+  --red-soft:#fdeaea;
+  --pink:#f8ecf5;
+  --pink-line:#e6cadf;
+
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+
+  --sidebar-w:258px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+body{
+  font-family:"Outfit",sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+}
+button,input,select,textarea{font:inherit}
+.hidden{display:none !important}
+
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  background:linear-gradient(180deg,#FBFDFB 0%,#F2F7F2 100%);
+  border-right:1px solid var(--line);
+  padding:24px 16px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+}
+.logo-wrap{
+  display:flex;align-items:center;gap:11px;
+  padding:0 6px 20px;border-bottom:1px solid var(--line);margin-bottom:10px;
+}
+.logo-img{
+  width:46px;height:46px;border-radius:15px;
+  overflow:hidden;background:#fff;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:var(--shadow-xs);
+}
+.logo-img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.logo-name{font-weight:800;font-size:1.12rem;color:var(--text);line-height:1.2}
+.logo-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
+.nav-lbl{
+  font-size:.68rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);padding:12px 10px 5px;
+}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav a{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 13px;border-radius:18px;
+  text-decoration:none;color:var(--text2);
+  font-weight:700;font-size:.96rem;
+  border:1px solid transparent;
+  transition:all .18s ease;
+}
+.nav a:hover{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);box-shadow:var(--shadow-xs);
+  color:var(--text);
+}
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%,#3e8e41 100%);
+  color:#fff !important;
+  border-color:rgba(62,142,65,.28);
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.nav-icon{
+  width:36px;height:36px;border-radius:12px;
+  display:grid;place-items:center;background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);
+  flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05);
+}
+.nav a.active .nav-icon{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+}
+.nav-icon svg{width:18px;height:18px;stroke:currentColor}
+.sidebar-footer{
+  margin-top:auto;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+}
+.mode-switch{
+  display:flex;gap:6px;background:rgba(255,255,255,.86);
+  border:1px solid var(--line);border-radius:999px;padding:5px;
+  box-shadow:var(--shadow-xs);
+}
+.mode-btn{
+  flex:1;border:none;background:transparent;color:var(--muted);
+  padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;
+  cursor:pointer;transition:.18s ease;
+}
+.mode-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+/* Main */
+.main{width:100%;max-width:1600px;padding:32px}
+.page-header{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:20px;
+}
+.page-header h1{font-size:2.3rem;font-weight:900;line-height:1.05;margin-bottom:10px}
+.page-header p{color:var(--muted);max-width:800px}
+.header-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;
+  background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs);
+}
+.btn-line{
+  border:1px solid var(--line);background:rgba(255,255,255,.85);color:var(--text);
+  padding:12px 16px;border-radius:16px;font-weight:800;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;box-shadow:var(--shadow-xs);
+}
+
+.lock-box{
+  background:linear-gradient(180deg,#fff8ef 0%, #f8ecdc 100%);
+  border:1px solid #ead7b8;
+  border-radius:24px;
+  padding:24px;
+  box-shadow:var(--shadow-sm);
+  margin-bottom:20px;
+}
+.lock-box h2{font-size:1.35rem;font-weight:900;margin-bottom:8px}
+.lock-box p{color:#6b543c;margin-bottom:14px}
+.btn{
+  border:none; padding:13px 20px; border-radius:16px; font-size:.95rem; font-weight:800; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20);
+}
+.btn-soft{
+  border:none; padding:13px 20px; border-radius:16px; font-size:.95rem; font-weight:800; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none;
+  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);
+  color:#4d3c2c; border:1.5px solid #d7c0a6;
+  box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+.hero{
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
+  border:1px solid rgba(76,175,80,.18);
+  border-radius:30px;
+  padding:28px 30px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:20px;
+  align-items:stretch;
+  margin-bottom:24px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(76,175,80,.07)
+}
+.hero h2{font-size:1.55rem;font-weight:900;margin-bottom:10px}
+.hero p{color:var(--text2);line-height:1.65;margin-bottom:16px}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.95);
+  padding:9px 14px;border-radius:999px;font-size:.88rem;font-weight:800;color:var(--text2)
+}
+.hero-side{display:grid;gap:12px}
+.mini{
+  background:rgba(255,255,255,.78);border-radius:20px;padding:16px;border:1px solid rgba(223,209,188,.85);box-shadow:var(--shadow-xs)
+}
+.mini strong{display:block;margin-bottom:6px;font-size:.96rem;font-weight:800}
+.mini span{color:var(--muted);font-size:.88rem}
+
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.stat-card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);border-radius:26px;padding:20px;box-shadow:var(--shadow-sm)
+}
+.stat-label{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.stat-value{font-size:2rem;font-weight:800;letter-spacing:-0.04em}
+.stat-sub{font-size:.84rem;color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;padding:24px;box-shadow:var(--shadow-sm);margin-bottom:18px
+}
+.card-title{display:flex;align-items:center;gap:10px;font-size:1.16rem;font-weight:800;margin-bottom:12px}
+.card-sub{color:var(--muted);line-height:1.6;margin-bottom:16px;font-size:.9rem}
+.section-icon{
+  width:34px;height:34px;border-radius:12px;display:inline-grid;place-items:center;background:var(--accent-soft);color:var(--accent-dark);
+  border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0;
+}
+.section-icon svg{width:18px;height:18px;stroke:currentColor}
+.form-grid,.form-grid-3{display:grid;gap:14px;margin-bottom:14px}
+.form-grid{grid-template-columns:repeat(2,1fr)}
+.form-grid-3{grid-template-columns:repeat(3,1fr)}
+.field label{
+  display:block;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px
+}
+.field input,.field select,.field textarea{
+  width:100%; border:1.5px solid var(--line); background:#fffdf9; border-radius:16px; padding:13px 14px; font-size:.94rem; color:var(--text);
+  outline:none; transition:.18s ease; min-height:48px
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:rgba(76,175,80,.7);box-shadow:0 0 0 4px rgba(76,175,80,.10);background:#fff
+}
+.field textarea{min-height:96px;resize:vertical}
+
+.helper{
+  background:linear-gradient(180deg,#eef9f0 0%, #e6f4ea 100%);
+  color:#3f6d4c; border-radius:18px; padding:15px 16px; line-height:1.65; font-size:.9rem; margin-top:14px;
+  border:1px solid #c6e4cf; box-shadow:var(--shadow-xs)
+}
+.notice{
+  border-radius:18px; padding:14px 16px; font-size:.9rem; line-height:1.6; margin-bottom:14px;
+  background:linear-gradient(180deg,#fff8ef 0%, #f8ecdc 100%);
+  color:#6b543c; border:1px solid #ead7b8;
+}
+.save-note{
+  display:none;border-radius:18px; padding:14px 16px; font-size:.9rem; line-height:1.6; margin-bottom:14px;
+  background:linear-gradient(180deg,#eef9f0 0%, #e6f4ea 100%);color:#3f6d4c;border:1px solid #c6e4cf
+}
+.list{display:grid;gap:10px}
+.item{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);border-radius:20px;padding:14px 16px;border:1px solid rgba(223,209,188,.7)
+}
+.item strong{display:block;margin-bottom:4px;font-size:.96rem;font-weight:800}
+.item p{color:var(--muted);font-size:.87rem;line-height:1.5}
+.amount{font-weight:800;white-space:nowrap;font-size:.95rem;padding-top:2px;color:var(--text2)}
+
+.permission-box{
+  background:linear-gradient(180deg,#f7fbf7 0%, #eef7ef 100%);
+  border:1px solid rgba(199,219,201,.95);border-radius:18px;padding:14px 16px;color:var(--text2);font-size:.9rem
+}
+
+@media(max-width:1300px){.grid,.hero,.form-grid,.form-grid-3,.stats-grid{grid-template-columns:1fr}}
+@media(max-width:920px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto}
+  .main{padding:22px}
+  .page-header h1{font-size:2rem}
+}
+@media(max-width:640px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.75rem}
+}
+</style>
+</head>
+<body data-page="kind-mein-geld">
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo-img">
+        <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+      </div>
+      <div>
+        <div class="logo-name">Haushaltsheld</div>
+        <div class="logo-sub">Kindermodus</div>
+      </div>
+    </div>
+
+    <div class="nav-lbl">Kinderbereich</div>
+    <nav class="nav">
+      <a href="kindermodus.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12 12 4l9 8"></path><path d="M5 10v10h14V10"></path>
+          </svg>
+        </span>
+        <span>Familienstart</span>
+      </a>
+
+      <a href="kind_aufgaben.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </span>
+        <span>Meine Aufgaben</span>
+      </a>
+
+      <a href="kind_mein_geld.html" class="active">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M16 12h.01"></path>
+          </svg>
+        </span>
+        <span>Mein Geld</span>
+      </a>
+
+      <a href="kind_sparziel.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path>
+          </svg>
+        </span>
+        <span>Meine Sparziele</span>
+      </a>
+
+      <a href="kind_wuensche.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
+          </svg>
+        </span>
+        <span>Meine Wünsche</span>
+      </a>
+
+      <a href="kind_chat.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </span>
+        <span>Familienchat</span>
+      </a>
+    </nav>
+
+    <div class="nav-lbl">Elternbereich</div>
+    <nav class="nav">
+      <a href="index.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12 12 4l9 8"></path><path d="M5 10v10h14V10"></path>
+          </svg>
+        </span>
+        <span>Zum Dashboard</span>
+      </a>
+      <a href="rechte.html">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4Z"></path>
+            <path d="M9.5 12l1.7 1.7L14.8 10"></path>
+          </svg>
+        </span>
+        <span>Familienrechte</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="mode-switch">
+        <button class="mode-btn" type="button" onclick="window.location.href='index.html'">Eltern</button>
+        <button class="mode-btn active" type="button">Kind</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div data-no-permission="money">
+      <div class="lock-box">
+        <h2>🔒 Geldbereich gesperrt</h2>
+        <p>Dieser Bereich ist noch nicht freigegeben. Du kannst deinen Eltern direkt eine Anfrage schicken.</p>
+        <button class="btn" type="button" onclick="requestMoneyAccess()">Zugriff anfragen</button>
+      </div>
+    </div>
+
+    <div data-permission="money">
+      <div class="page-header">
+        <div>
+          <h1>Willkommen <span id="childName">Kind 1</span> 👋</h1>
+          <p>Hier kannst du dein Geld besser verstehen, eigene Einträge anlegen und den Überblick behalten. Scanner-Vorschläge darfst du vor dem Speichern immer ändern, ergänzen oder ersetzen.</p>
+        </div>
+        <div class="header-right">
+          <span class="badge">Mein Geld</span>
+          <a class="btn-line" href="kindermodus.html">Zurück zum Familienstart</a>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div>
+          <h2>Mein Geld clever verwalten</h2>
+          <p>Du kannst hier Taschengeld, Geldgeschenke, eigene Ausgaben oder kleine Einnahmen festhalten. Alles bleibt übersichtlich, freundlich und leicht verständlich.</p>
+          <div class="hero-tags">
+            <span class="hero-tag">Geldübersicht</span>
+            <span class="hero-tag">Eigene Einträge</span>
+            <span class="hero-tag">Sparziel möglich</span>
+          </div>
+        </div>
+        <div class="hero-side">
+          <div class="mini">
+            <strong>Persönlich</strong>
+            <span>Dein Bereich wird automatisch mit dem aktiven Kind verbunden.</span>
+          </div>
+          <div class="mini">
+            <strong>Einfach</strong>
+            <span>Erst eintragen, dann speichern. Nichts wird im Hintergrund heimlich abgelegt.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Aktuelles Geld</div>
+          <div class="stat-value" id="balanceValue">0 €</div>
+          <div class="stat-sub">Was dir gerade bleibt</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Einnahmen</div>
+          <div class="stat-value" id="incomeValue">0 €</div>
+          <div class="stat-sub">Alles, was reingekommen ist</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Ausgaben</div>
+          <div class="stat-value" id="expenseValue">0 €</div>
+          <div class="stat-sub">Alles, was du ausgegeben hast</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Einträge</div>
+          <div class="stat-value" id="entryCountValue">0</div>
+          <div class="stat-sub">Dein Verlauf</div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div>
+          <section class="card">
+            <div class="card-title">
+              <span class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14"></path><path d="M5 12h14"></path>
+                </svg>
+              </span>
+              <span>Eintrag hinzufügen</span>
+            </div>
+            <p class="card-sub">Hier kannst du Einnahmen und Ausgaben eintragen. Die Seite ist absichtlich einfach gehalten, damit sie stabil bleibt.</p>
+
+            <div class="save-note" id="saveNote">Gespeichert.</div>
+
+            <div class="form-grid-3">
+              <div class="field">
+                <label for="type">Art</label>
+                <select id="type">
+                  <option value="income">Einnahme</option>
+                  <option value="expense">Ausgabe</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="category">Kategorie</label>
+                <select id="category">
+                  <option>Taschengeld</option>
+                  <option>Geldgeschenk</option>
+                  <option>Freizeit</option>
+                  <option>Hobby</option>
+                  <option>Schule</option>
+                  <option>Apps</option>
+                  <option>Lebensmittel</option>
+                  <option>Sonstiges</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="amount">Betrag</label>
+                <input id="amount" type="number" step="0.01" placeholder="0.00">
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="title">Eintrag</label>
+                <input id="title" type="text" placeholder="z. B. Taschengeld, Kiosk, App-Kauf">
+              </div>
+              <div class="field">
+                <label for="date">Datum</label>
+                <input id="date" type="date">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="note">Notiz</label>
+              <textarea id="note" placeholder="Optional"></textarea>
+            </div>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="btn" type="button" onclick="saveEntry()">Speichern</button>
+              <button class="btn-soft" type="button" onclick="resetForm()">Zurücksetzen</button>
+            </div>
+
+            <div class="helper">Später können wir hier Scanner, Sparziel-Verbindung und weitere Freigaben sauber ergänzen. Für jetzt ist die Seite stabil mit deinem Rechte-System verbunden.</div>
+          </section>
+        </div>
+
+        <div>
+          <section class="card">
+            <div class="card-title">
+              <span class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 8v5l3 2"></path><circle cx="12" cy="12" r="9"></circle>
+                </svg>
+              </span>
+              <span>Verlauf</span>
+            </div>
+            <div class="list" id="historyList"></div>
+          </section>
+
+          <section class="card">
+            <div class="card-title">
+              <span class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path>
+                </svg>
+              </span>
+              <span>Hinweis</span>
+            </div>
+            <div class="permission-box">
+              Dieser Bereich nutzt jetzt das neue Rechte-System. Ohne Freigabe sehen Kinder nur die Sperrbox. Mit Freigabe öffnet sich die komplette Geldseite.
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="js/permissions.js"></script>
+<script src="js/app.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  const ACTIVE_CHILD_KEY = "hh_active_child";
+  const MONEY_ENTRIES_KEY = "hh_kid_money_entries";
+
+  function getTodayDate(){
+    const now = new Date();
+    const offset = now.getTimezoneOffset();
+    return new Date(now.getTime() - offset * 60000).toISOString().split("T")[0];
+  }
+
+  function getActiveChild() {
+    try {
+      return JSON.parse(localStorage.getItem(ACTIVE_CHILD_KEY) || "null");
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function getCurrentChild() {
+    const active = getActiveChild();
+    if (active && active.role === "child") return active;
+
+    if (window.HHApp) {
+      const current = window.HHApp.getCurrentUser();
+      if (current && current.role === "child") return current;
+    }
+
+    return { id: "kind1", name: "Kind 1", role: "child" };
+  }
+
+  function loadEntries() {
+    try {
+      return JSON.parse(localStorage.getItem(MONEY_ENTRIES_KEY) || "[]");
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveEntries(entries) {
+    localStorage.setItem(MONEY_ENTRIES_KEY, JSON.stringify(entries));
+  }
+
+  function formatEuro(value) {
+    const amount = Number(value || 0);
+    return new Intl.NumberFormat("de-DE", {
+      style: "currency",
+      currency: "EUR"
+    }).format(amount);
+  }
+
+  function renderChildName() {
+    const child = getCurrentChild();
+    const el = document.getElementById("childName");
+    if (el) el.textContent = child.name || "Kind";
+  }
+
+  function renderStats() {
+    const child = getCurrentChild();
+    const entries = loadEntries().filter(entry => entry.childId === child.id);
+
+    const income = entries
+      .filter(entry => entry.type === "income")
+      .reduce((sum, entry) => sum + Number(entry.amount || 0), 0);
+
+    const expense = entries
+      .filter(entry => entry.type === "expense")
+      .reduce((sum, entry) => sum + Number(entry.amount || 0), 0);
+
+    const balance = income - expense;
+
+    document.getElementById("balanceValue").textContent = formatEuro(balance);
+    document.getElementById("incomeValue").textContent = formatEuro(income);
+    document.getElementById("expenseValue").textContent = formatEuro(expense);
+    document.getElementById("entryCountValue").textContent = String(entries.length);
+  }
+
+  function renderHistory() {
+    const child = getCurrentChild();
+    const entries = loadEntries()
+      .filter(entry => entry.childId === child.id)
+      .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+
+    const list = document.getElementById("historyList");
+    if (!list) return;
+
+    if (!entries.length) {
+      list.innerHTML = '<div class="notice">Noch keine Einträge vorhanden.</div>';
+      return;
+    }
+
+    list.innerHTML = entries.map(entry => {
+      const sign = entry.type === "income" ? "+" : "-";
+      return `
+        <div class="item">
+          <div>
+            <strong>${entry.title || "Eintrag"}</strong>
+            <p>${entry.category || "Sonstiges"} · ${entry.date || ""}${entry.note ? " · " + entry.note : ""}</p>
+          </div>
+          <div class="amount">${sign} ${formatEuro(entry.amount)}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  window.saveEntry = function () {
+    const child = getCurrentChild();
+    const type = document.getElementById("type").value;
+    const category = document.getElementById("category").value;
+    const amount = parseFloat(document.getElementById("amount").value || "0");
+    const title = document.getElementById("title").value.trim();
+    const date = document.getElementById("date").value || getTodayDate();
+    const note = document.getElementById("note").value.trim();
+
+    if (!title || amount <= 0) {
+      alert("Bitte gib mindestens einen Titel und einen Betrag ein.");
+      return;
+    }
+
+    const entries = loadEntries();
+    entries.push({
+      id: "money_" + Date.now(),
+      childId: child.id,
+      childName: child.name,
+      type,
+      category,
+      amount,
+      title,
+      date,
+      note
+    });
+
+    saveEntries(entries);
+    resetForm();
+    renderStats();
+    renderHistory();
+
+    const saveNote = document.getElementById("saveNote");
+    if (saveNote) {
+      saveNote.style.display = "block";
+      setTimeout(() => { saveNote.style.display = "none"; }, 1800);
+    }
+  };
+
+  window.resetForm = function () {
+    document.getElementById("type").value = "income";
+    document.getElementById("category").selectedIndex = 0;
+    document.getElementById("amount").value = "";
+    document.getElementById("title").value = "";
+    document.getElementById("date").value = getTodayDate();
+    document.getElementById("note").value = "";
+  };
+
+  window.requestMoneyAccess = function () {
+    const currentUser = window.HHApp ? window.HHApp.getCurrentUser() : getCurrentChild();
+    if (!window.HHPermissions || !currentUser) return;
+
+    window.HHPermissions.createRequest(currentUser.id, "money_access");
+    alert("Deine Anfrage wurde an die Eltern gesendet.");
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const child = getCurrentChild();
+    localStorage.setItem(ACTIVE_CHILD_KEY, JSON.stringify(child));
+
+    renderChildName();
+    resetForm();
+    renderStats();
+    renderHistory();
+  });
+})();
+</script>
+
+<script>
+function getFamilyAccess() {
+  return JSON.parse(localStorage.getItem("haushaltsheld_family_access")) || {
+    code: "482178",
+    enabled: true
+  };
+}
+
+function isFamilyUnlocked() {
+  const gate = JSON.parse(localStorage.getItem("haushaltsheld_family_gate"));
+  return gate && gate.granted;
+}
+
+function unlockFamily(inputCode) {
+  const access = getFamilyAccess();
+
+  if (inputCode === access.code) {
+    localStorage.setItem("haushaltsheld_family_gate", JSON.stringify({
+      granted: true,
+      grantedAt: Date.now()
+    }));
+    return true;
+  }
+
+  return false;
+}
+
+function handleFamilyLogin() {
+  const input = document.getElementById("familyCodeInput").value;
+
+  if (unlockFamily(input)) {
+    location.reload();
+  } else {
+    alert("Falscher Familiencode");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (!isFamilyUnlocked()) {
+    const gate = document.getElementById("familyGate");
+    if (gate) gate.style.display = "flex";
+  }
+});
+</script>
+
+<div>
+          <div class="login-headline">Familienzugang</div>
+          <div class="login-sub">Bitte gib den Familiencode ein</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Familiencode</label>
+      <input id="familyCodeInput" type="password" placeholder="Code eingeben">
+    </div>
+
+    <div style="margin-top:16px;">
+      <button class="btn" onclick="handleFamilyLogin()">Zugang öffnen</button>
+    </div>
+  </div>
+</div>
+
+<script>(function(){
+function hhReadJson(key, fallback){try{const parsed=JSON.parse(localStorage.getItem(key));return parsed ?? fallback;}catch(error){return fallback;}}
+function hhSeedBaseData(){
+ if(!hhReadJson("haushaltsheld_family_access",null)){localStorage.setItem("haushaltsheld_family_access",JSON.stringify({code:"482178",enabled:true}));}
+ if(!hhReadJson("haushaltsheld_parent_profiles_demo",null)){localStorage.setItem("haushaltsheld_parent_profiles_demo",JSON.stringify([{id:"parent-1",name:"Mama",pin:"2468",role:"parent"},{id:"parent-2",name:"Papa",pin:"1357",role:"parent"}]));}
+ if(!hhReadJson("haushaltsheld_child_profiles_demo",null)){localStorage.setItem("haushaltsheld_child_profiles_demo",JSON.stringify([{id:"child-1",name:"Leo",pin:"1111",age:10,role:"child"},{id:"child-2",name:"Mia",pin:"2222",age:8,role:"child"},{id:"child-3",name:"Lina",pin:"3333",age:6,role:"child"}]));}
+}
+document.addEventListener("DOMContentLoaded",function(){hhSeedBaseData(); const session=hhReadJson("haushaltsheld_session",null); if(!session || session.role!=="child" || !session.userId){window.location.href="kindermodus.html"; return;} let activeChild=hhReadJson("hh_active_child",null); if(!activeChild || activeChild.id!==session.userId){const children=hhReadJson("haushaltsheld_child_profiles_demo",[]); activeChild=children.find(entry=>entry.id===session.userId)||null; if(activeChild) localStorage.setItem("hh_active_child",JSON.stringify(activeChild));} ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id=>{const el=document.getElementById(id); if(el && activeChild) el.textContent=activeChild.name||"Kind";});});})();</script>
+</body>
+</html>
