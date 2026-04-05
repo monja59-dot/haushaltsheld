@@ -4,83 +4,1341 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Haushaltsheld – Dashboard</title>
+
+<style>
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
+
+  --text:#2d342f;
+  --text2:#556159;
+  --muted:#7d8a82;
+
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#e7f5e8;
+
+  --beige:#f2e6d7;
+  --sand:#e8d7c2;
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
+  --red:#cc6666;
+  --red-soft:#fdeaea;
+  --yellow:#b5882f;
+  --yellow-soft:#fbf4df;
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
+
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+
+  --r-xs:12px;
+  --r-sm:16px;
+  --r:22px;
+  --r-lg:28px;
+  --r-xl:34px;
+  --sidebar-w:258px;
+
+  --font-main:"Outfit", sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html,body{
+  width:100%;
+  overflow-x:hidden;
+}
+
+body{
+  font-family:var(--font-main);
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family:var(--font-main) !important;
+  letter-spacing:-0.03em;
+  line-height:1.15;
+}
+
+button,input,select,textarea{
+  font:inherit;
+}
+
+/* ── App Shell ── */
+.app{
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:100vh;
+}
+
+/* ── Sidebar ── */
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:28px 18px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+}
+
+.logo-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 8px 24px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:8px;
+}
+
+.logo-wrap img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
+}
+
+.logo-name{
+  font-weight:800;
+  font-size:1.25rem !important;
+  color:var(--text);
+}
+
+.logo-sub{
+  font-size:.75rem;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.nav-label{
+  font-size:.7rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--muted);
+  padding:16px 10px 6px;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 13px;
+  border-radius:18px;
+  text-decoration:none;
+  color:var(--text2);
+  font-weight:700 !important;
+  font-size:.98rem !important;
+  transition:all .18s ease;
+  border:1px solid transparent;
+  position:relative;
+}
+
+.nav a:hover{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+  color:var(--text);
+}
+
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;
+  border-color:rgba(62,142,65,.28);
+  box-shadow:
+    0 5px 0 #2f6f33,
+    0 14px 26px rgba(62,142,65,.20),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.nav-icon{
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--accent-dark);
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(54,45,28,.05);
+}
+
+.nav-icon svg,
+.nav-icon i{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+}
+
+.nav a.active .nav-icon{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+}
+
+.sidebar-footer{
+  margin-top:auto;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  display:grid;
+  gap:10px;
+}
+
+.user-info{
+  background:rgba(255,255,255,.7);
+  border:1px solid rgba(223,209,188,.7);
+  border-radius:16px;
+  padding:12px 14px;
+  font-size:.8rem;
+  margin-bottom:8px;
+}
+
+.user-info strong{
+  display:block;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:4px;
+}
+
+.user-info span{
+  display:block;
+  color:var(--muted);
+  font-size:.75rem;
+}
+
+.logout-btn{
+  width:100%;
+  border:1.5px solid #ddcbb4;
+  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
+  color:#665646;
+  padding:10px 12px;
+  border-radius:16px;
+  font-size:.88rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72);
+}
+
+.logout-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 0 #cdb394, 0 12px 22px rgba(110,82,40,.14), inset 0 1px 0 rgba(255,255,255,.72);
+}
+
+.mode-switch{
+  display:flex;
+  gap:6px;
+  background:rgba(255,255,255,.86);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px;
+  box-shadow:var(--shadow-xs);
+}
+
+.mode-btn{
+  flex:1;
+  border:none;
+  background:transparent;
+  color:var(--muted);
+  padding:9px 12px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+  font-family:var(--font-main);
+}
+
+.mode-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  box-shadow:
+    0 3px 0 #2f6f33,
+    0 8px 18px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+/* ── Main ── */
+.main{
+  width:100%;
+  max-width:1580px;
+  padding:32px;
+  overflow-x:hidden;
+}
+
+/* ── Page Header ── */
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+  margin-bottom:22px;
+  flex-wrap:wrap;
+}
+
+.page-header h1{
+  font-size:2.35rem !important;
+  font-weight:800 !important;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.page-header p{
+  color:var(--muted);
+  font-size:.98rem;
+  max-width:760px;
+}
+
+.mode-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:.88rem;
+  background:var(--soft);
+  border:1px solid var(--line);
+  color:var(--text2);
+  box-shadow:var(--shadow-xs);
+}
+
+.mode-badge svg,
+.mode-badge i{
+  width:16px;
+  height:16px;
+  stroke-width:2.2;
+}
+
+.mode-badge.child{
+  background:var(--blue-soft);
+  border-color:#cbdcf8;
+  color:#496d9d;
+}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
+  border:1px solid rgba(76,175,80,.18);
+  border-radius:30px;
+  padding:28px 30px;
+  display:grid;
+  grid-template-columns:1fr 150px;
+  gap:24px;
+  align-items:center;
+  margin-bottom:24px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  right:-40px;
+  bottom:-40px;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+
+.hero h2{
+  font-size:1.6rem !important;
+  font-weight:800 !important;
+  margin-bottom:10px;
+}
+
+.hero p{
+  color:var(--text2);
+  line-height:1.65;
+  max-width:720px;
+  margin-bottom:18px;
+}
+
+.hero-tags{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.95);
+  padding:9px 14px;
+  border-radius:999px;
+  font-size:.88rem;
+  font-weight:800;
+  color:var(--text2);
+  box-shadow:0 1px 4px rgba(54,45,28,.04);
+}
+
+.hero-tag svg,
+.hero-tag i{
+  width:16px;
+  height:16px;
+  stroke-width:2.1;
+}
+
+.hero-tag.accent{
+  background:#f8ebda;
+  border-color:#ecd1ad;
+}
+
+.hero-img{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.hero-img img{
+  width:112px;
+  object-fit:contain;
+  filter:drop-shadow(0 10px 18px rgba(62,142,65,.10));
+}
+
+/* ── Stats Grid ── */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.stat-card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:26px;
+  padding:20px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .18s ease, box-shadow .18s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.stat-card::after{
+  content:"";
+  position:absolute;
+  inset:auto -18px -18px auto;
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+
+.stat-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+
+.stat-card .stat-icon{
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  margin-bottom:12px;
+  background:var(--accent-soft);
+  border:1px solid rgba(76,175,80,.18);
+  color:var(--accent-dark);
+  box-shadow:var(--shadow-xs);
+}
+
+.stat-card .stat-icon svg,
+.stat-card .stat-icon i{
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+  stroke-width:2.1;
+}
+
+.stat-card .stat-label{
+  font-size:.72rem !important;
+  font-weight:800 !important;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+
+.stat-card .stat-value{
+  font-size:2rem !important;
+  font-weight:800 !important;
+  font-family:var(--font-main);
+  margin-bottom:4px;
+  letter-spacing:-0.04em;
+}
+
+.stat-card .stat-sub{
+  font-size:.84rem;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.stat-green .stat-value{color:var(--green)}
+.stat-red .stat-value{color:var(--red)}
+
+/* ── Content Grid ── */
+.content-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:18px;
+  margin-bottom:20px;
+}
+
+/* ── Cards ── */
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;
+  padding:24px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+
+.card-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:1.16rem !important;
+  font-weight:800 !important;
+  margin-bottom:18px;
+  color:var(--text);
+}
+
+.card-title svg,
+.card-title i{
+  width:18px;
+  height:18px;
+  stroke-width:2.1;
+  color:#b17a2f;
+}
+
+/* ── Task Items ── */
+.task-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.task-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  background:linear-gradient(180deg,#f5fbf5 0%, #eef6ef 100%);
+  border:1px solid transparent;
+  border-radius:20px;
+  padding:15px 16px;
+  transition:.18s ease;
+}
+
+.task-item:hover{
+  border-color:rgba(200,185,165,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+}
+
+.task-info strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:.98rem;
+  font-weight:800;
+}
+
+.task-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:.76rem;
+  font-weight:800;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--text2);
+  box-shadow:0 1px 4px rgba(54,45,28,.04);
+}
+
+.chip-high{
+  background:var(--red-soft);
+  border-color:#efc1c1;
+  color:#b65454;
+}
+
+.chip-med{
+  background:var(--yellow-soft);
+  border-color:#ead7a2;
+  color:var(--yellow);
+}
+
+.chip-low{
+  background:var(--green-soft);
+  border-color:#bddfca;
+  color:var(--green);
+}
+
+/* ── List Items ── */
+.list-items{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.list-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border:1px solid transparent;
+  border-radius:18px;
+  padding:13px 16px;
+  gap:14px;
+  font-size:.93rem;
+  transition:.18s ease;
+}
+
+.list-row:hover{
+  border-color:rgba(200,185,165,.9);
+  box-shadow:var(--shadow-xs);
+}
+
+.list-row span:last-child{
+  color:var(--text2);
+  font-weight:800;
+  white-space:nowrap;
+}
+
+/* ── CTA ── */
+.cta-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:12px 18px;
+  border-radius:16px;
+  font-weight:800 !important;
+  font-size:.92rem !important;
+  text-decoration:none;
+  box-shadow:
+    0 4px 0 #2f6f33,
+    0 10px 22px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  transition:.18s ease;
+}
+
+.cta-link:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 14px 28px rgba(62,142,65,.26),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.small-note{
+  color:var(--muted);
+  font-size:.88rem !important;
+  line-height:1.6 !important;
+  margin-top:14px;
+}
+
+/* ── Hidden ── */
+.finance-sensitive.child-hidden{display:none!important}
+.child-only{display:none}
+.child-mode .child-only{display:block}
+
+/* ── General Buttons ── */
+.btn, button.btn, a.btn{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:13px 22px;
+  border-radius:16px !important;
+  font-size:.95rem !important;
+  font-weight:800 !important;
+  text-decoration:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  box-shadow:
+    0 4px 0 #2f6f33,
+    0 10px 22px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  letter-spacing:.01em;
+  position:relative;
+}
+
+.btn:hover, button.btn:hover, a.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 14px 28px rgba(62,142,65,.26),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.btn:active, button.btn:active, a.btn:active{
+  transform:translateY(1px);
+  box-shadow:
+    0 2px 0 #2f6f33,
+    0 6px 14px rgba(62,142,65,.18),
+    inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+.btn-soft, button.btn-soft, a.btn-soft{
+  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%) !important;
+  color:#665646 !important;
+  border:1.5px solid #ddcbb4 !important;
+  box-shadow:
+    0 3px 0 #cdb394,
+    0 8px 18px rgba(110,82,40,.10),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 5px 0 #cdb394,
+    0 12px 22px rgba(110,82,40,.14),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.mini-btn{
+  border:1.5px solid #ddcbb4 !important;
+  background:linear-gradient(135deg,#fffdf9 0%, #f4e8da 100%) !important;
+  color:#655846 !important;
+  padding:8px 12px !important;
+  border-radius:999px !important;
+  font-size:.78rem !important;
+  font-weight:800 !important;
+  cursor:pointer;
+  transition:all .15s ease;
+  box-shadow:0 3px 8px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+
+.mini-btn:hover{
+  background:linear-gradient(135deg,#fef5ea 0%, #ebdcc9 100%) !important;
+  border-color:#cdb394 !important;
+  transform:translateY(-1px);
+}
+
+.mini-btn.delete-btn:hover{
+  background:linear-gradient(135deg,#fff2f2 0%, #f8d9d9 100%) !important;
+  border-color:#e3a5a5 !important;
+  color:#b74f4f !important;
+}
+
+.pill-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%) !important;
+  color:#fff !important;
+  box-shadow:0 3px 0 #2f6f33, 0 6px 14px rgba(62,142,65,.24) !important;
+}
+
+.quick-btn{
+  box-shadow:0 4px 0 #2f6f33, 0 8px 20px rgba(62,142,65,.22), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+.quick-btn:hover{
+  transform:translateY(-2px) !important;
+  box-shadow:0 6px 0 #2f6f33, 0 14px 28px rgba(62,142,65,.26), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+.add-star-btn{
+  box-shadow:0 4px 0 #8d6f18, 0 8px 20px rgba(181,136,47,.22) !important;
+}
+
+.add-star-btn:hover{
+  transform:scale(1.04) translateY(-1px) !important;
+  box-shadow:0 6px 0 #8d6f18, 0 12px 26px rgba(181,136,47,.26) !important;
+}
+
+/* Typography */
+h1{font-size:2.4rem !important;font-weight:800 !important;}
+h2{font-size:1.5rem !important;font-weight:700 !important;}
+h3{font-size:1.15rem !important;font-weight:700 !important;}
+
+.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
+.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
+.stat .value, .pocket-amount, .stars-count{
+  font-family:var(--font-main) !important;
+}
+
+.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
+.pill-btn, .pill-toggle button, .mode-switch button,
+label, .field label, .form-label, .section-label,
+.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
+select, input, textarea, button, .mini-btn,
+.chip, .hero-tag, .badge, .mode-badge,
+.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
+p, span, div, li, td, th{
+  font-family:var(--font-main) !important;
+}
+
+p, .sub, .card-sub, .body, .helper, .small-note,
+.ki-note, .mode-note, .section-note, .filter-note{
+  font-size:15px !important;
+  line-height:1.65 !important;
+}
+
+.stat-value, .stat .value, .stat-val, .pocket-amount{
+  font-size:2rem !important;
+  font-weight:800 !important;
+  letter-spacing:-0.03em;
+}
+
+.field label, .form-label, .stat-label, .stat-lbl,
+.nav-lbl, .section-label, .opt-name{
+  font-size:0.72rem !important;
+  font-weight:700 !important;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+}
+
+input, select, textarea{
+  font-size:0.95rem !important;
+  font-weight:500 !important;
+}
+
+.wrap, .hero, .savings-card, .pocket-card,
+.tasks-card, .stars-banner, .quick-card,
+.kid-tab, .add-goal-btn, .quick-btn{
+  font-family:var(--font-main) !important;
+}
+
+/* ===== KI-Schnecke ===== */
+.ki-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:74px;
+  height:74px;
+  border:none;
+  border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 16px 30px rgba(62,142,65,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9998;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+.ki-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    0 8px 0 #2f6f33,
+    0 20px 34px rgba(62,142,65,.28);
+}
+
+.ki-fab img{
+  width:40px;
+  height:40px;
+  object-fit:contain;
+}
+
+.ki-fab-label{
+  position:absolute;
+  bottom:8px;
+  right:10px;
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1;
+}
+
+.ki-panel{
+  position:fixed;
+  right:22px;
+  bottom:108px;
+  width:min(390px,calc(100vw - 24px));
+  max-height:min(78vh,720px);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 24px 50px rgba(34,48,38,.18);
+  z-index:9999;
+  display:none;
+}
+
+.ki-panel.open{
+  display:flex;
+  flex-direction:column;
+}
+
+.ki-head{
+  padding:20px 20px 16px;
+  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.ki-head-left{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.ki-head-avatar{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.ki-head-avatar img{
+  width:28px;
+  height:28px;
+  object-fit:contain;
+}
+
+.ki-head h3{
+  font-size:1.2rem !important;
+  font-weight:800 !important;
+  margin:0 0 4px;
+}
+
+.ki-head p{
+  font-size:.95rem !important;
+  color:var(--text2);
+  margin:0;
+}
+
+.ki-close{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:#fff;
+  cursor:pointer;
+  flex-shrink:0;
+  color:var(--text2);
+  font-size:1.8rem;
+  line-height:1;
+}
+
+.ki-suggestions{
+  padding:16px 20px 14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+
+.ki-chip{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--text2);
+  cursor:pointer;
+}
+
+.ki-chat{
+  padding:18px 16px;
+  overflow:auto;
+  background:#fffaf4;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-height:220px;
+}
+
+.ki-msg{
+  max-width:84%;
+  padding:14px 16px;
+  border-radius:20px;
+  font-size:.97rem;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+
+.ki-msg.bot{
+  background:#f7eee0;
+  border:1px solid #ebd3b5;
+  color:#5f4332;
+}
+
+.ki-msg.user{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  align-self:flex-end;
+}
+
+.ki-form{
+  padding:14px;
+  border-top:1px solid var(--line);
+  background:#fff;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+}
+
+.ki-input{
+  border:1.5px solid var(--line);
+  background:var(--bg-2);
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:.97rem;
+  color:var(--text);
+  outline:none;
+  font-family:inherit;
+}
+
+.ki-send{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  border-radius:18px;
+  padding:0 18px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+}
+
+.ki-typing{
+  opacity:.8;
+  font-style:italic;
+}
+
+/* ── Responsive ── */
+@media(max-width:1300px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .content-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{
+    height:auto;
+    position:relative;
+    flex-direction:row;
+    flex-wrap:wrap;
+    padding:16px;
+    gap:0;
+  }
+  .logo-wrap{
+    margin-bottom:0;
+    padding-bottom:0;
+    border-bottom:none;
+    border-right:1px solid var(--line);
+    padding-right:16px;
+    margin-right:16px;
+  }
+  .nav{
+    flex-direction:row;
+    flex-wrap:wrap;
+    flex:1;
+  }
+  .nav a{
+    flex:0 1 auto;
+    padding:10px 12px;
+  }
+  .nav-label,.sidebar-footer{display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-img{display:none}
+}
+
+@media(max-width:700px){
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+}
+
+@media(max-width:600px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.95rem !important}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .hero{padding:22px 20px}
+  .card,.stat-card{padding:18px}
+}
+
+@media(max-width:420px){
+  .stats-grid{grid-template-columns:1fr}
+  .page-header h1{font-size:1.75rem !important}
+  .mode-badge{width:100%;justify-content:center}
+}
+</style>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f7f2e9;--text:#2d342f;--muted:#7d8a82;--accent:#4CAF50;--accent-dark:#3E8E41;--line:#dfd1bc;--shadow-sm:0 6px 18px rgba(54,45,28,.08);--sidebar-w:258px;}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Outfit",sans-serif;background:linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);color:var(--text);min-height:100vh;font-size:16px;line-height:1.6;}
-.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh;}
-.sidebar{background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);border-right:1px solid rgba(223,209,188,.85);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;}
-.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px;}
-.logo-wrap img{width:48px;height:48px;}
-.logo-name{font-weight:800;font-size:1.25rem;color:var(--text);}
-.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--muted);padding:16px 10px 6px;}
-.nav{display:flex;flex-direction:column;gap:4px;}
-.nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--muted);font-weight:700;transition:.18s ease;}
-.nav a.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;}
-.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);}
-.logout-btn{width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;}
-.logout-btn:hover{transform:translateY(-2px);}
-.main{width:100%;max-width:1580px;padding:32px;}
-.page-header h1{font-size:2.35rem;font-weight:800;margin-bottom:8px;}
-.page-header p{color:var(--muted);font-size:.98rem;max-width:760px;}
-.hero{background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);border:1px solid rgba(76,175,80,.18);border-radius:30px;padding:28px 30px;margin-bottom:24px;box-shadow:var(--shadow-sm);}
-.hero h2{font-size:1.6rem;font-weight:800;margin-bottom:10px;}
-.hero p{color:var(--muted);margin-bottom:18px;}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm);}
-.card h2{font-size:1.16rem;font-weight:800;margin-bottom:18px;}
-@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;}}
-@media(max-width:600px){.main{padding:16px}.page-header h1{font-size:1.95rem}}
-</style>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<link rel="stylesheet" href="ki-schnecke.css">
 </head>
-<body>
+<body data-page="dashboard">
 <div class="app">
-  <aside class="sidebar">
-    <div class="logo-wrap">
-      <img src="assetsschnecke.png" alt="Haushaltsheld">
-      <div>
-        <div class="logo-name">Haushaltsheld</div>
-      </div>
+
+<!-- ════ Sidebar ════ -->
+<aside class="sidebar">
+  <div class="logo-wrap">
+    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+    <div>
+      <div class="logo-name">Haushaltsheld</div>
+      <div class="logo-sub">Dein Familien-Assistent</div>
     </div>
+  </div>
 
-    <div class="nav-label">Menü</div>
-    <nav class="nav">
-      <a href="index.html" class="active">📊 Dashboard</a>
-      <a href="finanzen.html">💰 Finanzen</a>
-      <a href="aufgaben.html">✓ Aufgaben</a>
-      <a href="nutzer-verwalten.html">👥 Nutzer verwalten</a>
-    </nav>
+  <div class="nav-label">Hauptmenü</div>
+  <nav class="nav">
+    <a href="index.html" class="active"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+  </nav>
 
-    <div class="sidebar-footer">
-      <div style="padding:12px;background:rgba(255,255,255,.7);border-radius:16px;border:1px solid var(--line);margin-bottom:8px;font-size:.8rem;">
-        <strong id="userName">Willkommen</strong><br>
-        <span id="userRole" style="color:var(--muted);">Eltern-Modus</span>
-      </div>
-      <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+  <div class="nav-label">Extras</div>
+  <nav class="nav">
+    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <strong id="userName">👋 Willkommen</strong>
+      <span id="userRole">Eltern-Modus</span>
     </div>
-  </aside>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+      <button class="mode-btn" id="childBtn" type="button">Kind</button>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+  </div>
+</aside>
 
-  <main class="main">
-    <div class="page-header">
+<!-- ════ Main ════ -->
+<main class="main">
+  <div class="page-header">
+    <div>
       <h1>📊 Dashboard</h1>
-      <p>Willkommen in deinem Familienüberblick.</p>
+      <p>Dein ruhiger Überblick über Haushalt, Aufgaben und Alltag.</p>
+    </div>
+    <span class="mode-badge" id="modeBadge"><i data-lucide="wrench"></i>Elternmodus aktiv</span>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div>
+      <h2>Haushaltsheld denkt im Alltag mit</h2>
+      <p>Aufgaben, Finanzen, Einkäufe und Familienplanung — alles an einem Ort, übersichtlich und für die ganze Familie.</p>
+      <div class="hero-tags">
+        <span class="hero-tag accent"><i data-lucide="sparkles"></i>KI-Hinweise aktiv</span>
+        <span class="hero-tag"><i data-lucide="link-2"></i>Aufgaben verknüpft</span>
+        <span class="hero-tag"><i data-lucide="heart"></i>Kindermodus verfügbar</span>
+        <span class="hero-tag"><i data-lucide="paperclip"></i>Daten verknüpft</span>
+      </div>
+    </div>
+    <div class="hero-img">
+      <link rel="stylesheet" href="ki-schnecke.css">
+    </div>
+  </section>
+
+  <!-- ════ Familien-Startbereich ════ -->
+  <section id="familyWelcomeSection" style="margin-bottom:24px;">
+    <div class="card" style="background:linear-gradient(180deg,#f7fcf7 0%, #eef8ef 100%); border:1px solid rgba(76,175,80,.24);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
+        <div>
+          <div style="font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Familienstart</div>
+          <h2 id="welcomeTextTop" style="margin:0 0 6px 0;font-size:1.8rem;font-weight:800;">Willkommen</h2>
+          <div id="todayDateTop" style="color:var(--text2);font-weight:700;"></div>
+        </div>
+
+        <div class="mode-badge" style="align-self:flex-start;">
+          <i data-lucide="bell-ring"></i>
+          <span>Push: <span id="pushStatusTop">nicht aktiv</span></span>
+        </div>
+      </div>
+
+      <div id="motivationTextTop" style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:18px;">
+        Gemeinsam schaffen wir alles 💚
+      </div>
+
+      <div class="content-grid" style="margin-bottom:0;">
+        <div class="card" style="padding:18px;">
+          <div class="card-title"><i data-lucide="users"></i>Wer ist gerade in der App?</div>
+          <div class="list-items" id="activeUsersTop">
+            <div class="list-row"><span>Noch niemand aktiv</span><span>—</span></div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div class="card-title"><i data-lucide="calendar-days"></i>Termine</div>
+          <div class="list-items" id="appointmentsTop">
+            <div class="list-row"><span>Keine Termine eingetragen</span><span>📅</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-grid" style="margin-top:18px;margin-bottom:0;">
+        <div class="card" style="padding:18px;">
+          <div class="card-title"><i data-lucide="message-circle"></i>Familien-Chat</div>
+          <div class="list-items" id="chatPreviewTop">
+            <div class="list-row"><span>Keine neuen Nachrichten</span><span>💬</span></div>
+          </div>
+          <a class="cta-link" href="admin_chat.html">Zum Chat →</a>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <div class="card-title"><i data-lucide="sparkles"></i>Hinweise für heute</div>
+          <div class="list-items">
+            <div class="list-row">
+              <span>Neue Chat-Nachrichten</span>
+              <span id="chatCountTop">0 offen</span>
+            </div>
+            <div class="list-row">
+              <span>Aufgaben für Eltern</span>
+              <span id="waitingTaskCountTop">0 warten</span>
+            </div>
+            <div class="list-row">
+              <span>Benachrichtigungen</span>
+              <span id="pushPermissionTop">nicht freigegeben</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-grid">
+    <div class="stat-card finance-sensitive">
+      <div class="stat-icon"><i data-lucide="wallet"></i></div>
+      <div class="stat-label">Heute ausgegeben</div>
+      <div class="stat-value" id="statToday">–</div>
+      <div class="stat-sub">aus Einträgen von heute</div>
+    </div>
+    <div class="stat-card finance-sensitive stat-green">
+      <div class="stat-icon"><i data-lucide="badge-euro"></i></div>
+      <div class="stat-label">Monatliches Ergebnis</div>
+      <div class="stat-value" id="statBalance">–</div>
+      <div class="stat-sub">Einnahmen minus Ausgaben</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i data-lucide="clipboard-list"></i></div>
+      <div class="stat-label">Offene Aufgaben</div>
+      <div class="stat-value" id="statOpenTasks">0</div>
+      <div class="stat-sub">noch zu erledigen</div>
+    </div>
+    <div class="stat-card stat-red">
+      <div class="stat-icon"><i data-lucide="star"></i></div>
+      <div class="stat-label">Wichtige Aufgaben</div>
+      <div class="stat-value" id="statImportantTasks">0</div>
+      <div class="stat-sub">Priorität: Wichtig</div>
+    </div>
+  </section>
+
+  <!-- Content Grid -->
+  <section class="content-grid">
+    <!-- Aufgaben -->
+    <div class="card">
+      <div class="card-title"><i data-lucide="pin"></i>Heute offen</div>
+      <div class="task-list" id="taskList">
+        <div class="list-row"><span>Wird geladen…</span><span>⏳</span></div>
+      </div>
+      <a class="cta-link" href="aufgaben.html">Alle Aufgaben ansehen →</a>
     </div>
 
-    <section class="hero">
-      <h2>Willkommen zurück!</h2>
-      <p>Hier siehst du den Überblick über deine Familie – Finanzen, Aufgaben und mehr.</p>
-    </section>
+    <!-- KI-Hinweise -->
+    <div class="card">
+      <div class="card-title"><i data-lucide="sparkles"></i>KI-Hinweise</div>
+      <div class="list-items">
+        <div class="list-row"><span>Taschengeld-Tipp</span><span>sichtbar</span></div>
+        <div class="list-row"><span>Wiederkehrende Ausgaben</span><span>erkennbar</span></div>
+        <div class="list-row"><span>Alltagsmuster</span><span>mitgedacht</span></div>
+      </div>
+      <p class="small-note">KI-Hinweise bleiben auch im Kindermodus sichtbar — sie helfen beim Taschengeld, kleinen Sparzielen und Routinen.</p>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>Übersicht</h2>
-      <p>Dieses Dashboard wird noch erweitert. Nutze die Navigation um zu den anderen Bereichen zu gehen.</p>
-    </section>
-  </main>
+  <!-- Second Row -->
+  <section class="content-grid">
+    <!-- Kategorien -->
+    <div class="card">
+      <div class="card-title"><i data-lucide="folders"></i>Aufgaben nach Bereich</div>
+      <div class="list-items" id="categoryList">
+        <div class="list-row"><span>Keine offenen Aufgaben</span><span>0</span></div>
+      </div>
+    </div>
+
+    <!-- Finanzen -->
+    <div class="card finance-sensitive">
+      <div class="card-title"><i data-lucide="receipt-text"></i>Finanzbereich</div>
+      <div class="list-items" id="financeList">
+        <div class="list-row"><span>Lade Daten…</span><span>💰</span></div>
+      </div>
+      <a class="cta-link" href="finanzen.html">Zu den Finanzen →</a>
+    </div>
+  </section>
+</main>
 </div>
 
 <script>
+// ── AUTH CHECK ──────────────────────────────────────────────────
 function checkAuth() {
   const user = JSON.parse(localStorage.getItem('haushaltsheld_user'));
   if (!user || user.role !== 'parent') {
@@ -88,21 +1346,181 @@ function checkAuth() {
     return false;
   }
   
+  // User Info aktualisieren
   document.getElementById('userName').textContent = '👋 ' + user.name;
+  document.getElementById('userRole').textContent = 'Eltern-Modus';
   return true;
 }
 
 function handleLogout() {
-  if (confirm('Möchten Sie sich abmelden?')) {
+  if (confirm('Möchten Sie sich wirklich abmelden?')) {
     localStorage.removeItem('haushaltsheld_user');
     window.location.href = 'login.html';
   }
 }
 
-// Einmalig beim Laden checken
-if (!checkAuth()) {
-  document.body.style.display = 'none';
+// ── Helpers ──────────────────────────────────────────────────────
+function fmt(v){ return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(v||0); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function fmtDate(s){ if(!s) return "ohne Datum"; const d=new Date(s); return isNaN(d)?s:d.toLocaleDateString("de-DE"); }
+
+// ── Data ──────────────────────────────────────────────────────────
+function getTasks(){ return JSON.parse(localStorage.getItem("haushaltsheld_tasks")||"[]").map(t=>({category:"Sonstiges",priority:"Normal",...t})); }
+function getFinance(){ return JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2")||"[]"); }
+
+// ── Stats ──────────────────────────────────────────────────────────
+function loadStats(){
+  const finance = getFinance();
+  const today = new Date().toISOString().split("T")[0];
+  const todaySpent = finance.filter(e=>e.type==="Ausgabe"&&e.date===today).reduce((s,e)=>s+Number(e.amount||0),0);
+  const income = finance.filter(e=>e.type==="Einnahme").reduce((s,e)=>s+Number(e.amount||0),0);
+  const expenses = finance.filter(e=>e.type==="Ausgabe").reduce((s,e)=>s+Number(e.amount||0),0);
+
+  document.getElementById("statToday").textContent = finance.some(e=>e.date===today) ? fmt(todaySpent) : "0 €";
+  const balEl = document.getElementById("statBalance");
+  const bal = income - expenses;
+  balEl.textContent = fmt(bal);
+  balEl.parentElement.classList.toggle("stat-green", bal>=0);
+  balEl.parentElement.classList.toggle("stat-red", bal<0);
+
+  const recent = [...finance].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,3);
+  const fl = document.getElementById("financeList");
+  fl.innerHTML = recent.length
+    ? recent.map(e=>`<div class="list-row"><span>${esc(e.title)}</span><span>${e.type==="Einnahme"?"+":"–"} ${fmt(e.amount)}</span></div>`).join("")
+    : `<div class="list-row"><span>Noch keine Buchungen</span><span>—</span></div>`;
 }
-</script>
-</body>
-</html>
+
+// ��─ Tasks ──────────────────────────────────────────────────────────
+function priorityClass(p){ return p==="Wichtig"?"chip-high":p==="Weniger wichtig"?"chip-low":"chip-med"; }
+function priorityWeight(p){ return p==="Wichtig"?0:p==="Normal"?1:2; }
+
+function loadTasks(){
+  const all = getTasks();
+  const open = all.filter(t=>!t.done);
+  document.getElementById("statOpenTasks").textContent = open.length;
+  document.getElementById("statImportantTasks").textContent = open.filter(t=>t.priority==="Wichtig").length;
+
+  const sorted = [...open].sort((a,b)=>{
+    const pd = priorityWeight(a.priority)-priorityWeight(b.priority);
+    if(pd!==0) return pd;
+    if(a.date&&b.date) return new Date(a.date)-new Date(b.date);
+    if(a.date&&!b.date) return -1;
+    if(!a.date&&b.date) return 1;
+    return 0;
+  }).slice(0,4);
+
+  const tl = document.getElementById("taskList");
+  tl.innerHTML = sorted.length
+    ? sorted.map(t=>`
+      <div class="task-item">
+        <div class="task-info">
+          <strong>${esc(t.text)}</strong>
+          <div class="task-meta">
+            <span class="chip">${esc(t.category)}</span>
+            <span class="chip ${priorityClass(t.priority)}">${esc(t.priority)}</span>
+            <span class="chip">${fmtDate(t.date)}</span>
+          </div>
+        </div>
+        <div class="chip">${esc(t.person)}</div>
+      </div>`).join("")
+    : `<div class="list-row"><span>Gerade ist nichts offen 🌿</span><span>✓</span></div>`;
+
+  const counts = {};
+  open.forEach(t=>{ counts[t.category]=(counts[t.category]||0)+1; });
+  const cl = document.getElementById("categoryList");
+  const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  cl.innerHTML = entries.length
+    ? entries.map(([cat,n])=>`<div class="list-row"><span>${esc(cat)}</span><span>${n}</span></div>`).join("")
+    : `<div class="list-row"><span>Keine offenen Aufgaben</span><span>0</span></div>`;
+}
+
+// ── Mode Toggle ──────────────────────────────────────────────────
+const adminBtn = document.getElementById("adminBtn");
+const childBtn  = document.getElementById("childBtn");
+const modeBadge = document.getElementById("modeBadge");
+
+function setMode(mode){
+  const finCards = document.querySelectorAll(".finance-sensitive");
+  if(mode==="child"){
+    finCards.forEach(c=>c.classList.add("child-hidden"));
+    adminBtn.classList.remove("active");
+    childBtn.classList.add("active");
+    modeBadge.className="mode-badge child";
+    modeBadge.innerHTML = '<i data-lucide="baby"></i>Kindmodus aktiv';
+  } else {
+    finCards.forEach(c=>c.classList.remove("child-hidden"));
+    childBtn.classList.remove("active");
+    adminBtn.classList.add("active");
+    modeBadge.className="mode-badge";
+    modeBadge.innerHTML = '<i data-lucide="wrench"></i>Elternmodus aktiv';
+  }
+  if (window.lucide) lucide.createIcons();
+  localStorage.setItem("haushaltsheld_mode",mode);
+}
+
+adminBtn.addEventListener("click",()=>setMode("admin"));
+childBtn.addEventListener("click",()=>{ setMode("child"); window.location.href = "kindermodus.html"; });
+
+// ── Familien-Startbereich ────────────────────────────────────────
+const HH_ONLINE_USERS_KEY = "hh_online_users";
+const HH_APPOINTMENTS_KEY = "hh_termine";
+
+function getCurrentDisplayName(){
+  const user = JSON.parse(localStorage.getItem('haushaltsheld_user') || "null");
+  return user?.name || "Nutzer";
+}
+
+function renderTopWelcome(){
+  const el = document.getElementById("welcomeTextTop");
+  if(!el) return;
+  el.textContent = "Willkommen " + getCurrentDisplayName();
+}
+
+function renderTopDate(){
+  const el = document.getElementById("todayDateTop");
+  if(!el) return;
+  const d = new Date();
+  el.textContent = d.toLocaleDateString("de-DE", {
+    weekday:"long", day:"numeric", month:"long", year:"numeric"
+  });
+}
+
+function getWaitingParentTasks(){
+  return getTasks().filter(t => t && t.status === "waiting_parent");
+}
+
+function getUnreadThreads(){
+  const threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
+  return (Array.isArray(threads) ? threads : []).filter(t => t && t.unreadForParent);
+}
+
+function renderTopMotivation(){
+  const el = document.getElementById("motivationTextTop");
+  if(!el) return;
+
+  const unreadChats = getUnreadThreads().length;
+  const waitingTasks = getWaitingParentTasks().length;
+  const openTasks = getTasks().filter(t => !t.done).length;
+
+  let text = "Gemeinsam schaffen wir alles 💚";
+  if(waitingTasks > 0) text = "Heute wartet mindestens eine Aufgabe auf eure Rückmeldung 💚";
+  else if(unreadChats > 0) text = "Es gibt neue Nachrichten in eurem Familien-Chat 💬";
+  else if(openTasks >= 5) text = "Heute packt ihr gemeinsam viel an – Schritt für Schritt 💪";
+  else if(openTasks === 0) text = "Alles sieht ruhig aus – genießt euren Tag zusammen 🌞";
+  else text = "Ein kleiner Schritt ist auch Fortschritt ✨";
+
+  el.textContent = text;
+}
+
+function rememberOnlineUser(){
+  const now = Date.now();
+  const me = getCurrentDisplayName();
+  let users = JSON.parse(localStorage.getItem(HH_ONLINE_USERS_KEY) || "[]");
+  users = Array.isArray(users) ? users : [];
+
+  const cutoff = now - 5 * 60 * 1000;
+  users = users.filter(u => u && u.name && Number(u.lastSeen || 0) >= cutoff);
+
+  const existing = users.find(u => u.name === me);
+  if(existing) existing.lastSeen = now;
+  else users.push({ name: me, lastSeen: now });
