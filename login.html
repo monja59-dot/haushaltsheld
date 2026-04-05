@@ -153,6 +153,7 @@ button,input,select,textarea{font:inherit}
   margin-bottom:8px;
   max-height:300px;
   overflow-y:auto;
+  min-height:100px;
 }
 
 .user-btn{
@@ -333,7 +334,7 @@ a.btn-login:active{
       <div class="form-group">
         <label>Wer bist du?</label>
         <div class="user-selector" id="userSelector">
-          <div class="empty-users">Laden...</div>
+          <div class="empty-users">Lädt...</div>
         </div>
       </div>
 
@@ -369,11 +370,9 @@ a.btn-login:active{
 const FAMILY_CODE = '424242';
 let selectedUser = null;
 
-// Demo-Nutzer initialisieren
 function initDemoUsers() {
   const existingUsers = localStorage.getItem('haushaltsheld_users');
   
-  // Nur wenn noch keine Nutzer existieren
   if (!existingUsers) {
     const demoUsers = [
       {
@@ -401,8 +400,6 @@ function initDemoUsers() {
     
     localStorage.setItem('haushaltsheld_users', JSON.stringify(demoUsers));
   }
-  
-  loadUsers();
 }
 
 function loadUsers() {
@@ -498,19 +495,26 @@ function handleLogin(event) {
   }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+// Startup
+document.addEventListener('DOMContentLoaded', function() {
   const session = localStorage.getItem('haushaltsheld_session');
   if (session === 'active') {
     const user = JSON.parse(localStorage.getItem('haushaltsheld_user'));
     if (user && user.role === 'parent') {
       window.location.href = 'index.html';
+      return;
     } else if (user && user.role === 'child') {
       window.location.href = 'kindermodus.html';
+      return;
     }
   }
 
+  // Initialisiere Demo-Nutzer
   initDemoUsers();
+  // Lade Nutzer in UI
+  loadUsers();
 
+  // Input Filter
   document.getElementById('familyCode').addEventListener('input', (e) => {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');
   });
