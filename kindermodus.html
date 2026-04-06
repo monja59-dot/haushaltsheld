@@ -520,7 +520,7 @@ localStorage.setItem("hh_active_child", JSON.stringify(currentUser));
 const allUsers = readJson("haushaltsheld_users", []);
 const childPermissions = readJson("haushaltsheld_child_permissions", {});
 const childOverrides = childPermissions.childOverrides || {};
-const ageRules = childPermissions.ageRules || {};
+const ageRules = childPermissions.ageGroups || {};
 
 const fullUser = allUsers.find(user => user.id === currentUser.id) || currentUser;
 const age = currentUser.birthdate ? calculateAge(currentUser.birthdate) : calculateAge(fullUser.birthdate);
@@ -530,22 +530,22 @@ const baseRights = ageRules[ageGroupKey] || {};
 const overrideRights = childOverrides[currentUser.id] || fullUser.rights || {};
 
 const finalRights = {
-  aufgaben: overrideRights.aufgaben ?? (baseRights.aufgaben === "allow"),
-  meinGeld: overrideRights.meinGeld ?? (baseRights.meinGeld === "allow"),
+  aufgaben: (overrideRights.aufgaben === "allow") ? true : (overrideRights.aufgaben === "ask" || overrideRights.aufgaben === "deny") ? false : (baseRights.aufgaben === "allow"),
+  meinGeld: (overrideRights.meinGeld === "allow") ? true : (overrideRights.meinGeld === "ask" || overrideRights.meinGeld === "deny") ? false : (baseRights.meinGeld === "allow"),
   sparziele: overrideRights.sparziele ?? true,
   wuensche: overrideRights.wuensche ?? true,
-  einkaufsliste: overrideRights.einkaufsliste ?? (baseRights.einkaufsliste === "allow"),
-  familienplaner: overrideRights.familienplaner ?? (baseRights.familienplaner === "allow"),
-  termine: overrideRights.termine ?? (baseRights.termine === "allow"),
-  chat: age >= 6
+  einkaufsliste: (overrideRights.einkaufsliste === "allow") ? true : (overrideRights.einkaufsliste === "ask" || overrideRights.einkaufsliste === "deny") ? false : (baseRights.einkaufsliste === "allow"),
+  familienplaner: (overrideRights.familienplaner === "allow") ? true : (overrideRights.familienplaner === "ask" || overrideRights.familienplaner === "deny") ? false : (baseRights.familienplaner === "allow"),
+  termine: (overrideRights.termine === "allow") ? true : (overrideRights.termine === "ask" || overrideRights.termine === "deny") ? false : (baseRights.termine === "allow"),
+  chat: (overrideRights.chat === "allow") ? true : (overrideRights.chat === "ask" || overrideRights.chat === "deny") ? false : (baseRights.chat === "allow")
 };
 
 document.getElementById("childName").textContent = currentUser.name || "Kind";
 document.getElementById("childAgeBadge").textContent = age ? `${age} Jahre` : "Alter unbekannt";
-document.getElementById("chatBadge").textContent = age >= 6 ? "Chat aktiv" : "Chat ab 6 Jahren";
-document.getElementById("rightsNote").textContent = age >= 6
-  ? "Der Chat ist automatisch sichtbar, weil dieses Kind 6 Jahre oder älter ist."
-  : "Der Chat ist aktuell noch nicht sichtbar, weil dieses Kind unter 6 Jahren ist.";
+document.getElementById("chatBadge").textContent = finalRights.chat ? "Chat aktiv" : "Chat gesperrt";
+document.getElementById("rightsNote").textContent = finalRights.chat
+  ? "Der Chat ist für dieses Kind aktuell freigegeben."
+  : "Der Chat ist für dieses Kind aktuell nicht freigegeben.";
 
 
 const sidebarIconMap = {

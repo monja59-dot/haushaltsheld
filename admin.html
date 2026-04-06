@@ -989,6 +989,114 @@ a.btn.btn-soft,
   margin-bottom:16px;
   font-weight:700;
 }
+.child-rights-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.child-rights-summary .summary-mini{
+  background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:20px;
+  padding:14px 15px;
+  box-shadow:var(--shadow-xs);
+}
+.child-rights-summary .summary-mini strong{
+  display:block;
+  font-size:1.2rem;
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:6px;
+}
+.child-rights-summary .summary-mini span{
+  color:var(--muted);
+  font-size:.84rem;
+  line-height:1.45;
+}
+.effective-rights-wrap{
+  display:grid;
+  gap:12px;
+  margin-top:14px;
+}
+.effective-rights-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.effective-rights-head h3{
+  font-size:1rem;
+  font-weight:800;
+  margin-bottom:4px;
+}
+.effective-rights-head p{
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.5;
+}
+.effective-rights-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.effective-right-card{
+  background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:20px;
+  padding:14px 15px;
+  box-shadow:var(--shadow-xs);
+}
+.effective-right-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:8px;
+}
+.effective-right-name{
+  font-weight:800;
+  color:var(--text);
+  line-height:1.35;
+}
+.effective-right-meta{
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.45;
+}
+.status-pill,
+.source-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.76rem;
+  font-weight:800;
+  white-space:nowrap;
+  border:1px solid transparent;
+}
+.status-pill.allow{
+  background:var(--green-soft);
+  color:var(--green);
+  border-color:#bddfca;
+}
+.status-pill.ask{
+  background:var(--yellow-soft);
+  color:var(--yellow);
+  border-color:#ead7a2;
+}
+.status-pill.deny{
+  background:var(--red-soft);
+  color:var(--red);
+  border-color:#efc1c1;
+}
+.source-pill{
+  background:rgba(255,255,255,.84);
+  color:var(--text2);
+  border-color:rgba(223,209,188,.95);
+  margin-top:8px;
+}
 .rules-grid-single{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -1013,6 +1121,8 @@ a.btn.btn-soft,
 }
 @media(max-width:900px){
   .rules-grid-single{grid-template-columns:1fr}
+  .child-rights-summary,
+  .effective-rights-grid{grid-template-columns:1fr}
 }
 
 
@@ -1676,6 +1786,19 @@ a.btn.btn-soft,
               <button class="btn-soft" type="button" onclick="resetChildOverrides()">Auf Altersgruppe zurücksetzen</button>
               <button class="btn" type="button" onclick="saveChildOverrides()">Kind-Rechte speichern</button>
             </div>
+
+            <div class="effective-rights-wrap" id="childEffectiveRightsWrap">
+              <div class="effective-rights-head">
+                <div>
+                  <h3>Was gilt jetzt wirklich für dieses Kind?</h3>
+                  <p>Hier siehst du das endgültige Ergebnis aus Altersgruppe und individuellen Zusatzrechten.</p>
+                </div>
+                <span class="summary-badge">Effektiv</span>
+              </div>
+
+              <div class="child-rights-summary" id="childRightsSummary"></div>
+              <div class="effective-rights-grid" id="childEffectiveRightsGrid"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -2314,6 +2437,7 @@ function renderChildOverrideEditor(){
   if(!child){
     editor.style.display = "none";
     info.textContent = "Wähle ein Kind aus, um individuelle Rechte zusätzlich zur Altersgruppe festzulegen.";
+    renderEffectiveChildRights(null);
     return;
   }
 
@@ -2333,9 +2457,11 @@ function renderChildOverrideEditor(){
     lbl.textContent = label;
     const selectField = createRuleSelect({ value: override[key] || "default", includeDefault:true });
     selectField.dataset.childRuleKey = key;
+    selectField.addEventListener("change", () => renderEffectiveChildRights(child));
     field.append(lbl, selectField);
     grid.appendChild(field);
   });
+  renderEffectiveChildRights(child);
 }
 
 function saveChildOverrides(){
