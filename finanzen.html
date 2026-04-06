@@ -776,6 +776,25 @@ a.btn.btn-soft{
   .page-header h1{font-size:1.75rem}
   .mode-badge{width:100%;justify-content:center}
 }
+
+
+.chat-badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#cc6666;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:800;
+  line-height:18px;
+  text-align:center;
+  border:2px solid #fff;
+  box-shadow:0 2px 8px rgba(204,102,102,.28);
+}
 </style>
 </head>
 <body data-page="finanzen">
@@ -839,6 +858,15 @@ a.btn.btn-soft{
         </span>
         <span>Familienplaner</span>
       </a>
+<a href="admin_chat.html">
+      <span class="nav-icon" style="position:relative;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span id="chatBadge" class="chat-badge" style="display:none;">0</span>
+      </span>
+      <span>Familien-Chat</span>
+    </a>
     </nav>
 
     <div class="nav-label">Extras</div>
@@ -1869,5 +1897,33 @@ document.addEventListener("DOMContentLoaded",init);
 
 <script src="js/app.js"></script>
 
+
+<script>
+function updateParentChatBadge(){
+  const badge = document.getElementById("chatBadge");
+  if(!badge) return;
+
+  let threads = [];
+  try{
+    threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
+    if(!Array.isArray(threads)) threads = [];
+  }catch{
+    threads = [];
+  }
+
+  const unreadCount = threads.filter(t => t && t.unreadForParent).length;
+
+  if(unreadCount > 0){
+    badge.style.display = "inline-block";
+    badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+  }else{
+    badge.style.display = "none";
+    badge.textContent = "0";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", updateParentChatBadge);
+window.addEventListener("storage", updateParentChatBadge);
+</script>
 </body>
 </html>

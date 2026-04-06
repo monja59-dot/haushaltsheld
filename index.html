@@ -1,4 +1,3 @@
-<!-- kopiere ALLES von hier bis zum </html> am Ende -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -343,6 +342,24 @@ button,input,select,textarea{
   background:var(--blue-soft);
   border-color:#cbdcf8;
   color:#496d9d;
+}
+
+.chat-badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#cc6666;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:800;
+  line-height:18px;
+  text-align:center;
+  border:2px solid #fff;
+  box-shadow:0 2px 8px rgba(204,102,102,.28);
 }
 
 /* ── Hero ── */
@@ -1149,6 +1166,7 @@ input, select, textarea{
     <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
     <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
     <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
   </nav>
 
  <div class="nav-label">Extras</div>
@@ -1551,6 +1569,34 @@ function initDashboard(){
 }
 
 document.addEventListener('DOMContentLoaded', initDashboard);
+</script>
+
+<script>
+function updateParentChatBadge(){
+  const badge = document.getElementById("chatBadge");
+  if(!badge) return;
+
+  let threads = [];
+  try{
+    threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
+    if(!Array.isArray(threads)) threads = [];
+  }catch{
+    threads = [];
+  }
+
+  const unreadCount = threads.filter(t => t && t.unreadForParent).length;
+
+  if(unreadCount > 0){
+    badge.style.display = "inline-block";
+    badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+  }else{
+    badge.style.display = "none";
+    badge.textContent = "0";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", updateParentChatBadge);
+window.addEventListener("storage", updateParentChatBadge);
 </script>
 </body>
 </html>

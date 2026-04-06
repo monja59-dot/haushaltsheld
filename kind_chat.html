@@ -154,6 +154,25 @@ button,input,select,textarea{font:inherit}
   .chat-body{min-height:320px}
   .message{max-width:92%}
 }
+
+
+.chat-badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#cc6666;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:800;
+  line-height:18px;
+  text-align:center;
+  border:2px solid #fff;
+  box-shadow:0 2px 8px rgba(204,102,102,.28);
+}
 </style>
 </head>
 <body>
@@ -186,7 +205,12 @@ button,input,select,textarea{font:inherit}
         <span>Aufgaben</span>
       </a>
       <a href="kind_chat.html" class="active">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+        <span class="nav-icon" style="position:relative;">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span id="chatBadge" class="chat-badge" style="display:none;">0</span>
+        </span>
         <span>Chat</span>
       </a>
     </nav>
@@ -586,5 +610,42 @@ function hhSeedBaseData(){
  if(!hhReadJson("haushaltsheld_child_profiles_demo",null)){localStorage.setItem("haushaltsheld_child_profiles_demo",JSON.stringify([{id:"child-1",name:"Leo",pin:"1111",age:10,role:"child"},{id:"child-2",name:"Mia",pin:"2222",age:8,role:"child"},{id:"child-3",name:"Lina",pin:"3333",age:6,role:"child"}]));}
 }
 document.addEventListener("DOMContentLoaded",function(){hhSeedBaseData(); const session=hhReadJson("haushaltsheld_session",null); if(!session || session.role!=="child" || !session.userId){window.location.href="kindermodus.html"; return;} let activeChild=hhReadJson("hh_active_child",null); if(!activeChild || activeChild.id!==session.userId){const children=hhReadJson("haushaltsheld_child_profiles_demo",[]); activeChild=children.find(entry=>entry.id===session.userId)||null; if(activeChild) localStorage.setItem("hh_active_child",JSON.stringify(activeChild));} ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id=>{const el=document.getElementById(id); if(el && activeChild) el.textContent=activeChild.name||"Kind";});});})();</script>
+
+<script>
+function updateChildChatBadge(){
+  const badge = document.getElementById("chatBadge");
+  if(!badge) return;
+
+  let threads = [];
+  try{
+    threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
+    if(!Array.isArray(threads)) threads = [];
+  }catch{
+    threads = [];
+  }
+
+  const activeChild = (() => {
+    try{
+      return JSON.parse(localStorage.getItem("hh_active_child") || "null");
+    }catch{
+      return null;
+    }
+  })();
+
+  const currentChildId = String(activeChild?.id || activeChild?.name || "kind");
+  const unreadCount = threads.filter(t => t && String(t.childId || "") === currentChildId && t.unreadForChild).length;
+
+  if(unreadCount > 0){
+    badge.style.display = "inline-block";
+    badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+  }else{
+    badge.style.display = "none";
+    badge.textContent = "0";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", updateChildChatBadge);
+window.addEventListener("storage", updateChildChatBadge);
+</script>
 </body>
 </html>
