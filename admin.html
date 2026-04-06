@@ -873,6 +873,160 @@ a.btn.btn-soft,
   line-height:1.6;
 }
 
+
+.admin-option-card{
+  overflow:hidden;
+}
+.mode-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:#fffaf4;
+  color:var(--accent-dark);
+  border:1px solid rgba(223,209,188,.95);
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:800;
+  margin-bottom:12px;
+  box-shadow:var(--shadow-xs);
+}
+.card-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.rights-block{
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border:1px solid rgba(76,175,80,.18);
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:14px;
+}
+.rights-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+.summary-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--soft);
+  color:#665646;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:.76rem;
+  font-weight:800;
+  border:1px solid rgba(223,209,188,.9);
+}
+.field{
+  display:grid;
+  gap:8px;
+}
+.field label{
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.field input,.field select,.rule-field select{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:#fffdf9;
+  border-radius:16px;
+  padding:13px 14px;
+  font-size:.94rem;
+  color:var(--text);
+  outline:none;
+  transition:.18s ease;
+  min-height:48px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+}
+.field input:focus,.field select:focus,.rule-field select:focus{
+  border-color:rgba(76,175,80,.7);
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+  background:#fff;
+}
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  margin-bottom:12px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(223,209,188,.55);
+}
+.row:last-child{margin-bottom:0;border-bottom:none;padding-bottom:0}
+.label{
+  font-weight:700;
+  color:var(--text2);
+  line-height:1.4;
+  font-size:.92rem;
+}
+.label small{
+  display:block;
+  margin-top:4px;
+  font-size:.82rem;
+  color:var(--muted);
+  font-weight:700;
+  line-height:1.45;
+}
+.child-rights-panel{display:grid;gap:14px}
+.notice{
+  background:var(--blue-soft);
+  border:1px solid rgba(107,150,217,.14);
+  color:#58739c;
+  padding:13px 15px;
+  border-radius:18px;
+  font-size:.88rem;
+  line-height:1.55;
+  margin-bottom:16px;
+  font-weight:700;
+}
+.rules-grid-single{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.rule-field{display:grid;gap:7px}
+.rule-field label{
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.request-card-wrap{
+  border-color:rgba(223,209,188,.95);
+}
+.request-card-wrap .card-sub{
+  max-width:980px;
+}
+.request-card-wrap .request-list{
+  margin-top:12px;
+}
+@media(max-width:900px){
+  .rules-grid-single{grid-template-columns:1fr}
+}
+
+
+.admin-option-card .card-sub{
+  max-width:980px;
+}
+.admin-option-card .field,
+.admin-option-card .rule-field{
+  margin-bottom:0;
+}
+.admin-option-card .card-actions{
+  margin-top:22px;
+}
+
 </style>
 </head>
 <body data-page="admin">
@@ -1446,7 +1600,89 @@ a.btn.btn-soft,
   
 
 
-  <section class="card">
+  <section class="card admin-option-card">
+        <span class="mode-tag">🧒 Gilt für: Kindermodus ohne Elternfreigabe</span>
+        <h2>Kindermodus – Standardrechte nach Alter</h2>
+        <p class="card-sub">Diese Rechte gelten im normalen Kindermodus. Der Chat bleibt ab 6 Jahren grundsätzlich offen und wird hier nicht zusätzlich per Freigabe gesteuert.</p>
+
+        <div class="rights-block">
+          <div class="field" style="margin-bottom:14px;">
+            <label for="ageGroupSelect">Altersgruppe wählen</label>
+            <select id="ageGroupSelect" onchange="renderAgeGroupRules()">
+              <option value="age0to5">0–5 Jahre</option>
+              <option value="age6to10">6–10 Jahre</option>
+              <option value="age11to13">11–13 Jahre</option>
+              <option value="age14to17">14–17 Jahre</option>
+            </select>
+          </div>
+
+          <div class="age-group-head" style="margin-bottom:12px;">
+            <div>
+              <strong id="ageGroupTitle">0–5 Jahre</strong>
+              <span id="ageGroupHint">Sehr geschützter Bereich – fast alles nur mit Elternbegleitung.</span>
+            </div>
+            <span class="summary-badge">Kindermodus</span>
+          </div>
+
+          <div id="ageGroupRules" class="rules-grid-single"></div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn" type="button" onclick="saveAgeRules()">Kindermodus-Rechte speichern</button>
+        </div>
+      </section>
+
+      <section class="card admin-option-card">
+        <span class="mode-tag">🔐 Gilt für: Nur mit Elternfreigabe</span>
+        <h2>Elternmodus für Kinder – Zugriff nur mit Elternfreigabe</h2>
+        <p class="card-sub">Diese Bereiche gehören nicht zum normalen Kindermodus. Zugriff ist nur möglich, wenn ein Elternteil im Elternmodus ausdrücklich freigibt.</p>
+
+        <div class="rights-block">
+          <div class="row"><span class="label">Private Inhalte nur mit Elternfreigabe<small>Gilt nicht im normalen Kindermodus, sondern nur nach ausdrücklicher Zustimmung.</small></span><div class="toggle" data-key="requireApprovalPrivate"></div></div>
+          <div class="row"><span class="label">Termine nur mit Elternfreigabe</span><div class="toggle" data-key="requireApprovalAppointments"></div></div>
+          <div class="row"><span class="label">Finanzen nur mit Elternfreigabe</span><div class="toggle" data-key="requireApprovalFinances"></div></div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn" type="button" onclick="saveApprovalSettings()">Elternfreigaben speichern</button>
+        </div>
+      </section>
+
+      <section class="card admin-option-card">
+        <span class="mode-tag">🧒 Gilt für: Ein ausgewähltes Kind</span>
+        <h2>Individuelle Rechte pro Kind</h2>
+        <p class="card-sub">Hier kannst du ein einzelnes Kind auswählen und die Grundregeln aus der Altersgruppe gezielt anpassen. So bleibt der Jugendschutz automatisch, aber trotzdem flexibel.</p>
+
+        <div class="child-rights-panel">
+          <div class="field">
+            <label for="childRightsSelect">Kind auswählen</label>
+            <select id="childRightsSelect" onchange="renderChildOverrideEditor()">
+              <option value="">-- Kind auswählen --</option>
+            </select>
+          </div>
+
+          <div id="childRightsInfo" class="notice">Wähle ein Kind aus, um individuelle Rechte zusätzlich zur Altersgruppe festzulegen.</div>
+
+          <div id="childOverrideEditor" class="rights-block" style="display:none;">
+            <div class="rights-header">
+              <div>
+                <h3>Zusätzliche Rechte für dieses Kind</h3>
+                <div class="mini-note">Diese Anpassungen überschreiben nur für dieses Kind die Altersgruppe.</div>
+              </div>
+              <span class="summary-badge">Individuell</span>
+            </div>
+            <div class="rules-grid" id="childRulesGrid"></div>
+            <div class="inline-actions">
+              <button class="btn-soft" type="button" onclick="resetChildOverrides()">Auf Altersgruppe zurücksetzen</button>
+              <button class="btn" type="button" onclick="saveChildOverrides()">Kind-Rechte speichern</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+  <section class="card request-card-wrap">
+    <span class="mode-tag">👨‍👩‍👧 Gilt für: Elternbereich</span>
     <h2 class="card-title">
       <span class="section-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1463,7 +1699,8 @@ a.btn.btn-soft,
     <div id="taskApprovalList" class="request-list"></div>
   </section>
 
-  <section class="card">
+  <section class="card request-card-wrap">
+    <span class="mode-tag">👨‍👩‍👧 Gilt für: Elternbereich</span>
     <h2 class="card-title">
       <span class="section-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1483,7 +1720,8 @@ a.btn.btn-soft,
     <div id="chatPreviewList" class="request-list"></div>
   </section>
 
-  <section class="card">
+  <section class="card request-card-wrap">
+    <span class="mode-tag">👨‍👩‍👧 Gilt für: Elternbereich</span>
     <h2 class="card-title">
       <span class="section-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1891,6 +2129,258 @@ window.addEventListener("storage", () => {
   renderRewardRequests();
   renderTaskApprovals();
 });
+
+const RIGHTS_KEY = "haushaltsheld_rights_settings";
+const FAMILY_ACCESS_KEY = "haushaltsheld_family_access";
+
+const ACCESS_LABELS = {
+  meinGeld: "Mein Geld",
+  aufgaben: "Aufgaben",
+  einkaufsliste: "Einkaufsliste",
+  familienplaner: "Familienplaner",
+  termine: "Termine",
+  finanzen: "Finanzen",
+  chat: "Chat"
+};
+
+const ACCESS_OPTIONS = [
+  { value:"deny", label:"Gesperrt" },
+  { value:"ask", label:"Nur nachfragen" },
+  { value:"allow", label:"Direkt erlaubt" }
+];
+
+const AGE_GROUP_META = [
+  { key:"age0to5", label:"0–5 Jahre", hint:"Sehr geschützter Bereich – fast alles nur mit Elternbegleitung." },
+  { key:"age6to10", label:"6–10 Jahre", hint:"Erste Selbstständigkeit – ausgewählte Bereiche dürfen direkt genutzt werden." },
+  { key:"age11to13", label:"11–13 Jahre", hint:"Mehr Eigenständigkeit mit klaren Grenzen und begleiteter Freigabe." },
+  { key:"age14to17", label:"14–17 Jahre", hint:"Fast jugendlich – mehr Verantwortung mit gezielten Schutzregeln." }
+];
+
+const defaultRightsSettings = {
+  ageGroups: {
+    age0to5:   { meinGeld:"deny", aufgaben:"allow", einkaufsliste:"ask", familienplaner:"deny", termine:"deny", finanzen:"deny", chat:"deny" },
+    age6to10:  { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"ask", termine:"ask", finanzen:"deny", chat:"allow" },
+    age11to13: { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"allow", termine:"ask", finanzen:"ask", chat:"allow" },
+    age14to17: { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"allow", termine:"allow", finanzen:"ask", chat:"allow" }
+  },
+  requireApprovalPrivate: true,
+  requireApprovalAppointments: true,
+  requireApprovalFinances: true,
+  childOverrides: {}
+};
+
+let ageGroupDrafts = JSON.parse(JSON.stringify(defaultRightsSettings.ageGroups));
+
+function getStoredRightsSettings(){
+  const stored = safeJsonParse(localStorage.getItem(RIGHTS_KEY), {});
+  return {
+    ...defaultRightsSettings,
+    ...stored,
+    ageGroups: { ...defaultRightsSettings.ageGroups, ...(stored.ageGroups || {}) },
+    childOverrides: stored.childOverrides || {}
+  };
+}
+
+function writeJson(key, value){
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function getUserAgeGroupKey(age){
+  if(age <= 5) return "age0to5";
+  if(age <= 10) return "age6to10";
+  if(age <= 13) return "age11to13";
+  return "age14to17";
+}
+
+function getDisplayAge(user){
+  if(!user) return 0;
+  if(user.birthdate){
+    const birth = new Date(user.birthdate);
+    if(!Number.isNaN(birth.getTime())){
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const monthDiff = today.getMonth() - birth.getMonth();
+      if(monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
+      return Math.max(0, age);
+    }
+  }
+  return Number(user.age) || 0;
+}
+
+function formatGermanDate(value){
+  if(!value) return "";
+  const date = new Date(value);
+  if(Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("de-DE");
+}
+
+function createRuleSelect({ value="allow", includeDefault=false } = {}){
+  const select = document.createElement("select");
+  const options = includeDefault ? [{ value:"default", label:"Altersgruppe verwenden" }, ...ACCESS_OPTIONS] : ACCESS_OPTIONS;
+  select.innerHTML = options.map(option => `<option value="${option.value}">${option.label}</option>`).join("");
+  select.value = value;
+  return select;
+}
+
+function showPageSuccess(message){
+  const box = document.getElementById("saveNote");
+  if(box){
+    box.textContent = message;
+    box.classList.add("show");
+    clearTimeout(showPageSuccess.timer);
+    showPageSuccess.timer = setTimeout(() => box.classList.remove("show"), 2200);
+  }
+}
+
+function saveCurrentAgeGroupDraft(){
+  const select = document.getElementById("ageGroupSelect");
+  if(!select) return;
+  const groupKey = select.value;
+  ageGroupDrafts[groupKey] = ageGroupDrafts[groupKey] || {};
+  document.querySelectorAll("[data-age-rule-key]").forEach(selectField => {
+    ageGroupDrafts[groupKey][selectField.dataset.ageRuleKey] = selectField.value;
+  });
+}
+
+function renderAgeGroupRules(){
+  const select = document.getElementById("ageGroupSelect");
+  const container = document.getElementById("ageGroupRules");
+  if(!select || !container) return;
+  const groupKey = select.value;
+  const meta = AGE_GROUP_META.find(item => item.key === groupKey);
+  document.getElementById("ageGroupTitle").textContent = meta?.label || "";
+  document.getElementById("ageGroupHint").textContent = meta?.hint || "";
+  const rules = ageGroupDrafts[groupKey] || defaultRightsSettings.ageGroups[groupKey] || {};
+  container.innerHTML = "";
+  Object.entries(ACCESS_LABELS).forEach(([key, label]) => {
+    const field = document.createElement("div");
+    field.className = "rule-field";
+    const lbl = document.createElement("label");
+    lbl.textContent = label + (key === "chat" && groupKey !== "age0to5" ? " (ab 6 grundsätzlich offen)" : "");
+    const selectField = createRuleSelect({ value: rules[key] || "allow" });
+    selectField.dataset.ageRuleKey = key;
+    if(key === "chat" && groupKey !== "age0to5"){
+      selectField.value = "allow";
+    }
+    field.append(lbl, selectField);
+    container.appendChild(field);
+  });
+}
+
+function saveAgeRules(){
+  saveCurrentAgeGroupDraft();
+  const settings = getStoredRightsSettings();
+  settings.ageGroups = JSON.parse(JSON.stringify(ageGroupDrafts));
+  writeJson(RIGHTS_KEY, settings);
+  showPageSuccess("Kindermodus-Rechte wurden gespeichert.");
+}
+
+function renderApprovalToggles(){
+  const settings = getStoredRightsSettings();
+  document.querySelectorAll('.toggle[data-key]').forEach(toggle => {
+    setToggleState(toggle, !!settings[toggle.dataset.key]);
+    toggle.onclick = () => setToggleState(toggle, !toggle.classList.contains("active"));
+  });
+}
+
+function saveApprovalSettings(){
+  const settings = getStoredRightsSettings();
+  document.querySelectorAll('.toggle[data-key]').forEach(toggle => {
+    settings[toggle.dataset.key] = toggle.classList.contains("active");
+  });
+  writeJson(RIGHTS_KEY, settings);
+  showPageSuccess("Elternfreigaben wurden gespeichert.");
+}
+
+function renderChildSelect(){
+  const select = document.getElementById("childRightsSelect");
+  if(!select) return;
+  const users = safeJsonParse(localStorage.getItem("haushaltsheld_users"), []);
+  const children = (Array.isArray(users) ? users : []).filter(user => user.role === "child");
+  const current = select.value;
+  select.innerHTML = '<option value="">-- Kind auswählen --</option>' + children.map(child => `<option value="${child.id}">${escapeHtml(child.name)} (${getDisplayAge(child)} Jahre)</option>`).join("");
+  if(children.some(child => child.id === current)) select.value = current;
+}
+
+function renderChildOverrideEditor(){
+  const select = document.getElementById("childRightsSelect");
+  const info = document.getElementById("childRightsInfo");
+  const editor = document.getElementById("childOverrideEditor");
+  const grid = document.getElementById("childRulesGrid");
+  if(!select || !info || !editor || !grid) return;
+
+  const users = safeJsonParse(localStorage.getItem("haushaltsheld_users"), []);
+  const child = (Array.isArray(users) ? users : []).find(user => user.id === select.value && user.role === "child");
+  if(!child){
+    editor.style.display = "none";
+    info.textContent = "Wähle ein Kind aus, um individuelle Rechte zusätzlich zur Altersgruppe festzulegen.";
+    return;
+  }
+
+  const age = getDisplayAge(child);
+  const ageGroupKey = getUserAgeGroupKey(age);
+  const ageGroupLabel = AGE_GROUP_META.find(group => group.key === ageGroupKey)?.label || "Altersgruppe";
+  const settings = getStoredRightsSettings();
+  const override = settings.childOverrides?.[child.id] || {};
+  info.textContent = `${child.name} ist ${age} Jahre alt und nutzt aktuell die Altersgruppe ${ageGroupLabel}. Hier kannst du einzelne Bereiche gezielt anpassen.`;
+
+  editor.style.display = "block";
+  grid.innerHTML = "";
+  Object.entries(ACCESS_LABELS).forEach(([key, label]) => {
+    const field = document.createElement("div");
+    field.className = "rule-field";
+    const lbl = document.createElement("label");
+    lbl.textContent = label;
+    const selectField = createRuleSelect({ value: override[key] || "default", includeDefault:true });
+    selectField.dataset.childRuleKey = key;
+    field.append(lbl, selectField);
+    grid.appendChild(field);
+  });
+}
+
+function saveChildOverrides(){
+  const childId = document.getElementById("childRightsSelect")?.value;
+  if(!childId){
+    alert("Bitte wähle zuerst ein Kind aus.");
+    return;
+  }
+  const settings = getStoredRightsSettings();
+  const overrides = {};
+  document.querySelectorAll("[data-child-rule-key]").forEach(selectField => {
+    if(selectField.value !== "default") overrides[selectField.dataset.childRuleKey] = selectField.value;
+  });
+  if(Object.keys(overrides).length){
+    settings.childOverrides[childId] = overrides;
+  }else{
+    delete settings.childOverrides[childId];
+  }
+  writeJson(RIGHTS_KEY, settings);
+  renderChildOverrideEditor();
+  showPageSuccess("Individuelle Kind-Rechte wurden gespeichert.");
+}
+
+function resetChildOverrides(){
+  const childId = document.getElementById("childRightsSelect")?.value;
+  if(!childId) return;
+  const settings = getStoredRightsSettings();
+  delete settings.childOverrides[childId];
+  writeJson(RIGHTS_KEY, settings);
+  renderChildOverrideEditor();
+  showPageSuccess("Das Kind nutzt jetzt wieder nur die Altersgruppe.");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  ageGroupDrafts = JSON.parse(JSON.stringify(getStoredRightsSettings().ageGroups));
+  const ageSelect = document.getElementById("ageGroupSelect");
+  if(ageSelect){
+    ageSelect.addEventListener("change", saveCurrentAgeGroupDraft);
+    renderAgeGroupRules();
+  }
+  renderApprovalToggles();
+  renderChildSelect();
+  renderChildOverrideEditor();
+});
+
 </script>
 
 <script src="js/permissions.js"></script>

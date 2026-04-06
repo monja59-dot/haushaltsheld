@@ -667,6 +667,19 @@ a.btn-soft:hover{
   color:var(--text2);
   margin:0;
 }
+.ki-chat-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:8px;
+  font-size:.9rem;
+  font-weight:800;
+  color:var(--accent-dark);
+  text-decoration:none;
+}
+.ki-chat-link:hover{
+  text-decoration:underline;
+}
 .ki-close{
   width:46px;
   height:46px;
@@ -1536,7 +1549,7 @@ a.btn-soft:hover{
 </div>
 
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/assetsschnecke.png" alt="">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
   <span class="ki-fab-label">KI</span>
 </button>
 
@@ -1546,7 +1559,8 @@ a.btn-soft:hover{
       <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
         <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText">Ich helfe dir beim Verstehen deines Finanzberichts und deiner Monatswerte.</p>
+        <p id="kiContextText">Ich unterstütze dich hier direkt im Elternbereich.</p>
+        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
       </div>
     </div>
     <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
@@ -1555,11 +1569,11 @@ a.btn-soft:hover{
   <div class="ki-suggestions" id="kiSuggestions"></div>
 
   <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI für den Finanzbericht.</div>
+    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.</div>
   </div>
 
   <form class="ki-form" id="kiForm">
-    <input class="ki-input" id="kiInput" type="text" placeholder="Frag mich etwas zu deinem Bericht..." autocomplete="off">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
     <button class="ki-send" type="submit">Senden</button>
   </form>
 </section>
@@ -2210,8 +2224,8 @@ document.getElementById("printAiReportBtn").addEventListener("click", () => {
     ]
   };
 
-  contextText.textContent = pageSettings.context;
-  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI für den Finanzbericht.";
+  contextText.textContent = "Ich unterstütze dich hier direkt im Elternbereich.";
+  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.";
 
   suggestions.innerHTML = pageSettings.suggestions.map(text =>
     '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'

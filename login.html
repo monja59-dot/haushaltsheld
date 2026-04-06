@@ -243,7 +243,15 @@ body{
       <input type="password" id="pin" maxlength="4" inputmode="numeric" placeholder="4-stellige PIN" required />
     </div>
 
+    
     <button type="submit" class="btn-login">Anmelden</button>
+
+    <div style="text-align:center; margin-top:12px;">
+      <button type="button" onclick="handleForgotPin()" style="background:none;border:none;color:#4CAF50;font-weight:700;cursor:pointer;">
+        🔑 PIN vergessen?
+      </button>
+    </div>
+
   </form>
 
   <div class="info-note" id="infoNote">
@@ -366,6 +374,15 @@ const familyCodeInput = document.getElementById("familyCode");
 familyCodeInput.value = getFamilyCode();
 let users = renderUsers();
 
+const existingAuth = readJson("haushaltsheld_user", null);
+if(existingAuth && existingAuth.role === "parent"){
+  window.location.href = "index.html";
+} else if(existingAuth && existingAuth.role === "child"){
+  localStorage.setItem("hh_active_child", JSON.stringify(existingAuth));
+  window.location.href = "kindermodus.html";
+}
+
+
 document.getElementById("pin").addEventListener("input", (e) => {
   e.target.value = e.target.value.replace(/[^0-9]/g, "");
 });
@@ -432,6 +449,35 @@ function handleLogin(event){
     window.location.href = "index.html";
   }
 }
+
+function handleForgotPin(){
+  const users = JSON.parse(localStorage.getItem("haushaltsheld_users") || "[]");
+
+  if(selectedUser === null){
+    alert("Bitte zuerst einen Nutzer auswählen.");
+    return;
+  }
+
+  const enteredFamilyCode = prompt("Bitte Familien-Code eingeben:");
+  if(!enteredFamilyCode) return;
+
+  if(enteredFamilyCode !== getFamilyCode()){
+    alert("❌ Falscher Familien-Code");
+    return;
+  }
+
+  const newPin = prompt("Neue 4-stellige PIN eingeben:");
+  if(!newPin || newPin.length !== 4){
+    alert("❌ Ungültige PIN");
+    return;
+  }
+
+  users[selectedUser].pin = newPin;
+  localStorage.setItem("haushaltsheld_users", JSON.stringify(users));
+
+  alert("✅ PIN erfolgreich geändert");
+}
+
 </script>
 
 </body>

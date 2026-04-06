@@ -803,7 +803,7 @@ button,input,select,textarea{font:inherit}
           </span>
           <span>Nutzer verwalten</span>
         </h1>
-        <p>Hier verwaltest du alle Familienmitglieder und trennst die Regeln jetzt klar in Kindermodus, Elternfreigabe, individuelle Kinderrechte und Elternbereich.</p>
+        <p>Hier verwaltest du alle Familienmitglieder, Rollen, persönliche PINs und die Familien-PIN. Rechte und Freigaben werden getrennt im Elternbereich unter „Familienrechte“ verwaltet.</p>
       </div>
       <button class="btn" onclick="openAddUserModal()">+ Neuen Nutzer</button>
     </div>
@@ -813,7 +813,7 @@ button,input,select,textarea{font:inherit}
     <section class="cards-stack">
       <div class="card">
         <h2>👨‍👩‍👧 Nutzer verwalten</h2>
-        <p class="card-sub">Hier stehen alle Familienmitglieder übersichtlich mit Name, Alter, Familienfunktion und PIN. Nutzer können direkt hinzugefügt, bearbeitet oder gelöscht werden.</p>
+        <p class="card-sub">Hier stehen alle Familienmitglieder übersichtlich mit Name, Alter, Familienfunktion und persönlicher PIN. Nutzer können direkt hinzugefügt, bearbeitet, gelöscht oder bei Bedarf per „PIN vergessen“ zurückgesetzt werden.</p>
         <div id="userList" class="user-list">
           <div class="empty-state">Noch keine Nutzer erstellt. Klicke auf „+ Neuen Nutzer“, um zu beginnen.</div>
         </div>
@@ -858,86 +858,7 @@ button,input,select,textarea{font:inherit}
         </div>
       </div>
 
-      <div class="card">
-        <span class="mode-tag">🧒 Gilt für: Kindermodus ohne Elternfreigabe</span>
-        <h2>Kindermodus – Standardrechte nach Alter</h2>
-        <p class="card-sub">Diese Rechte gelten im normalen Kindermodus. Der Chat bleibt ab 6 Jahren grundsätzlich offen und wird hier nicht zusätzlich per Freigabe gesteuert.</p>
-
-        <div class="rights-block">
-          <div class="field" style="margin-bottom:14px;">
-            <label for="ageGroupSelect">Altersgruppe wählen</label>
-            <select id="ageGroupSelect" onchange="renderAgeGroupRules()">
-              <option value="age0to5">0–5 Jahre</option>
-              <option value="age6to10">6–10 Jahre</option>
-              <option value="age11to13">11–13 Jahre</option>
-              <option value="age14to17">14–17 Jahre</option>
-            </select>
-          </div>
-
-          <div class="age-group-head" style="margin-bottom:12px;">
-            <div>
-              <strong id="ageGroupTitle">0–5 Jahre</strong>
-              <span id="ageGroupHint">Sehr geschützter Bereich – fast alles nur mit Elternbegleitung.</span>
-            </div>
-            <span class="summary-badge">Kindermodus</span>
-          </div>
-
-          <div id="ageGroupRules" class="rules-grid-single"></div>
-        </div>
-
-        <div class="card-actions">
-          <button class="btn" type="button" onclick="saveAgeRules()">Kindermodus-Rechte speichern</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <span class="mode-tag">🔐 Gilt für: Nur mit Elternfreigabe</span>
-        <h2>Elternmodus für Kinder – Zugriff nur mit Elternfreigabe</h2>
-        <p class="card-sub">Diese Bereiche gehören nicht zum normalen Kindermodus. Zugriff ist nur möglich, wenn ein Elternteil im Elternmodus ausdrücklich freigibt.</p>
-
-        <div class="rights-block">
-          <div class="row"><span class="label">Private Inhalte nur mit Elternfreigabe<small>Gilt nicht im normalen Kindermodus, sondern nur nach ausdrücklicher Zustimmung.</small></span><div class="toggle" data-key="requireApprovalPrivate"></div></div>
-          <div class="row"><span class="label">Termine nur mit Elternfreigabe</span><div class="toggle" data-key="requireApprovalAppointments"></div></div>
-          <div class="row"><span class="label">Finanzen nur mit Elternfreigabe</span><div class="toggle" data-key="requireApprovalFinances"></div></div>
-        </div>
-
-        <div class="card-actions">
-          <button class="btn" type="button" onclick="saveApprovalSettings()">Elternfreigaben speichern</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <span class="mode-tag">🧒 Gilt für: Ein ausgewähltes Kind</span>
-        <h2>Individuelle Rechte pro Kind</h2>
-        <p class="card-sub">Hier kannst du ein einzelnes Kind auswählen und die Grundregeln aus der Altersgruppe gezielt anpassen. So bleibt der Jugendschutz automatisch, aber trotzdem flexibel.</p>
-
-        <div class="child-rights-panel">
-          <div class="field">
-            <label for="childRightsSelect">Kind auswählen</label>
-            <select id="childRightsSelect" onchange="renderChildOverrideEditor()">
-              <option value="">-- Kind auswählen --</option>
-            </select>
-          </div>
-
-          <div id="childRightsInfo" class="notice">Wähle ein Kind aus, um individuelle Rechte zusätzlich zur Altersgruppe festzulegen.</div>
-
-          <div id="childOverrideEditor" class="rights-block" style="display:none;">
-            <div class="rights-header">
-              <div>
-                <h3>Zusätzliche Rechte für dieses Kind</h3>
-                <div class="mini-note">Diese Anpassungen überschreiben nur für dieses Kind die Altersgruppe.</div>
-              </div>
-              <span class="summary-badge">Individuell</span>
-            </div>
-            <div class="rules-grid" id="childRulesGrid"></div>
-            <div class="inline-actions">
-              <button class="btn-soft" type="button" onclick="resetChildOverrides()">Auf Altersgruppe zurücksetzen</button>
-              <button class="btn" type="button" onclick="saveChildOverrides()">Kind-Rechte speichern</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
   </main>
 </div>
 <div id="userModal" class="modal">
@@ -973,19 +894,8 @@ button,input,select,textarea{font:inherit}
         </div>
       </div>
 
-      <div id="rightsSection" style="display:none;">
-        <div class="rights-block">
-          <h3>Schnellzugriff im Kindermodus</h3>
-          <div class="chat-auto-note">Diese Einstellungen gelten nur im normalen Kindermodus. Sie gelten nicht für den Elternmodus. Der Chat wird ab 6 Jahren automatisch aktiviert.</div>
-          <div class="row"><span class="label">Mein Geld</span><div class="toggle user-right" data-right="meinGeld"></div></div>
-          <div class="row"><span class="label">Aufgaben</span><div class="toggle user-right" data-right="aufgaben"></div></div>
-          <div class="row"><span class="label">Einkaufsliste</span><div class="toggle user-right" data-right="einkaufsliste"></div></div>
-          <div class="row"><span class="label">Familienplaner</span><div class="toggle user-right" data-right="familienplaner"></div></div>
-          <div class="row"><span class="label">Termine</span><div class="toggle user-right" data-right="termine"></div></div>
-          <div class="row"><span class="label">Finanzen</span><div class="toggle user-right" data-right="finanzen"></div></div>
-          <div class="row"><span class="label">Chat <small class="sub-note">Ab 6 Jahren automatisch im Kindermodus aktiv</small></span><div class="toggle user-right locked" data-right="chat" id="userChatToggle"></div></div>
-        </div>
-      </div>
+      
+      <div id="roleHint" class="notice" style="margin-bottom:18px;">Rechte und Freigaben werden getrennt im Bereich <strong>Familienrechte</strong> verwaltet. Hier in der Nutzerverwaltung legst du nur Personen, Rollen und PINs fest.</div>
 
       <div class="actions">
         <button type="button" class="btn-soft" onclick="closeUserModal()">Abbrechen</button>
@@ -1152,19 +1062,11 @@ function isChatAllowedByBirthdate(birthdate){
   return calculateAge(birthdate) >= 6;
 }
 
-function applyUserModalChatRule(){
-  const birthdate = document.getElementById("userBirthdate")?.value || "";
-  const chatToggle = document.getElementById("userChatToggle");
-  if(!chatToggle) return;
-  setToggleState(chatToggle, isChatAllowedByBirthdate(birthdate));
-}
+function applyUserModalChatRule(){ return; }
 
 function summarizeRights(user){
-  if(user.role === "parent") return "Voller Elternzugriff";
-  const ageLabel = AGE_GROUP_META.find(group => group.key === getUserAgeGroupKey(getDisplayAge(user)))?.label || "Altersgruppe";
-  const rightsSettings = getStoredRightsSettings();
-  const hasOverrides = !!rightsSettings.childOverrides?.[user.id];
-  return hasOverrides ? `Kindermodus: ${ageLabel} + individuelle Anpassung` : `Kindermodus: ${ageLabel}`;
+  if(!user) return "";
+  return user.role === "parent" ? "Elternzugang" : "Kinderzugang";
 }
 
 function ensureUserIds(){
@@ -1176,7 +1078,7 @@ function ensureUserIds(){
   if(changed) writeJson(USER_KEY, allUsers);
 }
 
-function loadUsers(){ allUsers = readJson(USER_KEY, []); ensureUserIds(); displayUsers(); renderChildSelect(); }
+function loadUsers(){ allUsers = readJson(USER_KEY, []); ensureUserIds(); displayUsers(); }
 
 function displayUsers(){
   const userList = document.getElementById("userList");
@@ -1197,6 +1099,7 @@ function displayUsers(){
       </div>
       <div class="user-actions">
         <button class="btn-mini" onclick="editUser(${index})">✏️ Ändern</button>
+        <button class="btn-mini" onclick="resetUserPin(${index})">🔑 PIN vergessen</button>
         <button class="btn-mini delete" onclick="deleteUser(${index})">🗑️ Löschen</button>
       </div>
     </div>`).join("");
@@ -1215,19 +1118,14 @@ function openAddUserModal(){
 function closeUserModal(){ document.getElementById("userModal").classList.remove("show"); }
 function updateRoleDisplay(){
   const role = document.getElementById("userRole").value;
-  document.getElementById("rightsSection").style.display = role === "child" ? "block" : "none";
-  applyUserModalChatRule();
+  const noteBox = document.getElementById("roleHint");
+  if(noteBox){
+    noteBox.textContent = role === "child"
+      ? "Kind angelegt: Rechte und Freigaben stellst du danach im Bereich „Familienrechte“ ein."
+      : "Elternzugang angelegt: Dieser Nutzer kann den Elternmodus verwenden.";
+  }
 }
-function resetUserRightsToggles(){
-  document.querySelectorAll('.user-right').forEach(toggle => setToggleState(toggle, false));
-  setToggleState(document.querySelector('[data-right="meinGeld"]'), true);
-  setToggleState(document.querySelector('[data-right="aufgaben"]'), true);
-  setToggleState(document.querySelector('[data-right="einkaufsliste"]'), true);
-  setToggleState(document.querySelector('[data-right="familienplaner"]'), true);
-  setToggleState(document.querySelector('[data-right="termine"]'), false);
-  setToggleState(document.querySelector('[data-right="finanzen"]'), false);
-  applyUserModalChatRule();
-}
+function resetUserRightsToggles(){ return; }
 
 function handleSaveUser(event){
   event.preventDefault();
@@ -1243,13 +1141,14 @@ function handleSaveUser(event){
   const nameExists = allUsers.some((u, i) => u.name.toLowerCase() === name.toLowerCase() && i !== currentUserId);
   if(nameExists){ errorMsg.textContent = "Ein Nutzer mit diesem Namen existiert bereits."; errorMsg.classList.add("show"); return; }
 
+  const existingRights = currentUserId !== null ? (allUsers[currentUserId].rights || {}) : {};
   const rights = role === "child" ? {
-    meinGeld: document.querySelector('[data-right="meinGeld"]').classList.contains("active"),
-    aufgaben: document.querySelector('[data-right="aufgaben"]').classList.contains("active"),
-    einkaufsliste: document.querySelector('[data-right="einkaufsliste"]').classList.contains("active"),
-    familienplaner: document.querySelector('[data-right="familienplaner"]').classList.contains("active"),
-    termine: document.querySelector('[data-right="termine"]').classList.contains("active"),
-    finanzen: document.querySelector('[data-right="finanzen"]').classList.contains("active"),
+    meinGeld: existingRights.meinGeld ?? true,
+    aufgaben: existingRights.aufgaben ?? true,
+    einkaufsliste: existingRights.einkaufsliste ?? true,
+    familienplaner: existingRights.familienplaner ?? true,
+    termine: existingRights.termine ?? false,
+    finanzen: existingRights.finanzen ?? false,
     chat: isChatAllowedByBirthdate(birthdate)
   } : {};
 
@@ -1269,33 +1168,35 @@ function editUser(index){
   document.getElementById("userBirthdate").value = user.birthdate || "";
   document.getElementById("userRole").value = user.role || "";
   document.getElementById("userPin").value = user.pin || "";
-  resetUserRightsToggles();
-  if(user.role === "child"){
-    setToggleState(document.querySelector('[data-right="meinGeld"]'), !!user.rights?.meinGeld);
-    setToggleState(document.querySelector('[data-right="aufgaben"]'), !!user.rights?.aufgaben);
-    setToggleState(document.querySelector('[data-right="einkaufsliste"]'), !!user.rights?.einkaufsliste);
-    setToggleState(document.querySelector('[data-right="familienplaner"]'), !!user.rights?.familienplaner);
-    setToggleState(document.querySelector('[data-right="termine"]'), !!user.rights?.termine);
-    setToggleState(document.querySelector('[data-right="finanzen"]'), !!user.rights?.finanzen);
-  }
   updateRoleDisplay();
-  applyUserModalChatRule();
   document.getElementById("modalError").classList.remove("show");
   document.getElementById("userModal").classList.add("show");
+}
+
+
+function resetUserPin(index){
+  const user = allUsers[index]; if(!user) return;
+  const newPin = prompt(`Neue 4-stellige PIN für ${user.name} eingeben:`, "");
+  if(newPin === null) return;
+  const cleanedPin = String(newPin).trim();
+  if(!/^\d{4}$/.test(cleanedPin)){
+    alert("Die neue PIN muss genau 4 Ziffern haben.");
+    return;
+  }
+  allUsers[index].pin = cleanedPin;
+  writeJson(USER_KEY, allUsers);
+  syncStoredSessions();
+  showPageSuccess(`PIN für ${user.name} wurde zurückgesetzt.`);
+  displayUsers();
 }
 
 function deleteUser(index){
   const user = allUsers[index]; if(!user) return;
   if(!confirm(`Möchtest du ${user.name} wirklich löschen?`)) return;
-  const rights = getStoredRightsSettings();
-  if(rights.childOverrides?.[user.id]) delete rights.childOverrides[user.id];
-  writeJson(RIGHTS_KEY, rights);
-  const tempAccess = readJson('hh_temp_access', {});
-  if(tempAccess?.[user.id]){ delete tempAccess[user.id]; writeJson('hh_temp_access', tempAccess); }
   allUsers.splice(index,1);
   writeJson(USER_KEY, allUsers);
   syncStoredSessions();
-  displayUsers(); renderChildSelect(); renderChildOverrideEditor();
+  displayUsers();
   showPageSuccess("Nutzer wurde gelöscht.");
 }
 
@@ -1459,9 +1360,6 @@ function resetChildOverrides(){
 }
 
 function loadRights(){
-  const settings = getStoredRightsSettings();
-  ageGroupDrafts = deepClone({ ...defaultRightsSettings.ageGroups, ...(settings.ageGroups || {}) });
-  document.querySelectorAll('.toggle[data-key]').forEach(toggle => setToggleState(toggle, !!settings[toggle.dataset.key]));
   const familyAccess = readJson(FAMILY_ACCESS_KEY, getDefaultFamilyAccess());
   setToggleState(document.getElementById('familyPinEnabledToggle'), !!familyAccess.enabled);
   document.getElementById('familyPinPreview').textContent = familyAccess.code || defaultRightsSettings.familyPinCode;
@@ -1475,8 +1373,6 @@ function loadRights(){
     if(text) text.textContent = 'Anzeigen';
   }
   updateFamilyPinStatus();
-  renderAgeGroupRules();
-  renderChildOverrideEditor();
 }
 
 function handleLogout(){ if(confirm('Möchtest du dich wirklich abmelden?')){ localStorage.removeItem(AUTH_KEY); localStorage.removeItem('hh_active_child'); window.location.href = 'login.html'; } }
@@ -1484,16 +1380,13 @@ function handleLogout(){ if(confirm('Möchtest du dich wirklich abmelden?')){ lo
 window.addEventListener('DOMContentLoaded', () => {
   if(!checkAuth()) return;
   bindAllToggles();
-  resetUserRightsToggles();
   loadUsers();
   loadRights();
   document.getElementById('userPin').addEventListener('input', e => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); });
-  const birthdateField = document.getElementById('userBirthdate');
-  if(birthdateField) birthdateField.addEventListener('change', applyUserModalChatRule);
   ['familyPin','familyPinConfirm'].forEach(id => { const el = document.getElementById(id); if(el){ el.addEventListener('input', e => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); }); } });
   const familyPinToggle = document.getElementById('familyPinEnabledToggle');
   if(familyPinToggle) familyPinToggle.addEventListener('click', updateFamilyPinStatus);
-  applyUserModalChatRule();
+  updateRoleDisplay();
 });
 </script>
 

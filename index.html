@@ -1239,9 +1239,9 @@ input, select, textarea{
         <div class="card" style="padding:18px;">
           <div class="card-title"><i data-lucide="message-circle"></i>Familien-Chat</div>
           <div class="list-items" id="chatPreviewTop">
-            <div class="list-row"><span>Keine neuen Nachrichten</span><span>💬</span></div>
+            <div class="list-row"><span>Noch keine neuen Nachrichten</span><span>💬</span></div>
           </div>
-          <a class="cta-link" href="admin_chat.html">Zum Chat →</a>
+          <a class="cta-link" href="admin_chat.html">Zum Familien-Chat</a>
         </div>
 
         <div class="card" style="padding:18px;">
@@ -1356,6 +1356,7 @@ function checkAuth() {
 function handleLogout() {
   if (confirm('Möchten Sie sich wirklich abmelden?')) {
     localStorage.removeItem('haushaltsheld_user');
+    localStorage.removeItem('hh_active_child');
     window.location.href = 'login.html';
   }
 }
