@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Haushaltsheld – Familienrechte</title>
+<title>Haushaltsheld – Familien-Chat</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -212,7 +212,6 @@ button,input,select,textarea{font:inherit}
   padding:32px;
 }
 
-/* Header */
 .page-header{
   display:flex;
   justify-content:space-between;
@@ -222,7 +221,7 @@ button,input,select,textarea{font:inherit}
   margin-bottom:22px;
 }
 .page-header h1{
-  font-size:2.35rem;
+  font-size:2.2rem;
   font-weight:800;
   margin-bottom:8px;
   display:flex;
@@ -253,17 +252,6 @@ button,input,select,textarea{font:inherit}
   color:var(--text2);
   box-shadow:var(--shadow-xs);
 }
-.mode-note{
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:18px;
-  background:rgba(255,255,255,.55);
-  border:1px solid rgba(223,209,188,.75);
-  border-radius:18px;
-  padding:14px 16px;
-}
-
-/* Icons */
 .page-title-icon,
 .section-icon{
   width:34px;
@@ -283,14 +271,13 @@ button,input,select,textarea{font:inherit}
   stroke:currentColor;
 }
 
-/* Hero */
 .hero{
   background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
   border:1px solid rgba(76,175,80,.18);
   border-radius:30px;
   padding:28px 30px;
   display:grid;
-  grid-template-columns:1.1fr .9fr;
+  grid-template-columns:1.15fr .85fr;
   gap:20px;
   align-items:stretch;
   margin-bottom:24px;
@@ -307,15 +294,11 @@ button,input,select,textarea{font:inherit}
   height:180px;
   border-radius:50%;
   background:rgba(76,175,80,.07);
-  pointer-events:none;
 }
 .hero h2{
   font-size:1.55rem;
   font-weight:800;
   margin-bottom:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
 }
 .hero p{
   color:var(--text2);
@@ -340,16 +323,13 @@ button,input,select,textarea{font:inherit}
   color:var(--text2);
   box-shadow:0 1px 4px rgba(54,45,28,.04);
 }
-.hero-side{
-  display:grid;
-  gap:12px;
-}
 .mini{
   background:rgba(255,255,255,.78);
   border-radius:20px;
   padding:16px;
   border:1px solid rgba(223,209,188,.85);
   box-shadow:var(--shadow-xs);
+  margin-bottom:12px;
 }
 .mini strong{
   display:block;
@@ -363,403 +343,253 @@ button,input,select,textarea{font:inherit}
   line-height:1.55;
 }
 
-/* Overview cards */
-.summary-grid{
+.stats-grid{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:14px;
-  margin-bottom:18px;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:22px;
 }
-.summary-card{
+.stat-card{
   background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
   border:1px solid rgba(223,209,188,.95);
-  border-radius:24px;
+  border-radius:26px;
   padding:20px;
   box-shadow:var(--shadow-sm);
 }
-.summary-card h3{
-  font-size:.85rem;
-  margin-bottom:10px;
+.stat-label{
+  font-size:.72rem;
+  font-weight:800;
   color:var(--muted);
   text-transform:uppercase;
   letter-spacing:.08em;
+  margin-bottom:8px;
 }
-.summary-card .value{
-  font-size:1.4rem;
+.stat-value{
+  font-size:2rem;
   font-weight:800;
-  margin-bottom:6px;
-  letter-spacing:-0.03em;
+  letter-spacing:-0.04em;
 }
-.summary-card p{
-  color:var(--muted);
-  font-size:.9rem;
-  line-height:1.45;
-}
+.stat-sub{font-size:.84rem;color:var(--muted)}
 
-/* Sections */
-.section{
+.grid{
+  display:grid;
+  grid-template-columns:380px 1fr;
+  gap:18px;
+}
+.card{
   background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
   border:1px solid rgba(223,209,188,.95);
   border-radius:28px;
-  padding:22px;
-  margin-bottom:18px;
+  padding:24px;
   box-shadow:var(--shadow-sm);
+  margin-bottom:18px;
 }
-.section h2{
-  font-size:1.2rem;
-  margin-bottom:8px;
+.card-title{
   display:flex;
   align-items:center;
   gap:10px;
-}
-.section p.subtitle{
-  color:var(--muted);
-  line-height:1.55;
-  margin-bottom:16px;
-}
-
-/* Settings */
-.settings-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
-.settings-box{
-  background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:24px;
-  overflow:hidden;
-}
-.settings-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:16px 18px;
-  background:rgba(255,255,255,.8);
-  border-bottom:1px solid rgba(223,209,188,.85);
-}
-.settings-head strong{
-  font-size:1rem;
+  font-size:1.16rem;
   font-weight:800;
-}
-.setting-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  padding:16px 18px;
-  border-bottom:1px solid rgba(223,209,188,.78);
-}
-.setting-row:last-child{border-bottom:none}
-.setting-copy strong{
-  display:block;
-  font-size:.96rem;
-  font-weight:800;
-  color:var(--text);
-  margin-bottom:4px;
-}
-.setting-copy span{
-  color:var(--muted);
-  font-size:.9rem;
-  line-height:1.45;
-}
-
-/* Toggle */
-.toggle{
-  position:relative;
-  width:68px;
-  height:38px;
-  border:none;
-  border-radius:999px;
-  background:#d8ddd8;
-  cursor:pointer;
-  flex-shrink:0;
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.6), inset 0 -1px 2px rgba(45,52,47,.08);
-  transition:.18s ease;
-}
-.toggle::after{
-  content:"";
-  position:absolute;
-  top:4px;
-  left:4px;
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  background:linear-gradient(180deg,#ffffff 0%, #f7f7f7 100%);
-  box-shadow:0 2px 8px rgba(45,52,47,.14);
-  transition:.18s ease;
-}
-.toggle.active{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.18), 0 4px 0 #2f6f33, 0 10px 18px rgba(62,142,65,.16);
-}
-.toggle.active::after{
-  left:34px;
-}
-
-/* Child profile area */
-.profile-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-.profile-card{
-  background:linear-gradient(180deg,#fffefe 0%, #fbf7f1 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:24px;
-  padding:18px;
-  box-shadow:var(--shadow-xs);
-}
-.profile-top{
-  display:flex;
-  align-items:center;
-  gap:12px;
   margin-bottom:12px;
 }
-.profile-avatar{
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  display:grid;
-  place-items:center;
-  background:var(--accent-soft);
-  border:1px solid rgba(76,175,80,.16);
-  color:var(--accent-dark);
-  box-shadow:var(--shadow-xs);
-}
-.profile-avatar svg{
-  width:22px;
-  height:22px;
-  stroke:currentColor;
-}
-.profile-name{
-  font-weight:800;
-  font-size:1rem;
-}
-.profile-meta{
+.card-sub{
   color:var(--muted);
-  font-size:.86rem;
-}
-.profile-list{
-  display:grid;
-  gap:8px;
-}
-.profile-item{
-  display:flex;
-  align-items:flex-start;
-  gap:8px;
-  color:var(--text2);
+  line-height:1.6;
+  margin-bottom:16px;
   font-size:.9rem;
 }
-.profile-item svg{
-  width:16px;
-  height:16px;
-  stroke:var(--accent-dark);
-  flex-shrink:0;
-  margin-top:2px;
+
+.field{margin-bottom:14px}
+.field label{
+  display:block;
+  font-size:.72rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+.field input,.field select,.field textarea{
+  width:100%;
+  border:1.5px solid var(--line);
+  background:#fffdf9;
+  border-radius:16px;
+  padding:13px 14px;
+  font-size:.94rem;
+  color:var(--text);
+  outline:none;
+  transition:.18s ease;
+  min-height:48px;
+}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:rgba(76,175,80,.7);
+  box-shadow:0 0 0 4px rgba(76,175,80,.10);
+  background:#fff;
 }
 
-/* Footer actions */
-.footer-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:12px;
-  margin-top:18px;
-  flex-wrap:wrap;
-}
-
-.btn,
-button.btn,
-a.btn{
+.btn,.btn-soft,.btn-line{
   border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff !important;
   padding:13px 22px;
   border-radius:16px;
-  font-size:.95rem !important;
-  font-weight:800 !important;
-  text-decoration:none;
+  font-size:.95rem;
+  font-weight:800;
   cursor:pointer;
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:8px;
-  white-space:nowrap;
-  box-shadow:
-    0 4px 0 #2f6f33,
-    0 10px 22px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.20);
-  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
-  letter-spacing:.01em;
+  text-decoration:none;
 }
-.btn:hover,
-button.btn:hover,
-a.btn:hover{
-  transform:translateY(-2px);
-  box-shadow:
-    0 6px 0 #2f6f33,
-    0 14px 28px rgba(62,142,65,.26),
-    inset 0 1px 0 rgba(255,255,255,.22);
-  filter:brightness(1.02);
-}
-.btn:active,
-button.btn:active,
-a.btn:active{
-  transform:translateY(1px);
-  box-shadow:
-    0 2px 0 #2f6f33,
-    0 6px 14px rgba(62,142,65,.18),
-    inset 0 1px 0 rgba(255,255,255,.16);
+.btn{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20);
 }
 .btn-soft{
-  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
-  color:var(--brown) !important;
-  border:1.5px solid #d7c0a6 !important;
-  border-radius:16px !important;
-  box-shadow:
-    0 4px 0 #c7ae91,
-    0 8px 18px rgba(110,82,40,.10),
-    inset 0 1px 0 rgba(255,255,255,.65) !important;
+  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);
+  color:#4d3c2c;
+  border:1.5px solid #d7c0a6;
+  box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65);
 }
-.btn.btn-soft,
-button.btn.btn-soft,
-a.btn.btn-soft,
-.btn-soft span,
-.btn-soft svg{
-  color:var(--brown) !important;
-  stroke:currentColor !important;
+.btn-line{
+  background:#fff;
+  color:var(--text2);
+  border:1.5px solid var(--line);
 }
 
-/* Save note */
-.save-note{
-  display:none;
-  margin-top:14px;
-  padding:13px 16px;
-  border-radius:18px;
-  background:var(--green-soft);
-  border:1px solid rgba(92,166,111,.18);
-  color:#476d53;
-  font-weight:800;
+.thread-list{display:grid;gap:10px}
+.thread-item{
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border:1px solid transparent;
+  border-radius:22px;
+  padding:14px 16px;
+  cursor:pointer;
+  transition:.18s ease;
+  position:relative;
 }
-.save-note.show{display:block}
-
-/* Login */
-.login-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(247,242,233,.82);
-  backdrop-filter:blur(10px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  z-index:99999;
-}
-.login-card{
-  width:min(100%, 520px);
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:32px;
-  box-shadow:var(--shadow-lg);
-  padding:26px;
-}
-.login-top{
-  margin-bottom:16px;
-}
-.login-title{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
-}
-.login-icon{
-  width:52px;
-  height:52px;
-  border-radius:16px;
-  display:grid;
-  place-items:center;
-  background:var(--accent-soft);
-  border:1px solid rgba(76,175,80,.16);
-  color:var(--accent-dark);
+.thread-item:hover{
+  border-color:rgba(223,209,188,.95);
+  transform:translateY(-1px);
   box-shadow:var(--shadow-xs);
 }
-.login-icon svg{
-  width:24px;
-  height:24px;
-  stroke:currentColor;
+.thread-item.active{
+  border-color:#b9d7bc;
+  box-shadow:0 0 0 3px rgba(76,175,80,.10);
 }
-.login-headline{
-  font-weight:800;
-  font-size:1.18rem;
-  color:var(--text);
+.thread-item.unread::after{
+  content:"";
+  position:absolute;
+  right:14px;
+  top:14px;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#4CAF50;
+  box-shadow:0 0 0 3px rgba(76,175,80,.15);
 }
-.login-sub{
-  color:var(--muted);
-  font-size:.94rem;
-}
-.field{
-  display:grid;
-  gap:8px;
-  margin-top:12px;
-}
-.field label{
-  font-size:.93rem;
-  color:var(--text2);
-  font-weight:800;
-}
-.field input{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:#fffdfa;
-  padding:14px 16px;
-  outline:none;
-  font-family:"Outfit",sans-serif;
-  font-size:.97rem;
-  color:var(--text);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-}
-.field input:focus{
-  border-color:#bfdcbf;
-  box-shadow:0 0 0 4px rgba(76,175,80,.10);
-}
-.form-actions{
+.thread-head{
   display:flex;
-  align-items:center;
-  gap:12px;
-  margin-top:18px;
-  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:6px;
 }
-.login-help{
-  margin-top:14px;
+.thread-title{font-weight:800;font-size:.96rem}
+.thread-meta{font-size:.78rem;color:var(--muted)}
+.thread-preview{font-size:.86rem;color:var(--text2);line-height:1.45}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:800;
+  border:1px solid transparent;
+}
+.badge-school{background:var(--blue-soft);color:#496d9d;border-color:#cadcf8}
+.badge-buy{background:#fff8ef;color:#916737;border-color:#ead7b8}
+.badge-help{background:#f0eaff;color:#6a45b0;border-color:#d9c7f4}
+.badge-reminder{background:#eef7ef;color:#3d7a48;border-color:#c8e6ca}
+.badge-other{background:#f6efe4;color:#735945;border-color:#e2d1be}
+.badge-open{background:var(--blue-soft);color:#496d9d;border-color:#cadcf8}
+.badge-read{background:#eef7ef;color:#3d7a48;border-color:#c8e6ca}
+.badge-working{background:#fff8ef;color:#916737;border-color:#ead7b8}
+.badge-done{background:#e7f4ea;color:#3d7a48;border-color:#bddfca}
+
+.chat-card{padding:0;overflow:hidden}
+.chat-head{
+  padding:22px 24px;
+  border-bottom:1px solid rgba(223,209,188,.95);
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:flex-start;
+}
+.chat-body{
+  padding:18px 18px 8px;
+  display:grid;
+  gap:12px;
+  min-height:420px;
+  max-height:540px;
+  overflow:auto;
+  background:linear-gradient(180deg,#fbfdfb 0%,#f7faf7 100%);
+}
+.message{
+  max-width:75%;
   padding:14px 16px;
   border-radius:20px;
-  background:var(--blue-soft);
-  color:#58739c;
-  font-weight:700;
-  font-size:.9rem;
-  border:1px solid rgba(107,150,217,.14);
+  box-shadow:var(--shadow-xs);
+  border:1px solid rgba(223,209,188,.75)
 }
-.login-error{
-  display:none;
+.message.child{
+  justify-self:start;
+  background:#fff;
+  color:var(--text);
+}
+.message.parent{
+  justify-self:end;
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;
+  border-color:rgba(62,142,65,.18);
+}
+.message-meta{font-size:.74rem;opacity:.78;margin-bottom:6px}
+.message-text{font-size:.93rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.chat-foot{
+  padding:18px;
+  border-top:1px solid rgba(223,209,188,.95);
+  background:#fffdfa;
+}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.empty{
+  padding:28px 20px;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.6;
+}
+.info-strip{
   margin-top:12px;
-  padding:12px 14px;
-  border-radius:16px;
-  background:var(--red-soft);
-  color:#a45656;
-  font-weight:800;
-  border:1px solid rgba(204,102,102,.16);
+  padding:14px 16px;
+  border-radius:18px;
+  background:#eef9f0;
+  border:1px solid #c6e4cf;
+  color:#3f6d4c;
+  font-size:.9rem;
 }
-.login-error.show{display:block}
+.filter-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.helper{
+  font-size:.85rem;
+  color:var(--muted);
+  line-height:1.55;
+}
 
-/* Responsive */
-@media(max-width:1500px){
-  .summary-grid{grid-template-columns:repeat(2,1fr)}
-}
 @media(max-width:1200px){
-  .hero{grid-template-columns:1fr}
-  .settings-grid{grid-template-columns:1fr}
-  .profile-grid{grid-template-columns:1fr 1fr}
+  .grid,.hero,.stats-grid{grid-template-columns:1fr}
 }
 @media(max-width:960px){
   .app{grid-template-columns:1fr}
@@ -779,282 +609,93 @@ a.btn.btn-soft,
     padding-right:16px;
     margin-right:16px;
   }
-  .nav{
-    flex-direction:row;
-    flex-wrap:wrap;
-    flex:1;
-  }
-  .nav a{
-    flex:0 1 auto;
-    padding:10px 12px;
-  }
-  .nav-label,.sidebar-footer{display:none}
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
+  .nav-label{display:none}
 }
-@media(max-width:760px){
+@media(max-width:700px){
   .main{padding:16px}
-  .page-header h1{font-size:1.95rem}
-  .summary-grid{grid-template-columns:1fr}
-  .profile-grid{grid-template-columns:1fr}
+  .page-header h1{font-size:1.85rem}
+  .chat-head{padding:18px}
+  .chat-body{min-height:320px}
+  .message{max-width:92%}
+  .filter-row{grid-template-columns:1fr}
 }
 
-.request-list{
-  display:grid;
-  gap:12px;
+
+.open-chat-modal-btn{
+  margin-left:auto;
 }
-.request-item{
-  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:22px;
-  padding:16px;
-  box-shadow:var(--shadow-xs);
-}
-.request-head{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
-  margin-bottom:10px;
-}
-.request-name{
-  font-size:1rem;
-  font-weight:800;
-  color:var(--text);
-  margin-bottom:4px;
-}
-.request-meta{
-  color:var(--muted);
-  font-size:.88rem;
-  line-height:1.55;
-}
-.request-badge{
-  display:inline-flex;
+
+.chat-modal{
+  position:fixed;
+  inset:0;
+  display:none;
   align-items:center;
   justify-content:center;
-  padding:7px 12px;
-  border-radius:999px;
-  font-size:.76rem;
-  font-weight:800;
-  white-space:nowrap;
-  border:1px solid transparent;
+  padding:20px;
+  background:rgba(45,52,47,.28);
+  backdrop-filter:blur(4px);
+  z-index:9999;
 }
-.request-badge.offen{
-  background:var(--blue-soft);
-  color:#496d9d;
-  border-color:#cbdcf8;
-}
-.request-badge.genehmigt{
-  background:var(--green-soft);
-  color:var(--green);
-  border-color:#bddfca;
-}
-.request-badge.abgelehnt{
-  background:var(--red-soft);
-  color:var(--red);
-  border-color:#efc1c1;
-}
-.request-badge.später{
-  background:var(--yellow-soft);
-  color:var(--yellow);
-  border-color:#ead7a2;
-}
-.request-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-.request-empty{
+.chat-modal.show{display:flex}
+
+.chat-modal-card{
+  width:min(100%, 680px);
+  max-height:min(88vh, 860px);
+  overflow:auto;
   background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px dashed rgba(223,209,188,.95);
-  border-radius:22px;
-  padding:18px;
-  color:var(--muted);
-  text-align:center;
-  line-height:1.6;
-}
-
-
-.admin-option-card{
-  overflow:hidden;
-}
-.mode-tag{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  background:#fffaf4;
-  color:var(--accent-dark);
   border:1px solid rgba(223,209,188,.95);
-  padding:7px 12px;
-  border-radius:999px;
-  font-size:.82rem;
-  font-weight:800;
-  margin-bottom:12px;
-  box-shadow:var(--shadow-xs);
+  border-radius:30px;
+  box-shadow:var(--shadow-lg);
+  padding:24px;
 }
-.card-actions{
+
+.chat-modal-head{
   display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:18px;
-}
-.rights-block{
-  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
-  border:1px solid rgba(76,175,80,.18);
-  border-radius:20px;
-  padding:18px;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
   margin-bottom:14px;
 }
-.rights-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:12px;
-  margin-bottom:12px;
-  flex-wrap:wrap;
-}
-.summary-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  background:var(--soft);
-  color:#665646;
-  padding:5px 10px;
-  border-radius:999px;
-  font-size:.76rem;
+.chat-modal-head h3{
+  font-size:1.2rem;
   font-weight:800;
-  border:1px solid rgba(223,209,188,.9);
+  margin-bottom:6px;
 }
-.field{
-  display:grid;
-  gap:8px;
-}
-.field label{
-  font-size:.72rem;
-  font-weight:800;
+.chat-modal-head p{
   color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-.field input,.field select,.rule-field select{
-  width:100%;
-  border:1.5px solid var(--line);
-  background:#fffdf9;
-  border-radius:16px;
-  padding:13px 14px;
-  font-size:.94rem;
-  color:var(--text);
-  outline:none;
-  transition:.18s ease;
-  min-height:48px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
-}
-.field input:focus,.field select:focus,.rule-field select:focus{
-  border-color:rgba(76,175,80,.7);
-  box-shadow:0 0 0 4px rgba(76,175,80,.10);
-  background:#fff;
-}
-.row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  margin-bottom:12px;
-  padding:10px 0;
-  border-bottom:1px solid rgba(223,209,188,.55);
-}
-.row:last-child{margin-bottom:0;border-bottom:none;padding-bottom:0}
-.label{
-  font-weight:700;
-  color:var(--text2);
-  line-height:1.4;
+  line-height:1.55;
   font-size:.92rem;
 }
-.label small{
-  display:block;
-  margin-top:4px;
-  font-size:.82rem;
-  color:var(--muted);
-  font-weight:700;
-  line-height:1.45;
+
+.chat-modal-close{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--text2);
+  cursor:pointer;
+  font-size:1.6rem;
+  line-height:1;
+  flex-shrink:0;
 }
-.child-rights-panel{display:grid;gap:14px}
-.notice{
-  background:var(--blue-soft);
-  border:1px solid rgba(107,150,217,.14);
-  color:#58739c;
-  padding:13px 15px;
-  border-radius:18px;
-  font-size:.88rem;
-  line-height:1.55;
-  margin-bottom:16px;
-  font-weight:700;
-}
-.rules-grid-single{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+
+.chat-toolbar{
+  display:flex;
+  justify-content:flex-end;
   gap:12px;
-}
-.rule-field{display:grid;gap:7px}
-.rule-field label{
-  font-size:.72rem;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-.request-card-wrap{
-  border-color:rgba(223,209,188,.95);
-}
-.request-card-wrap .card-sub{
-  max-width:980px;
-}
-.request-card-wrap .request-list{
-  margin-top:12px;
-}
-@media(max-width:900px){
-  .rules-grid-single{grid-template-columns:1fr}
-}
-
-
-.admin-option-card .card-sub{
-  max-width:980px;
-}
-.admin-option-card .field,
-.admin-option-card .rule-field{
-  margin-bottom:0;
-}
-.admin-option-card .card-actions{
-  margin-top:22px;
-}
-
-
-
-.chat-badge{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  min-width:18px;
-  height:18px;
-  padding:0 5px;
-  border-radius:999px;
-  background:#cc6666;
-  color:#fff;
-  font-size:.68rem;
-  font-weight:800;
-  line-height:18px;
-  text-align:center;
-  border:2px solid #fff;
-  box-shadow:0 2px 8px rgba(204,102,102,.28);
+  margin-bottom:14px;
+  flex-wrap:wrap;
 }
 </style>
 </head>
-<body data-page="admin">
+<body data-page="admin-chat">
 
 <div class="app">
-
   <aside class="sidebar">
     <div class="logo-wrap">
-    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+      <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
       <div>
         <div class="logo-name">Haushaltsheld</div>
         <div class="logo-sub">Dein Familien-Assistent</div>
@@ -1072,85 +713,8 @@ a.btn.btn-soft,
         </span>
         <span>Dashboard</span>
       </a>
-      <a href="finanzen.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="6" width="18" height="12" rx="2"></rect>
-            <path d="M16 12h.01"></path>
-            <path d="M3 10h18"></path>
-          </svg>
-        </span>
-        <span>Finanzen</span>
-      </a>
-      <a href="einkaufsliste.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="20" r="1"></circle>
-            <circle cx="18" cy="20" r="1"></circle>
-            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
-          </svg>
-        </span>
-        <span>Einkäufe</span>
-      </a>
-      <a href="aufgaben.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 11l3 3L22 4"></path>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-          </svg>
-        </span>
-        <span>Aufgaben</span>
-      </a>
-      <a href="familienplaner.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-            <path d="M16 2v4M8 2v4M3 10h18"></path>
-          </svg>
-        </span>
-        <span>Familienplaner</span>
-      </a>
-    </nav>
 
-    <div class="nav-label">Extras</div>
-    <nav class="nav">
-      <a href="finanzbericht.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"></path>
-            <path d="M7 14l4-4 3 3 5-7"></path>
-          </svg>
-        </span>
-        <span>Bericht</span>
-      </a>
-      <a href="finanz_historie.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 8v5l3 2"></path>
-            <circle cx="12" cy="12" r="9"></circle>
-          </svg>
-        </span>
-        <span>Historie</span>
-      </a>
-      <a href="beleg_import.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3v12"></path>
-            <path d="m7 10 5 5 5-5"></path>
-            <path d="M5 21h14"></path>
-          </svg>
-        </span>
-        <span>Belege</span>
-      </a>
-      <a href="kindermodus.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
-          </svg>
-        </span>
-        <span>Kindermodus</span>
-      </a>
-      <a href="admin.html" class="active">
+      <a href="admin.html">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4Z"></path>
@@ -1160,16 +724,19 @@ a.btn.btn-soft,
         <span>Familienrechte</span>
       </a>
 
-      <a href="admin_chat.html">
-      <span class="nav-icon" style="position:relative;">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span id="chatBadge" class="chat-badge" style="display:none;">0</span>
-      </span>
-      <span>Familien-Chat</span>
-    </a>
-    </nav>
+    <a href="admin_chat.html" class="active">
+  <span class="nav-icon" style="position:relative;">
+    
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+
+    <span id="chatBadge" class="chat-badge" style="display:none;">0</span>
+
+  </span>
+
+  <span>Familien-Chat</span>
+</a>
 
     <div class="sidebar-footer">
       <div class="mode-switch">
@@ -1185,1333 +752,627 @@ a.btn.btn-soft,
         <h1>
           <span class="page-title-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4Z"></path>
-              <path d="M9.5 12l1.7 1.7L14.8 10"></path>
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
           </span>
-          <span>Familienrechte & Privatsphäre</span>
+          <span>Familien-Chat</span>
         </h1>
-        <p>Hier legt ihr fest, welche Bereiche Kinder sehen dürfen, welche Inhalte privat bleiben und wo eine gegenseitige Zustimmung nötig ist. Die Seite ist für mehrere Kinder vorbereitet und arbeitet ohne Backend nur mit gespeicherten Einstellungen.</p>
+        <p>Hier beantwortet ihr die Nachrichten der Kinder. Alle Gespräche laufen über denselben Speicher wie im Kind-Chat, damit nichts doppelt gepflegt werden muss.</p>
       </div>
 
       <div class="header-right">
-        <a class="btn btn-soft" href="index.html"><span>Zum Dashboard</span></a>
-        <a class="btn btn-soft" href="kindermodus.html"><span>Zum Kindermodus</span></a>
-        <button class="btn btn-soft" type="button" id="logoutBtn"><span>Logout</span></button>
+        <a class="btn-soft" href="index.html">Zum Dashboard</a>
+        <a class="btn-soft" href="admin.html">Zu Familienrechte</a>
+        <button class="btn-soft" type="button" onclick="handleLogout()">Logout</button>
         <div class="mode-badge">Elternbereich aktiv</div>
       </div>
     </div>
 
     <section class="hero">
       <div>
-        <h2>
-          <span class="section-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-          </span>
-          <span>Rechte fair statt einseitig</span>
-        </h2>
-        <p>Diese Seite trennt bewusst zwischen Verwaltungsrechten, persönlicher Privatsphäre und zustimmungspflichtigen Bereichen. Kinder sollen selbstständig in ihre Profile, Geschwister sollen voneinander getrennt bleiben und sensible Inhalte sollen nicht automatisch geöffnet werden.</p>
+        <h2>Ein zentraler Chat für die ganze Familie</h2>
+        <p>Diese Seite nutzt bewusst denselben Chat-Speicher wie die Kind-Seite. Kinder starten hier ihre Gespräche, und ihr könnt im Elternmodus lesen, antworten und den Bearbeitungsstatus setzen.</p>
         <div class="hero-tags">
-          <span class="hero-tag">Elternrechte</span>
-          <span class="hero-tag">Kinderrechte</span>
-          <span class="hero-tag">Zustimmung</span>
-          <span class="hero-tag">Geschwisterschutz</span>
+          <span class="hero-tag">gleicher Speicher</span>
+          <span class="hero-tag">kein Doppelsystem</span>
+          <span class="hero-tag">Elternantworten</span>
+          <span class="hero-tag">Status steuerbar</span>
         </div>
       </div>
-      <div class="hero-side">
-        <div class="mini">
-          <strong>Für große Familien gedacht</strong>
-          <span>Die Struktur ist für mehrere Kinder vorbereitet, damit Rechte nicht nur global, sondern sauber pro Familienlogik gedacht werden.</span>
-        </div>
-        <div class="mini">
-          <strong>Jugendschutz im Blick</strong>
-          <span>Schutz, Privatsphäre und altersgerechte Teilhabe werden gemeinsam gedacht statt nur über Kontrolle.</span>
-        </div>
+      <div>
+        <div class="mini"><strong>Alles bleibt zusammen</strong><span>Die Seite liest dieselben Threads aus wie <code>kind_chat.html</code>. Dadurch gibt es keinen zweiten Chat und keine doppelte Pflege.</span></div>
+        <div class="mini"><strong>Klarer Überblick</strong><span>Ihr seht offene Chats, unbeantwortete Kinder-Nachrichten und könnt Gespräche direkt auf erledigt oder in Bearbeitung setzen.</span></div>
       </div>
     </section>
 
-    <p class="mode-note">Diese Seite speichert die Familienrechte zentral im Browser. Sie bereitet eine spätere echte Absicherung vor, ohne jetzt schon eine Schein-Sicherheit vorzutäuschen.</p>
-
-    <section class="summary-grid">
-      <div class="summary-card">
-        <h3>Elternbereich</h3>
-        <div class="value" id="sumParent">0</div>
-        <p>aktive Verwaltungsrechte</p>
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Alle Chats</div>
+        <div class="stat-value" id="allCount">0</div>
+        <div class="stat-sub">Gesamte Unterhaltungen im Familien-Chat</div>
       </div>
-      <div class="summary-card">
-        <h3>Kinderrechte</h3>
-        <div class="value" id="sumChild">0</div>
-        <p>aktive Kinderrechte</p>
+      <div class="stat-card">
+        <div class="stat-label">Neu für Eltern</div>
+        <div class="stat-value" id="unreadParentCount">0</div>
+        <div class="stat-sub">Kinder-Nachrichten mit Rückmeldebedarf</div>
       </div>
-      <div class="summary-card">
-        <h3>Zustimmung</h3>
-        <div class="value" id="sumApproval">0</div>
-        <p>aktive Schutzregeln</p>
+      <div class="stat-card">
+        <div class="stat-label">In Bearbeitung</div>
+        <div class="stat-value" id="workingCount">0</div>
+        <div class="stat-sub">Chats, die gerade aktiv bearbeitet werden</div>
       </div>
-      <div class="summary-card">
-        <h3>Finanzsicht</h3>
-        <div class="value" id="sumFinance">0</div>
-        <p>aktive Freigaben für Kinder</p>
-      </div>
-
-      <div class="summary-card">
-        <h3>Familien-Chat</h3>
-        <div class="value" id="sumChat">0</div>
-        <p>neue oder offene Chats</p>
+      <div class="stat-card">
+        <div class="stat-label">Erledigt</div>
+        <div class="stat-value" id="doneCount">0</div>
+        <div class="stat-sub">Bereits geklärte Unterhaltungen</div>
       </div>
     </section>
 
-    <section class="section">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M19 8v6"></path>
-            <path d="M22 11h-6"></path>
-          </svg>
-        </span>
-        <span>Rechte im Überblick</span>
-      </h2>
-      <p class="subtitle">Verwaltung, Privatsphäre und Zustimmung werden bewusst getrennt. So entsteht kein starres „Eltern dürfen alles“, sondern eine faire Familienlogik.</p>
-
-      <div class="settings-grid">
-        <div class="settings-box">
-          <div class="settings-head">
-            <span class="section-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Z"></path>
-                <path d="M19 21a7 7 0 0 0-14 0"></path>
-              </svg>
-            </span>
-            <strong>Elternrechte</strong>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Kinderprofile verwalten</strong>
-              <span>Profile anlegen, anpassen und in der Familienstruktur ordnen.</span>
-            </div>
-            <button class="toggle" data-key="parentManageProfiles" type="button" aria-label="Kinderprofile verwalten"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Haushaltsregeln steuern</strong>
-              <span>Grundregeln für Sichtbarkeit, Schutz und Freigaben festlegen.</span>
-            </div>
-            <button class="toggle" data-key="parentManageRules" type="button" aria-label="Haushaltsregeln steuern"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Budgets verwalten</strong>
-              <span>Familienbudgets und allgemeine Grenzen organisatorisch steuern.</span>
-            </div>
-            <button class="toggle" data-key="parentManageBudgets" type="button" aria-label="Budgets verwalten"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Freigaben anfragen</strong>
-              <span>Private Kinderbereiche dürfen nicht automatisch geöffnet werden.</span>
-            </div>
-            <button class="toggle" data-key="parentCanRequestPrivateAccess" type="button" aria-label="Freigaben anfragen"></button>
-          </div>
-        </div>
-
-        <div class="settings-box">
-          <div class="settings-head">
-            <span class="section-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M6 21v-2a6 6 0 0 1 12 0v2"></path>
-              </svg>
-            </span>
-            <strong>Kinderrechte</strong>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Eigenes Profil selbst öffnen</strong>
-              <span>Kinder dürfen selbstständig in ihr eigenes Profil wechseln.</span>
-            </div>
-            <button class="toggle" data-key="childOwnLogin" type="button" aria-label="Eigenes Profil selbst öffnen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Private Inhalte schützen</strong>
-              <span>Persönliche Wünsche, Ziele und Notizen bleiben geschützt.</span>
-            </div>
-            <button class="toggle" data-key="childPrivateSpace" type="button" aria-label="Private Inhalte schützen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Eigene Freigaben mitbestimmen</strong>
-              <span>Kinder dürfen bei sensiblen Bereichen aktiv zustimmen oder ablehnen.</span>
-            </div>
-            <button class="toggle" data-key="childCanApprovePrivateAccess" type="button" aria-label="Eigene Freigaben mitbestimmen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Geschwister komplett trennen</strong>
-              <span>Ein Kind sieht niemals private Inhalte oder Finanzen des anderen.</span>
-            </div>
-            <button class="toggle" data-key="siblingPrivacy" type="button" aria-label="Geschwister komplett trennen"></button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 12l2 2 4-4"></path>
-            <path d="M21 12c0 5-4 9-9 9S3 17 3 12 7 3 12 3s9 4 9 9Z"></path>
-          </svg>
-        </span>
-        <span>Zustimmung & sensible Bereiche</span>
-      </h2>
-      <p class="subtitle">Nicht alles soll einseitig geöffnet werden. In diesen Bereichen gilt Schutz vor Neugier, auch innerhalb der Familie.</p>
-
-      <div class="settings-grid">
-        <div class="settings-box">
-          <div class="settings-head">
-            <span class="section-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20V10"></path>
-                <path d="M18 20V4"></path>
-                <path d="M6 20v-4"></path>
-              </svg>
-            </span>
-            <strong>Zustimmungspflicht</strong>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Private Inhalte nur mit Zustimmung</strong>
-              <span>Private Bereiche werden erst nach aktiver Freigabe sichtbar.</span>
-            </div>
-            <button class="toggle" data-key="requireApprovalPrivate" type="button" aria-label="Private Inhalte nur mit Zustimmung"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Wunschlisten können privat sein</strong>
-              <span>Wünsche dürfen verborgen bleiben, bis eine Freigabe erteilt wird.</span>
-            </div>
-            <button class="toggle" data-key="allowPrivateWishlist" type="button" aria-label="Wunschlisten können privat sein"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Überraschungsmodus schützen</strong>
-              <span>Geschenkideen bleiben auf Wunsch verborgen und werden nur als Hinweis angezeigt.</span>
-            </div>
-            <button class="toggle" data-key="protectSurpriseMode" type="button" aria-label="Überraschungsmodus schützen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Sparziele nur nach Freigabe teilen</strong>
-              <span>Persönliche Sparziele werden nicht automatisch für alle sichtbar.</span>
-            </div>
-            <button class="toggle" data-key="approvalSavingsGoals" type="button" aria-label="Sparziele nur nach Freigabe teilen"></button>
-          </div>
-        </div>
-
-        <div class="settings-box">
-          <div class="settings-head">
-            <span class="section-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 5v14"></path>
-                <path d="M5 12h14"></path>
-              </svg>
-            </span>
-            <strong>Kindersicht allgemein</strong>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Hinweise statt Inhalte zeigen</strong>
-              <span>Eltern sehen nur, dass etwas vorhanden ist, aber nicht sofort den Inhalt.</span>
-            </div>
-            <button class="toggle" data-key="showOnlyHintsForPrivate" type="button" aria-label="Hinweise statt Inhalte zeigen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Vergleichsansichten sperren</strong>
-              <span>Keine Ranglisten oder Vergleiche zwischen Geschwistern anzeigen.</span>
-            </div>
-            <button class="toggle" data-key="disableSiblingComparisons" type="button" aria-label="Vergleichsansichten sperren"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Kindgerechte Selbstständigkeit erlauben</strong>
-              <span>Kinder dürfen ihre freigegebenen Bereiche selbstständig nutzen.</span>
-            </div>
-            <button class="toggle" data-key="allowChildIndependentUse" type="button" aria-label="Kindgerechte Selbstständigkeit erlauben"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Freigaben zentral speichern</strong>
-              <span>Rechte gelten appweit aus derselben Datenbasis.</span>
-            </div>
-            <button class="toggle" data-key="centralPermissionControl" type="button" aria-label="Freigaben zentral speichern"></button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 1v22"></path>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"></path>
-          </svg>
-        </span>
-        <span>Finanzsicht im Kindermodus</span>
-      </h2>
-      <p class="subtitle">Diese Freigaben steuern, welche Finanzbereiche Kinder sehen dürfen. Eltern-Gehälter und allgemeine Einnahmen bleiben standardmäßig aus.</p>
-
-      <div class="settings-grid">
-        <div class="settings-box">
-          <div class="settings-head">
-            <span class="section-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 3v18h18"></path>
-                <path d="M7 14l4-4 3 3 5-7"></path>
-              </svg>
-            </span>
-            <strong>Berichte & Sichtbarkeit</strong>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Finanzbericht für Kinder freigeben</strong>
-              <span>Kinder dürfen eine vereinfachte Berichtssicht öffnen.</span>
-            </div>
-            <button class="toggle" data-key="showFinanceReport" type="button" aria-label="Finanzbericht für Kinder freigeben"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Einkäufe anzeigen</strong>
-              <span>Gemeinsame Einkaufsübersicht darf im Kindermodus sichtbar sein.</span>
-            </div>
-            <button class="toggle" data-key="showShopping" type="button" aria-label="Einkäufe anzeigen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Taschengeld anzeigen</strong>
-              <span>Eigene Taschengeld-Bereiche dürfen sichtbar sein.</span>
-            </div>
-            <button class="toggle" data-key="showPocketMoney" type="button" aria-label="Taschengeld anzeigen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Geldgeschenke anzeigen</strong>
-              <span>Geschenke und besondere Geldbeträge dürfen sichtbar sein.</span>
-            </div>
-            <button class="toggle" data-key="showGiftMoney" type="button" aria-label="Geldgeschenke anzeigen"></button>
-          </div>
-        </div>
-
-        <div class="settings-box">
-          <div class="settings-head">
-            <span class="section-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 12h16"></path>
-                <path d="M12 4v16"></path>
-              </svg>
-            </span>
-            <strong>Vertrauliche Finanzbereiche</strong>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Eltern-Gehälter anzeigen</strong>
-              <span>Nur aktivieren, wenn ihr diese Information bewusst teilen wollt.</span>
-            </div>
-            <button class="toggle" data-key="showParentIncome" type="button" aria-label="Eltern-Gehälter anzeigen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Allgemeine Einnahmen anzeigen</strong>
-              <span>Weitere Einnahmen außerhalb von Taschengeld und Geschenken.</span>
-            </div>
-            <button class="toggle" data-key="showIncome" type="button" aria-label="Allgemeine Einnahmen anzeigen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Fixkosten anzeigen</strong>
-              <span>Miete, Strom, Internet, Versicherung und ähnliche Posten.</span>
-            </div>
-            <button class="toggle" data-key="showFixed" type="button" aria-label="Fixkosten anzeigen"></button>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-copy">
-              <strong>Variable Ausgaben anzeigen</strong>
-              <span>Freizeit, spontane Ausgaben und ähnliche Bereiche.</span>
-            </div>
-            <button class="toggle" data-key="showVariable" type="button" aria-label="Variable Ausgaben anzeigen"></button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-        </span>
-        <span>Vorbereitung für mehrere Kinder</span>
-      </h2>
-      <p class="subtitle">Diese Karten zeigen die gedachte Richtung für Haushalte mit vielen Kindern. Jedes Kind soll ein eigenes Profil mit eigener Privatsphäre behalten.</p>
-
-      <div class="profile-grid" id="profileGrid"></div>
-
-      <div class="footer-actions">
-        <button class="btn btn-soft" type="button" id="addProfileBtn">Profil hinzufügen</button>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 6 9 17l-5-5"></path>
-          </svg>
-        </span>
-        <span>Aktionen</span>
-      </h2>
-      <p class="subtitle">Speichere die Familienrechte zentral oder setze sie auf die empfohlenen Standardwerte zurück.</p>
-
-      <div class="footer-actions">
-        <button class="btn btn-soft" type="button" id="resetBtn">Empfohlene Werte laden</button>
-        <button class="btn" type="button" id="saveBtn">Einstellungen speichern</button>
-      </div>
-
-      <div class="save-note" id="saveNote">Die Familienrechte wurden gespeichert.</div>
-    </section>
-  
-
-
-  <section class="card admin-option-card">
-        <span class="mode-tag">🧒 Gilt für: Kindermodus ohne Elternfreigabe</span>
-        <h2>Kindermodus – Standardrechte nach Alter</h2>
-        <p class="card-sub">Diese Rechte gelten im normalen Kindermodus. Der Chat bleibt ab 6 Jahren grundsätzlich offen und wird hier nicht zusätzlich per Freigabe gesteuert.</p>
-
-        <div class="rights-block">
-          <div class="field" style="margin-bottom:14px;">
-            <label for="ageGroupSelect">Altersgruppe wählen</label>
-            <select id="ageGroupSelect" onchange="renderAgeGroupRules()">
-              <option value="age0to5">0–5 Jahre</option>
-              <option value="age6to10">6–10 Jahre</option>
-              <option value="age11to13">11–13 Jahre</option>
-              <option value="age14to17">14–17 Jahre</option>
-            </select>
-          </div>
-
-          <div class="age-group-head" style="margin-bottom:12px;">
-            <div>
-              <strong id="ageGroupTitle">0–5 Jahre</strong>
-              <span id="ageGroupHint">Sehr geschützter Bereich – fast alles nur mit Elternbegleitung.</span>
-            </div>
-            <span class="summary-badge">Kindermodus</span>
-          </div>
-
-          <div id="ageGroupRules" class="rules-grid-single"></div>
-        </div>
-
-        <div class="card-actions">
-          <button class="btn" type="button" onclick="saveAgeRules()">Kindermodus-Rechte speichern</button>
-        </div>
-      </section>
-
-      <section class="card admin-option-card">
-        <span class="mode-tag">🔐 Gilt für: Nur mit Elternfreigabe</span>
-        <h2>Elternmodus für Kinder – Zugriff nur mit Elternfreigabe</h2>
-        <p class="card-sub">Diese Bereiche gehören nicht zum normalen Kindermodus. Zugriff ist nur möglich, wenn ein Elternteil im Elternmodus ausdrücklich freigibt.</p>
-
-        <div class="rights-block">
-          <div class="row"><span class="label">Private Inhalte nur mit Elternfreigabe<small>Gilt nicht im normalen Kindermodus, sondern nur nach ausdrücklicher Zustimmung.</small></span><div class="toggle" data-key="requireApprovalPrivate"></div></div>
-          <div class="row"><span class="label">Termine nur mit Elternfreigabe</span><div class="toggle" data-key="requireApprovalAppointments"></div></div>
-          <div class="row"><span class="label">Finanzen nur mit Elternfreigabe</span><div class="toggle" data-key="requireApprovalFinances"></div></div>
-        </div>
-
-        <div class="card-actions">
-          <button class="btn" type="button" onclick="saveApprovalSettings()">Elternfreigaben speichern</button>
-        </div>
-      </section>
-
-      <section class="card admin-option-card">
-        <span class="mode-tag">🧒 Gilt für: Ein ausgewähltes Kind</span>
-        <h2>Individuelle Rechte pro Kind</h2>
-        <p class="card-sub">Hier kannst du ein einzelnes Kind auswählen und die Grundregeln aus der Altersgruppe gezielt anpassen. So bleibt der Jugendschutz automatisch, aber trotzdem flexibel.</p>
-
-        <div class="child-rights-panel">
-          <div class="field">
-            <label for="childRightsSelect">Kind auswählen</label>
-            <select id="childRightsSelect" onchange="renderChildOverrideEditor()">
-              <option value="">-- Kind auswählen --</option>
-            </select>
-          </div>
-
-          <div id="childRightsInfo" class="notice">Wähle ein Kind aus, um individuelle Rechte zusätzlich zur Altersgruppe festzulegen.</div>
-
-          <div id="childOverrideEditor" class="rights-block" style="display:none;">
-            <div class="rights-header">
-              <div>
-                <h3>Zusätzliche Rechte für dieses Kind</h3>
-                <div class="mini-note">Diese Anpassungen überschreiben nur für dieses Kind die Altersgruppe.</div>
-              </div>
-              <span class="summary-badge">Individuell</span>
-            </div>
-            <div class="rules-grid" id="childRulesGrid"></div>
-            <div class="inline-actions">
-              <button class="btn-soft" type="button" onclick="resetChildOverrides()">Auf Altersgruppe zurücksetzen</button>
-              <button class="btn" type="button" onclick="saveChildOverrides()">Kind-Rechte speichern</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-  <section class="card request-card-wrap">
-    <span class="mode-tag">👨‍👩‍👧 Gilt für: Elternbereich</span>
-    <h2 class="card-title">
-      <span class="section-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 11l3 3L22 4"></path>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-        </svg>
-      </span>
-      <span>Aufgaben warten auf Eltern</span>
-    </h2>
-    <p class="card-sub">
-      Hier erscheinen Aufgaben, die Kinder als fertig gemeldet haben. Erst nach eurer Bestätigung werden Sterne gutgeschrieben.
-    </p>
-
-    <div id="taskApprovalList" class="request-list"></div>
-  </section>
-
-  <section class="card request-card-wrap">
-    <span class="mode-tag">👨‍👩‍👧 Gilt für: Elternbereich</span>
-    <h2 class="card-title">
-      <span class="section-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-      </span>
-      <span>Familien-Chat</span>
-    </h2>
-    <p class="card-sub">
-      Hier siehst du die letzten Nachrichten der Kinder, offene Chats und gelangst direkt in den vollständigen Chatbereich.
-    </p>
-
-    <div class="footer-actions" style="justify-content:flex-start; margin-bottom:16px;">
-      <a class="btn btn-soft" href="admin_chat.html">Zum vollständigen Chat</a>
+    
+    <div class="chat-toolbar">
+      <button class="btn open-chat-modal-btn" type="button" onclick="openNewChatModal()">Neuen Chat starten</button>
     </div>
 
-    <div id="chatPreviewList" class="request-list"></div>
-  </section>
+    <section class="grid">
+      <div>
+<section class="card">
+          <div class="card-title">
+            <span class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </span>
+            <span>Alle Gespräche</span>
+          </div>
+          <div class="thread-list" id="threadList"></div>
+        </section>
+      </div>
 
-  <section class="card request-card-wrap">
-    <span class="mode-tag">👨‍👩‍👧 Gilt für: Elternbereich</span>
-    <h2 class="card-title">
-      <span class="section-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-        </svg>
-      </span>
-      <span>Belohnungsanfragen der Kinder</span>
-    </h2>
-    <p class="card-sub">
-      Hier siehst du, wenn ein Kind nach 10 Sternen eine Auswahl getroffen hat. Die Auswahl ist erst gültig, wenn Mama oder Papa sie bestätigen.
-    </p>
+      <div>
+        <section class="card chat-card">
+          <div class="chat-head">
+            <div>
+              <div class="card-title" style="margin-bottom:6px">
+                <span class="section-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </span>
+                <span id="chatTitleView">Noch kein Chat ausgewählt</span>
+              </div>
+              <div class="thread-meta" id="chatMetaView">Wähle links einen Chat aus.</div>
+            </div>
+            <div id="chatStatusBadge" class="badge badge-open">Offen</div>
+          </div>
 
-    <div id="rewardRequestList" class="request-list"></div>
-  </section>
+          <div class="chat-body" id="chatMessages">
+            <div class="empty">Wähle links einen Chat aus, um die Unterhaltung zu lesen und zu beantworten.</div>
+          </div>
 
-</main>
+          <div class="chat-foot">
+            <div class="field">
+              <label for="replyMessage">Antwort an das Kind</label>
+              <textarea id="replyMessage" placeholder="Hier könnt ihr als Eltern antworten..."></textarea>
+            </div>
+
+            <div class="filter-row" style="margin-bottom:12px">
+              <div class="field" style="margin-bottom:0">
+                <label for="statusSelect">Status setzen</label>
+                <select id="statusSelect">
+                  <option value="open">Offen</option>
+                  <option value="read">Gelesen</option>
+                  <option value="working">In Bearbeitung</option>
+                  <option value="done">Erledigt</option>
+                </select>
+              </div>
+              <div class="field" style="margin-bottom:0">
+                <label for="parentName">Antwort von</label>
+                <input id="parentName" type="text" placeholder="z. B. Mama oder Papa">
+              </div>
+            </div>
+
+            <div class="row">
+              <button class="btn" type="button" onclick="sendReply()">Antwort senden</button>
+              <button class="btn-line" type="button" onclick="applyStatus()">Status speichern</button>
+              <button class="btn-soft" type="button" onclick="markSeen()">Als gelesen markieren</button>
+            </div>
+
+            <div class="info-strip">Beim Antworten wird der Chat automatisch für das Kind als neu markiert, damit es die Rückmeldung sieht.</div>
+          </div>
+        </section>
+      </div>
+    </section>
+  
+    <div class="chat-modal" id="newChatModal" aria-hidden="true">
+      <div class="chat-modal-card">
+        <div class="chat-modal-head">
+          <div>
+            <h3>Neuen Chat an Kind starten</h3>
+            <p>Hier könnt ihr als Eltern selbst eine neue Unterhaltung eröffnen. Ihr schreibt einfach direkt die erste Nachricht – ohne extra Kurztitel.</p>
+          </div>
+          <button class="chat-modal-close" type="button" onclick="closeNewChatModal()">×</button>
+        </div>
+
+        <div class="field">
+          <label for="newChatChild">Kind auswählen</label>
+          <select id="newChatChild">
+            <option value="">-- Kind auswählen --</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="newChatCategory">Kategorie</label>
+          <select id="newChatCategory">
+            <option value="school">Schule</option>
+            <option value="buy">Einkauf</option>
+            <option value="help">Hilfe</option>
+            <option value="reminder">Erinnerung</option>
+            <option value="other">Sonstiges</option>
+          </select>
+        </div>
+<div class="field">
+          <label for="newChatMessage">Erste Nachricht</label>
+          <textarea id="newChatMessage" placeholder="Schreibt hier eure erste Nachricht an das Kind..."></textarea>
+        </div>
+
+        <div class="row">
+          <button class="btn" type="button" onclick="createParentThread()">Chat starten</button>
+          <button class="btn-soft" type="button" onclick="fillParentExample()">Beispiel einfügen</button>
+          <button class="btn-line" type="button" onclick="closeNewChatModal()">Abbrechen</button>
+        </div>
+
+        <div class="info-strip">So bleibt die Hauptansicht übersichtlich, und neue Gespräche werden in einem eigenen Fenster gestartet.</div>
+      </div>
+    </div>
+
+  </main>
 </div>
 
 <script>
-const STORAGE_KEY = "haushaltsheld_child_permissions";
-const PROFILE_KEY = "haushaltsheld_child_profiles_demo";
-
-
-const defaultPermissions = {
-  showShopping: true,
-  showPocketMoney: true,
-  showGiftMoney: true,
-  showBookings: false,
-  showSubscriptions: false,
-  showPets: false,
-  showTips: true,
-  showFinanceReport: true,
-  showParentIncome: false,
-  showIncome: false,
-  showFixed: false,
-  showVariable: false,
-
-  parentManageProfiles: true,
-  parentManageRules: true,
-  parentManageBudgets: true,
-  parentCanRequestPrivateAccess: true,
-
-  childOwnLogin: true,
-  childPrivateSpace: true,
-  childCanApprovePrivateAccess: true,
-  siblingPrivacy: true,
-
-  requireApprovalPrivate: true,
-  allowPrivateWishlist: true,
-  protectSurpriseMode: true,
-  approvalSavingsGoals: true,
-
-  showOnlyHintsForPrivate: true,
-  disableSiblingComparisons: true,
-  allowChildIndependentUse: true,
-  centralPermissionControl: true
-};
-
-const defaultProfiles = [
-  { name:"Kind 1", note:"Eigenes Profil · eigene Rechte" },
-  { name:"Kind 2", note:"Eigenes Profil · eigene Rechte" },
-  { name:"Kind 3", note:"Eigenes Profil · eigene Rechte" }
-];
-
-function safeJsonParse(value, fallback){
-  try{
-    const parsed = JSON.parse(value);
-    return parsed ?? fallback;
-  }catch{
-    return fallback;
-  }
-}
-
-function loadPermissions(){
-  const stored = safeJsonParse(localStorage.getItem(STORAGE_KEY), {});
-  return { ...defaultPermissions, ...stored };
-}
-
-function savePermissions(data){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function loadProfiles(){
-  const stored = safeJsonParse(localStorage.getItem(PROFILE_KEY), null);
-  if(Array.isArray(stored) && stored.length) return stored;
-  return defaultProfiles;
-}
-
-function saveProfiles(list){
-  localStorage.setItem(PROFILE_KEY, JSON.stringify(list));
-}
-
-function setToggleState(toggle, state){
-  toggle.classList.toggle("active", !!state);
-  toggle.setAttribute("aria-pressed", state ? "true" : "false");
-}
-
-
 const CHAT_STORAGE_KEY = "hh_family_chat_threads";
 
-function loadChatThreads(){
-  return safeJsonParse(localStorage.getItem(CHAT_STORAGE_KEY), []).sort((a,b)=>new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+let activeThreadId = null;
+
+function esc(s){
+  return String(s ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
-function formatChatStatus(status){
-  if(status === "done") return "Erledigt";
-  if(status === "working") return "In Bearbeitung";
-  if(status === "read") return "Gelesen";
-  return "Offen";
+function nowIso(){ return new Date().toISOString(); }
+function fmtDate(v){
+  if(!v) return "—";
+  const d = new Date(v);
+  if(Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
 }
-function formatChatStatusClass(status){
-  if(status === "done") return "genehmigt";
-  if(status === "working") return "später";
-  if(status === "read") return "offen";
-  return "offen";
+
+function checkAuth(){
+  let user = null;
+  try{
+    user = JSON.parse(localStorage.getItem("haushaltsheld_user") || "null");
+  }catch{
+    user = null;
+  }
+
+  if(!user || user.role !== "parent"){
+    user = { name: "Elternteil", role: "parent" };
+    localStorage.setItem("haushaltsheld_user", JSON.stringify(user));
+  }
+
+  const parentName = document.getElementById("parentName");
+  if(parentName && !parentName.value.trim()){
+    parentName.value = user.name || "Elternteil";
+  }
+  return user;
 }
-function renderChatPreview(){
-  const list = document.getElementById("chatPreviewList");
-  if(!list) return;
-  const threads = loadChatThreads();
-  if(!threads.length){
-    list.innerHTML = '<div class="request-empty">Noch keine Chat-Nachrichten vorhanden.<br>Sobald ein Kind einen Chat startet, erscheint die Vorschau hier.</div>';
+
+function handleLogout(){
+  if(confirm("Möchtest du dich wirklich abmelden?")){
+    localStorage.removeItem("haushaltsheld_user");
+    localStorage.removeItem("hh_active_child");
+    window.location.href = "login.html";
+  }
+}
+
+
+function getChildren(){
+  let users = [];
+  try{
+    users = JSON.parse(localStorage.getItem("haushaltsheld_users") || "[]");
+    if(!Array.isArray(users)) users = [];
+  }catch{
+    users = [];
+  }
+  return users.filter(user => user && user.role === "child");
+}
+
+function populateNewChatChildren(){
+  const select = document.getElementById("newChatChild");
+  if(!select) return;
+  const current = select.value;
+  const children = getChildren();
+
+  select.innerHTML = '<option value="">-- Kind auswählen --</option>' + children.map(child => {
+    const name = esc(child.name || child.nickname || "Kind");
+    const id = esc(String(child.id || child.name || ""));
+    return `<option value="${id}">${name}</option>`;
+  }).join("");
+
+  if(children.some(child => String(child.id || child.name || "") === current)){
+    select.value = current;
+  }
+}
+
+function fillParentExample(){
+  const childSelect = document.getElementById("newChatChild");
+  const firstChildText = childSelect && childSelect.options.length > 1 ? childSelect.options[1].textContent : "dein Kind";
+  document.getElementById("newChatCategory").value = "reminder";
+  document.getElementById("newChatMessage").value = "Hallo " + firstChildText + ", bitte denk morgen an dein Sportzeug und deine Trinkflasche.";
+}
+
+function createParentThread(){
+  const childId = document.getElementById("newChatChild").value;
+  const category = document.getElementById("newChatCategory").value;
+  const message = document.getElementById("newChatMessage").value.trim();
+  const senderName = document.getElementById("parentName").value.trim() || "Elternteil";
+
+  if(!childId){
+    alert("Bitte wähle zuerst ein Kind aus.");
     return;
   }
-  list.innerHTML = threads.slice(0,6).map(thread => {
+  if(!message){
+    alert("Bitte schreibe zuerst eine Nachricht.");
+    return;
+  }
+
+  const children = getChildren();
+  const selectedChild = children.find(child => String(child.id || child.name || "") === String(childId));
+  const childName = selectedChild?.name || selectedChild?.nickname || "Kind";
+
+  const autoTitleBase = message.replace(/\s+/g, " ").trim().slice(0, 48);
+  const title = autoTitleBase.length >= 48 ? autoTitleBase + "…" : autoTitleBase;
+
+  const threads = getThreads();
+  const id = "chat_" + Date.now();
+
+  threads.push({
+    id,
+    childId: String(childId),
+    childName,
+    category,
+    title,
+    status: "open",
+    createdAt: nowIso(),
+    updatedAt: nowIso(),
+    unreadForChild: true,
+    unreadForParent: false,
+    messages: [{
+      id: "msg_" + Date.now(),
+      senderType: "parent",
+      senderName,
+      text: message,
+      createdAt: nowIso()
+    }]
+  });
+
+  saveThreads(threads);
+  document.getElementById("newChatMessage").value = "";
+
+  const filterChild = document.getElementById("filterChild");
+  const filterStatus = document.getElementById("filterStatus");
+  const filterCategory = document.getElementById("filterCategory");
+
+  if(filterChild) filterChild.value = String(childId);
+  if(filterStatus) filterStatus.value = "all";
+  if(filterCategory) filterCategory.value = "all";
+
+  activeThreadId = id;
+  closeNewChatModal();
+  renderAll();
+  openThread(id);
+}
+
+function openNewChatModal(){
+  const modal = document.getElementById("newChatModal");
+  if(!modal) return;
+  populateNewChatChildren();
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
+}
+
+function closeNewChatModal(){
+  const modal = document.getElementById("newChatModal");
+  if(!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+}
+
+function getThreads(){
+  try{
+    const raw = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY) || "[]");
+    return Array.isArray(raw) ? raw : [];
+  }catch{
+    return [];
+  }
+}
+function saveThreads(threads){
+  localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(threads));
+}
+
+function categoryLabel(value){
+  return {
+    school:"Schule",
+    buy:"Einkauf",
+    help:"Hilfe",
+    reminder:"Erinnerung",
+    other:"Sonstiges"
+  }[value] || "Sonstiges";
+}
+function categoryClass(value){
+  return {
+    school:"badge-school",
+    buy:"badge-buy",
+    help:"badge-help",
+    reminder:"badge-reminder",
+    other:"badge-other"
+  }[value] || "badge-other";
+}
+function statusLabel(value){
+  return {
+    open:"Offen",
+    read:"Gelesen",
+    working:"In Bearbeitung",
+    done:"Erledigt"
+  }[value] || "Offen";
+}
+function statusClass(value){
+  return {
+    open:"badge-open",
+    read:"badge-read",
+    working:"badge-working",
+    done:"badge-done"
+  }[value] || "badge-open";
+}
+
+function getFilters(){
+  return {
+    child: document.getElementById("filterChild").value,
+    status: document.getElementById("filterStatus").value,
+    category: document.getElementById("filterCategory").value
+  };
+}
+
+function getFilteredThreads(){
+  const filters = getFilters();
+  return getThreads()
+    .filter(thread => {
+      if(filters.child !== "all" && String(thread.childId || "") !== filters.child) return false;
+      if(filters.status !== "all" && String(thread.status || "open") !== filters.status) return false;
+      if(filters.category !== "all" && String(thread.category || "other") !== filters.category) return false;
+      return true;
+    })
+    .sort((a,b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+}
+
+function populateChildFilter(){
+  const select = document.getElementById("filterChild");
+  const current = select.value;
+  const uniqueChildren = [];
+  const seen = new Set();
+
+  getChildren().forEach(child => {
+    const id = String(child.id || child.name || "");
+    const name = child.name || child.nickname || "Kind";
+    if(!id || seen.has(id)) return;
+    seen.add(id);
+    uniqueChildren.push({ id, name });
+  });
+
+  getThreads().forEach(thread => {
+    const id = String(thread.childId || "");
+    const name = thread.childName || "Kind";
+    if(!id || seen.has(id)) return;
+    seen.add(id);
+    uniqueChildren.push({ id, name });
+  });
+
+  select.innerHTML = '<option value="all">Alle Kinder</option>' +
+    uniqueChildren.map(child => `<option value="${esc(child.id)}">${esc(child.name)}</option>`).join("");
+
+  if([...select.options].some(opt => opt.value === current)) select.value = current;
+}
+
+function renderStats(){
+  const threads = getThreads();
+  const allCount = threads.length;
+  const unreadParentCount = threads.filter(t => t && t.unreadForParent).length;
+  const workingCount = threads.filter(t => String(t.status || "") === "working").length;
+  const doneCount = threads.filter(t => String(t.status || "") === "done").length;
+
+  document.getElementById("allCount").textContent = String(allCount);
+  document.getElementById("unreadParentCount").textContent = String(unreadParentCount);
+  document.getElementById("workingCount").textContent = String(workingCount);
+  document.getElementById("doneCount").textContent = String(doneCount);
+}
+
+function renderThreadList(){
+  const threads = getFilteredThreads();
+  const list = document.getElementById("threadList");
+
+  if(!threads.length){
+    list.innerHTML = '<div class="empty">Noch kein passender Chat vorhanden.<br>Die Unterhaltungen aus dem Kindermodus erscheinen automatisch hier.</div>';
+    return;
+  }
+
+  if(!activeThreadId || !threads.some(t => t.id === activeThreadId)){
+    activeThreadId = threads[0].id;
+  }
+
+  list.innerHTML = threads.map(thread => {
     const last = (thread.messages || []).slice(-1)[0];
-    const status = String(thread.status || "open");
     return `
-      <div class="request-item">
-        <div class="request-head">
-          <div>
-            <div class="request-name">${escapeHtml(thread.childName || "Kind")} · ${escapeHtml(thread.title || "Chat")}</div>
-            <div class="request-meta">
-              Kategorie: <strong>${escapeHtml(thread.category || "allgemein")}</strong><br>
-              Letzte Nachricht: ${escapeHtml(last ? last.text : "Noch keine Nachricht")}<br>
-              Aktualisiert: ${escapeHtml(formatRequestDate(thread.updatedAt || thread.createdAt))}
-            </div>
-          </div>
-          <span class="request-badge ${formatChatStatusClass(status)}">${formatChatStatus(status)}</span>
+      <div class="thread-item ${thread.id === activeThreadId ? "active" : ""} ${thread.unreadForParent ? "unread" : ""}" onclick="openThread('${esc(thread.id)}')">
+        <div class="thread-head">
+          <div class="thread-title">${esc(thread.childName || "Kind")} · ${esc(thread.title || "Chat")}</div>
+          <div class="thread-meta">${esc(fmtDate(thread.updatedAt || thread.createdAt))}</div>
         </div>
-        <div class="request-actions">
-          <a class="btn btn-soft" href="admin_chat.html">Im Chat öffnen</a>
+        <div class="thread-preview">${esc(last ? last.text : "Noch keine Nachricht")}</div>
+        <div class="badges">
+          <span class="badge ${categoryClass(thread.category)}">${esc(categoryLabel(thread.category))}</span>
+          <span class="badge ${statusClass(thread.status)}">${esc(statusLabel(thread.status))}</span>
         </div>
       </div>
     `;
   }).join("");
 }
 
-function renderToggles(){
-  const permissions = loadPermissions();
-
-  document.querySelectorAll(".toggle[data-key]").forEach(toggle => {
-    const key = toggle.dataset.key;
-    setToggleState(toggle, !!permissions[key]);
-
-    toggle.onclick = () => {
-      setToggleState(toggle, !toggle.classList.contains("active"));
-      updateSummary();
-    };
-  });
+function getActiveThread(){
+  return getThreads().find(t => t.id === activeThreadId) || null;
 }
 
-function collectToggleValues(){
-  const current = loadPermissions();
-  document.querySelectorAll(".toggle[data-key]").forEach(toggle => {
-    current[toggle.dataset.key] = toggle.classList.contains("active");
-  });
-  return current;
+function openThread(id){
+  activeThreadId = id;
+  const threads = getThreads();
+  const idx = threads.findIndex(t => t.id === id);
+  if(idx >= 0){
+    threads[idx].unreadForParent = false;
+    if(threads[idx].status === "open") threads[idx].status = "read";
+    threads[idx].updatedAt = nowIso();
+    saveThreads(threads);
+  }
+  renderAll();
 }
 
-function renderProfiles(){
-  const grid = document.getElementById("profileGrid");
-  const profiles = loadProfiles();
+function renderActiveThread(){
+  const thread = getActiveThread();
+  const titleEl = document.getElementById("chatTitleView");
+  const metaEl = document.getElementById("chatMetaView");
+  const badgeEl = document.getElementById("chatStatusBadge");
+  const bodyEl = document.getElementById("chatMessages");
+  const statusSelect = document.getElementById("statusSelect");
 
-  grid.innerHTML = profiles.map(profile => `
-    <div class="profile-card">
-      <div class="profile-top">
-        <div class="profile-avatar">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M6 21v-2a6 6 0 0 1 12 0v2"></path>
-          </svg>
-        </div>
-        <div>
-          <div class="profile-name">${escapeHtml(profile.name)}</div>
-          <div class="profile-meta">${escapeHtml(profile.note || "Eigenes Profil")}</div>
-        </div>
-      </div>
+  if(!thread){
+    titleEl.textContent = "Noch kein Chat ausgewählt";
+    metaEl.textContent = "Wähle links einen Chat aus.";
+    badgeEl.className = "badge badge-open";
+    badgeEl.textContent = "Offen";
+    bodyEl.innerHTML = '<div class="empty">Wähle links einen Chat aus, um die Unterhaltung zu lesen und zu beantworten.</div>';
+    statusSelect.value = "open";
+    return;
+  }
 
-      <div class="profile-list">
-        <div class="profile-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 6 9 17l-5-5"></path>
-          </svg>
-          <span>eigener Zugang ohne Geschwistersicht</span>
-        </div>
-        <div class="profile-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 6 9 17l-5-5"></path>
-          </svg>
-          <span>private Inhalte geschützt</span>
-        </div>
-        <div class="profile-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 6 9 17l-5-5"></path>
-          </svg>
-          <span>Freigaben können später individuell erweitert werden</span>
-        </div>
-      </div>
+  titleEl.textContent = (thread.childName || "Kind") + " · " + (thread.title || "Chat");
+  metaEl.textContent = categoryLabel(thread.category) + " · gestartet am " + fmtDate(thread.createdAt);
+  badgeEl.className = "badge " + statusClass(thread.status);
+  badgeEl.textContent = statusLabel(thread.status);
+  statusSelect.value = thread.status || "open";
+
+  bodyEl.innerHTML = (thread.messages || []).map(msg => `
+    <div class="message ${msg.senderType === "parent" ? "parent" : "child"}">
+      <div class="message-meta">${esc(msg.senderType === "parent" ? (msg.senderName || "Eltern") : (msg.senderName || "Kind"))} · ${esc(fmtDate(msg.createdAt))}</div>
+      <div class="message-text">${esc(msg.text)}</div>
     </div>
   `).join("");
+  bodyEl.scrollTop = bodyEl.scrollHeight;
 }
 
-function updateSummary(){
-  const values = collectToggleValues();
+function sendReply(){
+  const text = document.getElementById("replyMessage").value.trim();
+  const senderName = document.getElementById("parentName").value.trim() || "Elternteil";
 
-  const parentCount = [
-    "parentManageProfiles",
-    "parentManageRules",
-    "parentManageBudgets",
-    "parentCanRequestPrivateAccess"
-  ].filter(key => values[key]).length;
-
-  const childCount = [
-    "childOwnLogin",
-    "childPrivateSpace",
-    "childCanApprovePrivateAccess",
-    "siblingPrivacy"
-  ].filter(key => values[key]).length;
-
-  const approvalCount = [
-    "requireApprovalPrivate",
-    "allowPrivateWishlist",
-    "protectSurpriseMode",
-    "approvalSavingsGoals",
-    "showOnlyHintsForPrivate",
-    "disableSiblingComparisons"
-  ].filter(key => values[key]).length;
-
-  const financeCount = [
-    "showFinanceReport",
-    "showShopping",
-    "showPocketMoney",
-    "showGiftMoney",
-    "showParentIncome",
-    "showIncome",
-    "showFixed",
-    "showVariable"
-  ].filter(key => values[key]).length;
-
-  const chatCount = loadChatThreads().filter(thread => thread.unreadForParent || thread.status !== "done").length;
-
-  document.getElementById("sumParent").textContent = String(parentCount);
-  document.getElementById("sumChild").textContent = String(childCount);
-  document.getElementById("sumApproval").textContent = String(approvalCount);
-  document.getElementById("sumFinance").textContent = String(financeCount);
-  document.getElementById("sumChat").textContent = String(chatCount);
-}
-
-function showSavedNote(){
-  const note = document.getElementById("saveNote");
-  note.classList.add("show");
-  clearTimeout(showSavedNote.timer);
-  showSavedNote.timer = setTimeout(() => note.classList.remove("show"), 2200);
-}
-
-function escapeHtml(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-else{
-    error.classList.add("show");
+  if(!activeThreadId){
+    alert("Bitte wähle zuerst einen Chat aus.");
+    return;
   }
-}
-
-
-
-
-
-document.getElementById("saveBtn").addEventListener("click", () => {
-  savePermissions(collectToggleValues());
-  updateSummary();
-  showSavedNote();
-});
-
-
-document.getElementById("resetBtn").addEventListener("click", () => {
-  savePermissions(defaultPermissions);
-  renderToggles();
-  updateSummary();
-  showSavedNote();
-});
-
-document.getElementById("addProfileBtn").addEventListener("click", () => {
-
-  const profiles = loadProfiles();
-  const nextNumber = profiles.length + 1;
-  profiles.push({
-    name: `Kind ${nextNumber}`,
-    note: "Eigenes Profil · eigene Rechte"
-  });
-  saveProfiles(profiles);
-  renderProfiles();
-});
-
-
-function loadAllTasks(){
-  return safeJsonParse(localStorage.getItem("haushaltsheld_tasks"), []);
-}
-function saveAllTasks(items){
-  localStorage.setItem("haushaltsheld_tasks", JSON.stringify(items));
-}
-function getTaskStatusLabel(status){
-  if(status === "done") return "Genehmigt";
-  if(status === "in_progress") return "Zurück an Kind";
-  if(status === "waiting_parent") return "Wartet auf Eltern";
-  return "Offen";
-}
-function renderTaskApprovals(){
-  const list = document.getElementById("taskApprovalList");
-  if(!list) return;
-
-  const tasks = loadAllTasks()
-    .map((task, index) => ({ ...task, _index:index }))
-    .filter(task => task && task.status === "waiting_parent");
-
-  if(!tasks.length){
-    list.innerHTML = '<div class="request-empty">Aktuell wartet keine Aufgabe auf eure Bestätigung.</div>';
+  if(!text){
+    alert("Bitte schreibe zuerst eine Antwort.");
     return;
   }
 
-  list.innerHTML = tasks.map(task => `
-    <div class="request-item">
-      <div class="request-head">
-        <div>
-          <div class="request-name">${escapeHtml(task.childName || task.person || "Kind")} · ${escapeHtml(task.text || "Aufgabe")}</div>
-          <div class="request-meta">
-            Kategorie: <strong>${escapeHtml(task.category || "Aufgabe")}</strong><br>
-            Status: ${escapeHtml(getTaskStatusLabel(task.status))}<br>
-            Gemeldet am: ${escapeHtml(formatRequestDate(task.updatedAt || task.date))}
-          </div>
-        </div>
-        <span class="request-badge später">Wartet auf Eltern</span>
-      </div>
-      <div class="request-actions">
-        <button class="btn" type="button" onclick="approveTaskByParent(${task._index})">Bestätigen</button>
-        <button class="btn btn-soft" type="button" onclick="sendTaskBackToChild(${task._index})">Zurück ans Kind</button>
-      </div>
-    </div>
-  `).join("");
-}
+  const threads = getThreads();
+  const idx = threads.findIndex(t => t.id === activeThreadId);
+  if(idx < 0) return;
 
-function approveTaskByParent(index){
-  const tasks = loadAllTasks();
-  if(!tasks[index]) return;
-
-  const task = tasks[index];
-  const wasAlreadyDone = task.status === "done";
-
-  task.status = "done";
-  task.done = true;
-  task.waitingForParent = false;
-  task.updatedAt = new Date().toISOString();
-  saveAllTasks(tasks);
-
-  if(!wasAlreadyDone){
-    const childKey = "hh_kid_" + (task.childId || task.childName || task.person || "kind") + "_stars";
-    const currentStars = Number(safeJsonParse(localStorage.getItem(childKey), 0) || 0);
-    localStorage.setItem(childKey, JSON.stringify(currentStars + 1));
-  }
-
-  renderTaskApprovals();
-  showSavedNote();
-}
-
-function sendTaskBackToChild(index){
-  const tasks = loadAllTasks();
-  if(!tasks[index]) return;
-
-  tasks[index].status = "in_progress";
-  tasks[index].done = false;
-  tasks[index].waitingForParent = false;
-  tasks[index].updatedAt = new Date().toISOString();
-  saveAllTasks(tasks);
-
-  renderTaskApprovals();
-  showSavedNote();
-}
-
-renderToggles();
-renderProfiles();
-updateSummary();
-renderChatPreview();
-renderRewardRequests();
-renderTaskApprovals();
-restoreLoginState();
-
-window.addEventListener("storage", () => {
-  updateSummary();
-  renderChatPreview();
-  renderRewardRequests();
-  renderTaskApprovals();
-});
-
-const RIGHTS_KEY = "haushaltsheld_rights_settings";
-const FAMILY_ACCESS_KEY = "haushaltsheld_family_access";
-
-const ACCESS_LABELS = {
-  meinGeld: "Mein Geld",
-  aufgaben: "Aufgaben",
-  einkaufsliste: "Einkaufsliste",
-  familienplaner: "Familienplaner",
-  termine: "Termine",
-  finanzen: "Finanzen",
-  chat: "Chat"
-};
-
-const ACCESS_OPTIONS = [
-  { value:"deny", label:"Gesperrt" },
-  { value:"ask", label:"Nur nachfragen" },
-  { value:"allow", label:"Direkt erlaubt" }
-];
-
-const AGE_GROUP_META = [
-  { key:"age0to5", label:"0–5 Jahre", hint:"Sehr geschützter Bereich – fast alles nur mit Elternbegleitung." },
-  { key:"age6to10", label:"6–10 Jahre", hint:"Erste Selbstständigkeit – ausgewählte Bereiche dürfen direkt genutzt werden." },
-  { key:"age11to13", label:"11–13 Jahre", hint:"Mehr Eigenständigkeit mit klaren Grenzen und begleiteter Freigabe." },
-  { key:"age14to17", label:"14–17 Jahre", hint:"Fast jugendlich – mehr Verantwortung mit gezielten Schutzregeln." }
-];
-
-const defaultRightsSettings = {
-  ageGroups: {
-    age0to5:   { meinGeld:"deny", aufgaben:"allow", einkaufsliste:"ask", familienplaner:"deny", termine:"deny", finanzen:"deny", chat:"deny" },
-    age6to10:  { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"ask", termine:"ask", finanzen:"deny", chat:"allow" },
-    age11to13: { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"allow", termine:"ask", finanzen:"ask", chat:"allow" },
-    age14to17: { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"allow", termine:"allow", finanzen:"ask", chat:"allow" }
-  },
-  requireApprovalPrivate: true,
-  requireApprovalAppointments: true,
-  requireApprovalFinances: true,
-  childOverrides: {}
-};
-
-let ageGroupDrafts = JSON.parse(JSON.stringify(defaultRightsSettings.ageGroups));
-
-function getStoredRightsSettings(){
-  const stored = safeJsonParse(localStorage.getItem(RIGHTS_KEY), {});
-  return {
-    ...defaultRightsSettings,
-    ...stored,
-    ageGroups: { ...defaultRightsSettings.ageGroups, ...(stored.ageGroups || {}) },
-    childOverrides: stored.childOverrides || {}
-  };
-}
-
-function writeJson(key, value){
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
-function getUserAgeGroupKey(age){
-  if(age <= 5) return "age0to5";
-  if(age <= 10) return "age6to10";
-  if(age <= 13) return "age11to13";
-  return "age14to17";
-}
-
-function getDisplayAge(user){
-  if(!user) return 0;
-  if(user.birthdate){
-    const birth = new Date(user.birthdate);
-    if(!Number.isNaN(birth.getTime())){
-      const today = new Date();
-      let age = today.getFullYear() - birth.getFullYear();
-      const monthDiff = today.getMonth() - birth.getMonth();
-      if(monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
-      return Math.max(0, age);
-    }
-  }
-  return Number(user.age) || 0;
-}
-
-function formatGermanDate(value){
-  if(!value) return "";
-  const date = new Date(value);
-  if(Number.isNaN(date.getTime())) return "";
-  return date.toLocaleDateString("de-DE");
-}
-
-function createRuleSelect({ value="allow", includeDefault=false } = {}){
-  const select = document.createElement("select");
-  const options = includeDefault ? [{ value:"default", label:"Altersgruppe verwenden" }, ...ACCESS_OPTIONS] : ACCESS_OPTIONS;
-  select.innerHTML = options.map(option => `<option value="${option.value}">${option.label}</option>`).join("");
-  select.value = value;
-  return select;
-}
-
-function showPageSuccess(message){
-  const box = document.getElementById("saveNote");
-  if(box){
-    box.textContent = message;
-    box.classList.add("show");
-    clearTimeout(showPageSuccess.timer);
-    showPageSuccess.timer = setTimeout(() => box.classList.remove("show"), 2200);
-  }
-}
-
-function saveCurrentAgeGroupDraft(){
-  const select = document.getElementById("ageGroupSelect");
-  if(!select) return;
-  const groupKey = select.value;
-  ageGroupDrafts[groupKey] = ageGroupDrafts[groupKey] || {};
-  document.querySelectorAll("[data-age-rule-key]").forEach(selectField => {
-    ageGroupDrafts[groupKey][selectField.dataset.ageRuleKey] = selectField.value;
+  threads[idx].messages = Array.isArray(threads[idx].messages) ? threads[idx].messages : [];
+  threads[idx].messages.push({
+    id: "msg_" + Date.now(),
+    senderType: "parent",
+    senderName,
+    text,
+    createdAt: nowIso()
   });
+  threads[idx].updatedAt = nowIso();
+  threads[idx].unreadForParent = false;
+  threads[idx].unreadForChild = true;
+  threads[idx].status = document.getElementById("statusSelect").value || "working";
+
+  saveThreads(threads);
+  document.getElementById("replyMessage").value = "";
+  renderAll();
 }
 
-function renderAgeGroupRules(){
-  const select = document.getElementById("ageGroupSelect");
-  const container = document.getElementById("ageGroupRules");
-  if(!select || !container) return;
-  const groupKey = select.value;
-  const meta = AGE_GROUP_META.find(item => item.key === groupKey);
-  document.getElementById("ageGroupTitle").textContent = meta?.label || "";
-  document.getElementById("ageGroupHint").textContent = meta?.hint || "";
-  const rules = ageGroupDrafts[groupKey] || defaultRightsSettings.ageGroups[groupKey] || {};
-  container.innerHTML = "";
-  Object.entries(ACCESS_LABELS).forEach(([key, label]) => {
-    const field = document.createElement("div");
-    field.className = "rule-field";
-    const lbl = document.createElement("label");
-    lbl.textContent = label + (key === "chat" && groupKey !== "age0to5" ? " (ab 6 grundsätzlich offen)" : "");
-    const selectField = createRuleSelect({ value: rules[key] || "allow" });
-    selectField.dataset.ageRuleKey = key;
-    if(key === "chat" && groupKey !== "age0to5"){
-      selectField.value = "allow";
-    }
-    field.append(lbl, selectField);
-    container.appendChild(field);
-  });
-}
-
-function saveAgeRules(){
-  saveCurrentAgeGroupDraft();
-  const settings = getStoredRightsSettings();
-  settings.ageGroups = JSON.parse(JSON.stringify(ageGroupDrafts));
-  writeJson(RIGHTS_KEY, settings);
-  showPageSuccess("Kindermodus-Rechte wurden gespeichert.");
-}
-
-function renderApprovalToggles(){
-  const settings = getStoredRightsSettings();
-  document.querySelectorAll('.toggle[data-key]').forEach(toggle => {
-    setToggleState(toggle, !!settings[toggle.dataset.key]);
-    toggle.onclick = () => setToggleState(toggle, !toggle.classList.contains("active"));
-  });
-}
-
-function saveApprovalSettings(){
-  const settings = getStoredRightsSettings();
-  document.querySelectorAll('.toggle[data-key]').forEach(toggle => {
-    settings[toggle.dataset.key] = toggle.classList.contains("active");
-  });
-  writeJson(RIGHTS_KEY, settings);
-  showPageSuccess("Elternfreigaben wurden gespeichert.");
-}
-
-function renderChildSelect(){
-  const select = document.getElementById("childRightsSelect");
-  if(!select) return;
-  const users = safeJsonParse(localStorage.getItem("haushaltsheld_users"), []);
-  const children = (Array.isArray(users) ? users : []).filter(user => user.role === "child");
-  const current = select.value;
-  select.innerHTML = '<option value="">-- Kind auswählen --</option>' + children.map(child => `<option value="${child.id}">${escapeHtml(child.name)} (${getDisplayAge(child)} Jahre)</option>`).join("");
-  if(children.some(child => child.id === current)) select.value = current;
-}
-
-function renderChildOverrideEditor(){
-  const select = document.getElementById("childRightsSelect");
-  const info = document.getElementById("childRightsInfo");
-  const editor = document.getElementById("childOverrideEditor");
-  const grid = document.getElementById("childRulesGrid");
-  if(!select || !info || !editor || !grid) return;
-
-  const users = safeJsonParse(localStorage.getItem("haushaltsheld_users"), []);
-  const child = (Array.isArray(users) ? users : []).find(user => user.id === select.value && user.role === "child");
-  if(!child){
-    editor.style.display = "none";
-    info.textContent = "Wähle ein Kind aus, um individuelle Rechte zusätzlich zur Altersgruppe festzulegen.";
+function applyStatus(){
+  if(!activeThreadId){
+    alert("Bitte wähle zuerst einen Chat aus.");
     return;
   }
 
-  const age = getDisplayAge(child);
-  const ageGroupKey = getUserAgeGroupKey(age);
-  const ageGroupLabel = AGE_GROUP_META.find(group => group.key === ageGroupKey)?.label || "Altersgruppe";
-  const settings = getStoredRightsSettings();
-  const override = settings.childOverrides?.[child.id] || {};
-  info.textContent = `${child.name} ist ${age} Jahre alt und nutzt aktuell die Altersgruppe ${ageGroupLabel}. Hier kannst du einzelne Bereiche gezielt anpassen.`;
+  const threads = getThreads();
+  const idx = threads.findIndex(t => t.id === activeThreadId);
+  if(idx < 0) return;
 
-  editor.style.display = "block";
-  grid.innerHTML = "";
-  Object.entries(ACCESS_LABELS).forEach(([key, label]) => {
-    const field = document.createElement("div");
-    field.className = "rule-field";
-    const lbl = document.createElement("label");
-    lbl.textContent = label;
-    const selectField = createRuleSelect({ value: override[key] || "default", includeDefault:true });
-    selectField.dataset.childRuleKey = key;
-    field.append(lbl, selectField);
-    grid.appendChild(field);
-  });
+  threads[idx].status = document.getElementById("statusSelect").value || "read";
+  threads[idx].updatedAt = nowIso();
+  if(threads[idx].status !== "open") threads[idx].unreadForParent = false;
+
+  saveThreads(threads);
+  renderAll();
 }
 
-function saveChildOverrides(){
-  const childId = document.getElementById("childRightsSelect")?.value;
-  if(!childId){
-    alert("Bitte wähle zuerst ein Kind aus.");
-    return;
-  }
-  const settings = getStoredRightsSettings();
-  const overrides = {};
-  document.querySelectorAll("[data-child-rule-key]").forEach(selectField => {
-    if(selectField.value !== "default") overrides[selectField.dataset.childRuleKey] = selectField.value;
-  });
-  if(Object.keys(overrides).length){
-    settings.childOverrides[childId] = overrides;
-  }else{
-    delete settings.childOverrides[childId];
-  }
-  writeJson(RIGHTS_KEY, settings);
-  renderChildOverrideEditor();
-  showPageSuccess("Individuelle Kind-Rechte wurden gespeichert.");
+function markSeen(){
+  if(!activeThreadId) return;
+  const threads = getThreads();
+  const idx = threads.findIndex(t => t.id === activeThreadId);
+  if(idx < 0) return;
+
+  threads[idx].unreadForParent = false;
+  if(threads[idx].status === "open") threads[idx].status = "read";
+  threads[idx].updatedAt = nowIso();
+
+  saveThreads(threads);
+  renderAll();
 }
 
-function resetChildOverrides(){
-  const childId = document.getElementById("childRightsSelect")?.value;
-  if(!childId) return;
-  const settings = getStoredRightsSettings();
-  delete settings.childOverrides[childId];
-  writeJson(RIGHTS_KEY, settings);
-  renderChildOverrideEditor();
-  showPageSuccess("Das Kind nutzt jetzt wieder nur die Altersgruppe.");
+function renderAll(){
+  populateChildFilter();
+  populateNewChatChildren();
+  renderStats();
+  renderThreadList();
+  renderActiveThread();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  ageGroupDrafts = JSON.parse(JSON.stringify(getStoredRightsSettings().ageGroups));
-  const ageSelect = document.getElementById("ageGroupSelect");
-  if(ageSelect){
-    ageSelect.addEventListener("change", saveCurrentAgeGroupDraft);
-    renderAgeGroupRules();
-  }
-  renderApprovalToggles();
-  renderChildSelect();
-  renderChildOverrideEditor();
+  if(!checkAuth()) return;
+  renderAll();
 });
 
-</script>
 
-<script src="js/permissions.js"></script>
-<script src="js/app.js"></script>
-
-
-
-
-<script>
-function getFamilyAccess() {
-  return JSON.parse(localStorage.getItem("haushaltsheld_family_access")) || {
-    code: "482178",
-    enabled: true
-  };
-}
-
-function isFamilyUnlocked() {
-  try {
-    const gate = JSON.parse(localStorage.getItem("haushaltsheld_family_gate"));
-    return !!(gate && gate.granted);
-  } catch (error) {
-    return false;
-  }
-}
-
-function unlockFamily(inputCode) {
-  const access = getFamilyAccess();
-  if (String(inputCode || "").trim() === String(access.code || "").trim()) {
-    localStorage.setItem("haushaltsheld_family_gate", JSON.stringify({
-      granted: true,
-      grantedAt: Date.now()
-    }));
-    return true;
-  }
-  return false;
-}
-
-function handleFamilyLogin() {
-  const input = document.getElementById("familyCodeInput");
-  const error = document.getElementById("familyCodeError");
-  const value = input ? input.value : "";
-
-  if (unlockFamily(value)) {
-    location.reload();
-    return;
-  }
-
-  if (error) error.classList.add("show");
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const gate = document.getElementById("familyGate");
-  if (gate && !isFamilyUnlocked()) {
-    gate.style.display = "flex";
+document.addEventListener("keydown", (event) => {
+  if(event.key === "Escape"){
+    closeNewChatModal();
   }
 });
-</script>
 
-
-<div id="familyGate" class="login-overlay" style="display:none;">
-  <div class="login-card">
-    <div class="login-top">
-      <div class="login-title">
-        <div class="login-icon">🔐</div>
-        <div>
-          <div class="login-headline">Familienzugang</div>
-          <div class="login-sub">Bitte gib den Familiencode ein, um Haushaltsheld zu öffnen.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="familyCodeInput">Familiencode</label>
-      <input id="familyCodeInput" type="password" inputmode="numeric" placeholder="Familiencode eingeben">
-    </div>
-
-    <div id="familyCodeError" class="login-error">Der Familiencode ist leider falsch.</div>
-
-    <div class="form-actions">
-      <button class="btn" type="button" onclick="handleFamilyLogin()">Zugang öffnen</button>
-    </div>
-  </div>
-</div>
-
-
-<script>
-function updateParentChatBadge(){
-  const badge = document.getElementById("chatBadge");
-  if(!badge) return;
-
-  let threads = [];
-  try{
-    threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
-    if(!Array.isArray(threads)) threads = [];
-  }catch{
-    threads = [];
+document.addEventListener("click", (event) => {
+  const modal = document.getElementById("newChatModal");
+  if(modal && event.target === modal){
+    closeNewChatModal();
   }
+});
 
-  const unreadCount = threads.filter(t => t && t.unreadForParent).length;
-
-  if(unreadCount > 0){
-    badge.style.display = "inline-block";
-    badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
-  }else{
-    badge.style.display = "none";
-    badge.textContent = "0";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", updateParentChatBadge);
-window.addEventListener("storage", updateParentChatBadge);
 </script>
 </body>
 </html>
