@@ -1,3 +1,4 @@
+<!-- kopiere ALLES von hier bis zum </html> am Ende -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -1143,19 +1144,19 @@ input, select, textarea{
 
   <div class="nav-label">Hauptmenü</div>
   <nav class="nav">
-    <a href="index.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span><span>Dashboard</span></a>
-    <a href="finanzen.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H5a2 2 0 0 0-2 2z"/><path d="M3 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="16" cy="13.5" r="1"/></svg></span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/><path d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 7H7"/></svg></span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m8 12 2.5 2.5L16 9"/></svg></span><span>Aufgaben</span></a>
-    <a href="familienplaner.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><span>Familienplaner</span></a>
+    <a href="index.html" class="active"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
   </nav>
 
   <div class="nav-label">Extras</div>
   <nav class="nav">
-    <a href="finanzbericht.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-6"/><path d="M22 20v-9"/></svg></span><span>Bericht</span></a>
-    <a href="finanz_historie.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></svg></span><span>Historie</span></a>
-    <a href="beleg_import.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-2-1-2 1-2-1-2 1-2-1-2 1z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span>Belege</span></a>
-    <a href="nutzer-verwalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="3"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 4.13a3 3 0 0 1 0 5.74"/></svg></span><span>Nutzer verwalten</span></a>
+    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
   </nav>
 
   <div class="sidebar-footer">
@@ -1524,3 +1525,30 @@ function rememberOnlineUser(){
   const existing = users.find(u => u.name === me);
   if(existing) existing.lastSeen = now;
   else users.push({ name: me, lastSeen: now });
+
+  localStorage.setItem(HH_ONLINE_USERS_KEY, JSON.stringify(users));
+}
+
+function initDashboard(){
+  if (!checkAuth()) return;
+
+  if (window.lucide) lucide.createIcons();
+
+  if (typeof loadStats === "function") loadStats();
+  if (typeof renderTasks === "function") renderTasks();
+  if (typeof renderCategories === "function") renderCategories();
+  if (typeof renderFinance === "function") renderFinance();
+
+  const savedMode = localStorage.getItem("haushaltsheld_mode") || "admin";
+  if (typeof setMode === "function") setMode(savedMode);
+
+  if (typeof renderTopWelcome === "function") renderTopWelcome();
+  if (typeof renderTopDate === "function") renderTopDate();
+  if (typeof renderTopMotivation === "function") renderTopMotivation();
+  if (typeof rememberOnlineUser === "function") rememberOnlineUser();
+}
+
+document.addEventListener('DOMContentLoaded', initDashboard);
+</script>
+</body>
+</html>

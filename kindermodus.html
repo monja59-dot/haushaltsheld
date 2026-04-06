@@ -1,107 +1,86 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Haushaltsheld – Kindermodus</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-:root{--bg:#f7f2e9;--text:#2d342f;--muted:#7d8a82;--accent:#4CAF50;--accent-dark:#3E8E41;--line:#dfd1bc;--shadow-sm:0 6px 18px rgba(54,45,28,.08);--sidebar-w:258px;}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Outfit",sans-serif;background:linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);color:var(--text);min-height:100vh;font-size:16px;line-height:1.6;}
-.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh;}
-.sidebar{background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);border-right:1px solid rgba(223,209,188,.85);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;}
-.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px;}
-.logo-wrap img{width:48px;height:48px;}
-.logo-name{font-weight:800;font-size:1.25rem;color:var(--text);}
-.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--muted);padding:16px 10px 6px;}
-.nav{display:flex;flex-direction:column;gap:4px;}
-.nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--muted);font-weight:700;transition:.18s ease;}
-.nav a.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;}
-.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);}
-.logout-btn{width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;}
-.logout-btn:hover{transform:translateY(-2px);}
-.main{width:100%;max-width:1580px;padding:32px;}
-.page-header h1{font-size:2.35rem;font-weight:800;margin-bottom:8px;}
-.page-header p{color:var(--muted);font-size:.98rem;max-width:760px;}
-.hero{background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);border:1px solid rgba(76,175,80,.18);border-radius:30px;padding:28px 30px;margin-bottom:24px;box-shadow:var(--shadow-sm);}
-.hero h2{font-size:1.6rem;font-weight:800;margin-bottom:10px;}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm);}
-.card h2{font-size:1.16rem;font-weight:800;margin-bottom:18px;}
-@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;}}
-@media(max-width:600px){.main{padding:16px}.page-header h1{font-size:1.95rem}}
+body{
+  font-family:"Outfit",sans-serif;
+  background:#f7f2e9;
+  margin:0;
+  padding:20px;
+  color:#2d342f;
+}
+
+.card{
+  max-width:900px;
+  margin:auto;
+  background:#fffdfa;
+  padding:30px;
+  border-radius:24px;
+  border:1px solid #dfd1bc;
+}
+
+h1{
+  font-size:2rem;
+  margin-bottom:10px;
+}
+
+.nav{
+  display:grid;
+  gap:12px;
+  margin-top:20px;
+}
+
+.btn{
+  display:block;
+  padding:14px;
+  border-radius:16px;
+  background:#4CAF50;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  text-align:center;
+}
 </style>
 </head>
+
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="logo-wrap">
-      <img src="assetsschnecke.png" alt="Haushaltsheld">
-      <div>
-        <div class="logo-name">Haushaltsheld</div>
-      </div>
-    </div>
 
-    <div class="nav-label">Mein Bereich</div>
-    <nav class="nav">
-      <a href="kindermodus.html" class="active">🏠 Familienstart</a>
-      <a href="kind_aufgaben.html">✓ Meine Aufgaben</a>
-      <a href="kind_mein_geld.html">💰 Mein Geld</a>
-    </nav>
+<div class="card">
 
-    <div class="sidebar-footer">
-      <div style="padding:12px;background:rgba(255,255,255,.7);border-radius:16px;border:1px solid var(--line);margin-bottom:8px;font-size:.8rem;">
-        <strong id="childName">Willkommen</strong><br>
-        <span style="color:var(--muted);">Kindermodus</span>
-      </div>
-      <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
-    </div>
-  </aside>
+  <h1>Willkommen <span id="childName">Kind</span> 👋</h1>
+  <p>Das ist dein persönlicher Bereich.</p>
 
-  <main class="main">
-    <div class="page-header">
-      <h1>👋 Willkommen <span id="childGreeting">Kind</span>!</h1>
-      <p>Hier ist dein Familienbereich.</p>
-    </div>
+  <div class="nav">
+    <a href="kind_aufgaben.html" class="btn">Meine Aufgaben</a>
+    <a href="kind_mein_geld.html" class="btn">Mein Geld</a>
+    <a href="kind_sparziel.html" class="btn">Meine Sparziele</a>
+    <a href="kind_wuensche.html" class="btn">Meine Wünsche</a>
+  </div>
 
-    <section class="hero">
-      <h2>Dein Bereich wartet auf dich!</h2>
-      <p>Hier findest du deine Aufgaben, dein Geld und alles weitere was zu dir gehört.</p>
-    </section>
-
-    <section class="card">
-      <h2>🎯 Mein Bereich</h2>
-      <p>Nutze die Navigation, um zu deinen Bereichen zu gehen.</p>
-    </section>
-  </main>
 </div>
 
 <script>
-function checkAuth() {
-  const user = JSON.parse(localStorage.getItem('haushaltsheld_user'));
-  if (!user || user.role !== 'child') {
-    window.location.href = 'login.html';
-    return false;
-  }
-  
-  document.getElementById('childName').textContent = user.name;
-  document.getElementById('childGreeting').textContent = user.name;
-  return true;
+
+// ===== LOGIN CHECK =====
+const currentUser = JSON.parse(localStorage.getItem('haushaltsheld_user'));
+
+if (!currentUser || currentUser.role !== 'child') {
+  window.location.href = 'login.html';
 }
 
-function handleLogout() {
-  if (confirm('Möchten Sie sich abmelden?')) {
-    localStorage.removeItem('haushaltsheld_user');
-    window.location.href = 'login.html';
-  }
-}
+// ===== AKTIVES KIND SETZEN =====
+localStorage.setItem('hh_active_child', JSON.stringify(currentUser));
 
-// Einmalig beim Laden checken
-if (!checkAuth()) {
-  document.body.style.display = 'none';
-}
+// ===== NAME EINSETZEN =====
+document.getElementById("childName").textContent = currentUser.name;
+
 </script>
+
 </body>
 </html>

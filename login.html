@@ -1,251 +1,135 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Haushaltsheld – Login</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --bg:#f7f2e9;
+  --card:#ffffff;
+  --line:#dfd1bc;
   --text:#2d342f;
   --muted:#7d8a82;
   --accent:#4CAF50;
   --accent-dark:#3E8E41;
-  --line:#dfd1bc;
-  --red-soft:#fdeaea;
-  --blue-soft:#e9f1ff;
-  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
 }
-*{box-sizing:border-box;margin:0;padding:0}
+
 body{
+  margin:0;
   font-family:"Outfit",sans-serif;
   background:linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
 }
 
-.login-card{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:32px;
-  box-shadow:var(--shadow-lg);
-  padding:40px 32px;
+.card{
   width:100%;
-  max-width:520px;
+  max-width:480px;
+  background:#fffdfa;
+  padding:30px;
+  border-radius:24px;
+  border:1px solid var(--line);
 }
 
-.login-header{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:12px;
-  margin-bottom:28px;
+h1{
+  text-align:center;
+  margin-bottom:20px;
 }
 
-.logo-img{width:64px;height:64px;}
-
-.login-title{
-  font-size:1.8rem;
-  font-weight:800;
+.field{
+  display:grid;
+  gap:6px;
+  margin-bottom:14px;
 }
 
-.login-form{display:grid;gap:16px;}
-
-.form-group{display:grid;gap:8px;}
-
-.form-group label{
-  font-size:.72rem;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
+input, select{
+  padding:12px;
+  border-radius:14px;
+  border:1px solid var(--line);
 }
 
-.form-group input{
+button{
   width:100%;
-  border:1.5px solid var(--line);
-  background:#fffdf9;
-  border-radius:18px;
-  padding:14px 16px;
-  font-size:.95rem;
-}
-
-.user-selector{display:grid;gap:12px;}
-
-.user-btn{
-  padding:16px;
-  border:1.5px solid var(--line);
-  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
-  border-radius:18px;
-  font-weight:700;
-  cursor:pointer;
-  text-align:left;
-}
-
-.user-btn.active{
-  background:linear-gradient(135deg,var(--accent) 0%, var(--accent-dark) 100%);
-  color:#fff;
-}
-
-.btn-login{
+  padding:14px;
   border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  padding:14px 22px;
-  border-radius:18px;
-  font-weight:800;
-  cursor:pointer;
-  width:100%;
-  margin-top:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-}
-
-.error-msg{
-  display:none;
-  padding:13px 16px;
-  border-radius:18px;
-  background:var(--red-soft);
-  color:#a45656;
-  font-weight:800;
-  margin-bottom:16px;
-}
-
-.error-msg.show{display:block;}
-
-.demo-note{
-  background:var(--blue-soft);
-  border:1px solid rgba(107,150,217,.14);
-  border-radius:18px;
-  padding:14px 16px;
-  color:#58739c;
+  border-radius:16px;
+  background:var(--accent);
+  color:white;
   font-weight:700;
-  font-size:.88rem;
-  margin-top:16px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="login-card">
-  <div class="login-header">
-    <img src="assetsschnecke.png" alt="Haushaltsheld" class="logo-img">
-    <h1 class="login-title">Haushaltsheld</h1>
-  </div>
+<div class="card">
+<h1>Login</h1>
 
-  <div class="error-msg" id="errorMsg"></div>
+<div class="field">
+<label>Familien-Code</label>
+<input type="password" id="code" value="424242">
+</div>
 
-  <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
-    
-    <div class="form-group">
-      <label for="familyCode">Familien-Code</label>
-      <input type="password" id="familyCode" maxlength="6" value="424242" required />
-    </div>
+<div class="field">
+<label>Wer bist du?</label>
+<select id="user"></select>
+</div>
 
-    <div class="form-group">
-      <label>Wer bist du?</label>
-      <div class="user-selector" id="userSelector"></div>
-    </div>
+<div class="field">
+<label>PIN</label>
+<input type="password" id="pin">
+</div>
 
-    <div class="form-group">
-      <label for="pin">PIN</label>
-      <input type="password" id="pin" maxlength="4" required />
-    </div>
+<button onclick="login()">Anmelden</button>
 
-    <button type="submit" class="btn-login">
-      <i data-feather="log-in"></i>
-      Anmelden
-    </button>
-
-  </form>
-
-  <div class="demo-note">
-    🔐 Anna (Eltern) PIN: 1234 | Leo (Kind) PIN: 5678
-  </div>
 </div>
 
 <script>
-let selectedUser = null;
 
-// Demo Nutzer
 if (!localStorage.getItem('haushaltsheld_users')) {
-  const demoUsers = [
-    { name: 'Anna', age: 38, role: 'parent', pin: '1234', rights: null },
-    { name: 'Leo', age: 8, role: 'child', pin: '5678', rights: { meinGeld: true, aufgaben: true } }
-  ];
-  localStorage.setItem('haushaltsheld_users', JSON.stringify(demoUsers));
+  localStorage.setItem('haushaltsheld_users', JSON.stringify([
+    {name:'Mama', role:'parent', pin:'1234'},
+    {name:'Papa', role:'parent', pin:'4321'},
+    {name:'Kind 1', role:'child', pin:'1111'},
+    {name:'Kind 2', role:'child', pin:'2222'}
+  ]));
 }
 
-// Nutzer anzeigen
-const users = JSON.parse(localStorage.getItem('haushaltsheld_users')) || [];
-const userSelector = document.getElementById('userSelector');
+const users = JSON.parse(localStorage.getItem('haushaltsheld_users'));
+const select = document.getElementById('user');
 
-users.forEach((user, index) => {
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'user-btn';
-  btn.textContent = user.name + ' (' + user.age + ' J.)';
-  btn.onclick = () => {
-    selectedUser = index;
-    document.querySelectorAll('.user-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  };
-  userSelector.appendChild(btn);
+users.forEach((u,i)=>{
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = u.name + " (" + u.role + ")";
+  select.appendChild(opt);
 });
 
-// Login
-function handleLogin(event) {
-  event.preventDefault();
-
+function login(){
+  const user = users[select.value];
   const pin = document.getElementById('pin').value;
-  const error = document.getElementById('errorMsg');
 
-  error.classList.remove('show');
-
-  if (selectedUser === null) {
-    error.textContent = '❌ Nutzer auswählen';
-    error.classList.add('show');
+  if(user.pin !== pin){
+    alert("Falsche PIN");
     return;
   }
 
-  const user = users[selectedUser];
+  localStorage.setItem('haushaltsheld_user', JSON.stringify(user));
 
-  if (user.pin !== pin) {
-    error.textContent = '❌ PIN falsch';
-    error.classList.add('show');
-    return;
-  }
-
-  localStorage.setItem('haushaltsheld_user', JSON.stringify({
-    name: user.name,
-    role: user.role,
-    rights: user.rights
-  }));
-
-  if (user.role === 'parent') {
+  if(user.role === 'parent'){
     window.location.href = 'index.html';
   } else {
     window.location.href = 'kindermodus.html';
   }
 }
-</script>
 
-<!-- ICONS -->
-<script src="https://unpkg.com/feather-icons"></script>
-<script>
-  feather.replace();
 </script>
 
 </body>
