@@ -340,6 +340,7 @@ button,input,select,textarea{font:inherit}
             <div class="row">
               <button class="btn" type="button" onclick="sendReply()">Antwort senden</button>
               <button class="btn-line" type="button" onclick="markSeen()">Als gelesen markieren</button>
+              <button class="btn-danger" type="button" onclick="deleteActiveThread()">Chat löschen</button>
             </div>
           </div>
         </section>
@@ -521,7 +522,7 @@ function setChatLockedState(targetChild){
       field.value = "";
     }
   });
-  document.querySelectorAll('button[onclick="createThread()"], button[onclick="fillExample()"], button[onclick="sendReply()"], button[onclick="markSeen()"]').forEach(btn => btn.disabled = true);
+  document.querySelectorAll('button[onclick="createThread()"], button[onclick="fillExample()"], button[onclick="sendReply()"], button[onclick="markSeen()"], button[onclick="deleteActiveThread()"]').forEach(btn => btn.disabled = true);
 }
 function syncVisibleChildNames(activeChild){
   ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id => {
@@ -735,6 +736,28 @@ function markSeen(){
   threads[idx].unreadForChild = false;
   if(threads[idx].status === "open") threads[idx].status = "read";
   saveThreads(threads);
+  renderAll();
+}
+function deleteActiveThread(){
+  if(!activeThreadId){
+    alert("Bitte wähle zuerst einen Chat aus.");
+    return;
+  }
+  const threads = getThreads();
+  const idx = threads.findIndex(t => t.id === activeThreadId && String(t.childId || "") === String(childId()));
+  if(idx < 0){
+    alert("Dieser Chat konnte nicht gefunden werden.");
+    return;
+  }
+  const threadTitle = threads[idx].title || "diesen Chat";
+  if(!confirm(`Möchtest du "${threadTitle}" wirklich löschen?`)) return;
+  threads.splice(idx, 1);
+  saveThreads(threads);
+  const remaining = threads
+    .filter(t => String(t.childId || "") === String(childId()))
+    .sort((a,b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+  activeThreadId = remaining[0]?.id || null;
+  document.getElementById("replyMessage").value = "";
   renderAll();
 }
 function renderStats(){

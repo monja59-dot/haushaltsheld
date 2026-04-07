@@ -875,6 +875,7 @@ button,input,select,textarea{font:inherit}
               <button class="btn" type="button" onclick="sendReply()">Antwort senden</button>
               <button class="btn-line" type="button" onclick="applyStatus()">Status speichern</button>
               <button class="btn-soft" type="button" onclick="markSeen()">Als gelesen markieren</button>
+              <button class="btn-danger" type="button" onclick="deleteActiveThread()">Chat löschen</button>
             </div>
 
             <div class="info-strip">Beim Antworten wird der Chat automatisch für das Kind als neu markiert, damit es die Rückmeldung sieht.</div>
@@ -1343,6 +1344,29 @@ function markSeen(){
   threads[idx].updatedAt = nowIso();
 
   saveThreads(threads);
+  renderAll();
+}
+
+function deleteActiveThread(){
+  if(!activeThreadId){
+    alert("Bitte wähle zuerst einen Chat aus.");
+    return;
+  }
+
+  const threads = getThreads();
+  const idx = threads.findIndex(t => t.id === activeThreadId);
+  if(idx < 0) return;
+
+  const thread = threads[idx];
+  const label = `${thread.childName || "Kind"} · ${thread.title || "Chat"}`;
+  if(!confirm(`Möchtest du "${label}" wirklich löschen?`)) return;
+
+  threads.splice(idx, 1);
+  saveThreads(threads);
+
+  const filtered = getFilteredThreads().filter(t => t.id !== activeThreadId);
+  activeThreadId = filtered[0]?.id || null;
+  document.getElementById("replyMessage").value = "";
   renderAll();
 }
 
