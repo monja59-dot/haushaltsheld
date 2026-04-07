@@ -374,6 +374,24 @@ button,input,select,textarea{font:inherit}
   flex-shrink:0;
 }
 
+.chat-badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#cc6666;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:800;
+  line-height:18px;
+  text-align:center;
+  border:2px solid #fff;
+  box-shadow:0 2px 8px rgba(204,102,102,.28);
+}
+
 @media(max-width:960px){
   .app{grid-template-columns:1fr}
   .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}
@@ -457,7 +475,7 @@ button,input,select,textarea{font:inherit}
           <div class="info-row">
             <span class="info-badge" id="childRoleBadge">Kind</span>
             <span class="info-badge" id="childAgeBadge">Alter wird geladen</span>
-            <span class="info-badge" id="chatBadge">Chat wird geprüft</span>
+            <span class="info-badge" id="chatStatusBadge">Chat wird geprüft</span>
           </div>
           <div class="notice" id="rightsNote">
             Deine freigegebenen Bereiche werden gerade geladen.
@@ -542,7 +560,7 @@ const finalRights = {
 
 document.getElementById("childName").textContent = currentUser.name || "Kind";
 document.getElementById("childAgeBadge").textContent = age ? `${age} Jahre` : "Alter unbekannt";
-document.getElementById("chatBadge").textContent = finalRights.chat ? "Chat aktiv" : "Chat gesperrt";
+document.getElementById("chatStatusBadge").textContent = finalRights.chat ? "Chat aktiv" : "Chat gesperrt";
 document.getElementById("rightsNote").textContent = finalRights.chat
   ? "Der Chat ist für dieses Kind aktuell freigegeben."
   : "Der Chat ist für dieses Kind aktuell nicht freigegeben.";
@@ -568,6 +586,19 @@ const areaConfig = [
   { key:"termine", title:"Meine Termine", desc:"Deine erlaubten Termine auf einen Blick.", href:"kind_termine.html", side:"Meine Termine" },
   { key:"chat", title:"Familienchat", desc:"Schreibe mit deiner Familie.", href:"kind_chat.html", side:"Familienchat" }
 ];
+
+function getChildChatUnreadCount(){
+  let threads = [];
+  try{
+    threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
+    if(!Array.isArray(threads)) threads = [];
+  }catch{
+    threads = [];
+  }
+
+  const currentChildId = String(activeChild?.id || activeChild?.name || "kind");
+  return threads.filter(t => t && String(t.childId || "") === currentChildId && t.unreadForChild).length;
+}
 
 const allowedAreas = document.getElementById("allowedAreas");
 const rightsList = document.getElementById("rightsList");
@@ -603,12 +634,31 @@ areaConfig.forEach(area => {
   const sideLink = document.createElement("a");
   sideLink.href = area.href;
   const sidebarIcon = sidebarIconMap[area.key] || `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>`;
+  const chatBadgeHtml = area.key === "chat" ? `<span id="chatBadge" class="chat-badge" style="display:none;">0</span>` : ``;
+  const iconStyle = area.key === "chat" ? ` style="position:relative;"` : ``;
   sideLink.innerHTML = `
-    <span class="nav-icon">${sidebarIcon}</span>
+    <span class="nav-icon"${iconStyle}>${sidebarIcon}${chatBadgeHtml}</span>
     <span>${area.side}</span>
   `;
   sidebarNav.appendChild(sideLink);
 });
+
+function updateChildChatBadge(){
+  const badge = document.getElementById("chatBadge");
+  if(!badge) return;
+
+  const unreadCount = getChildChatUnreadCount();
+  if(unreadCount > 0){
+    badge.style.display = "inline-block";
+    badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+  }else{
+    badge.style.display = "none";
+    badge.textContent = "0";
+  }
+}
+
+updateChildChatBadge();
+window.addEventListener("storage", updateChildChatBadge);
 
 if(visibleCount === 0){
   document.getElementById("emptyState").style.display = "block";

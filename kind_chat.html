@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat – Haushaltsheld</title>
+<title>Familien-Chat – Haushaltsheld</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -179,7 +179,7 @@ button,input,select,textarea{font:inherit}
 <div class="app">
   <aside class="sidebar">
     <div class="logo-wrap">
-      <img src="assetsschnecke.png" alt="Haushaltsheld">
+      <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
       <div>
         <div class="logo-name">Haushaltsheld</div>
         <div class="logo-sub">Dein Familien-Assistent</div>
@@ -211,7 +211,7 @@ button,input,select,textarea{font:inherit}
           </svg>
           <span id="chatBadge" class="chat-badge" style="display:none;">0</span>
         </span>
-        <span>Chat</span>
+        <span>Familien-Chat</span>
       </a>
     </nav>
 
@@ -225,7 +225,7 @@ button,input,select,textarea{font:inherit}
       <div>
         <h1>
           <span class="page-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
-          <span>Chat mit Mama & Papa</span>
+          <span>Familien-Chat</span>
         </h1>
         <p>Hier kannst du Fragen stellen, an etwas erinnern oder Hilfe holen. Das ist der richtige Ort für Schulhefte, Unterschriften, Bestellungen oder kleine Alltagsfragen.</p>
       </div>
@@ -351,12 +351,47 @@ button,input,select,textarea{font:inherit}
 <script>
 const ACTIVE_CHILD_KEY = "hh_active_child";
 const CHAT_STORAGE_KEY = "hh_family_chat_threads";
+const RIGHTS_KEY = "haushaltsheld_rights_settings";
+const SESSION_KEY = "haushaltsheld_session";
+const USER_KEYS = ["haushaltsheld_users", "hh_users", "haushaltsheld_family_members", "haushaltsheld_members"];
+
+const ACCESS_LABELS = {
+  meinGeld: "Mein Geld",
+  aufgaben: "Aufgaben",
+  einkaufsliste: "Einkaufsliste",
+  familienplaner: "Familienplaner",
+  termine: "Termine",
+  finanzen: "Finanzen",
+  chat: "Chat"
+};
+
+const defaultRightsSettings = {
+  ageGroups: {
+    age0to5:   { meinGeld:"deny", aufgaben:"allow", einkaufsliste:"ask", familienplaner:"deny", termine:"deny", finanzen:"deny", chat:"deny" },
+    age6to10:  { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"ask", termine:"ask", finanzen:"deny", chat:"allow" },
+    age11to13: { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"allow", termine:"ask", finanzen:"ask", chat:"allow" },
+    age14to17: { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"allow", termine:"allow", finanzen:"ask", chat:"allow" }
+  },
+  requireApprovalPrivate: true,
+  requireApprovalAppointments: true,
+  requireApprovalFinances: true,
+  childOverrides: {}
+};
 
 let child = null;
 let activeThreadId = null;
 
-function doLogout(){ localStorage.removeItem(ACTIVE_CHILD_KEY); window.location.href="kindermodus.html"; }
-function getChild(){ try{ return JSON.parse(localStorage.getItem(ACTIVE_CHILD_KEY)||"null"); }catch{ return null; } }
+function readJson(key, fallback){
+  try{
+    const parsed = JSON.parse(localStorage.getItem(key) || "null");
+    return parsed ?? fallback;
+  }catch{
+    return fallback;
+  }
+}
+function writeJson(key, value){
+  localStorage.setItem(key, JSON.stringify(value));
+}
 function esc(s){ return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 function nowIso(){ return new Date().toISOString(); }
 function fmtDate(v){
@@ -365,10 +400,180 @@ function fmtDate(v){
   if(Number.isNaN(d.getTime())) return "—";
   return d.toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
 }
+function calculateAge(birthdate){
+  if(!birthdate) return 0;
+  const birth = new Date(birthdate);
+  if(Number.isNaN(birth.getTime())) return 0;
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  if(monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
+  return Math.max(0, age);
+}
+function getDisplayAge(user){
+  if(!user) return 0;
+  if(user.birthdate) return calculateAge(user.birthdate);
+  return Number(user.age) || 0;
+}
+function getUserAgeGroupKey(age){
+  if(age <= 5) return "age0to5";
+  if(age <= 10) return "age6to10";
+  if(age <= 13) return "age11to13";
+  return "age14to17";
+}
+function getStoredRightsSettings(){
+  const stored = readJson(RIGHTS_KEY, {});
+  return {
+    ...defaultRightsSettings,
+    ...stored,
+    ageGroups: { ...defaultRightsSettings.ageGroups, ...(stored.ageGroups || {}) },
+    childOverrides: stored.childOverrides || {}
+  };
+}
+function normaliseChildUser(raw, fallbackIndex = 0){
+  if(!raw || typeof raw !== "object") return null;
+  const role = String(raw.role || raw.type || raw.userType || raw.mode || raw.category || "").toLowerCase();
+  const looksLikeChild = raw.isChild === true || raw.kind === true || role.includes("child") || role.includes("kind") || role.includes("kid");
+  if(!looksLikeChild) return null;
+  return {
+    id: String(raw.id || raw.userId || raw.uuid || raw.name || `child_${fallbackIndex}`),
+    name: raw.name || raw.displayName || raw.username || `Kind ${fallbackIndex + 1}`,
+    age: raw.age,
+    birthdate: raw.birthdate || raw.birthday || raw.birthDay || "",
+    role: "child",
+    pin: raw.pin || "",
+    rights: raw.rights || {}
+  };
+}
+function getStoredChildUsers(){
+  const result = [];
+  USER_KEYS.forEach(key => {
+    const items = readJson(key, []);
+    if(Array.isArray(items)){
+      items.forEach((item, index) => {
+        const childUser = normaliseChildUser(item, index);
+        if(childUser) result.push(childUser);
+      });
+    }
+  });
+
+  if(!result.length){
+    const fallbackChildren = readJson("haushaltsheld_child_profiles_demo", []);
+    if(Array.isArray(fallbackChildren)){
+      fallbackChildren.forEach((item, index) => {
+        const childUser = normaliseChildUser(item, index);
+        if(childUser) result.push(childUser);
+      });
+    }
+  }
+
+  const deduped = [];
+  const seen = new Set();
+  result.forEach(user => {
+    const key = String(user.id || user.name || "");
+    if(!key || seen.has(key)) return;
+    seen.add(key);
+    deduped.push(user);
+  });
+  return deduped;
+}
+function getEffectiveChildRights(targetChild){
+  if(!targetChild) return null;
+  const age = getDisplayAge(targetChild);
+  const ageGroupKey = getUserAgeGroupKey(age);
+  const settings = getStoredRightsSettings();
+  const base = settings.ageGroups[ageGroupKey] || defaultRightsSettings.ageGroups[ageGroupKey] || {};
+  const override = settings.childOverrides?.[targetChild.id] || {};
+  const effective = {};
+  Object.keys(ACCESS_LABELS).forEach(key => {
+    effective[key] = override[key] && override[key] !== "default" ? override[key] : (base[key] || "deny");
+  });
+  return { age, ageGroupKey, effective, override, base };
+}
+function canChildUseChat(targetChild){
+  const rightsData = getEffectiveChildRights(targetChild);
+  if(!rightsData) return false;
+  return rightsData.effective.chat === "allow";
+}
+function setChatLockedState(targetChild){
+  const age = getDisplayAge(targetChild);
+  const threads = document.getElementById("threadList");
+  const messages = document.getElementById("chatMessages");
+  const titleView = document.getElementById("chatTitleView");
+  const metaView = document.getElementById("chatMetaView");
+  const statusBadge = document.getElementById("chatStatusBadge");
+  const titleInput = document.getElementById("chatTitle");
+  const messageInput = document.getElementById("chatMessage");
+  const replyInput = document.getElementById("replyMessage");
+  const note = age >= 6
+    ? "Der Chat ist für dieses Kind aktuell in den Familienrechten gesperrt. Prüfe bitte die individuellen Kind-Rechte im Elternmodus."
+    : "Der Chat ist erst ab 6 Jahren automatisch offen. Dieses Kind ist dafür aktuell noch zu jung oder hat noch keine passende Altersfreigabe.";
+
+  if(titleView) titleView.textContent = "Chat aktuell nicht freigegeben";
+  if(metaView) metaView.textContent = note;
+  if(statusBadge){ statusBadge.className = "badge badge-read"; statusBadge.textContent = "Gesperrt"; }
+  if(threads) threads.innerHTML = `<div class="empty">${esc(note)}</div>`;
+  if(messages) messages.innerHTML = `<div class="empty">${esc(note)}</div>`;
+  [titleInput, messageInput, replyInput].forEach(field => {
+    if(field){
+      field.disabled = true;
+      field.placeholder = "Chat aktuell nicht freigegeben";
+      field.value = "";
+    }
+  });
+  document.querySelectorAll('button[onclick="createThread()"], button[onclick="fillExample()"], button[onclick="sendReply()"], button[onclick="markSeen()"]').forEach(btn => btn.disabled = true);
+}
+function syncVisibleChildNames(activeChild){
+  ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id => {
+    const el = document.getElementById(id);
+    if(el && activeChild) el.textContent = activeChild.name || "Kind";
+  });
+}
+function resolveActiveChild(){
+  const session = readJson(SESSION_KEY, null);
+  const currentStored = readJson(ACTIVE_CHILD_KEY, null);
+  const children = getStoredChildUsers();
+
+  if(session && session.role === "child" && session.userId){
+    const byId = children.find(entry => String(entry.id) === String(session.userId));
+    if(byId) return byId;
+  }
+
+  if(currentStored){
+    const byActiveId = children.find(entry => String(entry.id) === String(currentStored.id));
+    if(byActiveId) return byActiveId;
+    if(currentStored.role === "child") return { ...currentStored, role: "child" };
+  }
+
+  if(session && session.role === "child"){
+    return {
+      id: String(session.userId || session.name || "kind"),
+      name: session.name || "Kind",
+      age: Number(session.age) || 0,
+      birthdate: session.birthdate || "",
+      role: "child",
+      rights: session.rights || {}
+    };
+  }
+
+  return null;
+}
+function doLogout(){
+  localStorage.removeItem(ACTIVE_CHILD_KEY);
+  window.location.href = "kindermodus.html";
+}
+function getChild(){
+  return resolveActiveChild();
+}
 function checkAuth(){
-  const c=getChild();
-  if(!c){ window.location.href="kindermodus.html"; return null; }
-  return c;
+  const activeChild = resolveActiveChild();
+  if(!activeChild){
+    window.location.href = "kindermodus.html";
+    return null;
+  }
+  writeJson(ACTIVE_CHILD_KEY, activeChild);
+  syncVisibleChildNames(activeChild);
+  return activeChild;
 }
 function getThreads(){
   try{
@@ -382,11 +587,11 @@ function saveThreads(threads){
   localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(threads));
 }
 function childId(){
-  return child?.id || child?.name || "kind";
+  return String(child?.id || child?.name || "kind");
 }
 function getMyThreads(){
   return getThreads()
-    .filter(t => String(t.childId) === String(childId()))
+    .filter(t => String(t?.childId || "") === String(childId()))
     .sort((a,b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
 }
 function categoryLabel(value){
@@ -424,6 +629,10 @@ function statusClass(value){
   }[value] || "badge-open";
 }
 function createThread(){
+  if(!canChildUseChat(child)){
+    setChatLockedState(child);
+    return;
+  }
   const category = document.getElementById("chatCategory").value;
   const title = document.getElementById("chatTitle").value.trim();
   const message = document.getElementById("chatMessage").value.trim();
@@ -463,6 +672,10 @@ function createThread(){
   renderAll();
 }
 function fillExample(){
+  if(!canChildUseChat(child)){
+    setChatLockedState(child);
+    return;
+  }
   document.getElementById("chatCategory").value = "school";
   document.getElementById("chatTitle").value = "Ich brauche deine Unterschrift";
   document.getElementById("chatMessage").value = "Kannst du bitte heute meine Klassenarbeit unterschreiben? Ich möchte sie morgen wieder mitnehmen.";
@@ -483,6 +696,10 @@ function getActiveThread(){
   return getMyThreads().find(t => t.id === activeThreadId) || null;
 }
 function sendReply(){
+  if(!canChildUseChat(child)){
+    setChatLockedState(child);
+    return;
+  }
   const text = document.getElementById("replyMessage").value.trim();
   if(!activeThreadId){
     alert("Bitte wähle zuerst einen Chat aus.");
@@ -591,6 +808,10 @@ function renderActiveThread(){
   bodyEl.scrollTop = bodyEl.scrollHeight;
 }
 function renderAll(){
+  if(!canChildUseChat(child)){
+    setChatLockedState(child);
+    return;
+  }
   renderStats();
   renderThreadList();
   renderActiveThread();
@@ -599,7 +820,11 @@ function renderAll(){
 child = checkAuth();
 if(child){
   renderAll();
-  window.addEventListener("storage", renderAll);
+  window.addEventListener("storage", () => {
+    child = resolveActiveChild() || child;
+    syncVisibleChildNames(child);
+    renderAll();
+  });
 }
 </script>
 <script>(function(){
@@ -609,7 +834,15 @@ function hhSeedBaseData(){
  if(!hhReadJson("haushaltsheld_parent_profiles_demo",null)){localStorage.setItem("haushaltsheld_parent_profiles_demo",JSON.stringify([{id:"parent-1",name:"Mama",pin:"2468",role:"parent"},{id:"parent-2",name:"Papa",pin:"1357",role:"parent"}]));}
  if(!hhReadJson("haushaltsheld_child_profiles_demo",null)){localStorage.setItem("haushaltsheld_child_profiles_demo",JSON.stringify([{id:"child-1",name:"Leo",pin:"1111",age:10,role:"child"},{id:"child-2",name:"Mia",pin:"2222",age:8,role:"child"},{id:"child-3",name:"Lina",pin:"3333",age:6,role:"child"}]));}
 }
-document.addEventListener("DOMContentLoaded",function(){hhSeedBaseData(); const session=hhReadJson("haushaltsheld_session",null); if(!session || session.role!=="child" || !session.userId){window.location.href="kindermodus.html"; return;} let activeChild=hhReadJson("hh_active_child",null); if(!activeChild || activeChild.id!==session.userId){const children=hhReadJson("haushaltsheld_child_profiles_demo",[]); activeChild=children.find(entry=>entry.id===session.userId)||null; if(activeChild) localStorage.setItem("hh_active_child",JSON.stringify(activeChild));} ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id=>{const el=document.getElementById(id); if(el && activeChild) el.textContent=activeChild.name||"Kind";});});})();</script>
+document.addEventListener("DOMContentLoaded",function(){
+  hhSeedBaseData();
+  const activeChild = (typeof resolveActiveChild === "function" ? resolveActiveChild() : null) || hhReadJson("hh_active_child",null);
+  if(activeChild){
+    localStorage.setItem("hh_active_child", JSON.stringify(activeChild));
+    ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=activeChild.name||"Kind";});
+  }
+});
+})();</script>
 
 <script>
 function updateChildChatBadge(){
@@ -624,13 +857,15 @@ function updateChildChatBadge(){
     threads = [];
   }
 
-  const activeChild = (() => {
-    try{
-      return JSON.parse(localStorage.getItem("hh_active_child") || "null");
-    }catch{
-      return null;
-    }
-  })();
+  const activeChild = typeof resolveActiveChild === "function"
+    ? resolveActiveChild()
+    : (() => {
+        try{
+          return JSON.parse(localStorage.getItem("hh_active_child") || "null");
+        }catch{
+          return null;
+        }
+      })();
 
   const currentChildId = String(activeChild?.id || activeChild?.name || "kind");
   const unreadCount = threads.filter(t => t && String(t.childId || "") === currentChildId && t.unreadForChild).length;

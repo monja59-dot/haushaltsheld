@@ -219,6 +219,7 @@ button,input,select,textarea{font:inherit}
 .sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
 .logout-btn{width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;margin-top:12px;box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72);display:flex;align-items:center;justify-content:center;gap:8px}
 .logout-btn:hover{transform:translateY(-2px)}
+.chat-badge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28)}
 @media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a{flex:0 1 auto;padding:10px 12px}.nav-label,.sidebar-footer{display:none}}
 
 </style>
@@ -290,7 +291,7 @@ button,input,select,textarea{font:inherit}
         <span>Meine Wünsche</span>
       </a>
       <a href="kind_chat.html">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+        <span class="nav-icon" style="position:relative;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span>
         <span>Familienchat</span>
       </a>
     </nav>
@@ -509,4 +510,41 @@ child=checkAuth();if(child) renderGoals();
 })();
 </script>
 
+
+<script>
+function updateChildChatBadge(){
+  const badge = document.getElementById("chatBadge");
+  if(!badge) return;
+
+  let threads = [];
+  try{
+    threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
+    if(!Array.isArray(threads)) threads = [];
+  }catch{
+    threads = [];
+  }
+
+  const activeChild = (() => {
+    try{
+      return JSON.parse(localStorage.getItem("hh_active_child") || "null");
+    }catch{
+      return null;
+    }
+  })();
+
+  const currentChildId = String(activeChild?.id || activeChild?.name || "kind");
+  const unreadCount = threads.filter(t => t && String(t.childId || "") === currentChildId && t.unreadForChild).length;
+
+  if(unreadCount > 0){
+    badge.style.display = "inline-block";
+    badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+  }else{
+    badge.style.display = "none";
+    badge.textContent = "0";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", updateChildChatBadge);
+window.addEventListener("storage", updateChildChatBadge);
+</script>
 </body></html>

@@ -544,6 +544,44 @@ button,input,select,textarea{font:inherit}
   display:grid;
   gap:8px;
 }
+
+.profile-badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 12px}
+.profile-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.78rem;
+  font-weight:800;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(223,209,188,.95);
+  color:var(--text2);
+}
+.profile-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.btn-tiny{
+  border:none;
+  border-radius:12px;
+  padding:9px 12px;
+  font-size:.85rem;
+  font-weight:800;
+  cursor:pointer;
+  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);
+  color:var(--brown);
+  border:1px solid #d7c0a6;
+  box-shadow:0 3px 0 #c7ae91, 0 6px 12px rgba(110,82,40,.08), inset 0 1px 0 rgba(255,255,255,.65);
+}
+.btn-tiny.danger{
+  background:linear-gradient(180deg,#fff2f2 0%, #f8dede 100%);
+  color:#9a5050;
+  border-color:#e7b8b8;
+  box-shadow:0 3px 0 #d5aaaa, 0 6px 12px rgba(140,70,70,.08), inset 0 1px 0 rgba(255,255,255,.65);
+}
 .profile-item{
   display:flex;
   align-items:flex-start;
@@ -1137,6 +1175,49 @@ a.btn.btn-soft,
   margin-top:22px;
 }
 
+
+
+.chat-compact-list{display:grid;gap:12px}
+.chat-compact-item{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding:14px 16px;border:1px solid rgba(223,209,188,.95);border-radius:20px;background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);box-shadow:var(--shadow-xs)}
+.chat-compact-main{min-width:0;flex:1}
+.chat-compact-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.chat-compact-name{font-weight:800;color:var(--text);font-size:.98rem}
+.chat-compact-preview{color:var(--text2);font-size:.92rem;line-height:1.45;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.chat-compact-meta{color:var(--muted);font-size:.84rem;line-height:1.4}
+.chat-compact-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.chat-mini-link{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:14px;border:1px solid rgba(223,209,188,.95);background:#fffdfa;text-decoration:none;font-weight:800;color:var(--brown);box-shadow:var(--shadow-xs)}
+.chat-window-note{background:rgba(255,255,255,.72);border:1px solid rgba(223,209,188,.85);padding:13px 15px;border-radius:18px;color:var(--muted);font-size:.9rem;line-height:1.55;margin-bottom:14px}
+.compact-editor-card{background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);border:1px solid rgba(76,175,80,.18);border-radius:22px;padding:18px;box-shadow:var(--shadow-xs)}
+.compact-editor-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
+.compact-editor-head h3{font-size:1.05rem;font-weight:800;margin-bottom:4px}
+.compact-editor-head p{color:var(--muted);font-size:.9rem;line-height:1.5}
+.compact-editor-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.compact-editor-item{background:rgba(255,255,255,.86);border:1px solid rgba(223,209,188,.9);border-radius:18px;padding:12px 14px}
+.compact-editor-item strong{display:block;font-size:.9rem;margin-bottom:4px}
+.compact-editor-item span{font-size:.84rem;color:var(--muted);line-height:1.45}
+.modal-overlay{position:fixed;inset:0;background:rgba(45,52,47,.25);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px;z-index:100000}
+.modal-overlay.show{display:flex}
+.modal-card{width:min(100%,920px);max-height:min(92vh,980px);overflow:auto;background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:30px;box-shadow:var(--shadow-lg);padding:24px}
+.modal-card.narrow{width:min(100%,620px)}
+.modal-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:18px}
+.modal-top h3{font-size:1.35rem;font-weight:800;margin-bottom:6px}
+.modal-top p{color:var(--muted);font-size:.93rem;line-height:1.55;max-width:680px}
+.modal-close{width:42px;height:42px;border:none;border-radius:14px;background:#f4e7d7;color:var(--brown);font-weight:800;cursor:pointer;box-shadow:var(--shadow-xs)}
+.modal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.modal-subcard{background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);border:1px solid rgba(223,209,188,.95);border-radius:22px;padding:16px}
+.modal-subcard h4{font-size:1rem;font-weight:800;margin-bottom:6px}
+.modal-subcard p{color:var(--muted);font-size:.88rem;line-height:1.5;margin-bottom:12px}
+.modal-actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap;margin-top:18px}
+.profile-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn-tiny{border:none;background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);color:var(--brown);border:1px solid #d7c0a6;border-radius:14px;padding:10px 14px;font-size:.86rem;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #c7ae91,0 7px 14px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65)}
+.btn-tiny.primary{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-color:rgba(62,142,65,.28);box-shadow:0 3px 0 #2f6f33,0 8px 16px rgba(62,142,65,.18),inset 0 1px 0 rgba(255,255,255,.18)}
+.btn-tiny.danger{background:linear-gradient(180deg,#fbe9e9 0%, #f5dede 100%);color:#a45656;border-color:#efc1c1;box-shadow:0 3px 0 #dfb2b2,0 7px 14px rgba(164,86,86,.10),inset 0 1px 0 rgba(255,255,255,.65)}
+.profile-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.profile-badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.86);border:1px solid rgba(223,209,188,.95);color:var(--text2);font-size:.8rem;font-weight:800}
+.mini-note{color:var(--muted);font-size:.85rem;line-height:1.45}
+.inline-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+@media(max-width:900px){.compact-editor-list,.modal-grid{grid-template-columns:1fr}.chat-compact-item{flex-direction:column}.chat-compact-actions{width:100%;justify-content:flex-start}.modal-card{padding:18px}}
+
 </style>
 </head>
 <body data-page="admin">
@@ -1711,100 +1792,29 @@ a.btn.btn-soft,
 
 
   <section class="card admin-option-card">
-        <span class="mode-tag">🧒 Gilt für: Kindermodus ohne Elternfreigabe</span>
-        <h2>Kindermodus – Standardrechte nach Alter</h2>
-        <p class="card-sub">Diese Rechte gelten im normalen Kindermodus. Der Chat bleibt ab 6 Jahren grundsätzlich offen und wird hier nicht zusätzlich per Freigabe gesteuert.</p>
+        <span class="mode-tag">🧒 Gilt für: pro ausgewähltem Kind</span>
+        <h2>Kind-Rechte übersichtlich bearbeiten</h2>
+        <p class="card-sub">Die Standardrechte ergeben sich automatisch aus dem Alter des Kindes. Individuelle Änderungen öffnest du direkt über die jeweilige Kinderkarte als ruhiges Popup-Fenster.</p>
 
-        <div class="rights-block">
-          <div class="field" style="margin-bottom:14px;">
-            <label for="ageGroupSelect">Altersgruppe wählen</label>
-            <select id="ageGroupSelect" onchange="renderAgeGroupRules()">
-              <option value="age0to5">0–5 Jahre</option>
-              <option value="age6to10">6–10 Jahre</option>
-              <option value="age11to13">11–13 Jahre</option>
-              <option value="age14to17">14–17 Jahre</option>
-            </select>
-          </div>
-
-          <div class="age-group-head" style="margin-bottom:12px;">
+        <div class="compact-editor-card">
+          <div class="compact-editor-head">
             <div>
-              <strong id="ageGroupTitle">0–5 Jahre</strong>
-              <span id="ageGroupHint">Sehr geschützter Bereich – fast alles nur mit Elternbegleitung.</span>
+              <h3>So funktioniert es jetzt einfacher</h3>
+              <p>Kein abstrakter Altersgruppenblock mehr in der Hauptansicht. Du bearbeitest Rechte direkt dort, wo du das Kind auch wirklich siehst.</p>
             </div>
-            <span class="summary-badge">Kindermodus</span>
+            <span class="summary-badge">Popup-Editor</span>
           </div>
 
-          <div id="ageGroupRules" class="rules-grid-single"></div>
-        </div>
-
-        <div class="card-actions">
-          <button class="btn" type="button" onclick="saveAgeRules()">Kindermodus-Rechte speichern</button>
-        </div>
-      </section>
-
-      <section class="card admin-option-card">
-        <span class="mode-tag">🔐 Gilt für: Nur mit Elternfreigabe</span>
-        <h2>Elternmodus für Kinder – Zugriff nur mit Elternfreigabe</h2>
-        <p class="card-sub">Diese Bereiche gehören nicht zum normalen Kindermodus. Zugriff ist nur möglich, wenn ein Elternteil im Elternmodus ausdrücklich freigibt.</p>
-
-        <div class="rights-block">
-          <div class="row"><span class="label">Private Inhalte nur mit Elternfreigabe<small>Gilt nicht im normalen Kindermodus, sondern nur nach ausdrücklicher Zustimmung.</small></span><div class="toggle" data-key="requireApprovalPrivate"></div></div>
-          <div class="row"><span class="label">Termine nur mit Elternfreigabe</span><div class="toggle" data-key="requireApprovalAppointments"></div></div>
-          <div class="row"><span class="label">Finanzen nur mit Elternfreigabe</span><div class="toggle" data-key="requireApprovalFinances"></div></div>
-        </div>
-
-        <div class="card-actions">
-          <button class="btn" type="button" onclick="saveApprovalSettings()">Elternfreigaben speichern</button>
-        </div>
-      </section>
-
-      <section class="card admin-option-card">
-        <span class="mode-tag">🧒 Gilt für: Ein ausgewähltes Kind</span>
-        <h2>Individuelle Rechte pro Kind</h2>
-        <p class="card-sub">Hier kannst du ein einzelnes Kind auswählen und die Grundregeln aus der Altersgruppe gezielt anpassen. So bleibt der Jugendschutz automatisch, aber trotzdem flexibel.</p>
-
-        <div class="child-rights-panel">
-          <div class="field">
-            <label for="childRightsSelect">Kind auswählen</label>
-            <select id="childRightsSelect" onchange="renderChildOverrideEditor()">
-              <option value="">-- Kind auswählen --</option>
-            </select>
-          </div>
-
-          <div id="childRightsInfo" class="notice">Wähle ein Kind aus, um individuelle Rechte zusätzlich zur Altersgruppe festzulegen.</div>
-
-          <div id="childOverrideEditor" class="rights-block" style="display:none;">
-            <div class="rights-header">
-              <div>
-                <h3>Zusätzliche Rechte für dieses Kind</h3>
-                <div class="mini-note">Diese Anpassungen überschreiben nur für dieses Kind die Altersgruppe.</div>
-              </div>
-              <span class="summary-badge">Individuell</span>
-            </div>
-            <div class="rules-grid" id="childRulesGrid"></div>
-            <div class="inline-actions">
-              <button class="btn-soft" type="button" onclick="resetChildOverrides()">Auf Altersgruppe zurücksetzen</button>
-              <button class="btn" type="button" onclick="saveChildOverrides()">Kind-Rechte speichern</button>
-            </div>
-
-            <div class="effective-rights-wrap" id="childEffectiveRightsWrap">
-              <div class="effective-rights-head">
-                <div>
-                  <h3>Was gilt jetzt wirklich für dieses Kind?</h3>
-                  <p>Hier siehst du das endgültige Ergebnis aus Altersgruppe und individuellen Zusatzrechten.</p>
-                </div>
-                <span class="summary-badge">Effektiv</span>
-              </div>
-
-              <div class="child-rights-summary" id="childRightsSummary"></div>
-              <div class="effective-rights-grid" id="childEffectiveRightsGrid"></div>
-            </div>
+          <div class="compact-editor-list">
+            <div class="compact-editor-item"><strong>1. Kind auswählen</strong><span>Oben in den Kinderkarten auf <b>Rechte</b> klicken.</span></div>
+            <div class="compact-editor-item"><strong>2. Automatik behalten</strong><span>Alter und Altersgruppe bleiben als sichere Grundlage erhalten.</span></div>
+            <div class="compact-editor-item"><strong>3. Nur gezielt anpassen</strong><span>Einzelne Bereiche wie Chat, Termine oder Finanzen bei Bedarf überschreiben.</span></div>
+            <div class="compact-editor-item"><strong>4. Klarer Überblick</strong><span>Im Fenster siehst du sofort, was für dieses eine Kind wirklich gilt.</span></div>
           </div>
         </div>
       </section>
 
-
-  <section class="card request-card-wrap">
+<section class="card request-card-wrap">
     <span class="mode-tag">👨‍👩‍👧 Gilt für: Elternbereich</span>
     <h2 class="card-title">
       <span class="section-icon">
@@ -1833,14 +1843,15 @@ a.btn.btn-soft,
       <span>Familien-Chat</span>
     </h2>
     <p class="card-sub">
-      Hier siehst du die letzten Nachrichten der Kinder, offene Chats und gelangst direkt in den vollständigen Chatbereich.
+      Hier siehst du nur eine kompakte Vorschau der letzten offenen Chats. Für alles Weitere gehst du direkt in den vollständigen Chatbereich.
     </p>
 
     <div class="footer-actions" style="justify-content:flex-start; margin-bottom:16px;">
       <a class="btn btn-soft" href="admin_chat.html">Zum vollständigen Chat</a>
     </div>
 
-    <div id="chatPreviewList" class="request-list"></div>
+    <div class="chat-window-note">Nur die letzten 3 offenen oder neuen Unterhaltungen werden hier knapp gezeigt. So bleibt der Elternbereich ruhiger.</div>
+    <div id="chatPreviewList" class="chat-compact-list"></div>
   </section>
 
   <section class="card request-card-wrap">
@@ -1860,13 +1871,105 @@ a.btn.btn-soft,
     <div id="rewardRequestList" class="request-list"></div>
   </section>
 
+
+
+<div id="profileModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-card narrow">
+    <div class="modal-top">
+      <div>
+        <h3 id="profileModalTitle">Kind-Profil</h3>
+        <p>Name, Alter und kurzer Hinweis für das Kinderprofil. Das Design bleibt gleich, aber die Pflege wird deutlich angenehmer.</p>
+      </div>
+      <button class="modal-close" type="button" id="closeProfileModal">✕</button>
+    </div>
+
+    <input type="hidden" id="profileFormId">
+    <div class="field">
+      <label for="profileFormName">Name</label>
+      <input id="profileFormName" type="text" placeholder="z. B. Nela">
+    </div>
+    <div class="field">
+      <label for="profileFormAge">Alter</label>
+      <input id="profileFormAge" type="number" min="0" max="17" placeholder="z. B. 8">
+    </div>
+    <div class="field">
+      <label for="profileFormNote">Kurzer Hinweis</label>
+      <input id="profileFormNote" type="text" placeholder="z. B. Eigener Zugang · eigene Rechte">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-soft" type="button" id="cancelProfileModal">Abbrechen</button>
+      <button class="btn" type="button" id="saveProfileModal">Profil speichern</button>
+    </div>
+  </div>
+</div>
+
+<div id="rightsModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-top">
+      <div>
+        <h3 id="rightsModalTitle">Kind-Rechte bearbeiten</h3>
+        <p id="rightsModalSubtitle">Hier bearbeitest du Rechte immer nur für ein konkretes Kind.</p>
+      </div>
+      <button class="modal-close" type="button" id="closeRightsModal">✕</button>
+    </div>
+
+    <input type="hidden" id="rightsModalChildId">
+
+    <div class="modal-grid">
+      <div class="modal-subcard">
+        <h4>Automatische Grundlage</h4>
+        <p id="rightsModalAutoInfo">Die Altersgruppe wird automatisch aus dem Alter abgeleitet.</p>
+        <div class="child-rights-summary" id="rightsModalSummary"></div>
+      </div>
+      <div class="modal-subcard">
+        <h4>Elternfreigaben als Zusatzschutz</h4>
+        <p>Bereiche, die grundsätzlich nur mit Elternfreigabe möglich sind, bleiben zusätzlich abgesichert.</p>
+        <div class="profile-list">
+          <div class="profile-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg><span>Private Inhalte nur mit ausdrücklicher Freigabe</span></div>
+          <div class="profile-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg><span>Termine und Finanzen können zusätzlich geschützt bleiben</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rights-block" style="margin-top:16px;">
+      <div class="rights-header">
+        <div>
+          <h3>Individuelle Anpassungen</h3>
+          <div class="mini-note">Lässt du einen Bereich auf <b>Automatisch</b>, gilt die sichere Vorgabe aus dem Alter des Kindes.</div>
+        </div>
+        <span class="summary-badge">Nur für dieses Kind</span>
+      </div>
+      <div class="rules-grid-single" id="rightsModalRulesGrid"></div>
+      <div class="inline-actions">
+        <button class="btn btn-soft" type="button" id="resetRightsModal">Auf Automatik zurücksetzen</button>
+        <button class="btn" type="button" id="saveRightsModal">Kind-Rechte speichern</button>
+      </div>
+    </div>
+
+    <div class="effective-rights-wrap" id="rightsModalEffectiveWrap">
+      <div class="effective-rights-head">
+        <div>
+          <h3>Was gilt jetzt wirklich?</h3>
+          <p>Hier siehst du sofort das echte Ergebnis aus Altersgruppe und individueller Änderung.</p>
+        </div>
+        <span class="summary-badge">Effektiv</span>
+      </div>
+      <div class="effective-rights-grid" id="rightsModalEffectiveGrid"></div>
+    </div>
+  </div>
+</div>
+
 </main>
 </div>
+
 
 <script>
 const STORAGE_KEY = "haushaltsheld_child_permissions";
 const PROFILE_KEY = "haushaltsheld_child_profiles_demo";
-
+const CHAT_STORAGE_KEY = "hh_family_chat_threads";
+const RIGHTS_KEY = "haushaltsheld_rights_settings";
+const FAMILY_ACCESS_KEY = "haushaltsheld_family_access";
 
 const defaultPermissions = {
   showShopping: true,
@@ -1881,380 +1984,32 @@ const defaultPermissions = {
   showIncome: false,
   showFixed: false,
   showVariable: false,
-
   parentManageProfiles: true,
   parentManageRules: true,
   parentManageBudgets: true,
   parentCanRequestPrivateAccess: true,
-
   childOwnLogin: true,
   childPrivateSpace: true,
   childCanApprovePrivateAccess: true,
   siblingPrivacy: true,
-
   requireApprovalPrivate: true,
   allowPrivateWishlist: true,
   protectSurpriseMode: true,
   approvalSavingsGoals: true,
-
   showOnlyHintsForPrivate: true,
   disableSiblingComparisons: true,
   allowChildIndependentUse: true,
   centralPermissionControl: true
 };
 
+const GENERAL_KEYS = new Set(Object.keys(defaultPermissions));
+const APPROVAL_KEYS = ["requireApprovalPrivate", "requireApprovalAppointments", "requireApprovalFinances"];
+
 const defaultProfiles = [
-  { name:"Kind 1", note:"Eigenes Profil · eigene Rechte" },
-  { name:"Kind 2", note:"Eigenes Profil · eigene Rechte" },
-  { name:"Kind 3", note:"Eigenes Profil · eigene Rechte" }
+  { id:"profile_1", name:"Kind 1", age:"", note:"Eigenes Profil · eigene Rechte" },
+  { id:"profile_2", name:"Kind 2", age:"", note:"Eigenes Profil · eigene Rechte" },
+  { id:"profile_3", name:"Kind 3", age:"", note:"Eigenes Profil · eigene Rechte" }
 ];
-
-function safeJsonParse(value, fallback){
-  try{
-    const parsed = JSON.parse(value);
-    return parsed ?? fallback;
-  }catch{
-    return fallback;
-  }
-}
-
-function loadPermissions(){
-  const stored = safeJsonParse(localStorage.getItem(STORAGE_KEY), {});
-  return { ...defaultPermissions, ...stored };
-}
-
-function savePermissions(data){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function loadProfiles(){
-  const stored = safeJsonParse(localStorage.getItem(PROFILE_KEY), null);
-  if(Array.isArray(stored) && stored.length) return stored;
-  return defaultProfiles;
-}
-
-function saveProfiles(list){
-  localStorage.setItem(PROFILE_KEY, JSON.stringify(list));
-}
-
-function setToggleState(toggle, state){
-  toggle.classList.toggle("active", !!state);
-  toggle.setAttribute("aria-pressed", state ? "true" : "false");
-}
-
-
-const CHAT_STORAGE_KEY = "hh_family_chat_threads";
-
-function loadChatThreads(){
-  return safeJsonParse(localStorage.getItem(CHAT_STORAGE_KEY), []).sort((a,b)=>new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
-}
-function formatChatStatus(status){
-  if(status === "done") return "Erledigt";
-  if(status === "working") return "In Bearbeitung";
-  if(status === "read") return "Gelesen";
-  return "Offen";
-}
-function formatChatStatusClass(status){
-  if(status === "done") return "genehmigt";
-  if(status === "working") return "später";
-  if(status === "read") return "offen";
-  return "offen";
-}
-function renderChatPreview(){
-  const list = document.getElementById("chatPreviewList");
-  if(!list) return;
-  const threads = loadChatThreads();
-  if(!threads.length){
-    list.innerHTML = '<div class="request-empty">Noch keine Chat-Nachrichten vorhanden.<br>Sobald ein Kind einen Chat startet, erscheint die Vorschau hier.</div>';
-    return;
-  }
-  list.innerHTML = threads.slice(0,6).map(thread => {
-    const last = (thread.messages || []).slice(-1)[0];
-    const status = String(thread.status || "open");
-    return `
-      <div class="request-item">
-        <div class="request-head">
-          <div>
-            <div class="request-name">${escapeHtml(thread.childName || "Kind")} · ${escapeHtml(thread.title || "Chat")}</div>
-            <div class="request-meta">
-              Kategorie: <strong>${escapeHtml(thread.category || "allgemein")}</strong><br>
-              Letzte Nachricht: ${escapeHtml(last ? last.text : "Noch keine Nachricht")}<br>
-              Aktualisiert: ${escapeHtml(formatRequestDate(thread.updatedAt || thread.createdAt))}
-            </div>
-          </div>
-          <span class="request-badge ${formatChatStatusClass(status)}">${formatChatStatus(status)}</span>
-        </div>
-        <div class="request-actions">
-          <a class="btn btn-soft" href="admin_chat.html">Im Chat öffnen</a>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-function renderToggles(){
-  const permissions = loadPermissions();
-
-  document.querySelectorAll(".toggle[data-key]").forEach(toggle => {
-    const key = toggle.dataset.key;
-    setToggleState(toggle, !!permissions[key]);
-
-    toggle.onclick = () => {
-      setToggleState(toggle, !toggle.classList.contains("active"));
-      updateSummary();
-    };
-  });
-}
-
-function collectToggleValues(){
-  const current = loadPermissions();
-  document.querySelectorAll(".toggle[data-key]").forEach(toggle => {
-    current[toggle.dataset.key] = toggle.classList.contains("active");
-  });
-  return current;
-}
-
-function renderProfiles(){
-  const grid = document.getElementById("profileGrid");
-  const profiles = loadProfiles();
-
-  grid.innerHTML = profiles.map(profile => `
-    <div class="profile-card">
-      <div class="profile-top">
-        <div class="profile-avatar">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M6 21v-2a6 6 0 0 1 12 0v2"></path>
-          </svg>
-        </div>
-        <div>
-          <div class="profile-name">${escapeHtml(profile.name)}</div>
-          <div class="profile-meta">${escapeHtml(profile.note || "Eigenes Profil")}</div>
-        </div>
-      </div>
-
-      <div class="profile-list">
-        <div class="profile-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 6 9 17l-5-5"></path>
-          </svg>
-          <span>eigener Zugang ohne Geschwistersicht</span>
-        </div>
-        <div class="profile-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 6 9 17l-5-5"></path>
-          </svg>
-          <span>private Inhalte geschützt</span>
-        </div>
-        <div class="profile-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 6 9 17l-5-5"></path>
-          </svg>
-          <span>Freigaben können später individuell erweitert werden</span>
-        </div>
-      </div>
-    </div>
-  `).join("");
-}
-
-function updateSummary(){
-  const values = collectToggleValues();
-
-  const parentCount = [
-    "parentManageProfiles",
-    "parentManageRules",
-    "parentManageBudgets",
-    "parentCanRequestPrivateAccess"
-  ].filter(key => values[key]).length;
-
-  const childCount = [
-    "childOwnLogin",
-    "childPrivateSpace",
-    "childCanApprovePrivateAccess",
-    "siblingPrivacy"
-  ].filter(key => values[key]).length;
-
-  const approvalCount = [
-    "requireApprovalPrivate",
-    "allowPrivateWishlist",
-    "protectSurpriseMode",
-    "approvalSavingsGoals",
-    "showOnlyHintsForPrivate",
-    "disableSiblingComparisons"
-  ].filter(key => values[key]).length;
-
-  const financeCount = [
-    "showFinanceReport",
-    "showShopping",
-    "showPocketMoney",
-    "showGiftMoney",
-    "showParentIncome",
-    "showIncome",
-    "showFixed",
-    "showVariable"
-  ].filter(key => values[key]).length;
-
-  const chatCount = loadChatThreads().filter(thread => thread.unreadForParent || thread.status !== "done").length;
-
-  document.getElementById("sumParent").textContent = String(parentCount);
-  document.getElementById("sumChild").textContent = String(childCount);
-  document.getElementById("sumApproval").textContent = String(approvalCount);
-  document.getElementById("sumFinance").textContent = String(financeCount);
-  document.getElementById("sumChat").textContent = String(chatCount);
-}
-
-function showSavedNote(){
-  const note = document.getElementById("saveNote");
-  note.classList.add("show");
-  clearTimeout(showSavedNote.timer);
-  showSavedNote.timer = setTimeout(() => note.classList.remove("show"), 2200);
-}
-
-function escapeHtml(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-else{
-    error.classList.add("show");
-  }
-}
-
-
-
-
-
-document.getElementById("saveBtn").addEventListener("click", () => {
-  savePermissions(collectToggleValues());
-  updateSummary();
-  showSavedNote();
-});
-
-
-document.getElementById("resetBtn").addEventListener("click", () => {
-  savePermissions(defaultPermissions);
-  renderToggles();
-  updateSummary();
-  showSavedNote();
-});
-
-document.getElementById("addProfileBtn").addEventListener("click", () => {
-
-  const profiles = loadProfiles();
-  const nextNumber = profiles.length + 1;
-  profiles.push({
-    name: `Kind ${nextNumber}`,
-    note: "Eigenes Profil · eigene Rechte"
-  });
-  saveProfiles(profiles);
-  renderProfiles();
-});
-
-
-function loadAllTasks(){
-  return safeJsonParse(localStorage.getItem("haushaltsheld_tasks"), []);
-}
-function saveAllTasks(items){
-  localStorage.setItem("haushaltsheld_tasks", JSON.stringify(items));
-}
-function getTaskStatusLabel(status){
-  if(status === "done") return "Genehmigt";
-  if(status === "in_progress") return "Zurück an Kind";
-  if(status === "waiting_parent") return "Wartet auf Eltern";
-  return "Offen";
-}
-function renderTaskApprovals(){
-  const list = document.getElementById("taskApprovalList");
-  if(!list) return;
-
-  const tasks = loadAllTasks()
-    .map((task, index) => ({ ...task, _index:index }))
-    .filter(task => task && task.status === "waiting_parent");
-
-  if(!tasks.length){
-    list.innerHTML = '<div class="request-empty">Aktuell wartet keine Aufgabe auf eure Bestätigung.</div>';
-    return;
-  }
-
-  list.innerHTML = tasks.map(task => `
-    <div class="request-item">
-      <div class="request-head">
-        <div>
-          <div class="request-name">${escapeHtml(task.childName || task.person || "Kind")} · ${escapeHtml(task.text || "Aufgabe")}</div>
-          <div class="request-meta">
-            Kategorie: <strong>${escapeHtml(task.category || "Aufgabe")}</strong><br>
-            Status: ${escapeHtml(getTaskStatusLabel(task.status))}<br>
-            Gemeldet am: ${escapeHtml(formatRequestDate(task.updatedAt || task.date))}
-          </div>
-        </div>
-        <span class="request-badge später">Wartet auf Eltern</span>
-      </div>
-      <div class="request-actions">
-        <button class="btn" type="button" onclick="approveTaskByParent(${task._index})">Bestätigen</button>
-        <button class="btn btn-soft" type="button" onclick="sendTaskBackToChild(${task._index})">Zurück ans Kind</button>
-      </div>
-    </div>
-  `).join("");
-}
-
-function approveTaskByParent(index){
-  const tasks = loadAllTasks();
-  if(!tasks[index]) return;
-
-  const task = tasks[index];
-  const wasAlreadyDone = task.status === "done";
-
-  task.status = "done";
-  task.done = true;
-  task.waitingForParent = false;
-  task.updatedAt = new Date().toISOString();
-  saveAllTasks(tasks);
-
-  if(!wasAlreadyDone){
-    const childKey = "hh_kid_" + (task.childId || task.childName || task.person || "kind") + "_stars";
-    const currentStars = Number(safeJsonParse(localStorage.getItem(childKey), 0) || 0);
-    localStorage.setItem(childKey, JSON.stringify(currentStars + 1));
-  }
-
-  renderTaskApprovals();
-  showSavedNote();
-}
-
-function sendTaskBackToChild(index){
-  const tasks = loadAllTasks();
-  if(!tasks[index]) return;
-
-  tasks[index].status = "in_progress";
-  tasks[index].done = false;
-  tasks[index].waitingForParent = false;
-  tasks[index].updatedAt = new Date().toISOString();
-  saveAllTasks(tasks);
-
-  renderTaskApprovals();
-  showSavedNote();
-}
-
-renderToggles();
-renderProfiles();
-updateSummary();
-renderChatPreview();
-renderRewardRequests();
-renderTaskApprovals();
-restoreLoginState();
-
-window.addEventListener("storage", () => {
-  updateSummary();
-  renderChatPreview();
-  renderRewardRequests();
-  renderTaskApprovals();
-});
-
-const RIGHTS_KEY = "haushaltsheld_rights_settings";
-const FAMILY_ACCESS_KEY = "haushaltsheld_family_access";
 
 const ACCESS_LABELS = {
   meinGeld: "Mein Geld",
@@ -2294,8 +2049,131 @@ const defaultRightsSettings = {
 
 let ageGroupDrafts = JSON.parse(JSON.stringify(defaultRightsSettings.ageGroups));
 
+function safeJsonParse(value, fallback){
+  try{
+    const parsed = JSON.parse(value);
+    return parsed ?? fallback;
+  }catch{
+    return fallback;
+  }
+}
+
+function readJson(key, fallback){
+  return safeJsonParse(localStorage.getItem(key), fallback);
+}
+
+function writeJson(key, value){
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function formatRequestDate(value){
+  if(!value) return "–";
+  const date = new Date(value);
+  if(Number.isNaN(date.getTime())) return String(value);
+  return date.toLocaleString("de-DE", {
+    day:"2-digit", month:"2-digit", year:"numeric",
+    hour:"2-digit", minute:"2-digit"
+  });
+}
+
+function setToggleStateByKey(key, state){
+  document.querySelectorAll(`.toggle[data-key="${key}"]`).forEach(toggle => {
+    toggle.classList.toggle("active", !!state);
+    toggle.setAttribute("aria-pressed", state ? "true" : "false");
+  });
+}
+
+function getToggleStateByKey(key){
+  const toggle = document.querySelector(`.toggle[data-key="${key}"]`);
+  return !!toggle?.classList.contains("active");
+}
+
+function showPageSuccess(message){
+  const box = document.getElementById("saveNote");
+  if(!box) return;
+  box.textContent = message;
+  box.classList.add("show");
+  clearTimeout(showPageSuccess.timer);
+  showPageSuccess.timer = setTimeout(() => box.classList.remove("show"), 2200);
+}
+
+function loadPermissions(){
+  const stored = readJson(STORAGE_KEY, {});
+  return { ...defaultPermissions, ...stored };
+}
+
+function savePermissions(data){
+  writeJson(STORAGE_KEY, data);
+}
+
+function loadProfiles(){
+  const stored = readJson(PROFILE_KEY, null);
+  if(Array.isArray(stored) && stored.length){
+    return stored.map((profile, index) => normaliseProfile(profile, index)).filter(Boolean);
+  }
+  return defaultProfiles.map((profile, index) => normaliseProfile(profile, index)).filter(Boolean);
+}
+
+function saveProfiles(list){
+  writeJson(PROFILE_KEY, list.map((profile, index) => normaliseProfile(profile, index)).filter(Boolean));
+}
+
+function createProfileId(name, index){
+  const base = String(name || "kind").toLowerCase().trim().replace(/[^a-z0-9äöüß]+/gi, "-").replace(/^-+|-+$/g, "");
+  return `${base || "kind"}_${Date.now()}_${index}`;
+}
+
+function normaliseProfile(raw, fallbackIndex = 0){
+  if(!raw || typeof raw !== "object") return null;
+  const safeName = String(raw.name || `Kind ${fallbackIndex + 1}`).trim() || `Kind ${fallbackIndex + 1}`;
+  const ageValue = raw.age === 0 ? 0 : (raw.age || raw.years || "");
+  return {
+    id: String(raw.id || raw.userId || createProfileId(safeName, fallbackIndex)),
+    name: safeName,
+    age: ageValue === "" ? "" : Number(ageValue),
+    note: String(raw.note || "Eigenes Profil · eigene Rechte")
+  };
+}
+
+function getAgeGroupLabelFromAge(age){
+  const key = getUserAgeGroupKey(age);
+  return AGE_GROUP_META.find(group => group.key === key)?.label || "ohne Altersgruppe";
+}
+
+function getProfileCardsData(){
+  const storedProfiles = loadProfiles();
+  const profileMap = new Map(storedProfiles.map((profile, index) => {
+    const normalized = normaliseProfile(profile, index);
+    return [normalized.id, normalized];
+  }));
+
+  const children = getChildUsers();
+  if(!children.length) return storedProfiles;
+
+  const result = children.map((child, index) => {
+    const existing = profileMap.get(child.id) || storedProfiles.find(profile => String(profile.name).trim().toLowerCase() === String(child.name).trim().toLowerCase());
+    return normaliseProfile({
+      id: child.id,
+      name: child.name,
+      age: child.age ?? existing?.age ?? "",
+      note: existing?.note || "Eigenes Profil · eigene Rechte"
+    }, index);
+  });
+
+  return result;
+}
+
 function getStoredRightsSettings(){
-  const stored = safeJsonParse(localStorage.getItem(RIGHTS_KEY), {});
+  const stored = readJson(RIGHTS_KEY, {});
   return {
     ...defaultRightsSettings,
     ...stored,
@@ -2304,8 +2182,307 @@ function getStoredRightsSettings(){
   };
 }
 
-function writeJson(key, value){
-  localStorage.setItem(key, JSON.stringify(value));
+function loadChatThreads(){
+  return readJson(CHAT_STORAGE_KEY, []).sort((a,b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+}
+
+function formatChatStatus(status){
+  if(status === "done") return "Erledigt";
+  if(status === "working") return "In Bearbeitung";
+  if(status === "read") return "Gelesen";
+  return "Offen";
+}
+
+function formatChatStatusClass(status){
+  if(status === "done") return "genehmigt";
+  if(status === "working") return "später";
+  return "offen";
+}
+
+function renderChatPreview(){
+  const list = document.getElementById("chatPreviewList");
+  if(!list) return;
+  const threads = loadChatThreads().filter(thread => thread.unreadForParent || String(thread.status || "open") !== "done");
+  if(!threads.length){
+    list.innerHTML = '<div class="request-empty">Aktuell gibt es keine offenen Chats. Neue oder ungelesene Unterhaltungen erscheinen hier kompakt.</div>';
+    return;
+  }
+  list.innerHTML = threads.slice(0, 3).map(thread => {
+    const last = (thread.messages || []).slice(-1)[0];
+    const status = String(thread.status || "open");
+    return `
+      <div class="chat-compact-item">
+        <div class="chat-compact-main">
+          <div class="chat-compact-top">
+            <div class="chat-compact-name">${escapeHtml(thread.childName || thread.userName || "Kind")}</div>
+            <span class="request-badge ${formatChatStatusClass(status)}">${formatChatStatus(status)}</span>
+          </div>
+          <div class="chat-compact-preview">${escapeHtml(last ? last.text : "Noch keine Nachricht")}</div>
+          <div class="chat-compact-meta">${escapeHtml(thread.title || "Chat")} · ${escapeHtml(formatRequestDate(thread.updatedAt || thread.createdAt))}</div>
+        </div>
+        <div class="chat-compact-actions">
+          <a class="chat-mini-link" href="admin_chat.html">Zum Chat</a>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderProfiles(){
+  const grid = document.getElementById("profileGrid");
+  if(!grid) return;
+  const profiles = getProfileCardsData();
+  if(!profiles.length){
+    grid.innerHTML = '<div class="request-empty">Noch keine Kinderprofile vorhanden. Über „Profil hinzufügen“ kannst du direkt das erste Kind anlegen.</div>';
+    return;
+  }
+
+  grid.innerHTML = profiles.map((profile, index) => {
+    const childLike = {
+      id: profile.id,
+      name: profile.name,
+      age: profile.age || 0
+    };
+    const rights = getEffectiveChildRights(childLike);
+    const allowCount = rights ? Object.values(rights.effective).filter(value => value === "allow").length : 0;
+    const askCount = rights ? Object.values(rights.effective).filter(value => value === "ask").length : 0;
+    const age = Number(profile.age || 0);
+    const ageLabel = age > 0 ? `${age} Jahre` : "Alter offen";
+    const ageGroup = rights ? getAgeGroupLabelFromAge(rights.age) : "ohne Altersgruppe";
+    const quickFacts = [
+      "eigener Zugang ohne Geschwistersicht",
+      rights?.effective?.chat === "allow" ? "Chat direkt erlaubt" : rights?.effective?.chat === "ask" ? "Chat nur nach Freigabe" : "Chat aktuell gesperrt",
+      rights?.effective?.finanzen === "allow" ? "Finanzen direkt erlaubt" : rights?.effective?.finanzen === "ask" ? "Finanzen nur mit Freigabe" : "Finanzen geschützt"
+    ];
+    return `
+      <div class="profile-card" data-profile-id="${escapeHtml(profile.id)}">
+        <div class="profile-top">
+          <div class="profile-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M6 21v-2a6 6 0 0 1 12 0v2"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="profile-name">${escapeHtml(profile.name)}</div>
+            <div class="profile-meta">${escapeHtml(profile.note || "Eigenes Profil")}</div>
+          </div>
+        </div>
+
+        <div class="profile-badges">
+          <span class="profile-badge">${escapeHtml(ageLabel)}</span>
+          <span class="profile-badge">${escapeHtml(ageGroup)}</span>
+          <span class="profile-badge">${allowCount} Bereiche frei</span>
+          <span class="profile-badge">${askCount} mit Freigabe</span>
+        </div>
+
+        <div class="profile-list">
+          ${quickFacts.map(item => `<div class="profile-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg><span>${escapeHtml(item)}</span></div>`).join("")}
+        </div>
+
+        <div class="profile-actions">
+          <button class="btn-tiny primary" type="button" data-edit-rights="${escapeHtml(profile.id)}">Rechte</button>
+          <button class="btn-tiny" type="button" data-edit-profile="${escapeHtml(profile.id)}">Profil</button>
+          <button class="btn-tiny danger" type="button" data-delete-profile="${escapeHtml(profile.id)}">Entfernen</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function bindGeneralToggles(){
+  const permissions = loadPermissions();
+  GENERAL_KEYS.forEach(key => setToggleStateByKey(key, !!permissions[key]));
+  document.querySelectorAll(".toggle[data-key]").forEach(toggle => {
+    const key = toggle.dataset.key;
+    if(!GENERAL_KEYS.has(key)) return;
+    toggle.onclick = () => {
+      const next = !getToggleStateByKey(key);
+      setToggleStateByKey(key, next);
+      updateSummary();
+    };
+  });
+}
+
+function collectGeneralToggleValues(){
+  const current = loadPermissions();
+  GENERAL_KEYS.forEach(key => {
+    current[key] = getToggleStateByKey(key);
+  });
+  return current;
+}
+
+function updateSummary(){
+  const general = loadPermissions();
+  const rights = getStoredRightsSettings();
+
+  const parentCount = [
+    "parentManageProfiles",
+    "parentManageRules",
+    "parentManageBudgets",
+    "parentCanRequestPrivateAccess"
+  ].filter(key => general[key]).length;
+
+  const childCount = [
+    "childOwnLogin",
+    "childPrivateSpace",
+    "childCanApprovePrivateAccess",
+    "siblingPrivacy"
+  ].filter(key => general[key]).length;
+
+  const approvalCount = [
+    "requireApprovalPrivate",
+    "allowPrivateWishlist",
+    "protectSurpriseMode",
+    "approvalSavingsGoals",
+    "showOnlyHintsForPrivate",
+    "disableSiblingComparisons"
+  ].filter(key => general[key]).length + [
+    rights.requireApprovalAppointments,
+    rights.requireApprovalFinances
+  ].filter(Boolean).length;
+
+  const financeCount = [
+    "showFinanceReport",
+    "showShopping",
+    "showPocketMoney",
+    "showGiftMoney",
+    "showParentIncome",
+    "showIncome",
+    "showFixed",
+    "showVariable"
+  ].filter(key => general[key]).length;
+
+  const chatCount = loadChatThreads().filter(thread => thread.unreadForParent || thread.status !== "done").length;
+
+  const ids = {
+    sumParent: parentCount,
+    sumChild: childCount,
+    sumApproval: approvalCount,
+    sumFinance: financeCount,
+    sumChat: chatCount
+  };
+  Object.entries(ids).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = String(value);
+  });
+}
+
+function loadAllTasks(){
+  return readJson("haushaltsheld_tasks", []);
+}
+
+function saveAllTasks(items){
+  writeJson("haushaltsheld_tasks", items);
+}
+
+function getTaskStatusLabel(status){
+  if(status === "done") return "Genehmigt";
+  if(status === "in_progress") return "Zurück an Kind";
+  if(status === "waiting_parent") return "Wartet auf Eltern";
+  return "Offen";
+}
+
+function renderTaskApprovals(){
+  const list = document.getElementById("taskApprovalList");
+  if(!list) return;
+  const tasks = loadAllTasks().map((task, index) => ({ ...task, _index:index })).filter(task => task && task.status === "waiting_parent");
+  if(!tasks.length){
+    list.innerHTML = '<div class="request-empty">Aktuell wartet keine Aufgabe auf eure Bestätigung.</div>';
+    return;
+  }
+  list.innerHTML = tasks.map(task => `
+    <div class="request-item">
+      <div class="request-head">
+        <div>
+          <div class="request-name">${escapeHtml(task.childName || task.person || "Kind")} · ${escapeHtml(task.text || "Aufgabe")}</div>
+          <div class="request-meta">
+            Kategorie: <strong>${escapeHtml(task.category || "Aufgabe")}</strong><br>
+            Status: ${escapeHtml(getTaskStatusLabel(task.status))}<br>
+            Gemeldet am: ${escapeHtml(formatRequestDate(task.updatedAt || task.date))}
+          </div>
+        </div>
+        <span class="request-badge später">Wartet auf Eltern</span>
+      </div>
+      <div class="request-actions">
+        <button class="btn" type="button" onclick="approveTaskByParent(${task._index})">Bestätigen</button>
+        <button class="btn btn-soft" type="button" onclick="sendTaskBackToChild(${task._index})">Zurück ans Kind</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function approveTaskByParent(index){
+  const tasks = loadAllTasks();
+  if(!tasks[index]) return;
+  const task = tasks[index];
+  const wasAlreadyDone = task.status === "done";
+  task.status = "done";
+  task.done = true;
+  task.waitingForParent = false;
+  task.updatedAt = new Date().toISOString();
+  saveAllTasks(tasks);
+  if(!wasAlreadyDone){
+    const childKey = "hh_kid_" + (task.childId || task.childName || task.person || "kind") + "_stars";
+    const currentStars = Number(readJson(childKey, 0) || 0);
+    writeJson(childKey, currentStars + 1);
+  }
+  renderTaskApprovals();
+  showPageSuccess("Aufgabe wurde bestätigt.");
+}
+
+function sendTaskBackToChild(index){
+  const tasks = loadAllTasks();
+  if(!tasks[index]) return;
+  tasks[index].status = "in_progress";
+  tasks[index].done = false;
+  tasks[index].waitingForParent = false;
+  tasks[index].updatedAt = new Date().toISOString();
+  saveAllTasks(tasks);
+  renderTaskApprovals();
+  showPageSuccess("Aufgabe wurde an das Kind zurückgegeben.");
+}
+
+function collectRewardRequests(){
+  const keys = ["haushaltsheld_reward_requests", "hh_reward_requests", "haushaltsheld_rewards"];
+  for(const key of keys){
+    const items = readJson(key, null);
+    if(Array.isArray(items) && items.length) return items;
+  }
+  return [];
+}
+
+function renderRewardRequests(){
+  const list = document.getElementById("rewardRequestList");
+  if(!list) return;
+  const requests = collectRewardRequests().map((item, index) => ({ ...item, _index:index }));
+  if(!requests.length){
+    list.innerHTML = '<div class="request-empty">Aktuell liegen keine Belohnungsanfragen der Kinder vor.</div>';
+    return;
+  }
+  list.innerHTML = requests.slice(0, 8).map(item => `
+    <div class="request-item">
+      <div class="request-head">
+        <div>
+          <div class="request-name">${escapeHtml(item.childName || item.name || "Kind")} · ${escapeHtml(item.reward || item.choice || "Belohnung")}</div>
+          <div class="request-meta">
+            Sterne: <strong>${escapeHtml(item.stars ?? 10)}</strong><br>
+            Status: ${escapeHtml(item.status || "Offen")}<br>
+            Angefragt am: ${escapeHtml(formatRequestDate(item.updatedAt || item.createdAt || item.date))}
+          </div>
+        </div>
+        <span class="request-badge offen">Offen</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function createRuleSelect({ value="allow", includeDefault=false } = {}){
+  const select = document.createElement("select");
+  const options = includeDefault ? [{ value:"default", label:"Altersgruppe verwenden" }, ...ACCESS_OPTIONS] : ACCESS_OPTIONS;
+  select.innerHTML = options.map(option => `<option value="${option.value}">${option.label}</option>`).join("");
+  select.value = value;
+  return select;
 }
 
 function getUserAgeGroupKey(age){
@@ -2330,31 +2507,6 @@ function getDisplayAge(user){
   return Number(user.age) || 0;
 }
 
-function formatGermanDate(value){
-  if(!value) return "";
-  const date = new Date(value);
-  if(Number.isNaN(date.getTime())) return "";
-  return date.toLocaleDateString("de-DE");
-}
-
-function createRuleSelect({ value="allow", includeDefault=false } = {}){
-  const select = document.createElement("select");
-  const options = includeDefault ? [{ value:"default", label:"Altersgruppe verwenden" }, ...ACCESS_OPTIONS] : ACCESS_OPTIONS;
-  select.innerHTML = options.map(option => `<option value="${option.value}">${option.label}</option>`).join("");
-  select.value = value;
-  return select;
-}
-
-function showPageSuccess(message){
-  const box = document.getElementById("saveNote");
-  if(box){
-    box.textContent = message;
-    box.classList.add("show");
-    clearTimeout(showPageSuccess.timer);
-    showPageSuccess.timer = setTimeout(() => box.classList.remove("show"), 2200);
-  }
-}
-
 function saveCurrentAgeGroupDraft(){
   const select = document.getElementById("ageGroupSelect");
   if(!select) return;
@@ -2371,8 +2523,10 @@ function renderAgeGroupRules(){
   if(!select || !container) return;
   const groupKey = select.value;
   const meta = AGE_GROUP_META.find(item => item.key === groupKey);
-  document.getElementById("ageGroupTitle").textContent = meta?.label || "";
-  document.getElementById("ageGroupHint").textContent = meta?.hint || "";
+  const title = document.getElementById("ageGroupTitle");
+  const hint = document.getElementById("ageGroupHint");
+  if(title) title.textContent = meta?.label || "";
+  if(hint) hint.textContent = meta?.hint || "";
   const rules = ageGroupDrafts[groupKey] || defaultRightsSettings.ageGroups[groupKey] || {};
   container.innerHTML = "";
   Object.entries(ACCESS_LABELS).forEach(([key, label]) => {
@@ -2385,6 +2539,7 @@ function renderAgeGroupRules(){
     if(key === "chat" && groupKey !== "age0to5"){
       selectField.value = "allow";
     }
+    selectField.addEventListener("change", updateSummary);
     field.append(lbl, selectField);
     container.appendChild(field);
   });
@@ -2396,33 +2551,153 @@ function saveAgeRules(){
   settings.ageGroups = JSON.parse(JSON.stringify(ageGroupDrafts));
   writeJson(RIGHTS_KEY, settings);
   showPageSuccess("Kindermodus-Rechte wurden gespeichert.");
+  updateSummary();
 }
 
 function renderApprovalToggles(){
   const settings = getStoredRightsSettings();
-  document.querySelectorAll('.toggle[data-key]').forEach(toggle => {
-    setToggleState(toggle, !!settings[toggle.dataset.key]);
-    toggle.onclick = () => setToggleState(toggle, !toggle.classList.contains("active"));
+  APPROVAL_KEYS.forEach(key => setToggleStateByKey(key, !!settings[key]));
+  APPROVAL_KEYS.forEach(key => {
+    document.querySelectorAll(`.toggle[data-key="${key}"]`).forEach(toggle => {
+      toggle.onclick = () => setToggleStateByKey(key, !getToggleStateByKey(key));
+    });
   });
 }
 
 function saveApprovalSettings(){
   const settings = getStoredRightsSettings();
-  document.querySelectorAll('.toggle[data-key]').forEach(toggle => {
-    settings[toggle.dataset.key] = toggle.classList.contains("active");
+  APPROVAL_KEYS.forEach(key => {
+    settings[key] = getToggleStateByKey(key);
   });
   writeJson(RIGHTS_KEY, settings);
+  setToggleStateByKey("requireApprovalPrivate", !!settings.requireApprovalPrivate);
   showPageSuccess("Elternfreigaben wurden gespeichert.");
+  updateSummary();
+}
+
+function normaliseUser(raw, fallbackIndex=0){
+  if(!raw || typeof raw !== "object") return null;
+  const role = String(raw.role || raw.type || raw.userType || raw.mode || raw.category || "").toLowerCase();
+  const looksLikeChild = raw.isChild === true || raw.kind === true || role.includes("child") || role.includes("kind") || role.includes("kid");
+  if(!looksLikeChild) return null;
+  return {
+    id: String(raw.id || raw.userId || raw.uuid || raw.name || `child_${fallbackIndex}`),
+    name: raw.name || raw.displayName || raw.username || `Kind ${fallbackIndex + 1}`,
+    age: raw.age,
+    birthdate: raw.birthdate || raw.birthday || raw.birthDay,
+    role: "child"
+  };
+}
+
+function getChildUsers(){
+  const keys = ["haushaltsheld_users", "hh_users", "haushaltsheld_family_members", "haushaltsheld_members"];
+  const result = [];
+  keys.forEach(key => {
+    const items = readJson(key, []);
+    if(Array.isArray(items)){
+      items.forEach((item, index) => {
+        const user = normaliseUser(item, index);
+        if(user) result.push(user);
+      });
+    }
+  });
+
+  if(!result.length){
+    loadProfiles().forEach((profile, index) => {
+      result.push({
+        id: String(profile.id || `profile_${index + 1}`),
+        name: profile.name || `Kind ${index + 1}`,
+        age: profile.age === "" ? 0 : Number(profile.age || 0),
+        birthdate: null,
+        role: "child"
+      });
+    });
+  }
+
+  const deduped = [];
+  const seen = new Set();
+  result.forEach(user => {
+    const key = `${user.id}__${user.name}`;
+    if(seen.has(key)) return;
+    seen.add(key);
+    deduped.push(user);
+  });
+
+  return deduped.sort((a,b) => String(a.name).localeCompare(String(b.name), "de"));
 }
 
 function renderChildSelect(){
   const select = document.getElementById("childRightsSelect");
+  const info = document.getElementById("childRightsInfo");
+  const editor = document.getElementById("childOverrideEditor");
   if(!select) return;
-  const users = safeJsonParse(localStorage.getItem("haushaltsheld_users"), []);
-  const children = (Array.isArray(users) ? users : []).filter(user => user.role === "child");
+  const children = getChildUsers();
   const current = select.value;
-  select.innerHTML = '<option value="">-- Kind auswählen --</option>' + children.map(child => `<option value="${child.id}">${escapeHtml(child.name)} (${getDisplayAge(child)} Jahre)</option>`).join("");
-  if(children.some(child => child.id === current)) select.value = current;
+  select.innerHTML = '<option value="">-- Kind auswählen --</option>' + children.map(child => {
+    const age = getDisplayAge(child);
+    const ageText = age > 0 ? ` (${age} Jahre)` : "";
+    return `<option value="${escapeHtml(child.id)}">${escapeHtml(child.name)}${ageText}</option>`;
+  }).join("");
+  if(children.some(child => child.id === current)){
+    select.value = current;
+  }
+  if(!children.length){
+    if(info) info.textContent = "Es wurden noch keine Kinderprofile gefunden. Lege zuerst in der Nutzerverwaltung ein Kind an oder speichere oben ein Profil.";
+    if(editor) editor.style.display = "none";
+  }
+}
+
+function getEffectiveChildRights(child){
+  if(!child) return null;
+  const age = getDisplayAge(child);
+  const ageGroupKey = getUserAgeGroupKey(age);
+  const settings = getStoredRightsSettings();
+  const base = settings.ageGroups[ageGroupKey] || defaultRightsSettings.ageGroups[ageGroupKey] || {};
+  const override = settings.childOverrides?.[child.id] || {};
+  const effective = {};
+  Object.keys(ACCESS_LABELS).forEach(key => {
+    effective[key] = override[key] && override[key] !== "default" ? override[key] : (base[key] || "deny");
+  });
+  return { age, ageGroupKey, base, override, effective };
+}
+
+function renderEffectiveChildRights(child){
+  const summary = document.getElementById("childRightsSummary");
+  const grid = document.getElementById("childEffectiveRightsGrid");
+  if(!summary || !grid){
+    return;
+  }
+  if(!child){
+    summary.innerHTML = "";
+    grid.innerHTML = "";
+    return;
+  }
+  const data = getEffectiveChildRights(child);
+  const ageGroupLabel = AGE_GROUP_META.find(group => group.key === data.ageGroupKey)?.label || "Altersgruppe";
+  const counts = { allow:0, ask:0, deny:0 };
+  Object.values(data.effective).forEach(value => { counts[value] = (counts[value] || 0) + 1; });
+  summary.innerHTML = `
+    <div class="summary-mini"><strong>${escapeHtml(String(data.age))}</strong><span>Jahre</span></div>
+    <div class="summary-mini"><strong>${escapeHtml(ageGroupLabel)}</strong><span>aktive Altersgruppe</span></div>
+    <div class="summary-mini"><strong>${counts.allow}/${Object.keys(ACCESS_LABELS).length}</strong><span>direkt erlaubt</span></div>
+  `;
+  grid.innerHTML = Object.entries(ACCESS_LABELS).map(([key, label]) => {
+    const value = data.effective[key];
+    const source = data.override[key] && data.override[key] !== "default" ? "individuell" : "Altersgruppe";
+    const labelMap = { allow:"Direkt erlaubt", ask:"Nur nachfragen", deny:"Gesperrt" };
+    return `
+      <div class="effective-right-card">
+        <div class="effective-right-top">
+          <div>
+            <div class="effective-right-name">${escapeHtml(label)}</div>
+            <div class="effective-right-meta">Gilt aktuell für dieses Kind</div>
+          </div>
+          <span class="status-pill ${escapeHtml(value)}">${escapeHtml(labelMap[value] || value)}</span>
+        </div>
+        <span class="source-pill">Quelle: ${escapeHtml(source)}</span>
+      </div>
+    `;
+  }).join("");
 }
 
 function renderChildOverrideEditor(){
@@ -2432,8 +2707,7 @@ function renderChildOverrideEditor(){
   const grid = document.getElementById("childRulesGrid");
   if(!select || !info || !editor || !grid) return;
 
-  const users = safeJsonParse(localStorage.getItem("haushaltsheld_users"), []);
-  const child = (Array.isArray(users) ? users : []).find(user => user.id === select.value && user.role === "child");
+  const child = getChildUsers().find(user => user.id === select.value);
   if(!child){
     editor.style.display = "none";
     info.textContent = "Wähle ein Kind aus, um individuelle Rechte zusätzlich zur Altersgruppe festzulegen.";
@@ -2441,13 +2715,11 @@ function renderChildOverrideEditor(){
     return;
   }
 
-  const age = getDisplayAge(child);
-  const ageGroupKey = getUserAgeGroupKey(age);
-  const ageGroupLabel = AGE_GROUP_META.find(group => group.key === ageGroupKey)?.label || "Altersgruppe";
+  const data = getEffectiveChildRights(child);
+  const ageGroupLabel = AGE_GROUP_META.find(group => group.key === data.ageGroupKey)?.label || "Altersgruppe";
   const settings = getStoredRightsSettings();
   const override = settings.childOverrides?.[child.id] || {};
-  info.textContent = `${child.name} ist ${age} Jahre alt und nutzt aktuell die Altersgruppe ${ageGroupLabel}. Hier kannst du einzelne Bereiche gezielt anpassen.`;
-
+  info.textContent = `${child.name} ist ${data.age || 0} Jahre alt und nutzt aktuell die Altersgruppe ${ageGroupLabel}. Hier kannst du einzelne Bereiche gezielt anpassen.`;
   editor.style.display = "block";
   grid.innerHTML = "";
   Object.entries(ACCESS_LABELS).forEach(([key, label]) => {
@@ -2477,7 +2749,7 @@ function saveChildOverrides(){
   });
   if(Object.keys(overrides).length){
     settings.childOverrides[childId] = overrides;
-  }else{
+  } else {
     delete settings.childOverrides[childId];
   }
   writeJson(RIGHTS_KEY, settings);
@@ -2495,75 +2767,316 @@ function resetChildOverrides(){
   showPageSuccess("Das Kind nutzt jetzt wieder nur die Altersgruppe.");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  ageGroupDrafts = JSON.parse(JSON.stringify(getStoredRightsSettings().ageGroups));
-  const ageSelect = document.getElementById("ageGroupSelect");
-  if(ageSelect){
-    ageSelect.addEventListener("change", saveCurrentAgeGroupDraft);
-    renderAgeGroupRules();
-  }
-  renderApprovalToggles();
-  renderChildSelect();
-  renderChildOverrideEditor();
-});
+function getFamilyAccess(){
+  return readJson(FAMILY_ACCESS_KEY, { code: "482178", enabled: true });
+}
 
+function isFamilyUnlocked(){
+  const gate = readJson("haushaltsheld_family_gate", null);
+  return !!(gate && gate.granted);
+}
+
+function unlockFamily(inputCode){
+  const access = getFamilyAccess();
+  if(String(inputCode || "").trim() === String(access.code || "").trim()){
+    writeJson("haushaltsheld_family_gate", { granted:true, grantedAt:Date.now() });
+    return true;
+  }
+  return false;
+}
+
+function handleFamilyLogin(){
+  const input = document.getElementById("familyCodeInput");
+  const error = document.getElementById("familyCodeError");
+  const value = input ? input.value : "";
+  if(unlockFamily(value)){
+    location.reload();
+    return;
+  }
+  if(error) error.classList.add("show");
+}
+
+function restoreLoginState(){
+  const gate = document.getElementById("familyGate");
+  if(gate){
+    gate.style.display = isFamilyUnlocked() ? "none" : "flex";
+  }
+  const logoutBtn = document.getElementById("logoutBtn");
+  if(logoutBtn){
+    logoutBtn.onclick = () => {
+      localStorage.removeItem("haushaltsheld_family_gate");
+      location.reload();
+    };
+  }
+}
+
+function getProfileRecordById(profileId){
+  const profiles = loadProfiles();
+  return profiles.find(profile => String(profile.id) === String(profileId)) || null;
+}
+
+function upsertProfileRecord(nextProfile){
+  const profiles = loadProfiles();
+  const index = profiles.findIndex(profile => String(profile.id) === String(nextProfile.id));
+  if(index >= 0) profiles[index] = { ...profiles[index], ...nextProfile };
+  else profiles.push(nextProfile);
+  saveProfiles(profiles);
+}
+
+function openModal(id){
+  const modal = document.getElementById(id);
+  if(!modal) return;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+}
+
+function closeModal(id){
+  const modal = document.getElementById(id);
+  if(!modal) return;
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden','true');
+}
+
+function openProfileModal(profileId=''){
+  const existing = profileId ? (getProfileRecordById(profileId) || getProfileCardsData().find(profile => String(profile.id) === String(profileId))) : null;
+  const title = document.getElementById('profileModalTitle');
+  const idField = document.getElementById('profileFormId');
+  const nameField = document.getElementById('profileFormName');
+  const ageField = document.getElementById('profileFormAge');
+  const noteField = document.getElementById('profileFormNote');
+  if(title) title.textContent = existing ? 'Kinderprofil bearbeiten' : 'Neues Kinderprofil anlegen';
+  if(idField) idField.value = existing?.id || '';
+  if(nameField) nameField.value = existing?.name || '';
+  if(ageField) ageField.value = existing?.age === '' || existing?.age == null ? '' : String(existing.age);
+  if(noteField) noteField.value = existing?.note || 'Eigenes Profil · eigene Rechte';
+  openModal('profileModal');
+  setTimeout(() => nameField?.focus(), 40);
+}
+
+function saveProfileFromModal(){
+  const idField = document.getElementById('profileFormId');
+  const nameField = document.getElementById('profileFormName');
+  const ageField = document.getElementById('profileFormAge');
+  const noteField = document.getElementById('profileFormNote');
+  const cleanName = String(nameField?.value || '').trim();
+  if(!cleanName){ alert('Bitte gib einen Namen ein.'); return; }
+  const rawAge = String(ageField?.value || '').trim();
+  const parsedAge = rawAge === '' ? '' : Math.max(0, Number(rawAge.replace(',', '.')) || 0);
+  const profileId = String(idField?.value || '').trim() || createProfileId(cleanName, Date.now());
+  upsertProfileRecord({
+    id: profileId,
+    name: cleanName,
+    age: parsedAge,
+    note: String(noteField?.value || '').trim() || 'Eigenes Profil · eigene Rechte'
+  });
+  closeModal('profileModal');
+  renderProfiles();
+  updateSummary();
+  showPageSuccess('Kinderprofil wurde gespeichert.');
+}
+
+function buildRightsModalSummary(child){
+  const data = getEffectiveChildRights(child);
+  const summary = document.getElementById('rightsModalSummary');
+  const autoInfo = document.getElementById('rightsModalAutoInfo');
+  if(!summary || !autoInfo || !data) return;
+  const ageGroupLabel = AGE_GROUP_META.find(group => group.key === data.ageGroupKey)?.label || 'Altersgruppe';
+  autoInfo.textContent = `${child.name} ist aktuell ${data.age || 0} Jahre alt und fällt automatisch in ${ageGroupLabel}.`;
+  const counts = { allow:0, ask:0, deny:0 };
+  Object.values(data.effective).forEach(value => { counts[value] = (counts[value] || 0) + 1; });
+  summary.innerHTML = `
+    <div class="summary-mini"><strong>${escapeHtml(String(data.age || 0))}</strong><span>Jahre</span></div>
+    <div class="summary-mini"><strong>${escapeHtml(ageGroupLabel)}</strong><span>aktive Altersgruppe</span></div>
+    <div class="summary-mini"><strong>${counts.allow}</strong><span>direkt erlaubt</span></div>
+  `;
+}
+
+function renderRightsModalEffective(child){
+  const grid = document.getElementById('rightsModalEffectiveGrid');
+  if(!grid){ return; }
+  if(!child){ grid.innerHTML = ''; return; }
+  const data = getEffectiveChildRights(child);
+  const labelMap = { allow:'Direkt erlaubt', ask:'Nur nachfragen', deny:'Gesperrt' };
+  grid.innerHTML = Object.entries(ACCESS_LABELS).map(([key, label]) => {
+    const value = data.effective[key];
+    const source = data.override[key] && data.override[key] !== 'default' ? 'individuell' : 'Altersgruppe';
+    return `
+      <div class="effective-right-card">
+        <div class="effective-right-top">
+          <div>
+            <div class="effective-right-name">${escapeHtml(label)}</div>
+            <div class="effective-right-meta">Gilt aktuell für dieses Kind</div>
+          </div>
+          <span class="status-pill ${escapeHtml(value)}">${escapeHtml(labelMap[value] || value)}</span>
+        </div>
+        <span class="source-pill">Quelle: ${escapeHtml(source)}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function openRightsModal(childId){
+  const child = getChildUsers().find(user => String(user.id) === String(childId));
+  if(!child){ alert('Dieses Kind wurde nicht gefunden.'); return; }
+  const title = document.getElementById('rightsModalTitle');
+  const subtitle = document.getElementById('rightsModalSubtitle');
+  const idField = document.getElementById('rightsModalChildId');
+  const grid = document.getElementById('rightsModalRulesGrid');
+  if(title) title.textContent = `${child.name} · Rechte bearbeiten`;
+  if(subtitle) subtitle.textContent = 'Jetzt ist klar, für welches Kind du gerade Rechte änderst.';
+  if(idField) idField.value = child.id;
+  const settings = getStoredRightsSettings();
+  const override = settings.childOverrides?.[child.id] || {};
+  if(grid){
+    grid.innerHTML = '';
+    Object.entries(ACCESS_LABELS).forEach(([key, label]) => {
+      const field = document.createElement('div');
+      field.className = 'rule-field';
+      const lbl = document.createElement('label');
+      lbl.textContent = label;
+      const selectField = createRuleSelect({ value: override[key] || 'default', includeDefault:true });
+      selectField.dataset.modalChildRuleKey = key;
+      selectField.addEventListener('change', () => renderRightsModalEffective(child));
+      field.append(lbl, selectField);
+      grid.appendChild(field);
+    });
+  }
+  buildRightsModalSummary(child);
+  renderRightsModalEffective(child);
+  openModal('rightsModal');
+}
+
+function saveRightsModal(){
+  const childId = document.getElementById('rightsModalChildId')?.value;
+  if(!childId){ alert('Bitte wähle zuerst ein Kind aus.'); return; }
+  const settings = getStoredRightsSettings();
+  const overrides = {};
+  document.querySelectorAll('[data-modal-child-rule-key]').forEach(selectField => {
+    if(selectField.value !== 'default') overrides[selectField.dataset.modalChildRuleKey] = selectField.value;
+  });
+  if(Object.keys(overrides).length) settings.childOverrides[childId] = overrides;
+  else delete settings.childOverrides[childId];
+  writeJson(RIGHTS_KEY, settings);
+  const child = getChildUsers().find(user => String(user.id) === String(childId));
+  if(child){ buildRightsModalSummary(child); renderRightsModalEffective(child); }
+  renderProfiles();
+  updateSummary();
+  showPageSuccess('Kind-Rechte wurden gespeichert.');
+}
+
+function resetRightsModal(){
+  const childId = document.getElementById('rightsModalChildId')?.value;
+  if(!childId) return;
+  const settings = getStoredRightsSettings();
+  delete settings.childOverrides[childId];
+  writeJson(RIGHTS_KEY, settings);
+  openRightsModal(childId);
+  renderProfiles();
+  updateSummary();
+}
+
+function initialisePage(){
+  bindGeneralToggles();
+  renderApprovalToggles();
+  renderProfiles();
+  renderChatPreview();
+  renderRewardRequests();
+  renderTaskApprovals();
+  updateSummary();
+  restoreLoginState();
+
+  const saveBtn = document.getElementById("saveBtn");
+  if(saveBtn){
+    saveBtn.addEventListener("click", () => {
+      savePermissions(collectGeneralToggleValues());
+      showPageSuccess("Die Familienrechte wurden gespeichert.");
+      updateSummary();
+    });
+  }
+
+  const resetBtn = document.getElementById("resetBtn");
+  if(resetBtn){
+    resetBtn.addEventListener("click", () => {
+      savePermissions(defaultPermissions);
+      bindGeneralToggles();
+      showPageSuccess("Empfohlene Werte wurden geladen.");
+      updateSummary();
+    });
+  }
+
+  const addProfileBtn = document.getElementById("addProfileBtn");
+  if(addProfileBtn){
+    addProfileBtn.addEventListener("click", () => {
+      openProfileModal();
+    });
+  }
+
+  const profileGrid = document.getElementById("profileGrid");
+  if(profileGrid){
+    profileGrid.addEventListener("click", (event) => {
+      const rightsBtn = event.target.closest("[data-edit-rights]");
+      const editBtn = event.target.closest("[data-edit-profile]");
+      const deleteBtn = event.target.closest("[data-delete-profile]");
+      if(rightsBtn){
+        openRightsModal(rightsBtn.dataset.editRights);
+        return;
+      }
+      if(editBtn){
+        openProfileModal(editBtn.dataset.editProfile);
+        return;
+      }
+      if(deleteBtn){
+        const profileId = deleteBtn.dataset.deleteProfile;
+        const profiles = loadProfiles();
+        const current = profiles.find(profile => profile.id === profileId);
+        if(!current) return;
+        const ok = window.confirm(`Soll ${current.name} wirklich entfernt werden?`);
+        if(!ok) return;
+        const nextProfiles = profiles.filter(profile => profile.id !== profileId);
+        saveProfiles(nextProfiles);
+        const settings = getStoredRightsSettings();
+        if(settings.childOverrides?.[profileId]){
+          delete settings.childOverrides[profileId];
+          writeJson(RIGHTS_KEY, settings);
+        }
+        renderProfiles();
+        updateSummary();
+        showPageSuccess("Kinderprofil wurde entfernt.");
+      }
+    });
+  }
+
+  document.getElementById('closeProfileModal')?.addEventListener('click', () => closeModal('profileModal'));
+  document.getElementById('cancelProfileModal')?.addEventListener('click', () => closeModal('profileModal'));
+  document.getElementById('saveProfileModal')?.addEventListener('click', saveProfileFromModal);
+  document.getElementById('closeRightsModal')?.addEventListener('click', () => closeModal('rightsModal'));
+  document.getElementById('saveRightsModal')?.addEventListener('click', saveRightsModal);
+  document.getElementById('resetRightsModal')?.addEventListener('click', resetRightsModal);
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    modal.addEventListener('click', (event) => {
+      if(event.target === modal) closeModal(modal.id);
+    });
+  });
+
+  window.addEventListener("storage", () => {
+    bindGeneralToggles();
+    renderApprovalToggles();
+    renderProfiles();
+    renderChatPreview();
+    renderRewardRequests();
+    renderTaskApprovals();
+    updateSummary();
+    restoreLoginState();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initialisePage);
 </script>
 
 <script src="js/permissions.js"></script>
 <script src="js/app.js"></script>
 
 
-
-
-<script>
-function getFamilyAccess() {
-  return JSON.parse(localStorage.getItem("haushaltsheld_family_access")) || {
-    code: "482178",
-    enabled: true
-  };
-}
-
-function isFamilyUnlocked() {
-  try {
-    const gate = JSON.parse(localStorage.getItem("haushaltsheld_family_gate"));
-    return !!(gate && gate.granted);
-  } catch (error) {
-    return false;
-  }
-}
-
-function unlockFamily(inputCode) {
-  const access = getFamilyAccess();
-  if (String(inputCode || "").trim() === String(access.code || "").trim()) {
-    localStorage.setItem("haushaltsheld_family_gate", JSON.stringify({
-      granted: true,
-      grantedAt: Date.now()
-    }));
-    return true;
-  }
-  return false;
-}
-
-function handleFamilyLogin() {
-  const input = document.getElementById("familyCodeInput");
-  const error = document.getElementById("familyCodeError");
-  const value = input ? input.value : "";
-
-  if (unlockFamily(value)) {
-    location.reload();
-    return;
-  }
-
-  if (error) error.classList.add("show");
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const gate = document.getElementById("familyGate");
-  if (gate && !isFamilyUnlocked()) {
-    gate.style.display = "flex";
-  }
-});
-</script>
 
 
 <div id="familyGate" class="login-overlay" style="display:none;">
