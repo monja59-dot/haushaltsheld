@@ -3,106 +3,158 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Haushaltsheld – Chat</title>
+<title>Haushaltsheld – Familien-Chat</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
-  --bg:#f7f2e9; --line:#dfd1bc; --card:#ffffff; --soft:#f6efe4; --text:#2d342f; --text2:#556159; --muted:#7d8a82;
-  --accent:#4CAF50; --accent-dark:#3E8E41; --accent-soft:#e7f5e8; --shadow-xs:0 2px 8px rgba(54,45,28,.05);
-  --shadow-sm:0 6px 18px rgba(54,45,28,.08); --shadow:0 12px 34px rgba(54,45,28,.10); --sidebar-w:258px;
+  --bg:#f7f2e9; --bg-2:#fdf9f3; --card:#ffffff; --soft:#f6efe4; --soft2:#efe3d2; --line:#dfd1bc;
+  --text:#2d342f; --text2:#556159; --muted:#7d8a82; --accent:#4CAF50; --accent-dark:#3E8E41; --accent-soft:#e7f5e8;
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05); --shadow-sm:0 6px 18px rgba(54,45,28,.08); --shadow:0 12px 34px rgba(54,45,28,.10);
+  --sidebar-w:258px; --font-main:"Outfit", sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;overflow-x:hidden}
 body{
-  font-family:"Outfit",sans-serif;
+  font-family:var(--font-main);
   background:radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%), linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-  color:var(--text);min-height:100vh;font-size:16px;line-height:1.6;letter-spacing:-0.01em;
+  color:var(--text); min-height:100vh; font-size:16px; line-height:1.6; letter-spacing:-0.01em;
 }
-button,input,textarea{font:inherit}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-main)!important;letter-spacing:-0.03em;line-height:1.15}
+button,input,select,textarea{font:inherit}
 .app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
 .sidebar{
-  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);border-right:1px solid rgba(223,209,188,.85);padding:28px 18px 24px;
-  display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10;box-shadow:inset -1px 0 0 rgba(255,255,255,.4)
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%); border-right:1px solid rgba(223,209,188,.85); padding:28px 18px 24px;
+  display:flex; flex-direction:column; gap:8px; position:sticky; top:0; height:100vh; overflow-y:auto; z-index:10; box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
 }
 .logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
 .logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}
-.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
+.logo-name{font-weight:800;font-size:1.25rem!important;color:var(--text)}
 .logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
 .nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
 .nav{display:flex;flex-direction:column;gap:4px}
-.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:18px;text-decoration:none;color:var(--text2);font-weight:700;border:1px solid transparent;transition:all .18s ease}
+.nav a{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);
+  font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;border:1px solid transparent;position:relative;
+}
 .nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}
-.nav a.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%); color:#fff; border-color:rgba(62,142,65,.28); box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)}
-.nav-icon{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)}
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%); color:#fff; border-color:rgba(62,142,65,.28);
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.nav-icon{
+  width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05);
+}
+.nav-icon svg,.nav-icon i{width:18px;height:18px;stroke:currentColor}
 .nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
-.chat-badge{margin-left:auto;min-width:22px;height:22px;padding:0 7px;border-radius:999px;display:none;align-items:center;justify-content:center;background:#fff;color:#2e8746;font-size:.74rem;font-weight:800;border:1px solid rgba(255,255,255,.45)}
-.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.chat-badge{
+  position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;
+  font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28);
+}
+.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px}
+.user-info{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.7);border-radius:16px;padding:12px 14px;font-size:.8rem;margin-bottom:8px}
+.user-info strong{display:block;font-weight:800;color:var(--text);margin-bottom:4px}
+.user-info span{display:block;color:var(--muted);font-size:.75rem}
+.logout-btn{
+  width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;
+  padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;
+  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72);
+}
 .mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}
-.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease}
+.mode-btn{
+  flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease;
+}
 .mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
-.main{width:100%;max-width:1500px;padding:32px}
+.main{width:100%;max-width:1600px;padding:32px;overflow-x:hidden}
 .page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
-.page-header h1{font-size:2.2rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:12px}
-.page-header p{color:var(--muted);font-size:.98rem;max-width:920px}
-.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.page-header h1{font-size:2.2rem!important;font-weight:800!important;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.page-header p{color:var(--muted);font-size:.98rem;max-width:860px}
 .mode-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)}
-.page-title-icon{width:32px;height:32px;border-radius:12px;display:inline-grid;place-items:center;background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0}
-.hero{background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);border:1px solid rgba(76,175,80,.18);border-radius:26px;padding:24px 26px;display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch;margin-bottom:24px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(76,175,80,.07)}
-.hero h2{font-size:1.55rem;font-weight:800;margin-bottom:10px}
+.hero{
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%); border:1px solid rgba(76,175,80,.18); border-radius:30px; padding:26px 28px;
+  display:grid; grid-template-columns:1.1fr .9fr; gap:20px; align-items:stretch; margin-bottom:22px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
+}
+.hero::after{content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(76,175,80,.07);pointer-events:none}
+.hero h2{font-size:1.55rem!important;font-weight:800!important;margin-bottom:10px}
 .hero p{color:var(--text2);line-height:1.65;margin-bottom:16px}
 .hero-tags{display:flex;gap:10px;flex-wrap:wrap}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.95);padding:9px 14px;border-radius:999px;font-size:.88rem;font-weight:800;color:var(--text2);box-shadow:0 1px 4px rgba(54,45,28,.04)}
 .mini{background:rgba(255,255,255,.78);border-radius:20px;padding:16px;border:1px solid rgba(223,209,188,.85);box-shadow:var(--shadow-xs);margin-bottom:12px}
 .mini strong{display:block;margin-bottom:6px;font-size:.96rem;font-weight:800}
 .mini span{color:var(--muted);font-size:.88rem;line-height:1.55}
-.push-banner{display:none;margin-bottom:14px;padding:12px 14px;border-radius:18px;background:#eef9f0;border:1px solid #c6e4cf;color:#3f6d4c;font-weight:900;box-shadow:var(--shadow-xs)}
-.push-banner.show{display:block;animation:bannerIn .25s ease}
-@keyframes bannerIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.helper-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
 .stat-card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:26px;padding:18px;box-shadow:var(--shadow-sm)}
 .stat-label{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
 .stat-value{font-size:2rem;font-weight:800;letter-spacing:-0.04em}
 .stat-sub{font-size:.84rem;color:var(--muted)}
-.grid{display:grid;grid-template-columns:330px 1fr;gap:18px}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:22px;padding:18px;box-shadow:var(--shadow-sm);margin-bottom:18px}
-.card-title{display:flex;align-items:center;gap:10px;font-size:1.16rem;font-weight:800;margin-bottom:12px}
+.chat-layout{display:grid;grid-template-columns:360px minmax(0,1fr);gap:18px;align-items:start}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:22px;box-shadow:var(--shadow-sm)}
+.card-title{display:flex;align-items:center;gap:10px;font-size:1.16rem!important;font-weight:800!important;margin-bottom:12px;color:var(--text)}
 .card-sub{color:var(--muted);line-height:1.6;margin-bottom:16px;font-size:.9rem}
 .btn,.btn-soft,.btn-line{border:none;padding:12px 16px;border-radius:14px;font-size:.92rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:.18s ease}
 .btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.18),inset 0 1px 0 rgba(255,255,255,.20)}
 .btn-soft{background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);color:#4d3c2c;border:1.5px solid #d7c0a6;box-shadow:0 3px 0 #c7ae91,0 7px 16px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65)}
 .btn-line{background:#fff;color:var(--text2);border:1.5px solid var(--line);box-shadow:var(--shadow-xs)}
-.thread-list{display:grid;gap:10px}
-.thread-item{background:linear-gradient(180deg,#fcfdfc 0%, #f6faf6 100%);border:1px solid rgba(223,209,188,.82);border-radius:18px;padding:12px 13px;position:relative}
+.small-btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:7px 10px;font-size:.78rem;font-weight:800;cursor:pointer;color:var(--text2)}
+.small-btn.danger{color:#b54b4b;border-color:#e6c0c0;background:#fff9f9}
+.thread-list{display:grid;gap:10px;max-height:700px;overflow:auto;padding-right:4px}
+.thread-item{background:linear-gradient(180deg,#fcfdfc 0%, #f6faf6 100%);border:1px solid rgba(223,209,188,.82);border-radius:22px;padding:14px;position:relative;cursor:pointer;transition:.16s ease;box-shadow:0 6px 14px rgba(54,45,28,.06)}
+.thread-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-xs)}
+.thread-item.active{border-color:#b6d4b8;background:#f7fcf7}
 .thread-item.unread::after{content:"";position:absolute;right:12px;top:12px;width:9px;height:9px;border-radius:50%;background:#4CAF50;box-shadow:0 0 0 3px rgba(76,175,80,.12)}
-.thread-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:6px}
-.thread-title{font-weight:800;font-size:.95rem;line-height:1.35}
-.thread-meta{font-size:.78rem;color:var(--muted);white-space:nowrap}
-.thread-preview{font-size:.85rem;color:var(--text2);line-height:1.45}
-.badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 9px;border-radius:999px;font-size:.73rem;font-weight:800;border:1px solid transparent}
-.badge-open{background:#eef5ff;color:#496d9d;border-color:#cadcf8}
-.badge-read{background:#eef7ef;color:#3d7a48;border-color:#c8e6ca}
-.badge-working{background:#fff8ef;color:#916737;border-color:#ead7b8}
-.chat-card{padding:0;overflow:hidden}
-.chat-head{padding:22px 24px;border-bottom:1px solid rgba(223,209,188,.95);display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
-.chat-body{padding:18px 18px 8px;display:flex;flex-direction:column;gap:12px;min-height:420px;max-height:560px;overflow:auto;background:linear-gradient(180deg,#fbfdfb 0%,#f7faf7 100%)}
-.message{max-width:78%;padding:14px 16px;border-radius:20px;box-shadow:var(--shadow-xs);border:1px solid rgba(223,209,188,.75)}
-.message.child{align-self:start;background:#fff;color:var(--text)}
-.message.parent{align-self:end;background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-color:rgba(62,142,65,.18)}
-.message-meta{font-size:.74rem;opacity:.78;margin-bottom:6px}
-.message-text{font-size:.93rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
-.chat-foot{padding:18px;border-top:1px solid rgba(223,209,188,.95);background:#fffdfa}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.field textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-radius:16px;padding:12px 13px;font-size:.94rem;color:var(--text);min-height:80px;resize:vertical}
-.action-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.info-strip{margin-top:12px;padding:14px 16px;border-radius:18px;background:#eef9f0;border:1px solid #c6e4cf;color:#3f6d4c;font-size:.9rem}
+.thread-row{display:flex;gap:12px;align-items:flex-start}
+.thread-avatar{width:48px;height:48px;border-radius:16px;flex-shrink:0;display:grid;place-items:center;font-size:1rem;font-weight:900;background:linear-gradient(180deg,#fff3ea 0%,#ffe5d1 100%);color:#c77743;border:1px solid #f1d1b6;box-shadow:0 6px 12px rgba(54,45,28,.08)}
+.thread-main{min-width:0;flex:1}
+.thread-topline{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.thread-title{font-weight:900;color:var(--text);line-height:1.2;font-size:1rem}
+.thread-meta{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.thread-preview{margin:6px 0 10px;color:var(--text2);font-size:.92rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.thread-preview.unread-text{color:#344f67;font-weight:800}
+.thread-badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 10px;font-size:.75rem;font-weight:800;border:1px solid transparent}
+.badge-open{background:#eef5ff;color:#5388c8;border-color:#d7e4f8}
+.badge-read{background:#eef9f1;color:#4b9a67;border-color:#d6ebde}
+.badge-working{background:#fff5ea;color:#cd7b45;border-color:#f3e1ca}
+.chat-view{display:grid;gap:16px}
+.chat-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:4px}
+.chat-meta{color:var(--muted);font-size:.9rem}
+.chat-actions{display:flex;gap:8px;flex-wrap:wrap}
+.chat-body{min-height:420px;max-height:560px;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:10px;border:1px dashed #d7d8d0;border-radius:22px;background:#fbfdfb}
+.message{max-width:76%;padding:12px 14px;border-radius:18px;box-shadow:var(--shadow-xs)}
+.message.me{align-self:flex-end;background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);border:1px solid rgba(62,142,65,.18);color:#fff}
+.message.other{align-self:flex-start;background:#fff;border:1px solid rgba(223,209,188,.82);color:var(--text)}
+.message.deleted{opacity:.8;font-style:italic}
+.message-meta{font-size:.78rem;font-weight:900;margin-bottom:6px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.message.me .message-meta{color:rgba(255,255,255,.84)}
+.message.other .message-meta{color:#7c6a56}
+.message-text{white-space:pre-wrap;word-break:break-word}
+.message-actions{display:flex;justify-content:flex-end;margin-top:8px}
+.reply-box{display:grid;gap:10px;border-top:1px solid #e6e3dc;padding-top:14px}
+textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-radius:20px;padding:13px 14px;color:var(--text);resize:vertical;min-height:76px}
+.info-note{padding:14px 16px;border-radius:18px;background:#eef9f0;border:1px solid #c6e4cf;color:#3f6d4c;font-weight:800}
 .empty{padding:28px 20px;text-align:center;color:var(--muted);line-height:1.6}
-@media(max-width:1200px){.grid,.hero,.stats-grid{grid-template-columns:1fr}}
-@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav-label{display:none}}
-@media(max-width:700px){.main{padding:16px}.page-header h1{font-size:1.85rem}.chat-head{padding:18px}.chat-body{min-height:320px}.message{max-width:92%}}
+.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+
+@media(max-width:1280px){.hero,.stats-grid{grid-template-columns:1fr}}
+@media(max-width:1040px){.chat-layout{grid-template-columns:1fr}}
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}
+  .logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
+  .nav a{flex:0 1 auto;padding:10px 12px}
+  .nav-label,.sidebar-footer{display:none}
+}
+@media(max-width:700px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.85rem!important}
+  .message{max-width:92%}
+  .helper-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -110,91 +162,114 @@ button,input,textarea{font:inherit}
   <aside class="sidebar">
     <div class="logo-wrap">
       <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-      <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Familien-Assistent</div></div>
+      <div>
+        <div class="logo-name">Haushaltsheld</div>
+        <div class="logo-sub">Dein Familien-Assistent</div>
+      </div>
     </div>
+
     <div class="nav-label">Hauptmenü</div>
     <nav class="nav">
-      <a href="index.html"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
-      <a href="admin.html"><span class="nav-icon">🛡️</span><span>Familienrechte</span></a>
-      <a href="admin_chat.html" class="active"><span class="nav-icon" style="position:relative;">💬<span id="chatBadge" class="chat-badge">0</span></span><span>Chat</span></a>
+      <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+      <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+      <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+      <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+      <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+      <a href="admin_chat.html" class="active"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
     </nav>
+
+    <div class="nav-label">Extras</div>
+    <nav class="nav">
+      <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+      <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+      <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+      <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+      <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+    </nav>
+
     <div class="sidebar-footer">
+      <div class="user-info">
+        <strong id="userName">👋 Willkommen</strong>
+        <span id="userRole">Eltern-Modus</span>
+      </div>
       <div class="mode-switch">
         <button class="mode-btn active" type="button">Eltern</button>
         <button class="mode-btn" type="button" onclick="window.location.href='kindermodus.html'">Kind</button>
       </div>
+      <button class="logout-btn" type="button" onclick="handleLogout()">🚪 Abmelden</button>
     </div>
   </aside>
 
   <main class="main">
     <div class="page-header">
       <div>
-        <h1><span class="page-title-icon">💬</span><span>Familienchat</span></h1>
-        <p>Der Chat ist jetzt ein gemeinsamer Familienchat für alle Nutzer. Kinder ab 6 Jahren schreiben direkt in denselben Verlauf wie die Eltern.</p>
+        <h1><i data-lucide="message-circle"></i><span>Familien-Chat</span></h1>
+        <p>Hier gibt es jetzt beides: den gemeinsamen Familienchat für alle und Privatnachrichten zwischen allen Familienmitgliedern. Es gibt keine künstlichen Sperren im Chat – jeder kann jedem schreiben.</p>
       </div>
       <div class="header-right">
         <a class="btn-soft" href="index.html">Zum Dashboard</a>
-        <a class="btn-soft" href="admin.html">Zu Familienrechte</a>
-        <button class="btn-soft" type="button" onclick="handleLogout()">Logout</button>
-        <div class="mode-badge">Elternbereich aktiv</div>
+        <div class="mode-badge"><i data-lucide="shield-check"></i>Elternbereich aktiv</div>
       </div>
     </div>
 
     <section class="hero">
       <div>
-        <h2>Ein gemeinsamer Chat für alle</h2>
-        <p>Keine Titel, keine Kategorien, keine extra Unterhaltungen. Kinder und Eltern schreiben in einem ruhigen Familienchat miteinander.</p>
-        <div class="hero-tags"><span class="hero-tag">Einfach</span><span class="hero-tag">Schnell</span><span class="hero-tag">Gemeinsam</span></div>
+        <h2>Chat wie im echten Familienalltag</h2>
+        <p>Du kannst hier zwischen dem Familienchat und einzelnen Unterhaltungen wechseln. Mama, Papa, Schwester, Bruder – alle können miteinander schreiben, Privatnachrichten empfangen und eigene Nachrichten auch wieder löschen.</p>
+        <div class="hero-tags">
+          <span class="hero-tag"><i data-lucide="users"></i>Familienchat</span>
+          <span class="hero-tag"><i data-lucide="user-round"></i>Privatnachrichten</span>
+          <span class="hero-tag"><i data-lucide="trash-2"></i>Löschen möglich</span>
+        </div>
       </div>
-      <div>
-        <div class="mini"><strong>Ab 6 Jahren frei</strong><span>Der Kinderchat ist automatisch frei, sobald das Kind 6 Jahre alt ist.</span></div>
-        <div class="mini"><strong>Gleicher Verlauf</strong><span>Kind- und Elternseite greifen auf denselben Familienchat zu.</span></div>
+      <div class="helper-grid">
+        <div class="mini"><strong>Gemeinsamer Chat</strong><span>Alle Familienmitglieder sehen und nutzen denselben Familienraum.</span></div>
+        <div class="mini"><strong>Einzelchats</strong><span>Jeder kann zusätzlich mit jeder einzelnen Person privat schreiben.</span></div>
+        <div class="mini"><strong>Natürlich & frei</strong><span>Keine künstliche Steuerung innerhalb des Chats.</span></div>
+        <div class="mini"><strong>Einfach löschen</strong><span>Eigene Nachrichten lassen sich direkt aus dem Chat löschen.</span></div>
       </div>
     </section>
-
-    <div class="push-banner" id="pushBanner">Neue Nachricht vom Kind.</div>
 
     <section class="stats-grid">
-      <div class="stat-card"><div class="stat-label">Nachrichten</div><div class="stat-value" id="allCount">0</div><div class="stat-sub">im Familienchat</div></div>
-      <div class="stat-card"><div class="stat-label">Neu vom Kind</div><div class="stat-value" id="newCount">0</div><div class="stat-sub">noch ungelesen</div></div>
-      <div class="stat-card"><div class="stat-label">Kinder</div><div class="stat-value" id="childCount">0</div><div class="stat-sub">im Haushalt</div></div>
-      <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Offen</div><div class="stat-sub">Familienchat aktiv</div></div>
+      <div class="stat-card"><div class="stat-label">Unterhaltungen</div><div class="stat-value" id="conversationCount">0</div><div class="stat-sub">Familienchat + Privatnachrichten</div></div>
+      <div class="stat-card"><div class="stat-label">Nachrichten gesamt</div><div class="stat-value" id="messageCount">0</div><div class="stat-sub">in allen Unterhaltungen</div></div>
+      <div class="stat-card"><div class="stat-label">Privatchats</div><div class="stat-value" id="directCount">0</div><div class="stat-sub">zwischen einzelnen Personen</div></div>
+      <div class="stat-card"><div class="stat-label">Mitglieder</div><div class="stat-value" id="memberCount">0</div><div class="stat-sub">im Haushalt erkannt</div></div>
     </section>
 
-    <section class="grid">
-      <div>
-        <section class="card">
-          <div class="card-title"><span>💬</span><span>Familienchat</span></div>
-          <div class="card-sub">Die Übersicht bleibt einfach: ein Chat, ein Verlauf, alle Nutzer.</div>
-          <div class="thread-list" id="threadList"></div>
-        </section>
-      </div>
+    <section class="chat-layout">
+      <section class="card">
+        <div class="card-title"><i data-lucide="messages-square"></i><span>Unterhaltungen</span></div>
+        <p class="card-sub">Links wählst du den Familienchat oder einen Einzelchat aus.</p>
+        <div class="thread-list" id="threadList"></div>
+      </section>
 
-      <div>
-        <section class="card chat-card">
-          <div class="chat-head">
-            <div>
-              <div class="card-title" style="margin-bottom:6px"><span>💬</span><span>Familienchat</span></div>
-              <div class="thread-meta" id="chatMetaView">Hier laufen alle Nachrichten der Familie zusammen.</div>
-            </div>
-            <div id="chatStatusBadge" class="badge badge-open">Offen</div>
+      <section class="card chat-view">
+        <div class="chat-top">
+          <div>
+            <div class="card-title" style="margin-bottom:6px;"><i data-lucide="message-circle"></i><span id="chatTitleView">Familienchat</span></div>
+            <div class="chat-meta" id="chatMetaView">Hier laufen alle Nachrichten der Familie zusammen.</div>
           </div>
-
-          <div class="chat-body" id="chatMessages"><div class="empty">Noch keine Nachrichten vorhanden.</div></div>
-
-          <div class="chat-foot">
-            <div class="field">
-              <label for="replyMessage">Antwort in den Familienchat</label>
-              <textarea id="replyMessage" placeholder="Hier könnt ihr als Eltern antworten..."></textarea>
-            </div>
-            <div class="action-bar">
-              <button class="btn" type="button" onclick="sendMessage()">Senden</button>
-              <button class="btn-line" type="button" onclick="markSeen()">Als gelesen markieren</button>
-            </div>
-            <div class="info-strip">Beim Antworten wird der Chat automatisch für die Kinder als neu markiert.</div>
+          <div class="chat-actions">
+            <span class="badge badge-open" id="chatStatusBadge">Offen</span>
+            <button class="btn-line" type="button" onclick="markCurrentSeen()">Als gelesen markieren</button>
           </div>
-        </section>
-      </div>
+        </div>
+
+        <div class="chat-body" id="chatMessages">
+          <div class="empty">Noch keine Nachrichten vorhanden.</div>
+        </div>
+
+        <div class="reply-box">
+          <textarea id="replyMessage" placeholder="Nachricht schreiben..."></textarea>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn" type="button" onclick="sendMessage()">Senden</button>
+            <button class="btn-soft" type="button" onclick="insertQuickText('Ich melde mich gleich.')">Kurze Antwort einfügen</button>
+            <button class="btn-line" type="button" onclick="clearDraft()">Text löschen</button>
+          </div>
+          <div class="info-note">Privatnachrichten und Familienchat werden automatisch gespeichert.</div>
+        </div>
+      </section>
     </section>
   </main>
 </div>
@@ -203,157 +278,324 @@ button,input,textarea{font:inherit}
 (function(){
   const AUTH_KEY = "haushaltsheld_user";
   const USERS_KEY = "haushaltsheld_users";
-  const ROOM_KEY = "hh_family_chat_room";
-  const LEGACY_THREADS_KEY = "hh_family_chat_threads";
+  const FAMILY_ROOM_KEY = "hh_family_chat_room";
   const PARENT_SEEN_KEY = "hh_family_chat_seen_parent";
+  const DIRECT_CHATS_KEY = "hh_direct_chats_v2";
+  const DIRECT_SEEN_PREFIX = "hh_direct_seen_";
 
-  function readJson(key, fallback){ try{ const parsed = JSON.parse(localStorage.getItem(key)); return parsed ?? fallback; }catch(error){ return fallback; } }
-  function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
-  function nowIso(){ return new Date().toISOString(); }
-  function fmtDate(v){ if(!v) return "—"; const d = new Date(v); if(Number.isNaN(d.getTime())) return "—"; return d.toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); }
-  function esc(s){ return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+  let auth = null;
+  let currentUserId = "";
+  let currentUserName = "Mama";
+  let currentUserRole = "Eltern-Modus";
+  let users = [];
+  let activeConversation = { type: "family", id: "family" };
 
-  function migrateLegacyThreadsIfNeeded(){
-    const room = readJson(ROOM_KEY, null);
-    if(room && Array.isArray(room.messages)) return;
-    const threads = readJson(LEGACY_THREADS_KEY, []);
-    const messages = [];
-    if(Array.isArray(threads)){
-      threads.forEach(thread => {
-        (thread.messages || []).forEach(msg => {
-          messages.push({
-            id: msg.id || ("legacy_" + Math.random().toString(36).slice(2)),
-            senderType: msg.senderType === "parent" ? "parent" : "child",
-            senderName: msg.senderName || (msg.senderType === "parent" ? "Eltern" : (thread.childName || "Kind")),
-            text: msg.text || "",
-            createdAt: msg.createdAt || thread.updatedAt || thread.createdAt || nowIso()
-          });
-        });
-      });
+  function readJSON(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    }catch(e){
+      return fallback;
     }
-    messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
-    writeJson(ROOM_KEY, { messages });
   }
-  function getRoom(){ migrateLegacyThreadsIfNeeded(); const room = readJson(ROOM_KEY, { messages:[] }); return { messages:Array.isArray(room.messages) ? room.messages : [] }; }
-  function saveRoom(room){ writeJson(ROOM_KEY, room); }
-
-  function checkAuth(){
-    const user = readJson(AUTH_KEY, null);
-    if(!user || user.role === "child"){ window.location.href = "login.html"; return null; }
-    return user;
+  function writeJSON(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+  function slugify(value){
+    return String(value || "").toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9äöüß_-]/gi, "");
   }
+  function getUserId(user){ return user.id || user.userId || user.username || slugify(user.name || user.displayName || "user"); }
+  function getUserName(user){ return user.name || user.displayName || user.username || "Nutzer"; }
 
-  function getUsers(){
-    const users = readJson(USERS_KEY, []);
-    return Array.isArray(users) ? users : [];
-  }
-
-  function getUnreadChildMessages(){
-    const room = getRoom();
-    const seen = Number(localStorage.getItem(PARENT_SEEN_KEY) || 0);
-    return room.messages.filter(msg => msg.senderType === "child" && new Date(msg.createdAt).getTime() > seen);
+  function loadAuth(){
+    auth = readJSON(AUTH_KEY, null);
+    if(auth){
+      currentUserId = getUserId(auth);
+      currentUserName = getUserName(auth);
+      currentUserRole = auth.role || auth.modus || "Eltern-Modus";
+    }else{
+      currentUserId = "mama"; currentUserName = "Mama"; currentUserRole = "Eltern-Modus";
+    }
+    document.getElementById("userName").textContent = "👋 " + currentUserName;
+    document.getElementById("userRole").textContent = currentUserRole;
   }
 
-  function updateHeaderStats(){
-    const room = getRoom();
-    const unread = getUnreadChildMessages().length;
-    const childCount = getUsers().filter(u => u.role === "child").length;
-    const badge = document.getElementById("chatBadge");
-    document.getElementById("allCount").textContent = String(room.messages.length);
-    document.getElementById("newCount").textContent = String(unread);
-    document.getElementById("childCount").textContent = String(childCount);
-    if(unread > 0){ badge.style.display = "inline-flex"; badge.textContent = unread > 99 ? "99+" : String(unread); }
-    else{ badge.style.display = "none"; badge.textContent = "0"; }
+  function loadUsers(){
+    const stored = readJSON(USERS_KEY, []);
+    if(Array.isArray(stored) && stored.length){
+      users = stored.map(u => ({ id:getUserId(u), name:getUserName(u), role:u.role || "", age:Number(u.age || u.alter || 0) || null }));
+    }else{
+      users = [
+        {id:"mama", name:"Mama", role:"Eltern"},
+        {id:"papa", name:"Papa", role:"Eltern"},
+        {id:"leo", name:"Leo", role:"Kind"},
+        {id:"philipp", name:"Philipp", role:"Kind"}
+      ];
+    }
+    if(!users.find(u => u.id === currentUserId)){
+      users.unshift({id: currentUserId, name: currentUserName, role: currentUserRole});
+    }
   }
 
-  function renderThreadList(){
-    const room = getRoom();
-    const unread = getUnreadChildMessages();
-    const latest = room.messages[room.messages.length - 1];
-    document.getElementById("threadList").innerHTML = `
-      <div class="thread-item ${unread.length ? "unread" : ""}">
-        <div class="thread-head">
-          <div class="thread-title">Familienchat</div>
-          <div class="thread-meta">${esc(fmtDate(latest?.createdAt || nowIso()))}</div>
+  function getInitials(name){
+    return String(name || "?").split(" ").filter(Boolean).slice(0,2).map(p => p[0]).join("").toUpperCase() || "?";
+  }
+  function getConversationKeyForUsers(userA, userB){ return [userA, userB].sort().join("__"); }
+  function loadFamilyRoom(){ const room = readJSON(FAMILY_ROOM_KEY, { messages: [] }); if(!Array.isArray(room.messages)) room.messages=[]; return room; }
+  function saveFamilyRoom(room){ writeJSON(FAMILY_ROOM_KEY, room); }
+  function loadDirectChats(){ const store = readJSON(DIRECT_CHATS_KEY, {}); return store && typeof store === "object" ? store : {}; }
+  function saveDirectChats(store){ writeJSON(DIRECT_CHATS_KEY, store); }
+
+  function normalizeMessage(msg, fallbackType){
+    return {
+      id: msg.id || ("msg_" + Math.random().toString(36).slice(2,10)),
+      conversationType: msg.conversationType || fallbackType,
+      senderId: msg.senderId || msg.authorId || slugify(msg.senderName || msg.author || msg.sender || ""),
+      senderName: msg.senderName || msg.author || msg.sender || "Unbekannt",
+      text: msg.text || msg.message || msg.content || "",
+      timestamp: msg.timestamp || msg.time || msg.createdAt || new Date().toISOString(),
+      deleted: !!msg.deleted
+    };
+  }
+
+  function getFamilyMessages(){ return loadFamilyRoom().messages.map(m => normalizeMessage(m, "family")); }
+  function setFamilyMessages(messages){ const room = loadFamilyRoom(); room.messages = messages; saveFamilyRoom(room); }
+  function getDirectMessages(conversationId){ const chats = loadDirectChats(); const arr = Array.isArray(chats[conversationId]) ? chats[conversationId] : []; return arr.map(m => normalizeMessage(m, "direct")); }
+  function setDirectMessages(conversationId, messages){ const chats = loadDirectChats(); chats[conversationId] = messages; saveDirectChats(chats); }
+
+  function getFamilySeen(){ const seen = readJSON(PARENT_SEEN_KEY, {}); return typeof seen === "object" && seen ? seen : {}; }
+  function setFamilySeen(seen){ writeJSON(PARENT_SEEN_KEY, seen); }
+  function getDirectSeen(conversationId){ const seen = readJSON(DIRECT_SEEN_PREFIX + conversationId, {}); return typeof seen === "object" && seen ? seen : {}; }
+  function setDirectSeen(conversationId, seen){ writeJSON(DIRECT_SEEN_PREFIX + conversationId, seen); }
+
+  function getAllConversations(){
+    const familyMessages = getFamilyMessages();
+    const conversations = [{
+      type:"family", id:"family", title:"Familienchat", subtitle:"Alle zusammen", messages:familyMessages, badgeClass:"badge-open", badgeLabel:"Familie", avatar:"👨‍👩‍👧‍👦"
+    }];
+
+    users.filter(u => u.id !== currentUserId).sort((a,b) => a.name.localeCompare(b.name, "de")).forEach(u => {
+      const key = getConversationKeyForUsers(currentUserId, u.id);
+      conversations.push({
+        type:"direct", id:key, title:u.name, subtitle:"Privatnachricht", messages:getDirectMessages(key),
+        badgeClass:"badge-working", badgeLabel:"Privat", avatar:getInitials(u.name), partnerId:u.id, partnerName:u.name
+      });
+    });
+    return conversations;
+  }
+
+  function getLastMessageText(messages){
+    if(!messages.length) return "Noch keine Nachrichten vorhanden.";
+    const msg = messages[messages.length - 1];
+    return msg.deleted ? "Nachricht gelöscht" : (msg.text || "Neue Nachricht");
+  }
+
+  function formatTime(value){
+    try{
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return "—";
+      return new Intl.DateTimeFormat("de-DE", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" }).format(d);
+    }catch(e){ return "—"; }
+  }
+
+  function getUnreadCount(conversation){
+    const messages = conversation.messages || [];
+    if(conversation.type === "family"){
+      const seen = getFamilySeen();
+      const lastSeen = seen[currentUserId] || "";
+      return messages.filter(m => m.senderId !== currentUserId && String(m.timestamp) > String(lastSeen) && !m.deleted).length;
+    }
+    const seen = getDirectSeen(conversation.id);
+    const lastSeen = seen[currentUserId] || "";
+    return messages.filter(m => m.senderId !== currentUserId && String(m.timestamp) > String(lastSeen) && !m.deleted).length;
+  }
+
+  function renderConversationList(){
+    const list = document.getElementById("threadList");
+    const conversations = getAllConversations();
+    list.innerHTML = conversations.map(conv => {
+      const unread = getUnreadCount(conv);
+      const lastText = getLastMessageText(conv.messages);
+      const lastMeta = conv.messages.length ? formatTime(conv.messages[conv.messages.length - 1].timestamp) : "—";
+      const isActive = conv.id === activeConversation.id && conv.type === activeConversation.type;
+      return `
+        <div class="thread-item ${unread ? "unread" : ""} ${isActive ? "active" : ""}" onclick="openConversation('${conv.type}','${conv.id}')">
+          <div class="thread-row">
+            <div class="thread-avatar">${conv.avatar}</div>
+            <div class="thread-main">
+              <div class="thread-topline">
+                <div class="thread-title">${escapeHtml(conv.title)}</div>
+                <div class="thread-meta">${lastMeta}</div>
+              </div>
+              <div class="thread-preview ${unread ? "unread-text" : ""}">${escapeHtml(lastText)}</div>
+              <div class="thread-badges">
+                <span class="badge ${conv.badgeClass}">${conv.badgeLabel}</span>
+                ${unread ? `<span class="badge badge-read">${unread} neu</span>` : ""}
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="thread-preview">${esc(latest?.text || "Noch keine Nachricht vorhanden.")}</div>
-        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
-          <span class="badge badge-open">Alle Nutzer</span>
-          <span class="badge ${unread.length ? "badge-working" : "badge-read"}">${unread.length ? unread.length + " neu" : "Gelesen"}</span>
-        </div>
-      </div>`;
+      `;
+    }).join("");
+  }
+
+  window.openConversation = function(type, id){
+    activeConversation = { type:type, id:id };
+    renderConversationList();
+    renderMessages();
+  };
+
+  function getActiveConversation(){
+    return getAllConversations().find(c => c.id === activeConversation.id && c.type === activeConversation.type) || getAllConversations()[0];
   }
 
   function renderMessages(){
-    const room = getRoom();
+    const conv = getActiveConversation();
     const body = document.getElementById("chatMessages");
-    if(!room.messages.length){ body.innerHTML = '<div class="empty">Noch keine Nachrichten vorhanden.</div>'; return; }
-    body.innerHTML = room.messages.map(msg => `
-      <div class="message ${msg.senderType === "parent" ? "parent" : "child"}">
-        <div class="message-meta">${esc(msg.senderName || (msg.senderType === "parent" ? "Eltern" : "Kind"))} · ${esc(fmtDate(msg.createdAt))}</div>
-        <div class="message-text">${esc(msg.text)}</div>
+    if(!conv){
+      body.innerHTML = '<div class="empty">Noch keine Unterhaltung vorhanden.</div>';
+      return;
+    }
+
+    document.getElementById("chatTitleView").textContent = conv.title;
+    document.getElementById("chatMetaView").textContent =
+      conv.type === "family" ? "Hier laufen alle Nachrichten der Familie zusammen." : ("Private Unterhaltung zwischen dir und " + conv.partnerName + ".");
+    document.getElementById("chatStatusBadge").textContent = conv.type === "family" ? "Familie" : "Privat";
+
+    if(!conv.messages.length){
+      body.innerHTML = '<div class="empty">Noch keine Nachrichten vorhanden. Schreibe unten deine erste Nachricht.</div>';
+      return;
+    }
+
+    body.innerHTML = conv.messages.map(msg => `
+      <div class="message ${msg.senderId === currentUserId ? "me" : "other"} ${msg.deleted ? "deleted" : ""}">
+        <div class="message-meta"><span>${escapeHtml(msg.senderName)} · ${formatTime(msg.timestamp)}</span></div>
+        <div class="message-text">${msg.deleted ? "Nachricht gelöscht" : escapeHtml(msg.text)}</div>
+        ${msg.senderId === currentUserId && !msg.deleted ? `<div class="message-actions"><button class="small-btn danger" type="button" onclick="deleteOwnMessage('${conv.type}','${conv.id}','${msg.id}')">Löschen</button></div>` : ""}
       </div>
     `).join("");
     body.scrollTop = body.scrollHeight;
   }
 
-  function sendMessage(){
-    const input = document.getElementById("replyMessage");
-    const text = input.value.trim();
-    if(!text){ alert("Bitte schreibt zuerst eine Nachricht."); return; }
-    const user = readJson(AUTH_KEY, null);
-    const room = getRoom();
-    room.messages.push({
-      id:"msg_" + Date.now(),
-      senderType:"parent",
-      senderName:user?.name || "Eltern",
-      text,
-      createdAt:nowIso()
-    });
-    saveRoom(room);
-    input.value = "";
+  function escapeHtml(text){
+    return String(text ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  }
+
+  function updateStats(){
+    const conversations = getAllConversations();
+    const totalMessages = conversations.reduce((sum, c) => sum + c.messages.length, 0);
+    const directCount = conversations.filter(c => c.type === "direct").length;
+    document.getElementById("conversationCount").textContent = conversations.length;
+    document.getElementById("messageCount").textContent = totalMessages;
+    document.getElementById("directCount").textContent = directCount;
+    document.getElementById("memberCount").textContent = users.length;
+
+    const unreadTotal = conversations.reduce((sum, c) => sum + getUnreadCount(c), 0);
+    const badge = document.getElementById("chatBadge");
+    if(unreadTotal > 0){
+      badge.style.display = "inline-block";
+      badge.textContent = unreadTotal > 99 ? "99+" : String(unreadTotal);
+    }else{
+      badge.style.display = "none";
+    }
+  }
+
+  function persistMessageToConversation(convType, convId, message){
+    if(convType === "family"){
+      const messages = getFamilyMessages();
+      messages.push(message);
+      setFamilyMessages(messages);
+    }else{
+      const messages = getDirectMessages(convId);
+      messages.push(message);
+      setDirectMessages(convId, messages);
+    }
+  }
+
+  window.sendMessage = function(){
+    const conv = getActiveConversation();
+    if(!conv) return;
+    const textarea = document.getElementById("replyMessage");
+    const text = String(textarea.value || "").trim();
+    if(!text) return;
+
+    const now = new Date().toISOString();
+    const message = {
+      id: "msg_" + Math.random().toString(36).slice(2,10) + "_" + Date.now(),
+      conversationType: conv.type,
+      senderId: currentUserId,
+      senderName: currentUserName,
+      text: text,
+      timestamp: now,
+      deleted: false
+    };
+    persistMessageToConversation(conv.type, conv.id, message);
+
+    if(conv.type === "family"){
+      const seen = getFamilySeen(); seen[currentUserId] = now; setFamilySeen(seen);
+    }else{
+      const seen = getDirectSeen(conv.id); seen[currentUserId] = now; setDirectSeen(conv.id, seen);
+    }
+
+    textarea.value = "";
     renderAll();
-  }
+  };
 
-  function markSeen(){
-    const room = getRoom();
-    const latest = room.messages.length ? new Date(room.messages[room.messages.length - 1].createdAt).getTime() : Date.now();
-    localStorage.setItem(PARENT_SEEN_KEY, String(latest));
+  window.deleteOwnMessage = function(convType, convId, msgId){
+    if(!window.confirm("Diese Nachricht wirklich löschen?")) return;
+    if(convType === "family"){
+      setFamilyMessages(getFamilyMessages().map(m => m.id === msgId ? ({...m, deleted:true, text:""}) : m));
+    }else{
+      setDirectMessages(convId, getDirectMessages(convId).map(m => m.id === msgId ? ({...m, deleted:true, text:""}) : m));
+    }
     renderAll();
-  }
+  };
 
-  function showPushBanner(text){
-    const banner = document.getElementById("pushBanner");
-    banner.textContent = text;
-    banner.classList.add("show");
-    clearTimeout(showPushBanner.timer);
-    showPushBanner.timer = setTimeout(() => banner.classList.remove("show"), 2600);
-  }
-
-  function renderAll(){ updateHeaderStats(); renderThreadList(); renderMessages(); }
-
-  window.sendMessage = sendMessage;
-  window.markSeen = markSeen;
-  window.handleLogout = function(){ localStorage.removeItem(AUTH_KEY); window.location.href = "login.html"; };
-
-  function init(){
-    if(!checkAuth()) return;
+  window.markCurrentSeen = function(){
+    const conv = getActiveConversation();
+    if(!conv || !conv.messages.length) return;
+    const latestTs = conv.messages[conv.messages.length - 1].timestamp;
+    if(conv.type === "family"){
+      const seen = getFamilySeen(); seen[currentUserId] = latestTs; setFamilySeen(seen);
+    }else{
+      const seen = getDirectSeen(conv.id); seen[currentUserId] = latestTs; setDirectSeen(conv.id, seen);
+    }
     renderAll();
-    window.addEventListener("storage", (event) => {
-      if(event.key === ROOM_KEY){
-        const before = getUnreadChildMessages().length;
-        renderAll();
-        const after = getUnreadChildMessages().length;
-        if(after > before){
-          const room = getRoom();
-          const last = room.messages[room.messages.length - 1];
-          if(last && last.senderType === "child"){ showPushBanner("Neue Nachricht von " + (last.senderName || "Kind")); }
-        }
-      }
-    });
+  };
+
+  window.insertQuickText = function(text){
+    const textarea = document.getElementById("replyMessage");
+    textarea.value = text;
+    textarea.focus();
+  };
+
+  window.clearDraft = function(){ document.getElementById("replyMessage").value = ""; };
+
+  window.handleLogout = function(){
+    try{ localStorage.removeItem(AUTH_KEY); }catch(e){}
+    window.location.href = "login.html";
+  };
+
+  function seedIfEmpty(){
+    const family = loadFamilyRoom();
+    if(!family.messages.length){
+      family.messages = [{
+        id:"seed_fam_1", conversationType:"family", senderId:"mama", senderName:"Mama",
+        text:"Willkommen im Familienchat 💚", timestamp:new Date(Date.now()-3600000).toISOString(), deleted:false
+      }];
+      saveFamilyRoom(family);
+    }
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  function renderAll(){
+    renderConversationList();
+    renderMessages();
+    updateStats();
+    if(window.lucide && lucide.createIcons) lucide.createIcons();
+  }
+
+  loadAuth();
+  loadUsers();
+  seedIfEmpty();
+  renderAll();
 })();
 </script>
 </body>
