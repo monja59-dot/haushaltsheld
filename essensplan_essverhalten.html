@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haushaltsheld – Essensplan & Essverhalten</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+
+:root{
+  --bg:#f7f2e9;
+  --bg-2:#fdf9f3;
+  --card:#ffffff;
+  --soft:#f6efe4;
+  --soft2:#efe3d2;
+  --line:#dfd1bc;
+  --text:#2d342f;
+  --text2:#556159;
+  --muted:#7d8a82;
+  --accent:#4CAF50;
+  --accent-dark:#3E8E41;
+  --accent-soft:#e7f5e8;
+  --beige:#f2e6d7;
+  --sand:#e8d7c2;
+  --blue:#6b96d9;
+  --blue-soft:#e9f1ff;
+  --red:#cc6666;
+  --red-soft:#fdeaea;
+  --yellow:#b5882f;
+  --yellow-soft:#fbf4df;
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --shadow:0 12px 34px rgba(54,45,28,.10);
+  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+  --r-xs:12px;
+  --r-sm:16px;
+  --r:22px;
+  --r-lg:28px;
+  --r-xl:34px;
+  --sidebar-w:258px;
+  --font-main:"Outfit", sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+body{
+  font-family:var(--font-main);
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-main)!important;letter-spacing:-0.03em;line-height:1.15}
+button,input,select,textarea{font:inherit}
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:28px 18px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+}
+.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}
+.logo-name{font-weight:800;font-size:1.25rem!important;color:var(--text)}
+.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;
+  color:var(--text2);font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;border:1px solid transparent;position:relative
+}
+.nav a:hover{
+  background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);
+  box-shadow:var(--shadow-xs);color:var(--text)
+}
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;border-color:rgba(62,142,65,.28);
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)
+}
+.nav-icon{
+  width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)
+}
+.nav-icon svg,.nav-icon i{width:18px;height:18px;stroke:currentColor}
+.nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
+.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px}
+.user-info{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.7);border-radius:16px;padding:12px 14px;font-size:.8rem;margin-bottom:8px}
+.user-info strong{display:block;font-weight:800;color:var(--text);margin-bottom:4px}
+.user-info span{display:block;color:var(--muted);font-size:.75rem}
+.logout-btn{
+  width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;
+  padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;
+  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72)
+}
+.logout-btn:hover{transform:translateY(-2px);box-shadow:0 5px 0 #cdb394, 0 12px 22px rgba(110,82,40,.14), inset 0 1px 0 rgba(255,255,255,.72)}
+.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}
+.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease}
+.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
+.chat-badge{
+  position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;
+  font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28)
+}
+.main{width:100%;max-width:1580px;padding:32px;overflow-x:hidden}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px;flex-wrap:wrap}
+.page-header h1{font-size:2.35rem!important;font-weight:800!important;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.page-header p{color:var(--muted);font-size:.98rem;max-width:760px}
+.mode-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);
+  border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)
+}
+.mode-badge svg,.mode-badge i{width:16px;height:16px;stroke-width:2.2}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;box-shadow:var(--shadow-sm)}
+.btn,.btn-soft{
+  border:none;padding:13px 22px;border-radius:16px!important;font-size:.95rem!important;font-weight:800!important;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .15s ease, box-shadow .15s ease
+}
+.btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff!important;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20)}
+.btn-soft{background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%)!important;color:#665646!important;border:1.5px solid #ddcbb4!important;box-shadow:0 3px 0 #cdb394,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.72)!important}
+.mini-btn{
+  border:1.5px solid #ddcbb4 !important;background:linear-gradient(135deg,#fffdf9 0%, #f4e8da 100%) !important;color:#655846 !important;
+  padding:8px 12px !important;border-radius:999px !important;font-size:.78rem !important;font-weight:800 !important;cursor:pointer
+}
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}
+  .logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
+  .nav a{flex:0 1 auto;padding:10px 12px}
+  .nav-label,.sidebar-footer{display:none}
+}
+@media(max-width:600px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.95rem !important}
+}
+
+
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+h1{margin:0 0 8px 0;font-size:31px;line-height:1.1}
+.subtitle{margin:0;color:var(--text2);line-height:1.55;max-width:980px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.page-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:22px}
+.stack{display:grid;gap:22px}
+.card h2{margin:0 0 10px 0;font-size:22px}
+.card-sub{margin:0 0 18px 0;color:var(--text2);line-height:1.5}
+.info-box{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.55;color:var(--text2)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1 / -1}
+label{font-size:13px;font-weight:700;color:var(--text2)}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--text);background:#fff}
+textarea{min-height:92px;resize:vertical}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:16px}
+.stat strong{display:block;font-size:24px;margin-bottom:4px}
+.stat span{color:var(--text2);font-size:14px}
+.print-title{display:none}
+@media(max-width:1100px){.page-grid{grid-template-columns:1fr}}
+@media(max-width:820px){.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.stats{grid-template-columns:1fr}}
+@media print{
+  body{background:#fff}
+  .sidebar,.actions,.toolbar .mini-actions,.filters,.btn,.btn-soft,form,.inline-note,.print-hide{display:none!important}
+  .app,.main,.page-grid,.stack,.card{display:block!important;width:100%!important;box-shadow:none!important;border:none!important;padding:0!important;margin:0!important;background:#fff!important}
+  .print-title{display:block;margin-bottom:18px}
+  .card + .card{margin-top:24px!important}
+}
+
+
+.toolbar .mini-actions{display:flex;gap:8px;flex-wrap:wrap}
+.entry-list{display:grid;gap:12px;margin-top:10px}
+.entry{border:1px solid var(--line);border-radius:18px;padding:16px;background:#fff}
+.entry-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.entry-title{font-size:18px;font-weight:700;margin:0 0 4px 0}
+.entry-meta{color:var(--text2);font-size:14px;line-height:1.5}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.badge{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--soft)}
+.badge.green{background:var(--accent-soft);border-color:#b7ddbc;color:var(--accent-dark)}
+.badge.yellow{background:#fff5d6;border-color:#eedfa3;color:#776000}
+.entry-notes{margin-top:8px;color:var(--text2);font-size:14px;line-height:1.5}
+.inline-note{font-size:13px;color:var(--muted);line-height:1.5;margin-top:10px}
+.empty{background:var(--soft);border:1px dashed var(--line);border-radius:18px;padding:18px;color:var(--text2);line-height:1.5}
+.top-list{display:grid;gap:10px;margin-top:8px}
+.top-item{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:11px 13px;background:#fff;font-size:14px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters select{width:auto;min-width:170px}
+
+  </style>
+</head>
+<body data-page="essensplan">
+  <div class="app">
+
+<aside class="sidebar">
+  <div class="logo-wrap">
+    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+    <div>
+      <div class="logo-name">Haushaltsheld</div>
+      <div class="logo-sub">Dein Familien-Assistent</div>
+    </div>
+  </div>
+
+  <div class="nav-label">Hauptmenü</div>
+  <nav class="nav">
+    <a href="index_mit_rezepten.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
+  </nav>
+
+  <div class="nav-label">Extras</div>
+  <nav class="nav">
+    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+    <a href="rezepte_mit_sidebar.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+    <a href="essensplan_essverhalten_mit_sidebar.html" class="active"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+    <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <strong id="userName">👋 Willkommen</strong>
+      <span id="userRole">Eltern-Modus</span>
+    </div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+      <button class="mode-btn" id="childBtn" type="button">Kind</button>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+  </div>
+</aside>
+
+    <main class="main">
+
+      <div class="topbar">
+        <div>
+          <h1>Essensplan & Essverhalten</h1>
+          <p class="subtitle">
+            Diese Seite speichert zuhause gekochte Mahlzeiten, Restaurant-, Imbiss- und Bestellverhalten
+            in einer gemeinsamen Struktur. Dadurch sind später Auswertungen, KI-Vorschläge und Monatsanalysen möglich.
+          </p>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-secondary" onclick="window.print()">Drucken</button>
+          <button class="btn btn-secondary" id="exportJsonBtn">JSON exportieren</button>
+          <button class="btn btn-danger" id="clearAllBtn">Alle Einträge löschen</button>
+        </div>
+      </div>
+
+      <div class="print-title">
+        <h1>Haushaltsheld – Essensplan & Essverhalten</h1>
+        <p>Monatsübersicht und gespeicherte Einträge</p>
+      </div>
+
+      <div class="page-grid">
+        <div class="stack">
+          <section class="card">
+            <h2>Eintrag anlegen</h2>
+            <p class="card-sub">
+              Jeder Eintrag ist ein Essensereignis. So kannst du zuhause gekocht, bestellt,
+              Restaurant oder Imbiss gemeinsam auswerten.
+            </p>
+
+            <div class="info-box">
+              Pflichtfelder für einen starken Start: <strong>Datum, Mahlzeit, Typ, Status, Gericht, Kategorie, vorgeschlagen von</strong>.
+              Kosten, Teilnehmer, Anbieter und Notizen machen die Analyse später noch besser.
+            </div>
+
+            <form id="mealForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="datum">Datum</label>
+                  <input type="date" id="datum" required />
+                </div>
+
+                <div class="field">
+                  <label for="mahlzeit">Mahlzeit</label>
+                  <select id="mahlzeit" required>
+                    <option value="">Bitte wählen</option>
+                    <option>Frühstück</option>
+                    <option>Mittagessen</option>
+                    <option>Abendessen</option>
+                    <option>Snack</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="typ">Typ</label>
+                  <select id="typ" required>
+                    <option value="">Bitte wählen</option>
+                    <option value="zuhause">Zuhause</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="imbiss">Imbiss</option>
+                    <option value="bestellt">Bestellt</option>
+                    <option value="unterwegs">Unterwegs</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="status">Status</label>
+                  <select id="status" required>
+                    <option value="">Bitte wählen</option>
+                    <option value="vorschlag">Vorschlag</option>
+                    <option value="bestaetigt">Bestätigt</option>
+                    <option value="erledigt">Erledigt</option>
+                    <option value="storniert">Storniert</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="gericht">Gericht / Anlass</label>
+                  <input type="text" id="gericht" placeholder="z. B. Spaghetti Bolognese" required />
+                </div>
+
+                <div class="field">
+                  <label for="kategorie">Kategorie</label>
+                  <input type="text" id="kategorie" placeholder="z. B. Pasta, Fast Food, Grillen" required />
+                </div>
+
+                <div class="field">
+                  <label for="rolle">Vorgeschlagen von – Rolle</label>
+                  <select id="rolle" required>
+                    <option value="">Bitte wählen</option>
+                    <option value="eltern">Eltern</option>
+                    <option value="kind">Kind</option>
+                    <option value="familie">Familie</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="name">Vorgeschlagen von – Name</label>
+                  <input type="text" id="name" placeholder="z. B. Mama oder Leo" required />
+                </div>
+
+                <div class="field full">
+                  <label for="teilnehmer">Teilnehmer</label>
+                  <input type="text" id="teilnehmer" placeholder="z. B. Mama, Leo, Philipp" />
+                </div>
+
+                <div class="field">
+                  <label for="kosten">Kosten in €</label>
+                  <input type="number" step="0.01" min="0" id="kosten" placeholder="z. B. 12.50" />
+                </div>
+
+                <div class="field">
+                  <label for="anbieter">Ort / Anbieter</label>
+                  <input type="text" id="anbieter" placeholder="z. B. Zuhause, Pizzeria Napoli, City Döner" />
+                </div>
+
+                <div class="field full">
+                  <label for="tags">Tags</label>
+                  <input type="text" id="tags" placeholder="z. B. familie, schnell, wochenende" />
+                </div>
+
+                <div class="field full">
+                  <label for="notizen">Notizen</label>
+                  <textarea id="notizen" placeholder="z. B. Mit Salat, Filmabend, nach dem Termin gegessen"></textarea>
+                </div>
+              </div>
+
+              <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">Eintrag speichern</button>
+                <button type="button" class="btn btn-secondary" id="fillDemoBtn">Beispieldaten einsetzen</button>
+              </div>
+            </form>
+
+            <p class="inline-note">
+              Speicherort: <strong>localStorage → haushaltsheld_food_data</strong>
+            </p>
+          </section>
+
+          <section class="card" id="entrySection">
+            <div class="toolbar">
+              <div>
+                <h2 style="margin-bottom:6px;">Gespeicherte Einträge</h2>
+                <p class="card-sub" style="margin-bottom:0;">Hier siehst du alle Mahlzeiten und Essensereignisse.</p>
+              </div>
+
+              <div class="filters">
+                <select id="monthFilter"></select>
+                <select id="typeFilter">
+                  <option value="alle">Alle Typen</option>
+                  <option value="zuhause">Zuhause</option>
+                  <option value="restaurant">Restaurant</option>
+                  <option value="imbiss">Imbiss</option>
+                  <option value="bestellt">Bestellt</option>
+                  <option value="unterwegs">Unterwegs</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="entryList" class="entry-list"></div>
+          </section>
+        </div>
+
+        <div class="stack">
+          <section class="card">
+            <h2>Monatsübersicht</h2>
+            <p class="card-sub">
+              Diese Werte helfen dir später dabei zu sehen, wie oft zuhause gekocht,
+              bestellt oder im Restaurant / Imbiss gegessen wurde.
+            </p>
+
+            <div class="stats">
+              <div class="stat"><strong id="statTotal">0</strong><span>Einträge im gewählten Monat</span></div>
+              <div class="stat"><strong id="statHome">0</strong><span>Zuhause</span></div>
+              <div class="stat"><strong id="statOrder">0</strong><span>Bestellt</span></div>
+              <div class="stat"><strong id="statOut">0</strong><span>Restaurant + Imbiss</span></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>Verhalten & Muster</h2>
+            <p class="card-sub">
+              Das ist die Basis für spätere KI-Hinweise wie: „Freitag wird oft bestellt“
+              oder „diesen Monat gab es viele Nudelgerichte“.
+            </p>
+
+            <div class="top-list" id="insightList"></div>
+          </section>
+
+          <section class="card">
+            <h2>Top-Gerichte im Monat</h2>
+            <p class="card-sub">
+              So erkennst du schnell, was oft gegessen wird und was vielleicht zu selten vorkommt.
+            </p>
+
+            <div class="top-list" id="topMealsList"></div>
+          </section>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+<script>
+function handleLogout(){
+  try{
+    localStorage.removeItem("haushaltsheld_user");
+    localStorage.removeItem("haushaltsheld_current_user");
+  }catch(e){}
+  window.location.href = "login.html";
+}
+
+function hydrateSidebarUser(){
+  const nameEl = document.getElementById("userName");
+  const roleEl = document.getElementById("userRole");
+  try{
+    const raw = localStorage.getItem("haushaltsheld_user") || localStorage.getItem("haushaltsheld_current_user");
+    if(!raw) return;
+    const user = JSON.parse(raw);
+    const name = user?.name || user?.username || "Willkommen";
+    const role = user?.role || user?.modus || "Eltern-Modus";
+    if(nameEl) nameEl.textContent = "👋 " + name;
+    if(roleEl) roleEl.textContent = String(role);
+  }catch(e){}
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  hydrateSidebarUser();
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+});
+</script>
+
+<script>
+    const STORAGE_KEY = "haushaltsheld_food_data";
+
+    const DEFAULT_DATA = {
+      essensEintraege: []
+    };
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(DEFAULT_DATA);
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.essensEintraege)) return structuredClone(DEFAULT_DATA);
+        return parsed;
+      } catch (err) {
+        console.error("Fehler beim Laden:", err);
+        return structuredClone(DEFAULT_DATA);
+      }
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function formatEuro(value) {
+      if (value === null || value === undefined || value === "") return "—";
+      const num = Number(value);
+      if (Number.isNaN(num)) return "—";
+      return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(num);
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+      const [y, m, d] = value.split("-");
+      return `${d}.${m}.${y}`;
+    }
+
+    function getWeekday(dateStr) {
+      const date = new Date(dateStr + "T12:00:00");
+      return new Intl.DateTimeFormat("de-DE", { weekday: "long" }).format(date);
+    }
+
+    function normalizeText(text) {
+      return (text || "").trim();
+    }
+
+    function splitList(text) {
+      return normalizeText(text)
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function createId() {
+      return "meal_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7);
+    }
+
+    function getMonthKey(dateStr) {
+      return (dateStr || "").slice(0, 7);
+    }
+
+    function monthLabel(monthKey) {
+      if (!monthKey) return "Alle Monate";
+      const [year, month] = monthKey.split("-");
+      const date = new Date(Number(year), Number(month) - 1, 1);
+      return new Intl.DateTimeFormat("de-DE", { month: "long", year: "numeric" }).format(date);
+    }
+
+    function getStatusBadgeClass(status) {
+      if (status === "erledigt" || status === "bestaetigt") return "badge green";
+      if (status === "vorschlag") return "badge yellow";
+      return "badge";
+    }
+
+    function typeLabel(type) {
+      const map = {
+        zuhause: "Zuhause",
+        restaurant: "Restaurant",
+        imbiss: "Imbiss",
+        bestellt: "Bestellt",
+        unterwegs: "Unterwegs"
+      };
+      return map[type] || type || "—";
+    }
+
+    function statusLabel(status) {
+      const map = {
+        vorschlag: "Vorschlag",
+        bestaetigt: "Bestätigt",
+        erledigt: "Erledigt",
+        storniert: "Storniert"
+      };
+      return map[status] || status || "—";
+    }
+
+    function collectMonths(entries) {
+      const keys = [...new Set(entries.map(e => getMonthKey(e.datum)).filter(Boolean))].sort().reverse();
+      return keys;
+    }
+
+    function buildMonthFilter(entries) {
+      const select = document.getElementById("monthFilter");
+      const current = select.value;
+      const months = collectMonths(entries);
+
+      select.innerHTML = "";
+      const allOpt = document.createElement("option");
+      allOpt.value = "alle";
+      allOpt.textContent = "Alle Monate";
+      select.appendChild(allOpt);
+
+      months.forEach(key => {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = monthLabel(key);
+        select.appendChild(opt);
+      });
+
+      const thisMonth = new Date().toISOString().slice(0, 7);
+      if (months.includes(current)) {
+        select.value = current;
+      } else if (months.includes(thisMonth)) {
+        select.value = thisMonth;
+      } else {
+        select.value = "alle";
+      }
+    }
+
+    function getFilteredEntries(entries) {
+      const monthValue = document.getElementById("monthFilter").value;
+      const typeValue = document.getElementById("typeFilter").value;
+
+      return entries.filter(entry => {
+        const monthOk = monthValue === "alle" ? true : getMonthKey(entry.datum) === monthValue;
+        const typeOk = typeValue === "alle" ? true : entry.typ === typeValue;
+        return monthOk && typeOk;
+      }).sort((a, b) => (a.datum < b.datum ? 1 : -1));
+    }
+
+    function renderEntries(entries) {
+      const list = document.getElementById("entryList");
+
+      if (!entries.length) {
+        list.innerHTML = '<div class="empty">Noch keine Einträge vorhanden. Lege zuerst eine Mahlzeit oder ein Essensereignis an.</div>';
+        return;
+      }
+
+      list.innerHTML = entries.map(entry => {
+        const participants = (entry.teilnehmer || []).length ? entry.teilnehmer.join(", ") : "—";
+        const tags = (entry.tags || []).length ? entry.tags.join(", ") : "—";
+        return `
+          <article class="entry">
+            <div class="entry-head">
+              <div>
+                <p class="entry-title">${escapeHtml(entry.gericht || "Ohne Titel")}</p>
+                <div class="entry-meta">
+                  ${escapeHtml(formatDate(entry.datum))} · ${escapeHtml(entry.wochentag || "—")} · ${escapeHtml(entry.mahlzeit || "—")}<br>
+                  Vorgeschlagen von: ${escapeHtml(entry.vorgeschlagenVon?.name || "—")} (${escapeHtml(entry.vorgeschlagenVon?.rolle || "—")})
+                </div>
+              </div>
+              <div class="mini-actions">
+                <button class="btn btn-danger" onclick="deleteEntry('${entry.id}')">Löschen</button>
+              </div>
+            </div>
+
+            <div class="badges">
+              <span class="badge">${escapeHtml(typeLabel(entry.typ))}</span>
+              <span class="${getStatusBadgeClass(entry.status)}">${escapeHtml(statusLabel(entry.status))}</span>
+              <span class="badge">${escapeHtml(entry.kategorie || "—")}</span>
+            </div>
+
+            <div class="entry-meta">
+              Teilnehmer: ${escapeHtml(participants)}<br>
+              Ort / Anbieter: ${escapeHtml(entry.ort?.name || "—")}<br>
+              Kosten: ${escapeHtml(formatEuro(entry.kosten?.betrag))}<br>
+              Tags: ${escapeHtml(tags)}
+            </div>
+
+            ${entry.notizen ? `<div class="entry-notes"><strong>Notiz:</strong> ${escapeHtml(entry.notizen)}</div>` : ""}
+          </article>
+        `;
+      }).join("");
+    }
+
+    function getStats(entries) {
+      const home = entries.filter(e => e.typ === "zuhause").length;
+      const ordered = entries.filter(e => e.typ === "bestellt").length;
+      const out = entries.filter(e => e.typ === "restaurant" || e.typ === "imbiss").length;
+      return { total: entries.length, home, ordered, out };
+    }
+
+    function renderStats(entries) {
+      const stats = getStats(entries);
+      document.getElementById("statTotal").textContent = stats.total;
+      document.getElementById("statHome").textContent = stats.home;
+      document.getElementById("statOrder").textContent = stats.ordered;
+      document.getElementById("statOut").textContent = stats.out;
+    }
+
+    function countBy(entries, keyGetter) {
+      const map = {};
+      entries.forEach(item => {
+        const key = keyGetter(item);
+        if (!key) return;
+        map[key] = (map[key] || 0) + 1;
+      });
+      return map;
+    }
+
+    function topEntries(counter, limit = 5) {
+      return Object.entries(counter).sort((a,b) => b[1] - a[1]).slice(0, limit);
+    }
+
+    function renderTopMeals(entries) {
+      const target = document.getElementById("topMealsList");
+      const mealCounter = countBy(entries, e => normalizeText(e.gericht));
+
+      const tops = topEntries(mealCounter, 6);
+      if (!tops.length) {
+        target.innerHTML = '<div class="empty">Noch keine Monatsdaten für Top-Gerichte vorhanden.</div>';
+        return;
+      }
+
+      target.innerHTML = tops.map(([meal, count]) => `
+        <div class="top-item">
+          <span>${escapeHtml(meal)}</span>
+          <strong>${count}x</strong>
+        </div>
+      `).join("");
+    }
+
+    function buildInsights(entries) {
+      if (!entries.length) return ["Noch keine Daten vorhanden."];
+
+      const insights = [];
+      const typeCounter = countBy(entries, e => typeLabel(e.typ));
+      const catCounter = countBy(entries, e => normalizeText(e.kategorie));
+      const proposerCounter = countBy(entries, e => normalizeText(e.vorgeschlagenVon?.name));
+      const weekdayCounter = countBy(entries, e => normalizeText(e.wochentag));
+
+      const topType = topEntries(typeCounter, 1)[0];
+      const topCat = topEntries(catCounter, 1)[0];
+      const topProposer = topEntries(proposerCounter, 1)[0];
+      const topWeekday = topEntries(weekdayCounter, 1)[0];
+
+      if (topType) insights.push(`Am häufigsten erfasst: ${topType[0]} (${topType[1]}x).`);
+      if (topCat) insights.push(`Am häufigsten gegessen: Kategorie ${topCat[0]} (${topCat[1]}x).`);
+      if (topProposer) insights.push(`Die meisten Vorschläge kamen von ${topProposer[0]} (${topProposer[1]}x).`);
+      if (topWeekday) insights.push(`Besonders oft eingetragen am ${topWeekday[0]}.`);
+
+      const outsideCount = entries.filter(e => ["restaurant", "imbiss", "bestellt"].includes(e.typ)).length;
+      const homeCount = entries.filter(e => e.typ === "zuhause").length;
+      if (outsideCount > homeCount) {
+        insights.push("Es wurde häufiger außer Haus / bestellt erfasst als zuhause gekocht.");
+      } else if (homeCount > 0) {
+        insights.push("Zuhause kochen liegt im gewählten Zeitraum vorn.");
+      }
+
+      const totalCosts = entries.reduce((sum, e) => sum + (Number(e.kosten?.betrag) || 0), 0);
+      insights.push(`Erfasste Gesamtkosten im Zeitraum: ${formatEuro(totalCosts)}.`);
+
+      return insights;
+    }
+
+    function renderInsights(entries) {
+      const target = document.getElementById("insightList");
+      const insights = buildInsights(entries);
+      target.innerHTML = insights.map(text => `<div class="top-item"><span>${escapeHtml(text)}</span></div>`).join("");
+    }
+
+    function escapeHtml(text) {
+      return String(text ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function resetForm() {
+      document.getElementById("mealForm").reset();
+      document.getElementById("datum").value = new Date().toISOString().slice(0, 10);
+    }
+
+    function renderAll() {
+      const data = loadData();
+      buildMonthFilter(data.essensEintraege);
+      const filtered = getFilteredEntries(data.essensEintraege);
+      renderEntries(filtered);
+      renderStats(filtered);
+      renderTopMeals(filtered);
+      renderInsights(filtered);
+    }
+
+    function deleteEntry(id) {
+      const ok = window.confirm("Diesen Eintrag wirklich löschen?");
+      if (!ok) return;
+      const data = loadData();
+      data.essensEintraege = data.essensEintraege.filter(entry => entry.id !== id);
+      saveData(data);
+      renderAll();
+    }
+    window.deleteEntry = deleteEntry;
+
+    document.getElementById("mealForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const datum = document.getElementById("datum").value;
+      const mahlzeit = document.getElementById("mahlzeit").value;
+      const typ = document.getElementById("typ").value;
+      const status = document.getElementById("status").value;
+      const gericht = normalizeText(document.getElementById("gericht").value);
+      const kategorie = normalizeText(document.getElementById("kategorie").value);
+      const rolle = document.getElementById("rolle").value;
+      const name = normalizeText(document.getElementById("name").value);
+      const teilnehmer = splitList(document.getElementById("teilnehmer").value);
+      const kosten = document.getElementById("kosten").value;
+      const anbieter = normalizeText(document.getElementById("anbieter").value);
+      const tags = splitList(document.getElementById("tags").value);
+      const notizen = normalizeText(document.getElementById("notizen").value);
+
+      const entry = {
+        id: createId(),
+        datum,
+        wochentag: getWeekday(datum),
+        mahlzeit,
+        typ,
+        status,
+        gericht,
+        kategorie,
+        tags,
+        vorgeschlagenVon: {
+          rolle,
+          name
+        },
+        teilnehmer,
+        kosten: {
+          betrag: kosten ? Number(kosten) : null,
+          waehrung: "EUR",
+          proPerson: null
+        },
+        ort: {
+          name: anbieter || (typ === "zuhause" ? "Zuhause" : ""),
+          anbieter: anbieter || "",
+          adresse: ""
+        },
+        einkauf: {
+          relevant: typ === "zuhause",
+          erstellt: false,
+          eintragsIds: []
+        },
+        notizen,
+        bewertung: null,
+        erstelltAm: new Date().toISOString(),
+        aktualisiertAm: new Date().toISOString()
+      };
+
+      const data = loadData();
+      data.essensEintraege.push(entry);
+      saveData(data);
+      resetForm();
+      renderAll();
+    });
+
+    document.getElementById("fillDemoBtn").addEventListener("click", function () {
+      document.getElementById("datum").value = new Date().toISOString().slice(0, 10);
+      document.getElementById("mahlzeit").value = "Abendessen";
+      document.getElementById("typ").value = "zuhause";
+      document.getElementById("status").value = "erledigt";
+      document.getElementById("gericht").value = "Wraps mit Gemüse";
+      document.getElementById("kategorie").value = "Wraps";
+      document.getElementById("rolle").value = "kind";
+      document.getElementById("name").value = "Leo";
+      document.getElementById("teilnehmer").value = "Mama, Leo, Philipp";
+      document.getElementById("kosten").value = "9.80";
+      document.getElementById("anbieter").value = "Zuhause";
+      document.getElementById("tags").value = "familie, schnell, abend";
+      document.getElementById("notizen").value = "Kam gut an.";
+    });
+
+    document.getElementById("clearAllBtn").addEventListener("click", function () {
+      const ok = window.confirm("Wirklich alle Essens-Einträge löschen?");
+      if (!ok) return;
+      saveData(structuredClone(DEFAULT_DATA));
+      renderAll();
+    });
+
+    document.getElementById("exportJsonBtn").addEventListener("click", function () {
+      const data = loadData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "haushaltsheld_food_data.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("monthFilter").addEventListener("change", renderAll);
+    document.getElementById("typeFilter").addEventListener("change", renderAll);
+
+    resetForm();
+    renderAll();
+  </script>
+</body>
+</html>

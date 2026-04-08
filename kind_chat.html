@@ -1,909 +1,474 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Familien-Chat – Haushaltsheld</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Haushaltsheld – Chat</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f7f2e9; --card:#ffffff; --soft:#f6efe4; --soft2:#efe3d2; --line:#dfd1bc;
-  --text:#2d342f; --text2:#556159; --muted:#7d8a82;
-  --accent:#4CAF50; --accent-dark:#3E8E41; --accent-soft:#e7f5e8;
-  --blue:#6b96d9; --blue-soft:#e9f1ff; --green:#5ca66f; --green-soft:#e7f4ea;
-  --red:#cc6666; --red-soft:#fdeaea; --yellow:#b5882f; --yellow-soft:#fbf4df;
-  --shadow-xs:0 2px 8px rgba(54,45,28,.05); --shadow-sm:0 6px 18px rgba(54,45,28,.08); --shadow:0 12px 34px rgba(54,45,28,.10);
-  --sidebar-w:258px;
+  --bg:#f6fbff; --line:#dde7ef; --card:#ffffff; --text:#294050; --text2:#60758a; --muted:#8092a4;
+  --accent:#6f97c6; --accent-dark:#3f6fd1; --shadow-xs:0 4px 10px rgba(63,89,120,.05);
+  --shadow-sm:0 10px 22px rgba(63,89,120,.08); --shadow:0 16px 34px rgba(63,89,120,.10); --sidebar-w:258px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;overflow-x:hidden}
 body{
   font-family:"Outfit",sans-serif;
-  background:radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%), linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  background:radial-gradient(circle at top left, rgba(255,255,255,.85) 0%, rgba(255,255,255,0) 35%), linear-gradient(180deg,#ffffff 0%, #f4f9fe 100%);
   color:var(--text); min-height:100vh; font-size:16px; line-height:1.6;
 }
-button,input,select,textarea{font:inherit}
+button,input,textarea{font:inherit}
 .app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
 .sidebar{
-  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
-  border-right:1px solid rgba(223,209,188,.85);
-  padding:28px 18px 24px; display:flex; flex-direction:column; gap:8px; position:sticky; top:0; height:100vh; overflow-y:auto;
-  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+  background:linear-gradient(180deg,#ffffff 0%, #f3f8fc 100%); border-right:1px solid var(--line);
+  padding:24px 16px 20px; display:flex; flex-direction:column; gap:4px; position:sticky; top:0; height:100vh; overflow-y:auto;
 }
-.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
-.logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}
-.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
-.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
-.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
-.nav{display:flex;flex-direction:column;gap:4px}
-.nav a{
-  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);font-weight:700;
-  border:1px solid transparent;transition:all .18s ease;
-}
-.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}
-.nav a.active{
-  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%); color:#fff; border-color:rgba(62,142,65,.28);
-  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
-}
-.nav-icon{
-  width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05);
-}
-.nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
-.nav-icon svg{width:18px;height:18px;stroke:currentColor}
-.sb-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
-.logout-btn{
-  width:100%;border:none;background:linear-gradient(180deg,#fffdfa,#f4ebde);color:var(--text2);padding:12px;border-radius:16px;
-  font-size:.88rem;font-weight:700;cursor:pointer;border:1px solid var(--line);box-shadow:var(--shadow-xs);
-}
-.main{width:100%;max-width:1580px;padding:32px}
-.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
-.page-header h1{font-size:2.2rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:12px}
-.page-header p{color:var(--muted);font-size:.98rem;max-width:860px}
-.page-title-icon,.section-icon{
-  width:34px;height:34px;border-radius:12px;display:inline-grid;place-items:center;background:var(--accent-soft);color:var(--accent-dark);
-  border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0;
-}
-.page-title-icon svg,.section-icon svg{width:18px;height:18px;stroke:currentColor}
-.hero{
-  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%); border:1px solid rgba(76,175,80,.18); border-radius:30px; padding:28px 30px;
-  display:grid; grid-template-columns:1.2fr .8fr; gap:20px; align-items:stretch; margin-bottom:24px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
-}
-.hero::after{content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(76,175,80,.07)}
-.hero h2{font-size:1.55rem;font-weight:800;margin-bottom:10px}
-.hero p{color:var(--text2);line-height:1.65;margin-bottom:16px}
-.hero-tags{display:flex;gap:10px;flex-wrap:wrap}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.95);padding:9px 14px;border-radius:999px;font-size:.88rem;font-weight:800;color:var(--text2)}
-.mini{background:rgba(255,255,255,.78);border-radius:20px;padding:16px;border:1px solid rgba(223,209,188,.85);box-shadow:var(--shadow-xs);margin-bottom:12px}
-.mini strong{display:block;margin-bottom:6px;font-size:.96rem;font-weight:800}
-.mini span{color:var(--muted);font-size:.88rem}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px}
-.stat-card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%); border:1px solid rgba(223,209,188,.95); border-radius:26px; padding:20px; box-shadow:var(--shadow-sm)}
-.stat-label{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.stat-value{font-size:2rem;font-weight:800;letter-spacing:-0.04em}
-.stat-sub{font-size:.84rem;color:var(--muted)}
-.grid{display:grid;grid-template-columns:380px 1fr;gap:18px}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%); border:1px solid rgba(223,209,188,.95); border-radius:28px; padding:24px; box-shadow:var(--shadow-sm); margin-bottom:18px}
-.card-title{display:flex;align-items:center;gap:10px;font-size:1.16rem;font-weight:800;margin-bottom:12px}
-.card-sub{color:var(--muted);line-height:1.6;margin-bottom:16px;font-size:.9rem}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.field input,.field select,.field textarea{
-  width:100%; border:1.5px solid var(--line); background:#fffdf9; border-radius:16px; padding:13px 14px; font-size:.94rem; color:var(--text); outline:none; transition:.18s ease; min-height:48px;
-}
-.field textarea{min-height:110px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(76,175,80,.7);box-shadow:0 0 0 4px rgba(76,175,80,.10);background:#fff}
-.btn,.btn-soft,.btn-line{
-  border:none; padding:13px 22px; border-radius:16px; font-size:.95rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none;
-}
-.btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20)}
-.btn-soft{background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%); color:#4d3c2c; border:1.5px solid #d7c0a6; box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65)}
-.btn-line{background:#fff;color:var(--text2);border:1.5px solid var(--line)}
-.thread-list{display:grid;gap:10px}
-.thread-item{
-  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);border:1px solid transparent;border-radius:22px;padding:14px 16px;cursor:pointer;transition:.18s ease;position:relative;
-}
-.thread-item:hover{border-color:rgba(223,209,188,.95);transform:translateY(-1px);box-shadow:var(--shadow-xs)}
-.thread-item.active{border-color:#b9d7bc;box-shadow:0 0 0 3px rgba(76,175,80,.10)}
-.thread-item.unread::after{
-  content:"";position:absolute;right:14px;top:14px;width:10px;height:10px;border-radius:50%;background:#4CAF50;box-shadow:0 0 0 3px rgba(76,175,80,.15);
-}
-.thread-head{display:flex;justify-content:space-between;gap:10px;margin-bottom:6px}
-.thread-title{font-weight:800;font-size:.96rem}
-.thread-meta{font-size:.78rem;color:var(--muted)}
-.thread-preview{font-size:.86rem;color:var(--text2);line-height:1.45}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;font-size:.75rem;font-weight:800;border:1px solid transparent}
-.badge-school{background:var(--blue-soft);color:#496d9d;border-color:#cadcf8}
-.badge-buy{background:#fff8ef;color:#916737;border-color:#ead7b8}
-.badge-help{background:#f0eaff;color:#6a45b0;border-color:#d9c7f4}
-.badge-reminder{background:#eef7ef;color:#3d7a48;border-color:#c8e6ca}
-.badge-other{background:#f6efe4;color:#735945;border-color:#e2d1be}
-.badge-open{background:var(--blue-soft);color:#496d9d;border-color:#cadcf8}
-.badge-read{background:#eef7ef;color:#3d7a48;border-color:#c8e6ca}
-.badge-working{background:#fff8ef;color:#916737;border-color:#ead7b8}
-.badge-done{background:#e7f4ea;color:#3d7a48;border-color:#bddfca}
-.chat-card{padding:0;overflow:hidden}
-.chat-head{padding:22px 24px;border-bottom:1px solid rgba(223,209,188,.95);display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
-.chat-body{padding:18px 18px 8px;display:grid;gap:12px;min-height:420px;max-height:540px;overflow:auto;background:linear-gradient(180deg,#fbfdfb 0%,#f7faf7 100%)}
-.message{
-  max-width:75%;padding:14px 16px;border-radius:20px;box-shadow:var(--shadow-xs);border:1px solid rgba(223,209,188,.75)
-}
-.message.child{justify-self:end;background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-color:rgba(62,142,65,.18)}
-.message.parent{justify-self:start;background:#fff;color:var(--text)}
-.message-meta{font-size:.74rem;opacity:.78;margin-bottom:6px}
-.message-text{font-size:.93rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
-.chat-foot{padding:18px;border-top:1px solid rgba(223,209,188,.95);background:#fffdfa}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.empty{padding:28px 20px;text-align:center;color:var(--muted);line-height:1.6}
-.info-strip{margin-top:12px;padding:14px 16px;border-radius:18px;background:#eef9f0;border:1px solid #c6e4cf;color:#3f6d4c;font-size:.9rem}
-@media(max-width:1200px){.grid,.hero,.stats-grid{grid-template-columns:1fr}}
-@media(max-width:960px){
-  .app{grid-template-columns:1fr}
-  .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}
-  .logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}
-  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
-  .nav-label{display:none}
-}
-@media(max-width:700px){
-  .main{padding:16px}
-  .page-header h1{font-size:1.85rem}
-  .chat-head{padding:18px}
-  .chat-body{min-height:320px}
-  .message{max-width:92%}
-}
-
-
-.chat-badge{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  min-width:18px;
-  height:18px;
-  padding:0 5px;
-  border-radius:999px;
-  background:#cc6666;
-  color:#fff;
-  font-size:.68rem;
-  font-weight:800;
-  line-height:18px;
-  text-align:center;
-  border:2px solid #fff;
-  box-shadow:0 2px 8px rgba(204,102,102,.28);
-}
+.logo-wrap{display:flex;align-items:center;gap:11px;padding:0 6px 20px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.logo-img{width:46px;height:46px;border-radius:15px;overflow:hidden;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--shadow-xs)}
+.logo-img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.logo-name{font-weight:900;font-size:1.15rem;line-height:1.2;background:linear-gradient(135deg,#4f7ea8 0%, #7ca7d8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
+.nav-label{font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:var(--accent-dark);padding:12px 10px 5px}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);font-weight:700;font-size:.96rem;border:1px solid transparent;transition:all .18s ease}
+.nav a:hover{background:rgba(255,255,255,.78);border-color:#d8e4ee;transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}
+.nav a.active{background:linear-gradient(135deg,#7da9d7 0%, #5986b2 100%);color:#fff !important;border-color:rgba(89,134,178,.25);box-shadow:0 5px 0 #43698f,0 14px 26px rgba(89,134,178,.20),inset 0 1px 0 rgba(255,255,255,.18)}
+.nav a.locked{opacity:.62;filter:saturate(.8)}
+.nav a.locked:hover{transform:none;box-shadow:none}
+.nav-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;flex-shrink:0;font-size:1rem;border:1px solid rgba(0,0,0,.05);box-shadow:0 4px 10px rgba(0,0,0,.05);transform-origin:center}
+[data-key="dashboard"] .nav-icon{background:#e8f7ef;color:#3e9b61}
+[data-key="aufgaben"] .nav-icon{background:#eaf3ff;color:#4a7bd1}
+[data-key="meinGeld"] .nav-icon{background:#fff6d6;color:#c89b1c}
+[data-key="sparziele"] .nav-icon{background:#f1eaff;color:#7a5ad8}
+[data-key="wuensche"] .nav-icon{background:#ffeaf2;color:#d85c8c}
+[data-key="chat"] .nav-icon{background:#fff1e6;color:#e07a2f}
+[data-key="essensplan"] .nav-icon{background:#fff4ec;color:#e0895a}
+[data-key="familienplaner"] .nav-icon{background:#e7fbf7;color:#3aa99e}
+[data-key="einkaufsliste"] .nav-icon{background:#f4f4f4;color:#7a7a7a}
+.nav a.active .nav-icon{background:#fff;color:#333;animation:none !important}
+.chat-badge{margin-left:auto;min-width:22px;height:22px;padding:0 7px;border-radius:999px;display:none;align-items:center;justify-content:center;background:#fff;color:#2e8746;font-size:.74rem;font-weight:800;border:1px solid rgba(255,255,255,.45)}
+.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.logout-btn{width:100%;border:none;background:#fff;color:var(--text2);padding:12px;border-radius:16px;font-size:.9rem;font-weight:800;cursor:pointer;border:1px solid var(--line);box-shadow:var(--shadow-xs)}
+[data-key="aufgaben"] .nav-icon{animation:navBounce 4s ease-in-out infinite}
+[data-key="meinGeld"] .nav-icon{animation:navShine 5s ease-in-out infinite}
+[data-key="sparziele"] .nav-icon{animation:navFloat 4.5s ease-in-out infinite}
+[data-key="wuensche"] .nav-icon{animation:navPulse 4s ease-in-out infinite}
+[data-key="chat"] .nav-icon{animation:navWiggle 5s ease-in-out infinite}
+[data-key="essensplan"] .nav-icon{animation:navPop 4.5s ease-in-out infinite}
+@keyframes navBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes navShine{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes navFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes navPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes navWiggle{0%,100%{transform:rotate(0deg)}50%{transform:rotate(3deg)}}
+@keyframes navPop{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.main{padding:28px;max-width:1400px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:20px}
+.page-header h1{font-size:2.05rem;font-weight:900;margin-bottom:8px;color:#3f6fd1;letter-spacing:-.03em}
+.page-header p{color:var(--text2);max-width:780px}
+.header-badges{display:flex;gap:10px;flex-wrap:wrap}
+.header-badge{background:#fff;border:1px solid #dce7ef;border-radius:999px;padding:10px 14px;font-weight:800;color:#6886a3;box-shadow:0 4px 10px rgba(63,89,120,.05)}
+.push-banner{display:none;margin-bottom:14px;padding:12px 14px;border-radius:18px;background:linear-gradient(180deg,#fff8ef 0%,#fff3e2 100%);border:1px solid #f4dcc0;color:#b96a2d;font-weight:900;box-shadow:0 8px 16px rgba(201,122,69,.08)}
+.push-banner.show{display:block;animation:bannerIn .25s ease}
+@keyframes bannerIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.chat-layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:18px;align-items:start}
+.card{background:#fff;border:1px solid #dde7ef;border-radius:28px;padding:22px;box-shadow:0 10px 24px rgba(63,89,120,.08);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgba(63,89,120,.11);border-color:#c9dceb}
+.card h2{font-size:1.22rem;font-weight:900;color:#5d7fa4;margin-bottom:8px}
+.card-sub{color:var(--text2);margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:#f8fbff;border:1px solid #dde7ef;border-radius:20px;padding:14px;text-align:center}
+.stat strong{display:block;font-size:1.4rem;color:#4f7ea8}
+.stat span{font-size:.84rem;color:var(--text2);font-weight:700}
+.thread-list{display:grid;gap:10px;max-height:650px;overflow:auto;padding-right:4px}
+.thread-item{background:#fff;border:1px solid #e2e9f0;border-radius:22px;padding:14px;cursor:pointer;box-shadow:0 6px 14px rgba(63,89,120,.06);transition:.16s ease}
+.thread-item.active{border-color:#cfdcf0;background:#f8fbff}
+.thread-item.unread{border-left:6px solid #e07a2f;background:#fffaf6}
+.thread-row{display:flex;gap:12px;align-items:flex-start}
+.thread-avatar{width:48px;height:48px;border-radius:16px;flex-shrink:0;display:grid;place-items:center;font-size:1.2rem;font-weight:900;background:linear-gradient(180deg,#fff3ea 0%,#ffe5d1 100%);color:#c77743;border:1px solid #f1d1b6;box-shadow:0 6px 12px rgba(63,89,120,.08)}
+.thread-main{min-width:0;flex:1}
+.thread-topline{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.thread-title{font-weight:900;color:var(--text);line-height:1.2;font-size:1rem}
+.thread-meta{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.thread-preview{margin:6px 0 10px;color:var(--text2);font-size:.92rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.thread-preview.unread-text{color:#344f67;font-weight:800}
+.unread-dot{width:10px;height:10px;border-radius:999px;background:#e07a2f;flex-shrink:0;margin-top:7px;box-shadow:0 0 0 4px rgba(224,122,47,.12)}
+.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:7px 11px;font-size:.78rem;font-weight:900;border:1px solid transparent}
+.badge-open{background:#eef5ff;color:#5388c8;border-color:#d7e4f8}
+.badge-read{background:#eef9f1;color:#4b9a67;border-color:#d6ebde}
+.badge-working{background:#fff5ea;color:#cd7b45;border-color:#f3e1ca}
+.chat-view{display:grid;gap:16px}
+.chat-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:4px}
+.chat-meta{color:var(--muted);font-size:.9rem}
+.chat-body{min-height:420px;max-height:560px;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:10px;border:1px dashed #d7e4f0;border-radius:22px;background:#fbfdff}
+.message{max-width:74%;padding:10px 14px;border-radius:18px;font-size:.95rem;box-shadow:var(--shadow-xs)}
+.message.child{align-self:flex-end;background:linear-gradient(180deg,#e8f1ff 0%, #dbe9ff 100%);border:1px solid #bfd4fb;color:#244266}
+.message.parent{align-self:flex-start;background:linear-gradient(180deg,#fff4ea 0%, #ffe9d8 100%);border:1px solid #f3d3b8;color:#6b4428}
+.message-meta{font-size:.78rem;font-weight:900;margin-bottom:6px}
+.message.child .message-meta{color:#4b74b8}
+.message.parent .message-meta{color:#c77743}
+.message-text{white-space:pre-wrap;color:inherit}
+.reply-box{display:grid;gap:10px;border-top:1px solid #e6edf3;padding-top:14px}
+textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;padding:13px 14px;color:var(--text);resize:vertical;min-height:72px}
+.reply-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:none;border-radius:20px;padding:10px 16px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#7da9d7 0%, #5986b2 100%);color:#fff;box-shadow:var(--shadow-xs)}
+.btn.secondary{background:#fff;color:var(--text2);border:1px solid #d8e3ec}
+.info-note{padding:14px 16px;border-radius:18px;background:#f5f9fe;border:1px solid #d8e5f2;color:#5c7c9f;font-weight:800}
+.ki-fab{position:fixed;right:22px;bottom:22px;z-index:40;width:62px;height:62px;border:none;border-radius:20px;background:linear-gradient(135deg,#8db4df 0%, #648db8 100%);box-shadow:0 18px 35px rgba(79,126,168,.28);cursor:pointer;overflow:visible}
+.snail-talk{position:fixed;right:94px;bottom:30px;z-index:41;max-width:230px;background:#fff;border:1px solid #dce7ef;border-radius:18px 18px 6px 18px;padding:10px 12px;font-size:.86rem;font-weight:800;color:#5b7898;box-shadow:0 10px 22px rgba(63,89,120,.12);opacity:0;transform:translateY(8px);pointer-events:none;transition:.25s ease}
+.snail-talk.show{opacity:1;transform:translateY(0)}
+.snail-talk::after{content:"";position:absolute;right:-7px;bottom:14px;width:12px;height:12px;background:#fff;border-right:1px solid #dce7ef;border-bottom:1px solid #dce7ef;transform:rotate(-45deg)}
+.snail-fab{position:relative;width:40px;height:40px;display:block;margin:auto;animation:snailBob 3.2s ease-in-out infinite}
+.snail-shell{position:absolute;right:2px;bottom:6px;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 35%, #ffd39c 0%, #f4a261 42%, #d97b37 100%)}
+.snail-shell::before,.snail-shell::after{content:"";position:absolute;border-radius:50%}
+.snail-shell::before{inset:5px;border:2px solid rgba(255,255,255,.45)}
+.snail-shell::after{inset:9px;border:2px solid rgba(255,255,255,.35)}
+.snail-body{position:absolute;left:1px;bottom:5px;width:26px;height:14px;background:linear-gradient(180deg,#a8e6b0 0%, #6fc17c 100%);border-radius:16px 16px 12px 12px}
+.snail-head{position:absolute;left:18px;bottom:13px;width:12px;height:12px;background:linear-gradient(180deg,#b8efc0 0%, #79ca87 100%);border-radius:50%}
+.snail-eye{position:absolute;width:3px;height:7px;background:#79ca87;top:-6px;border-radius:999px}
+.snail-eye.left{left:3px;transform:rotate(-8deg)}
+.snail-eye.right{right:2px;transform:rotate(10deg)}
+.snail-eye::after{content:"";position:absolute;top:-1px;left:-1px;width:5px;height:5px;background:#24343d;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.45);animation:snailBlink 5.5s infinite}
+.snail-mouth{position:absolute;left:4px;bottom:2px;width:5px;height:3px;border-bottom:2px solid rgba(36,52,61,.7);border-radius:0 0 8px 8px}
+@keyframes snailBlink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.12)}}
+@keyframes snailBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media(max-width:980px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap}.logo-wrap{padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px;margin-bottom:0}.nav{flex-direction:row;flex-wrap:wrap}.nav-label,.sidebar-footer{display:none}.chat-layout{grid-template-columns:1fr}}
+@media(max-width:700px){.main{padding:16px}.stats{grid-template-columns:1fr}.message{max-width:92%}.snail-talk{right:76px;max-width:180px}}
 </style>
 </head>
 <body>
 <div class="app">
   <aside class="sidebar">
     <div class="logo-wrap">
-      <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-      <div>
-        <div class="logo-name">Haushaltsheld</div>
-        <div class="logo-sub">Dein Familien-Assistent</div>
-      </div>
+      <div class="logo-img"><img src="assets/assetsschnecke.png" alt="Haushaltsheld"></div>
+      <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Kinderbereich</div></div>
     </div>
-
-    <div class="nav-label">Kinderbereich</div>
+    <div class="nav-label">Kindermodus</div>
     <nav class="nav">
-      <a href="kind_mein_geld.html">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"></rect><path d="M16 12h.01"></path><path d="M3 10h18"></path></svg></span>
-        <span>Mein Geld</span>
-      </a>
-      <a href="kind_sparziel.html">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"></path></svg></span>
-        <span>Sparziele</span>
-      </a>
-      <a href="kind_wuensche.html">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.7-4.35-9.33-8.34C.44 9.27 2.1 5 6.24 5c2.38 0 3.65 1.2 4.42 2.4C11.43 6.2 12.7 5 15.08 5c4.14 0 5.8 4.27 3.57 7.66C18.7 16.65 12 21 12 21z"></path></svg></span>
-        <span>Wünsche</span>
-      </a>
-      <a href="kind_aufgaben.html">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span>
-        <span>Aufgaben</span>
-      </a>
-      <a href="kind_chat.html" class="active">
-        <span class="nav-icon" style="position:relative;">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-          <span id="chatBadge" class="chat-badge" style="display:none;">0</span>
-        </span>
-        <span>Familien-Chat</span>
-      </a>
+      <a href="kindermodus.html" data-key="dashboard"><span class="nav-icon">🏠</span><span>Mein Bereich</span></a>
+      <a href="kind_aufgaben.html" data-key="aufgaben"><span class="nav-icon">📋</span><span>Aufgaben</span></a>
+      <a href="kind_mein_geld.html" data-key="meinGeld"><span class="nav-icon">💰</span><span>Mein Geld</span></a>
+      <a href="kind_sparziel.html" data-key="sparziele"><span class="nav-icon">🎯</span><span>Sparziel</span></a>
+      <a href="kind_wuensche.html" data-key="wuensche"><span class="nav-icon">🎁</span><span>Wünsche</span></a>
+      <a href="kind_chat.html" class="active" data-key="chat"><span class="nav-icon">💬</span><span>Chat</span><span class="chat-badge" id="chatBadge">0</span></a>
+      <a href="kind_essensplan.html" data-key="essensplan"><span class="nav-icon">🍽️</span><span>Essensplan</span></a>
     </nav>
-
-    <div class="sb-footer">
-      <button class="logout-btn" type="button" onclick="doLogout()">Logout</button>
-    </div>
+    <div class="nav-label">Optional</div>
+    <nav class="nav">
+      <a href="kind_familienplaner.html" data-key="familienplaner"><span class="nav-icon">📅</span><span>Familienplaner</span></a>
+      <a href="kind_einkaufsliste.html" data-key="einkaufsliste"><span class="nav-icon">🛒</span><span>Einkaufsliste</span></a>
+    </nav>
+    <div class="sidebar-footer"><button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button></div>
   </aside>
 
   <main class="main">
     <div class="page-header">
       <div>
-        <h1>
-          <span class="page-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
-          <span>Familien-Chat</span>
-        </h1>
-        <p>Hier kannst du Fragen stellen, an etwas erinnern oder Hilfe holen. Das ist der richtige Ort für Schulhefte, Unterschriften, Bestellungen oder kleine Alltagsfragen.</p>
+        <h1>Mein Chat</h1>
+        <p>Ab 6 Jahren ist der Familienchat frei. Hier schreibt ihr alle in einem gemeinsamen Chat – ohne Titel, ohne Kategorien, einfach direkt.</p>
+      </div>
+      <div class="header-badges">
+        <span class="header-badge" id="welcomeChildName">Kind</span>
+        <span class="header-badge" id="chatStatusTop">Chat wird geprüft</span>
       </div>
     </div>
 
-    <section class="hero">
-      <div>
-        <h2>Schreib einfach, was du brauchst</h2>
-        <p>Der Chat ist für echte Familien-Kommunikation da. Deine Aufgaben bleiben in der Aufgaben-Seite. Hier geht es um Bitten, Fragen, Erinnerungen und kurze Antworten.</p>
-        <div class="hero-tags">
-          <span class="hero-tag">Schule</span>
-          <span class="hero-tag">Einkauf</span>
-          <span class="hero-tag">Unterschrift</span>
-          <span class="hero-tag">Hilfe & Erinnerung</span>
+    <div class="push-banner" id="pushBanner">Neue Nachricht eingegangen.</div>
+
+    <div class="chat-layout">
+      <section class="card">
+        <h2>💬 Familienchat</h2>
+        <p class="card-sub">Links siehst du neue Nachrichten. Rechts läuft der gemeinsame Familienchat.</p>
+        <div class="stats">
+          <div class="stat"><strong id="allCount">0</strong><span>Nachrichten</span></div>
+          <div class="stat"><strong id="newCount">0</strong><span>Neu</span></div>
+          <div class="stat"><strong id="memberCount">0</strong><span>Nutzer</span></div>
         </div>
-      </div>
-      <div>
-        <div class="mini"><strong>Alles an einem Ort</strong><span>Du musst nicht mehr Aufgaben und Fragen vermischen. Der Chat ist nur für Kommunikation.</span></div>
-        <div class="mini"><strong>Eltern sehen deinen Status</strong><span>Ob offen, gelesen, in Bearbeitung oder erledigt – du siehst direkt, was schon passiert ist.</span></div>
-      </div>
-    </section>
+        <div class="thread-list" id="threadList"></div>
+      </section>
 
-    <section class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-label">Offene Chats</div>
-        <div class="stat-value" id="openCount">0</div>
-        <div class="stat-sub">Noch ohne Erledigt-Status</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Antworten von Eltern</div>
-        <div class="stat-value" id="replyCount">0</div>
-        <div class="stat-sub">Nachrichten von Mama oder Papa</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Neu für mich</div>
-        <div class="stat-value" id="unreadCount">0</div>
-        <div class="stat-sub">Noch nicht gelesene Antworten</div>
-      </div>
-    </section>
-
-    <section class="grid">
-      <div>
-        <section class="card">
-          <div class="card-title">
-            <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
-            <span>Neuen Chat starten</span>
+      <section class="card chat-view">
+        <div class="chat-top">
+          <div>
+            <h2 id="chatTitleView">Familienchat</h2>
+            <div class="chat-meta" id="chatMetaView">Hier seht ihr alle Nachrichten der Familie in einem gemeinsamen Verlauf.</div>
           </div>
-          <p class="card-sub">Starte hier eine neue Unterhaltung mit Mama oder Papa.</p>
+          <div class="badge badge-open" id="chatStatusBadge">Offen</div>
+        </div>
 
-          <div class="field">
-            <label for="chatCategory">Kategorie</label>
-            <select id="chatCategory">
-              <option value="school">Schule</option>
-              <option value="buy">Einkauf</option>
-              <option value="help">Hilfe</option>
-              <option value="reminder">Erinnerung</option>
-              <option value="other">Sonstiges</option>
-            </select>
-          </div>
+        <div class="chat-body" id="chatMessages">
+          <div class="info-note">Noch keine Nachrichten vorhanden. Schreibe unten deine erste Nachricht.</div>
+        </div>
 
-          <div class="field">
-            <label for="chatTitle">Kurz gesagt</label>
-            <input id="chatTitle" type="text" placeholder="z. B. Ich brauche neue Schulhefte">
+        <div class="reply-box">
+          <label for="replyMessage"><strong>Nachricht</strong></label>
+          <textarea id="replyMessage" placeholder="Schreibe hier deine Nachricht..."></textarea>
+          <div class="reply-row">
+            <button class="btn" type="button" onclick="sendMessage()">Senden</button>
+            <button class="btn secondary" type="button" onclick="markSeen()">Als gelesen</button>
           </div>
-
-          <div class="field">
-            <label for="chatMessage">Meine Nachricht</label>
-            <textarea id="chatMessage" placeholder="Schreib hier deine Bitte oder Frage an Mama oder Papa..."></textarea>
-          </div>
-
-          <div class="row">
-            <button class="btn" type="button" onclick="createThread()">Chat starten</button>
-            <button class="btn-soft" type="button" onclick="fillExample()">Beispiel einfügen</button>
-          </div>
-
-          <div class="info-strip">
-            Beispiele: „Kannst du mir Schulhefte kaufen?“, „Ich brauche deine Unterschrift für die Klassenarbeit.“ oder „Kannst du bitte das Buch bestellen?“
-          </div>
-        </section>
-
-        <section class="card">
-          <div class="card-title">
-            <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18"></path><path d="M3 12h18"></path><path d="M3 17h18"></path></svg></span>
-            <span>Meine Chats</span>
-          </div>
-          <div class="thread-list" id="threadList"></div>
-        </section>
-      </div>
-
-      <div>
-        <section class="card chat-card">
-          <div class="chat-head">
-            <div>
-              <div class="card-title" style="margin-bottom:6px">
-                <span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
-                <span id="chatTitleView">Noch kein Chat ausgewählt</span>
-              </div>
-              <div class="thread-meta" id="chatMetaView">Wähle links einen Chat aus oder starte unten einen neuen.</div>
-            </div>
-            <div id="chatStatusBadge" class="badge badge-open">Offen</div>
-          </div>
-
-          <div class="chat-body" id="chatMessages">
-            <div class="empty">Wähle links einen Chat aus oder starte einen neuen.</div>
-          </div>
-
-          <div class="chat-foot">
-            <div class="field" style="margin-bottom:12px">
-              <label for="replyMessage">Meine Antwort</label>
-              <textarea id="replyMessage" placeholder="Hier kannst du antworten, wenn der Chat schon offen ist..."></textarea>
-            </div>
-            <div class="row">
-              <button class="btn" type="button" onclick="sendReply()">Antwort senden</button>
-              <button class="btn-line" type="button" onclick="markSeen()">Als gelesen markieren</button>
-              <button class="btn-danger" type="button" onclick="deleteActiveThread()">Chat löschen</button>
-            </div>
-          </div>
-        </section>
-      </div>
-    </section>
+        </div>
+      </section>
+    </div>
   </main>
 </div>
 
+<div class="snail-talk" id="snailTalk">Hallo! Ich bin da. 🐌</div>
+<button class="ki-fab" id="kiFab" type="button" aria-label="Kinder-KI öffnen">
+  <span class="snail-fab" aria-hidden="true">
+    <span class="snail-shell"></span><span class="snail-body"></span>
+    <span class="snail-head"><span class="snail-eye left"></span><span class="snail-eye right"></span><span class="snail-mouth"></span></span>
+  </span>
+</button>
+
 <script>
-const ACTIVE_CHILD_KEY = "hh_active_child";
-const CHAT_STORAGE_KEY = "hh_family_chat_threads";
-const RIGHTS_KEY = "haushaltsheld_rights_settings";
-const SESSION_KEY = "haushaltsheld_session";
-const USER_KEYS = ["haushaltsheld_users", "hh_users", "haushaltsheld_family_members", "haushaltsheld_members"];
+(function(){
+  const AUTH_KEY = "haushaltsheld_user";
+  const USERS_KEY = "haushaltsheld_users";
+  const CHILD_PERMISSIONS_KEY = "haushaltsheld_child_permissions";
+  const ACTIVE_CHILD_KEY = "hh_active_child";
+  const ROOM_KEY = "hh_family_chat_room";
+  const LEGACY_THREADS_KEY = "hh_family_chat_threads";
 
-const ACCESS_LABELS = {
-  meinGeld: "Mein Geld",
-  aufgaben: "Aufgaben",
-  einkaufsliste: "Einkaufsliste",
-  familienplaner: "Familienplaner",
-  termine: "Termine",
-  finanzen: "Finanzen",
-  chat: "Chat"
-};
+  let child = null;
 
-const defaultRightsSettings = {
-  ageGroups: {
-    age0to5:   { meinGeld:"deny", aufgaben:"allow", einkaufsliste:"ask", familienplaner:"deny", termine:"deny", finanzen:"deny", chat:"deny" },
-    age6to10:  { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"ask", termine:"ask", finanzen:"deny", chat:"allow" },
-    age11to13: { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"allow", termine:"ask", finanzen:"ask", chat:"allow" },
-    age14to17: { meinGeld:"allow", aufgaben:"allow", einkaufsliste:"allow", familienplaner:"allow", termine:"allow", finanzen:"ask", chat:"allow" }
-  },
-  requireApprovalPrivate: true,
-  requireApprovalAppointments: true,
-  requireApprovalFinances: true,
-  childOverrides: {}
-};
+  function readJson(key, fallback){ try{ const parsed = JSON.parse(localStorage.getItem(key)); return parsed ?? fallback; }catch(error){ return fallback; } }
+  function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+  function nowIso(){ return new Date().toISOString(); }
+  function fmtDate(v){ if(!v) return "—"; const d = new Date(v); if(Number.isNaN(d.getTime())) return "—"; return d.toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); }
+  function esc(s){ return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+  function calculateAge(birthdate){ if(!birthdate) return 0; const birth = new Date(birthdate); if(Number.isNaN(birth.getTime())) return 0; const today = new Date(); let age = today.getFullYear() - birth.getFullYear(); const monthDiff = today.getMonth() - birth.getMonth(); if(monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--; return Math.max(0, age); }
+  function getAgeGroupKey(age){ if(age <= 5) return "age0to5"; if(age <= 10) return "age6to10"; if(age <= 13) return "age11to13"; return "age14to17"; }
+  function boolFromRule(value){ return value === "allow" || value === true; }
+  function normalizeUsers(users){ return (Array.isArray(users) ? users : []).map((user) => ({...user, rights:user?.rights || {}})); }
+  function childId(){ return String(child?.id || child?.name || "kind"); }
+  function childSeenKey(){ return "hh_family_chat_seen_" + childId(); }
 
-let child = null;
-let activeThreadId = null;
-
-function readJson(key, fallback){
-  try{
-    const parsed = JSON.parse(localStorage.getItem(key) || "null");
-    return parsed ?? fallback;
-  }catch{
-    return fallback;
-  }
-}
-function writeJson(key, value){
-  localStorage.setItem(key, JSON.stringify(value));
-}
-function esc(s){ return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
-function nowIso(){ return new Date().toISOString(); }
-function fmtDate(v){
-  if(!v) return "—";
-  const d = new Date(v);
-  if(Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
-}
-function calculateAge(birthdate){
-  if(!birthdate) return 0;
-  const birth = new Date(birthdate);
-  if(Number.isNaN(birth.getTime())) return 0;
-  const today = new Date();
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  if(monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
-  return Math.max(0, age);
-}
-function getDisplayAge(user){
-  if(!user) return 0;
-  if(user.birthdate) return calculateAge(user.birthdate);
-  return Number(user.age) || 0;
-}
-function getUserAgeGroupKey(age){
-  if(age <= 5) return "age0to5";
-  if(age <= 10) return "age6to10";
-  if(age <= 13) return "age11to13";
-  return "age14to17";
-}
-function getStoredRightsSettings(){
-  const stored = readJson(RIGHTS_KEY, {});
-  return {
-    ...defaultRightsSettings,
-    ...stored,
-    ageGroups: { ...defaultRightsSettings.ageGroups, ...(stored.ageGroups || {}) },
-    childOverrides: stored.childOverrides || {}
-  };
-}
-function normaliseChildUser(raw, fallbackIndex = 0){
-  if(!raw || typeof raw !== "object") return null;
-  const role = String(raw.role || raw.type || raw.userType || raw.mode || raw.category || "").toLowerCase();
-  const looksLikeChild = raw.isChild === true || raw.kind === true || role.includes("child") || role.includes("kind") || role.includes("kid");
-  if(!looksLikeChild) return null;
-  return {
-    id: String(raw.id || raw.userId || raw.uuid || raw.name || `child_${fallbackIndex}`),
-    name: raw.name || raw.displayName || raw.username || `Kind ${fallbackIndex + 1}`,
-    age: raw.age,
-    birthdate: raw.birthdate || raw.birthday || raw.birthDay || "",
-    role: "child",
-    pin: raw.pin || "",
-    rights: raw.rights || {}
-  };
-}
-function getStoredChildUsers(){
-  const result = [];
-  USER_KEYS.forEach(key => {
-    const items = readJson(key, []);
-    if(Array.isArray(items)){
-      items.forEach((item, index) => {
-        const childUser = normaliseChildUser(item, index);
-        if(childUser) result.push(childUser);
+  function migrateLegacyThreadsIfNeeded(){
+    const room = readJson(ROOM_KEY, null);
+    if(room && Array.isArray(room.messages)) return;
+    const threads = readJson(LEGACY_THREADS_KEY, []);
+    const messages = [];
+    if(Array.isArray(threads)){
+      threads.forEach(thread => {
+        (thread.messages || []).forEach(msg => {
+          messages.push({
+            id: msg.id || ("legacy_" + Math.random().toString(36).slice(2)),
+            senderType: msg.senderType === "parent" ? "parent" : "child",
+            senderName: msg.senderName || (msg.senderType === "parent" ? "Eltern" : (thread.childName || "Kind")),
+            text: msg.text || "",
+            createdAt: msg.createdAt || thread.updatedAt || thread.createdAt || nowIso()
+          });
+        });
       });
     }
-  });
-
-  if(!result.length){
-    const fallbackChildren = readJson("haushaltsheld_child_profiles_demo", []);
-    if(Array.isArray(fallbackChildren)){
-      fallbackChildren.forEach((item, index) => {
-        const childUser = normaliseChildUser(item, index);
-        if(childUser) result.push(childUser);
-      });
-    }
+    messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+    writeJson(ROOM_KEY, { messages });
   }
 
-  const deduped = [];
-  const seen = new Set();
-  result.forEach(user => {
-    const key = String(user.id || user.name || "");
-    if(!key || seen.has(key)) return;
-    seen.add(key);
-    deduped.push(user);
-  });
-  return deduped;
-}
-function getEffectiveChildRights(targetChild){
-  if(!targetChild) return null;
-  const age = getDisplayAge(targetChild);
-  const ageGroupKey = getUserAgeGroupKey(age);
-  const settings = getStoredRightsSettings();
-  const base = settings.ageGroups[ageGroupKey] || defaultRightsSettings.ageGroups[ageGroupKey] || {};
-  const override = settings.childOverrides?.[targetChild.id] || {};
-  const effective = {};
-  Object.keys(ACCESS_LABELS).forEach(key => {
-    effective[key] = override[key] && override[key] !== "default" ? override[key] : (base[key] || "deny");
-  });
-  return { age, ageGroupKey, effective, override, base };
-}
-function canChildUseChat(targetChild){
-  const rightsData = getEffectiveChildRights(targetChild);
-  if(!rightsData) return false;
-  return rightsData.effective.chat === "allow";
-}
-function setChatLockedState(targetChild){
-  const age = getDisplayAge(targetChild);
-  const threads = document.getElementById("threadList");
-  const messages = document.getElementById("chatMessages");
-  const titleView = document.getElementById("chatTitleView");
-  const metaView = document.getElementById("chatMetaView");
-  const statusBadge = document.getElementById("chatStatusBadge");
-  const titleInput = document.getElementById("chatTitle");
-  const messageInput = document.getElementById("chatMessage");
-  const replyInput = document.getElementById("replyMessage");
-  const note = age >= 6
-    ? "Der Chat ist für dieses Kind aktuell in den Familienrechten gesperrt. Prüfe bitte die individuellen Kind-Rechte im Elternmodus."
-    : "Der Chat ist erst ab 6 Jahren automatisch offen. Dieses Kind ist dafür aktuell noch zu jung oder hat noch keine passende Altersfreigabe.";
+  function getRoom(){ migrateLegacyThreadsIfNeeded(); const room = readJson(ROOM_KEY, { messages:[] }); return { messages:Array.isArray(room.messages) ? room.messages : [] }; }
+  function saveRoom(room){ writeJson(ROOM_KEY, room); }
 
-  if(titleView) titleView.textContent = "Chat aktuell nicht freigegeben";
-  if(metaView) metaView.textContent = note;
-  if(statusBadge){ statusBadge.className = "badge badge-read"; statusBadge.textContent = "Gesperrt"; }
-  if(threads) threads.innerHTML = `<div class="empty">${esc(note)}</div>`;
-  if(messages) messages.innerHTML = `<div class="empty">${esc(note)}</div>`;
-  [titleInput, messageInput, replyInput].forEach(field => {
-    if(field){
-      field.disabled = true;
-      field.placeholder = "Chat aktuell nicht freigegeben";
-      field.value = "";
-    }
-  });
-  document.querySelectorAll('button[onclick="createThread()"], button[onclick="fillExample()"], button[onclick="sendReply()"], button[onclick="markSeen()"], button[onclick="deleteActiveThread()"]').forEach(btn => btn.disabled = true);
-}
-function syncVisibleChildNames(activeChild){
-  ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id => {
-    const el = document.getElementById(id);
-    if(el && activeChild) el.textContent = activeChild.name || "Kind";
-  });
-}
-function resolveActiveChild(){
-  const session = readJson(SESSION_KEY, null);
-  const currentStored = readJson(ACTIVE_CHILD_KEY, null);
-  const children = getStoredChildUsers();
+  function resolveChildContext(){
+    const authUser = readJson(AUTH_KEY, null);
+    if(!authUser || authUser.role !== "child"){ window.location.href = "login.html"; return null; }
 
-  if(session && session.role === "child" && session.userId){
-    const byId = children.find(entry => String(entry.id) === String(session.userId));
-    if(byId) return byId;
-  }
-
-  if(currentStored){
-    const byActiveId = children.find(entry => String(entry.id) === String(currentStored.id));
-    if(byActiveId) return byActiveId;
-    if(currentStored.role === "child") return { ...currentStored, role: "child" };
-  }
-
-  if(session && session.role === "child"){
-    return {
-      id: String(session.userId || session.name || "kind"),
-      name: session.name || "Kind",
-      age: Number(session.age) || 0,
-      birthdate: session.birthdate || "",
-      role: "child",
-      rights: session.rights || {}
+    const allUsers = normalizeUsers(readJson(USERS_KEY, []));
+    const fullUser = allUsers.find((entry) => String(entry.id) === String(authUser.id)) || authUser;
+    const age = calculateAge(fullUser.birthdate || authUser.birthdate || "");
+    const permissions = readJson(CHILD_PERMISSIONS_KEY, {});
+    const ageRules = permissions.ageRules || {};
+    const childOverrides = permissions.childOverrides || {};
+    const baseRights = ageRules[getAgeGroupKey(age)] || {};
+    const customRights = childOverrides[authUser.id] || fullUser.rights || {};
+    const finalRights = {
+      aufgaben: customRights.aufgaben ?? boolFromRule(baseRights.aufgaben),
+      meinGeld: customRights.meinGeld ?? boolFromRule(baseRights.meinGeld),
+      sparziele: customRights.sparziele ?? true,
+      wuensche: customRights.wuensche ?? true,
+      chat: age >= 6 ? true : !!customRights.chat,
+      essensplan: customRights.essensplan ?? boolFromRule(baseRights.essensplan),
+      familienplaner: customRights.familienplaner ?? boolFromRule(baseRights.familienplaner),
+      einkaufsliste: customRights.einkaufsliste ?? boolFromRule(baseRights.einkaufsliste)
     };
+
+    const mergedChild = { ...fullUser, ...authUser, role:"child", age, rights:finalRights };
+    writeJson(ACTIVE_CHILD_KEY, mergedChild);
+    window.HH_CHILD_CONTEXT = { fullUser:mergedChild, age, rights:finalRights };
+    return mergedChild;
   }
 
-  return null;
-}
-function doLogout(){
-  localStorage.removeItem(ACTIVE_CHILD_KEY);
-  window.location.href = "kindermodus.html";
-}
-function getChild(){
-  return resolveActiveChild();
-}
-function checkAuth(){
-  const activeChild = resolveActiveChild();
-  if(!activeChild){
-    window.location.href = "kindermodus.html";
-    return null;
-  }
-  writeJson(ACTIVE_CHILD_KEY, activeChild);
-  syncVisibleChildNames(activeChild);
-  return activeChild;
-}
-function getThreads(){
-  try{
-    const raw = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY) || "[]");
-    return Array.isArray(raw) ? raw : [];
-  }catch{
-    return [];
-  }
-}
-function saveThreads(threads){
-  localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(threads));
-}
-function childId(){
-  return String(child?.id || child?.name || "kind");
-}
-function getMyThreads(){
-  return getThreads()
-    .filter(t => String(t?.childId || "") === String(childId()))
-    .sort((a,b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
-}
-function categoryLabel(value){
-  return {
-    school:"Schule",
-    buy:"Einkauf",
-    help:"Hilfe",
-    reminder:"Erinnerung",
-    other:"Sonstiges"
-  }[value] || "Sonstiges";
-}
-function categoryClass(value){
-  return {
-    school:"badge-school",
-    buy:"badge-buy",
-    help:"badge-help",
-    reminder:"badge-reminder",
-    other:"badge-other"
-  }[value] || "badge-other";
-}
-function statusLabel(value){
-  return {
-    open:"Offen",
-    read:"Gelesen",
-    working:"In Bearbeitung",
-    done:"Erledigt"
-  }[value] || "Offen";
-}
-function statusClass(value){
-  return {
-    open:"badge-open",
-    read:"badge-read",
-    working:"badge-working",
-    done:"badge-done"
-  }[value] || "badge-open";
-}
-function createThread(){
-  if(!canChildUseChat(child)){
-    setChatLockedState(child);
-    return;
-  }
-  const category = document.getElementById("chatCategory").value;
-  const title = document.getElementById("chatTitle").value.trim();
-  const message = document.getElementById("chatMessage").value.trim();
-
-  if(!title || !message){
-    alert("Bitte gib einen kurzen Titel und eine Nachricht ein.");
-    return;
+  function updateSidebarLocks(rights){
+    document.querySelectorAll('[data-key]').forEach((link) => {
+      const key = link.dataset.key;
+      if(key === "dashboard" || key === "chat") return;
+      const allowed = !!rights[key];
+      if(!allowed){
+        link.classList.add("locked");
+        link.onclick = function(event){ event.preventDefault(); alert("Dieser Bereich ist für dich aktuell nicht freigegeben."); };
+      }
+    });
   }
 
-  const threads = getThreads();
-  const id = "chat_" + Date.now();
-
-  threads.push({
-    id,
-    childId: childId(),
-    childName: child?.name || child?.nickname || "Kind",
-    category,
-    title,
-    status: "open",
-    createdAt: nowIso(),
-    updatedAt: nowIso(),
-    unreadForChild: false,
-    unreadForParent: true,
-    messages: [{
-      id: "msg_" + Date.now(),
-      senderType: "child",
-      senderName: child?.name || child?.nickname || "Kind",
-      text: message,
-      createdAt: nowIso()
-    }]
-  });
-
-  saveThreads(threads);
-  document.getElementById("chatTitle").value = "";
-  document.getElementById("chatMessage").value = "";
-  activeThreadId = id;
-  renderAll();
-}
-function fillExample(){
-  if(!canChildUseChat(child)){
-    setChatLockedState(child);
-    return;
-  }
-  document.getElementById("chatCategory").value = "school";
-  document.getElementById("chatTitle").value = "Ich brauche deine Unterschrift";
-  document.getElementById("chatMessage").value = "Kannst du bitte heute meine Klassenarbeit unterschreiben? Ich möchte sie morgen wieder mitnehmen.";
-}
-function openThread(id){
-  activeThreadId = id;
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === id);
-  if(idx >= 0){
-    threads[idx].unreadForChild = false;
-    if(threads[idx].status === "open") threads[idx].status = "read";
-    threads[idx].updatedAt = nowIso();
-    saveThreads(threads);
-  }
-  renderAll();
-}
-function getActiveThread(){
-  return getMyThreads().find(t => t.id === activeThreadId) || null;
-}
-function sendReply(){
-  if(!canChildUseChat(child)){
-    setChatLockedState(child);
-    return;
-  }
-  const text = document.getElementById("replyMessage").value.trim();
-  if(!activeThreadId){
-    alert("Bitte wähle zuerst einen Chat aus.");
-    return;
-  }
-  if(!text){
-    alert("Bitte schreibe zuerst eine Nachricht.");
-    return;
-  }
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === activeThreadId);
-  if(idx < 0) return;
-
-  threads[idx].messages.push({
-    id:"msg_" + Date.now(),
-    senderType:"child",
-    senderName:child?.name || child?.nickname || "Kind",
-    text,
-    createdAt:nowIso()
-  });
-  threads[idx].updatedAt = nowIso();
-  threads[idx].unreadForParent = true;
-  if(threads[idx].status === "done") threads[idx].status = "working";
-  saveThreads(threads);
-  document.getElementById("replyMessage").value = "";
-  renderAll();
-}
-function markSeen(){
-  if(!activeThreadId) return;
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === activeThreadId);
-  if(idx < 0) return;
-  threads[idx].unreadForChild = false;
-  if(threads[idx].status === "open") threads[idx].status = "read";
-  saveThreads(threads);
-  renderAll();
-}
-function deleteActiveThread(){
-  if(!activeThreadId){
-    alert("Bitte wähle zuerst einen Chat aus.");
-    return;
-  }
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === activeThreadId && String(t.childId || "") === String(childId()));
-  if(idx < 0){
-    alert("Dieser Chat konnte nicht gefunden werden.");
-    return;
-  }
-  const threadTitle = threads[idx].title || "diesen Chat";
-  if(!confirm(`Möchtest du "${threadTitle}" wirklich löschen?`)) return;
-  threads.splice(idx, 1);
-  saveThreads(threads);
-  const remaining = threads
-    .filter(t => String(t.childId || "") === String(childId()))
-    .sort((a,b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
-  activeThreadId = remaining[0]?.id || null;
-  document.getElementById("replyMessage").value = "";
-  renderAll();
-}
-function renderStats(){
-  const threads = getMyThreads();
-  const openCount = threads.filter(t => t.status !== "done").length;
-  const replyCount = threads.reduce((sum,t)=>sum + (t.messages || []).filter(m => m.senderType === "parent").length, 0);
-  const unreadCount = threads.filter(t => t.unreadForChild).length;
-
-  document.getElementById("openCount").textContent = String(openCount);
-  document.getElementById("replyCount").textContent = String(replyCount);
-  document.getElementById("unreadCount").textContent = String(unreadCount);
-}
-function renderThreadList(){
-  const threads = getMyThreads();
-  const list = document.getElementById("threadList");
-
-  if(!threads.length){
-    list.innerHTML = '<div class="empty">Noch kein Chat vorhanden.<br>Starte links deine erste Nachricht an Mama oder Papa.</div>';
-    return;
+  function getParticipants(){
+    const users = normalizeUsers(readJson(USERS_KEY, []));
+    return users.filter(u => u.role === "child" || u.role === "parent" || u.role === "admin");
   }
 
-  if(!activeThreadId || !threads.some(t => t.id === activeThreadId)){
-    activeThreadId = threads[0].id;
+  function setTopInfo(rights){
+    document.getElementById("welcomeChildName").textContent = child?.name || "Kind";
+    document.getElementById("chatStatusTop").textContent = rights.chat ? "Chat frei ab 6 Jahren" : "Chat gesperrt";
   }
 
-  list.innerHTML = threads.map(thread => {
-    const last = (thread.messages || []).slice(-1)[0];
-    return `
-      <div class="thread-item ${thread.id === activeThreadId ? "active" : ""} ${thread.unreadForChild ? "unread" : ""}" onclick="openThread('${esc(thread.id)}')">
-        <div class="thread-head">
-          <div class="thread-title">${esc(thread.title)}</div>
-          <div class="thread-meta">${esc(fmtDate(thread.updatedAt || thread.createdAt))}</div>
+  function getUnreadMessages(){
+    const room = getRoom();
+    const seen = Number(localStorage.getItem(childSeenKey()) || 0);
+    return room.messages.filter(msg => msg.senderType === "parent" && new Date(msg.createdAt).getTime() > seen);
+  }
+
+  function updateBadgeAndStats(){
+    const room = getRoom();
+    const unread = getUnreadMessages().length;
+    const badge = document.getElementById("chatBadge");
+    document.getElementById("allCount").textContent = String(room.messages.length);
+    document.getElementById("newCount").textContent = String(unread);
+    document.getElementById("memberCount").textContent = String(getParticipants().length);
+    if(unread > 0){ badge.style.display = "inline-flex"; badge.textContent = unread > 99 ? "99+" : String(unread); }
+    else{ badge.style.display = "none"; badge.textContent = "0"; }
+  }
+
+  function renderThreadList(){
+    const list = document.getElementById("threadList");
+    const room = getRoom();
+    const unread = getUnreadMessages();
+    const latestAny = room.messages[room.messages.length - 1];
+    list.innerHTML = `
+      <div class="thread-item ${unread.length ? "unread active" : "active"}">
+        <div class="thread-row">
+          <div class="thread-avatar">👨‍👩‍👧</div>
+          <div class="thread-main">
+            <div class="thread-topline">
+              <div class="thread-title">Familienchat</div>
+              <div class="thread-meta">${esc(fmtDate(latestAny?.createdAt || nowIso()))}</div>
+            </div>
+            <div class="thread-preview ${unread.length ? "unread-text" : ""}">${esc(latestAny?.text || "Noch keine Nachricht vorhanden.")}</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="badge badge-open">Alle Nutzer</span>
+              <span class="badge ${unread.length ? "badge-working" : "badge-read"}">${unread.length ? unread.length + " neu" : "Gelesen"}</span>
+            </div>
+          </div>
+          ${unread.length ? '<span class="unread-dot"></span>' : ''}
         </div>
-        <div class="thread-preview">${esc(last ? last.text : "Noch keine Nachricht")}</div>
-        <div class="badges">
-          <span class="badge ${categoryClass(thread.category)}">${esc(categoryLabel(thread.category))}</span>
-          <span class="badge ${statusClass(thread.status)}">${esc(statusLabel(thread.status))}</span>
-        </div>
+      </div>`;
+  }
+
+  function renderMessages(){
+    const body = document.getElementById("chatMessages");
+    const room = getRoom();
+    if(!room.messages.length){ body.innerHTML = '<div class="info-note">Noch keine Nachrichten vorhanden. Schreibe unten deine erste Nachricht.</div>'; return; }
+    body.innerHTML = room.messages.map(msg => `
+      <div class="message ${msg.senderType === "child" ? "child" : "parent"}">
+        <div class="message-meta">${esc(msg.senderType === "child" ? (msg.senderName || "Du") : (msg.senderName || "Familie"))} · ${esc(fmtDate(msg.createdAt))}</div>
+        <div class="message-text">${esc(msg.text)}</div>
       </div>
-    `;
-  }).join("");
-}
-function renderActiveThread(){
-  const thread = getActiveThread();
-  const titleEl = document.getElementById("chatTitleView");
-  const metaEl = document.getElementById("chatMetaView");
-  const badgeEl = document.getElementById("chatStatusBadge");
-  const bodyEl = document.getElementById("chatMessages");
-
-  if(!thread){
-    titleEl.textContent = "Noch kein Chat ausgewählt";
-    metaEl.textContent = "Wähle links einen Chat aus oder starte unten einen neuen.";
-    badgeEl.className = "badge badge-open";
-    badgeEl.textContent = "Offen";
-    bodyEl.innerHTML = '<div class="empty">Wähle links einen Chat aus oder starte einen neuen.</div>';
-    return;
+    `).join("");
+    body.scrollTop = body.scrollHeight;
   }
 
-  titleEl.textContent = thread.title;
-  metaEl.textContent = categoryLabel(thread.category) + " · gestartet am " + fmtDate(thread.createdAt);
-  badgeEl.className = "badge " + statusClass(thread.status);
-  badgeEl.textContent = statusLabel(thread.status);
-
-  bodyEl.innerHTML = (thread.messages || []).map(msg => `
-    <div class="message ${msg.senderType === "child" ? "child" : "parent"}">
-      <div class="message-meta">${esc(msg.senderType === "child" ? "Du" : (msg.senderName || "Mama/Papa"))} · ${esc(fmtDate(msg.createdAt))}</div>
-      <div class="message-text">${esc(msg.text)}</div>
-    </div>
-  `).join("");
-
-  bodyEl.scrollTop = bodyEl.scrollHeight;
-}
-function renderAll(){
-  if(!canChildUseChat(child)){
-    setChatLockedState(child);
-    return;
+  function markSeen(){
+    const room = getRoom();
+    const latest = room.messages.length ? new Date(room.messages[room.messages.length - 1].createdAt).getTime() : Date.now();
+    localStorage.setItem(childSeenKey(), String(latest));
+    updateBadgeAndStats();
+    renderThreadList();
   }
-  renderStats();
-  renderThreadList();
-  renderActiveThread();
-}
 
-child = checkAuth();
-if(child){
-  renderAll();
-  window.addEventListener("storage", () => {
-    child = resolveActiveChild() || child;
-    syncVisibleChildNames(child);
+  function setChatLockedState(){
+    document.getElementById("chatTitleView").textContent = "Chat aktuell nicht freigegeben";
+    document.getElementById("chatMetaView").textContent = child?.age >= 6 ? "Der Chat ist für dieses Kind aktuell gesperrt." : "Der Familienchat ist erst ab 6 Jahren automatisch frei.";
+    document.getElementById("chatStatusBadge").className = "badge badge-read";
+    document.getElementById("chatStatusBadge").textContent = "Gesperrt";
+    document.getElementById("threadList").innerHTML = '<div class="info-note">Chat aktuell nicht freigegeben.</div>';
+    document.getElementById("chatMessages").innerHTML = '<div class="info-note">Chat aktuell nicht freigegeben.</div>';
+    document.getElementById("replyMessage").disabled = true;
+  }
+
+  function sendMessage(){
+    if(!window.HH_CHILD_CONTEXT.rights.chat){ setChatLockedState(); return; }
+    const input = document.getElementById("replyMessage");
+    const text = input.value.trim();
+    if(!text){ alert("Bitte schreibe zuerst eine Nachricht."); return; }
+    const room = getRoom();
+    room.messages.push({
+      id:"msg_" + Date.now(),
+      senderType:"child",
+      senderName:child?.name || "Kind",
+      text,
+      createdAt:nowIso()
+    });
+    saveRoom(room);
+    input.value = "";
     renderAll();
-  });
-}
-</script>
-<script>(function(){
-function hhReadJson(key, fallback){try{const parsed=JSON.parse(localStorage.getItem(key));return parsed ?? fallback;}catch(error){return fallback;}}
-function hhSeedBaseData(){
- if(!hhReadJson("haushaltsheld_family_access",null)){localStorage.setItem("haushaltsheld_family_access",JSON.stringify({code:"482178",enabled:true}));}
- if(!hhReadJson("haushaltsheld_parent_profiles_demo",null)){localStorage.setItem("haushaltsheld_parent_profiles_demo",JSON.stringify([{id:"parent-1",name:"Mama",pin:"2468",role:"parent"},{id:"parent-2",name:"Papa",pin:"1357",role:"parent"}]));}
- if(!hhReadJson("haushaltsheld_child_profiles_demo",null)){localStorage.setItem("haushaltsheld_child_profiles_demo",JSON.stringify([{id:"child-1",name:"Leo",pin:"1111",age:10,role:"child"},{id:"child-2",name:"Mia",pin:"2222",age:8,role:"child"},{id:"child-3",name:"Lina",pin:"3333",age:6,role:"child"}]));}
-}
-document.addEventListener("DOMContentLoaded",function(){
-  hhSeedBaseData();
-  const activeChild = (typeof resolveActiveChild === "function" ? resolveActiveChild() : null) || hhReadJson("hh_active_child",null);
-  if(activeChild){
-    localStorage.setItem("hh_active_child", JSON.stringify(activeChild));
-    ["childName","childNameCard","activeChildName","welcomeChildName"].forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=activeChild.name||"Kind";});
-  }
-});
-})();</script>
-
-<script>
-function updateChildChatBadge(){
-  const badge = document.getElementById("chatBadge");
-  if(!badge) return;
-
-  let threads = [];
-  try{
-    threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
-    if(!Array.isArray(threads)) threads = [];
-  }catch{
-    threads = [];
+    speakSnail("Deine Nachricht ist raus.");
   }
 
-  const activeChild = typeof resolveActiveChild === "function"
-    ? resolveActiveChild()
-    : (() => {
-        try{
-          return JSON.parse(localStorage.getItem("hh_active_child") || "null");
-        }catch{
-          return null;
+  function showPushBanner(text){
+    const banner = document.getElementById("pushBanner");
+    banner.textContent = text;
+    banner.classList.add("show");
+    clearTimeout(showPushBanner.timer);
+    showPushBanner.timer = setTimeout(() => banner.classList.remove("show"), 2600);
+  }
+
+  function speakSnail(text){
+    const talk = document.getElementById("snailTalk");
+    talk.textContent = text;
+    talk.classList.add("show");
+    clearTimeout(speakSnail.timer);
+    speakSnail.timer = setTimeout(() => talk.classList.remove("show"), 2200);
+  }
+
+  function initSnail(){
+    const fab = document.getElementById("kiFab");
+    const messages = ["Hallo! Das ist euer Familienchat. 🐌","Hier schreiben alle in einem gemeinsamen Verlauf.","Ab 6 Jahren ist der Chat automatisch frei.","Kurz schreiben geht oft am schnellsten."];
+    let idx = 0;
+    fab.addEventListener("mouseenter", () => { idx = (idx + 1) % messages.length; speakSnail(messages[idx]); });
+    fab.addEventListener("click", () => speakSnail("Die Kinder-KI bauen wir hier später richtig ein."));
+    setTimeout(() => speakSnail(messages[0]), 900);
+  }
+
+  function renderAll(){ updateBadgeAndStats(); renderThreadList(); renderMessages(); }
+
+  window.sendMessage = sendMessage;
+  window.markSeen = markSeen;
+  window.handleLogout = function(){ localStorage.removeItem(ACTIVE_CHILD_KEY); window.location.href = "login.html"; };
+
+  function init(){
+    child = resolveChildContext();
+    if(!child) return;
+    updateSidebarLocks(window.HH_CHILD_CONTEXT.rights);
+    setTopInfo(window.HH_CHILD_CONTEXT.rights);
+    initSnail();
+    if(!window.HH_CHILD_CONTEXT.rights.chat){ setChatLockedState(); return; }
+    renderAll();
+    window.addEventListener("storage", (event) => {
+      if(event.key === ROOM_KEY){
+        const before = getUnreadMessages().length;
+        renderAll();
+        const after = getUnreadMessages().length;
+        if(after > before){
+          const room = getRoom();
+          const last = room.messages[room.messages.length - 1];
+          if(last && last.senderType === "parent"){ showPushBanner("Neue Nachricht von " + (last.senderName || "Familie")); }
         }
-      })();
-
-  const currentChildId = String(activeChild?.id || activeChild?.name || "kind");
-  const unreadCount = threads.filter(t => t && String(t.childId || "") === currentChildId && t.unreadForChild).length;
-
-  if(unreadCount > 0){
-    badge.style.display = "inline-block";
-    badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
-  }else{
-    badge.style.display = "none";
-    badge.textContent = "0";
+      }
+    });
   }
-}
 
-document.addEventListener("DOMContentLoaded", updateChildChatBadge);
-window.addEventListener("storage", updateChildChatBadge);
+  document.addEventListener("DOMContentLoaded", init);
+})();
 </script>
 </body>
 </html>

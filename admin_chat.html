@@ -3,741 +3,121 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Haushaltsheld – Familien-Chat</title>
-
+<title>Haushaltsheld – Chat</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ki-schnecke.css">
-
 <style>
 :root{
-  --bg:#f7f2e9;
-  --bg-2:#fdf9f3;
-  --card:#ffffff;
-  --soft:#f6efe4;
-  --soft2:#efe3d2;
-  --line:#dfd1bc;
-
-  --text:#2d342f;
-  --text2:#556159;
-  --muted:#7d8a82;
-
-  --accent:#4CAF50;
-  --accent-dark:#3E8E41;
-  --accent-soft:#e7f5e8;
-
-  --green:#5ca66f;
-  --green-soft:#e7f4ea;
-
-  --red:#cc6666;
-  --red-soft:#fdeaea;
-
-  --yellow:#b5882f;
-  --yellow-soft:#fbf4df;
-
-  --blue:#6b96d9;
-  --blue-soft:#e9f1ff;
-
-  --brown:#4d3c2c;
-  --brown-dark:#433324;
-
-  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
-  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
-  --shadow:0 12px 34px rgba(54,45,28,.10);
-  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
-
-  --sidebar-w:258px;
+  --bg:#f7f2e9; --line:#dfd1bc; --card:#ffffff; --soft:#f6efe4; --text:#2d342f; --text2:#556159; --muted:#7d8a82;
+  --accent:#4CAF50; --accent-dark:#3E8E41; --accent-soft:#e7f5e8; --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08); --shadow:0 12px 34px rgba(54,45,28,.10); --sidebar-w:258px;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;overflow-x:hidden}
-
 body{
   font-family:"Outfit",sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
-    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-  color:var(--text);
-  min-height:100vh;
-  font-size:16px;
-  line-height:1.6;
-  letter-spacing:-0.01em;
+  background:radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%), linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);min-height:100vh;font-size:16px;line-height:1.6;letter-spacing:-0.01em;
 }
-
-h1,h2,h3,h4,h5,h6{
-  font-family:"Outfit",sans-serif;
-  letter-spacing:-0.03em;
-  line-height:1.15;
-}
-
-button,input,select,textarea{font:inherit}
-
-.app{
-  display:grid;
-  grid-template-columns:var(--sidebar-w) 1fr;
-  min-height:100vh;
-}
-
-/* Sidebar */
+button,input,textarea{font:inherit}
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
 .sidebar{
-  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
-  border-right:1px solid rgba(223,209,188,.85);
-  padding:28px 18px 24px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
-  z-index:10;
-  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);border-right:1px solid rgba(223,209,188,.85);padding:28px 18px 24px;
+  display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10;box-shadow:inset -1px 0 0 rgba(255,255,255,.4)
 }
-.logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 8px 24px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:8px;
-}
-.logo-wrap img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
-}
+.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}
 .logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
 .logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
-.nav-label{
-  font-size:.7rem;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  color:var(--muted);
-  padding:16px 10px 6px;
-}
-.nav{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.nav a{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px 13px;
-  border-radius:18px;
-  text-decoration:none;
-  color:var(--text2);
-  font-weight:700;
-  font-size:.98rem;
-  transition:all .18s ease;
-  border:1px solid transparent;
-}
-.nav a:hover{
-  background:rgba(255,255,255,.72);
-  border-color:rgba(223,209,188,.9);
-  transform:translateX(2px);
-  box-shadow:var(--shadow-xs);
-  color:var(--text);
-}
-.nav a.active{
-  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
-  color:#fff;
-  border-color:rgba(62,142,65,.28);
-  box-shadow:
-    0 5px 0 #2f6f33,
-    0 14px 26px rgba(62,142,65,.20),
-    inset 0 1px 0 rgba(255,255,255,.18);
-}
-.nav a.active .nav-icon{
-  background:rgba(255,255,255,.16);
-  border-color:rgba(255,255,255,.22);
-  color:#fff;
-}
-.nav-icon{
-  width:36px;
-  height:36px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.92);
-  color:var(--accent-dark);
-  flex-shrink:0;
-  box-shadow:0 2px 8px rgba(54,45,28,.05);
-}
-.nav-icon svg{width:18px;height:18px;stroke:currentColor}
-.sidebar-footer{
-  margin-top:auto;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-}
-.mode-switch{
-  display:flex;
-  gap:6px;
-  background:rgba(255,255,255,.86);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:5px;
-  box-shadow:var(--shadow-xs);
-}
-.mode-btn{
-  flex:1;
-  border:none;
-  background:transparent;
-  color:var(--muted);
-  padding:9px 12px;
-  border-radius:999px;
-  font-size:.82rem;
-  font-weight:800;
-  cursor:pointer;
-  transition:.18s ease;
-}
-.mode-btn.active{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  box-shadow:
-    0 3px 0 #2f6f33,
-    0 8px 18px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.2);
-}
-
-/* Main */
-.main{
-  width:100%;
-  max-width:1580px;
-  padding:32px;
-}
-
-.page-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:18px;
-  flex-wrap:wrap;
-  margin-bottom:22px;
-}
-.page-header h1{
-  font-size:2.2rem;
-  font-weight:800;
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.page-header p{
-  color:var(--muted);
-  font-size:.98rem;
-  max-width:920px;
-}
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.mode-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 16px;
-  border-radius:999px;
-  font-weight:800;
-  font-size:.88rem;
-  background:var(--soft);
-  border:1px solid var(--line);
-  color:var(--text2);
-  box-shadow:var(--shadow-xs);
-}
-.page-title-icon,
-.section-icon{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  display:inline-grid;
-  place-items:center;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-  border:1px solid rgba(76,175,80,.16);
-  box-shadow:var(--shadow-xs);
-  flex-shrink:0;
-}
-.page-title-icon svg,.section-icon svg{
-  width:18px;
-  height:18px;
-  stroke:currentColor;
-}
-
-.hero{
-  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
-  border:1px solid rgba(76,175,80,.18);
-  border-radius:30px;
-  padding:28px 30px;
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:20px;
-  align-items:stretch;
-  margin-bottom:24px;
-  box-shadow:var(--shadow-sm);
-  position:relative;
-  overflow:hidden;
-}
-.hero::after{
-  content:"";
-  position:absolute;
-  right:-40px;
-  bottom:-40px;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  background:rgba(76,175,80,.07);
-}
-.hero h2{
-  font-size:1.55rem;
-  font-weight:800;
-  margin-bottom:10px;
-}
-.hero p{
-  color:var(--text2);
-  line-height:1.65;
-  margin-bottom:16px;
-}
-.hero-tags{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.hero-tag{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.95);
-  padding:9px 14px;
-  border-radius:999px;
-  font-size:.88rem;
-  font-weight:800;
-  color:var(--text2);
-  box-shadow:0 1px 4px rgba(54,45,28,.04);
-}
-.mini{
-  background:rgba(255,255,255,.78);
-  border-radius:20px;
-  padding:16px;
-  border:1px solid rgba(223,209,188,.85);
-  box-shadow:var(--shadow-xs);
-  margin-bottom:12px;
-}
-.mini strong{
-  display:block;
-  margin-bottom:6px;
-  font-size:.96rem;
-  font-weight:800;
-}
-.mini span{
-  color:var(--muted);
-  font-size:.88rem;
-  line-height:1.55;
-}
-
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-bottom:22px;
-}
-.stat-card{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:26px;
-  padding:20px;
-  box-shadow:var(--shadow-sm);
-}
-.stat-label{
-  font-size:.72rem;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  margin-bottom:8px;
-}
-.stat-value{
-  font-size:2rem;
-  font-weight:800;
-  letter-spacing:-0.04em;
-}
+.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:18px;text-decoration:none;color:var(--text2);font-weight:700;border:1px solid transparent;transition:all .18s ease}
+.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}
+.nav a.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%); color:#fff; border-color:rgba(62,142,65,.28); box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)}
+.nav-icon{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)}
+.nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
+.chat-badge{margin-left:auto;min-width:22px;height:22px;padding:0 7px;border-radius:999px;display:none;align-items:center;justify-content:center;background:#fff;color:#2e8746;font-size:.74rem;font-weight:800;border:1px solid rgba(255,255,255,.45)}
+.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}
+.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease}
+.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
+.main{width:100%;max-width:1500px;padding:32px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.page-header h1{font-size:2.2rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.page-header p{color:var(--muted);font-size:.98rem;max-width:920px}
+.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mode-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)}
+.page-title-icon{width:32px;height:32px;border-radius:12px;display:inline-grid;place-items:center;background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0}
+.hero{background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);border:1px solid rgba(76,175,80,.18);border-radius:26px;padding:24px 26px;display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch;margin-bottom:24px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(76,175,80,.07)}
+.hero h2{font-size:1.55rem;font-weight:800;margin-bottom:10px}
+.hero p{color:var(--text2);line-height:1.65;margin-bottom:16px}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.95);padding:9px 14px;border-radius:999px;font-size:.88rem;font-weight:800;color:var(--text2);box-shadow:0 1px 4px rgba(54,45,28,.04)}
+.mini{background:rgba(255,255,255,.78);border-radius:20px;padding:16px;border:1px solid rgba(223,209,188,.85);box-shadow:var(--shadow-xs);margin-bottom:12px}
+.mini strong{display:block;margin-bottom:6px;font-size:.96rem;font-weight:800}
+.mini span{color:var(--muted);font-size:.88rem;line-height:1.55}
+.push-banner{display:none;margin-bottom:14px;padding:12px 14px;border-radius:18px;background:#eef9f0;border:1px solid #c6e4cf;color:#3f6d4c;font-weight:900;box-shadow:var(--shadow-xs)}
+.push-banner.show{display:block;animation:bannerIn .25s ease}
+@keyframes bannerIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.stat-card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:26px;padding:18px;box-shadow:var(--shadow-sm)}
+.stat-label{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.stat-value{font-size:2rem;font-weight:800;letter-spacing:-0.04em}
 .stat-sub{font-size:.84rem;color:var(--muted)}
-
-.grid{
-  display:grid;
-  grid-template-columns:380px 1fr;
-  gap:18px;
-}
-.card{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:28px;
-  padding:24px;
-  box-shadow:var(--shadow-sm);
-  margin-bottom:18px;
-}
-.card-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:1.16rem;
-  font-weight:800;
-  margin-bottom:12px;
-}
-.card-sub{
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:16px;
-  font-size:.9rem;
-}
-
-.field{margin-bottom:14px}
-.field label{
-  display:block;
-  font-size:.72rem;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  margin-bottom:8px;
-}
-.field input,.field select,.field textarea{
-  width:100%;
-  border:1.5px solid var(--line);
-  background:#fffdf9;
-  border-radius:16px;
-  padding:13px 14px;
-  font-size:.94rem;
-  color:var(--text);
-  outline:none;
-  transition:.18s ease;
-  min-height:48px;
-}
-.field textarea{min-height:110px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{
-  border-color:rgba(76,175,80,.7);
-  box-shadow:0 0 0 4px rgba(76,175,80,.10);
-  background:#fff;
-}
-
-.btn,.btn-soft,.btn-line{
-  border:none;
-  padding:13px 22px;
-  border-radius:16px;
-  font-size:.95rem;
-  font-weight:800;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  text-decoration:none;
-}
-.btn{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20);
-}
-.btn-soft{
-  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);
-  color:#4d3c2c;
-  border:1.5px solid #d7c0a6;
-  box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65);
-}
-.btn-line{
-  background:#fff;
-  color:var(--text2);
-  border:1.5px solid var(--line);
-}
-
+.grid{display:grid;grid-template-columns:330px 1fr;gap:18px}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:22px;padding:18px;box-shadow:var(--shadow-sm);margin-bottom:18px}
+.card-title{display:flex;align-items:center;gap:10px;font-size:1.16rem;font-weight:800;margin-bottom:12px}
+.card-sub{color:var(--muted);line-height:1.6;margin-bottom:16px;font-size:.9rem}
+.btn,.btn-soft,.btn-line{border:none;padding:12px 16px;border-radius:14px;font-size:.92rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:.18s ease}
+.btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.18),inset 0 1px 0 rgba(255,255,255,.20)}
+.btn-soft{background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);color:#4d3c2c;border:1.5px solid #d7c0a6;box-shadow:0 3px 0 #c7ae91,0 7px 16px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65)}
+.btn-line{background:#fff;color:var(--text2);border:1.5px solid var(--line);box-shadow:var(--shadow-xs)}
 .thread-list{display:grid;gap:10px}
-.thread-item{
-  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
-  border:1px solid transparent;
-  border-radius:22px;
-  padding:14px 16px;
-  cursor:pointer;
-  transition:.18s ease;
-  position:relative;
-}
-.thread-item:hover{
-  border-color:rgba(223,209,188,.95);
-  transform:translateY(-1px);
-  box-shadow:var(--shadow-xs);
-}
-.thread-item.active{
-  border-color:#b9d7bc;
-  box-shadow:0 0 0 3px rgba(76,175,80,.10);
-}
-.thread-item.unread::after{
-  content:"";
-  position:absolute;
-  right:14px;
-  top:14px;
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:#4CAF50;
-  box-shadow:0 0 0 3px rgba(76,175,80,.15);
-}
-.thread-head{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:6px;
-}
-.thread-title{font-weight:800;font-size:.96rem}
-.thread-meta{font-size:.78rem;color:var(--muted)}
-.thread-preview{font-size:.86rem;color:var(--text2);line-height:1.45}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:.75rem;
-  font-weight:800;
-  border:1px solid transparent;
-}
-.badge-school{background:var(--blue-soft);color:#496d9d;border-color:#cadcf8}
-.badge-buy{background:#fff8ef;color:#916737;border-color:#ead7b8}
-.badge-help{background:#f0eaff;color:#6a45b0;border-color:#d9c7f4}
-.badge-reminder{background:#eef7ef;color:#3d7a48;border-color:#c8e6ca}
-.badge-other{background:#f6efe4;color:#735945;border-color:#e2d1be}
-.badge-open{background:var(--blue-soft);color:#496d9d;border-color:#cadcf8}
+.thread-item{background:linear-gradient(180deg,#fcfdfc 0%, #f6faf6 100%);border:1px solid rgba(223,209,188,.82);border-radius:18px;padding:12px 13px;position:relative}
+.thread-item.unread::after{content:"";position:absolute;right:12px;top:12px;width:9px;height:9px;border-radius:50%;background:#4CAF50;box-shadow:0 0 0 3px rgba(76,175,80,.12)}
+.thread-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:6px}
+.thread-title{font-weight:800;font-size:.95rem;line-height:1.35}
+.thread-meta{font-size:.78rem;color:var(--muted);white-space:nowrap}
+.thread-preview{font-size:.85rem;color:var(--text2);line-height:1.45}
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 9px;border-radius:999px;font-size:.73rem;font-weight:800;border:1px solid transparent}
+.badge-open{background:#eef5ff;color:#496d9d;border-color:#cadcf8}
 .badge-read{background:#eef7ef;color:#3d7a48;border-color:#c8e6ca}
 .badge-working{background:#fff8ef;color:#916737;border-color:#ead7b8}
-.badge-done{background:#e7f4ea;color:#3d7a48;border-color:#bddfca}
-
 .chat-card{padding:0;overflow:hidden}
-.chat-head{
-  padding:22px 24px;
-  border-bottom:1px solid rgba(223,209,188,.95);
-  display:flex;
-  justify-content:space-between;
-  gap:14px;
-  align-items:flex-start;
-}
-.chat-body{
-  padding:18px 18px 8px;
-  display:grid;
-  gap:12px;
-  min-height:420px;
-  max-height:540px;
-  overflow:auto;
-  background:linear-gradient(180deg,#fbfdfb 0%,#f7faf7 100%);
-}
-.message{
-  max-width:75%;
-  padding:14px 16px;
-  border-radius:20px;
-  box-shadow:var(--shadow-xs);
-  border:1px solid rgba(223,209,188,.75)
-}
-.message.child{
-  justify-self:start;
-  background:#fff;
-  color:var(--text);
-}
-.message.parent{
-  justify-self:end;
-  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
-  color:#fff;
-  border-color:rgba(62,142,65,.18);
-}
+.chat-head{padding:22px 24px;border-bottom:1px solid rgba(223,209,188,.95);display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.chat-body{padding:18px 18px 8px;display:flex;flex-direction:column;gap:12px;min-height:420px;max-height:560px;overflow:auto;background:linear-gradient(180deg,#fbfdfb 0%,#f7faf7 100%)}
+.message{max-width:78%;padding:14px 16px;border-radius:20px;box-shadow:var(--shadow-xs);border:1px solid rgba(223,209,188,.75)}
+.message.child{align-self:start;background:#fff;color:var(--text)}
+.message.parent{align-self:end;background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-color:rgba(62,142,65,.18)}
 .message-meta{font-size:.74rem;opacity:.78;margin-bottom:6px}
 .message-text{font-size:.93rem;line-height:1.55;white-space:pre-wrap;word-break:break-word}
-.chat-foot{
-  padding:18px;
-  border-top:1px solid rgba(223,209,188,.95);
-  background:#fffdfa;
-}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.empty{
-  padding:28px 20px;
-  text-align:center;
-  color:var(--muted);
-  line-height:1.6;
-}
-.info-strip{
-  margin-top:12px;
-  padding:14px 16px;
-  border-radius:18px;
-  background:#eef9f0;
-  border:1px solid #c6e4cf;
-  color:#3f6d4c;
-  font-size:.9rem;
-}
-.filter-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.helper{
-  font-size:.85rem;
-  color:var(--muted);
-  line-height:1.55;
-}
-
-@media(max-width:1200px){
-  .grid,.hero,.stats-grid{grid-template-columns:1fr}
-}
-@media(max-width:960px){
-  .app{grid-template-columns:1fr}
-  .sidebar{
-    height:auto;
-    position:relative;
-    flex-direction:row;
-    flex-wrap:wrap;
-    padding:16px;
-    gap:0;
-  }
-  .logo-wrap{
-    margin-bottom:0;
-    padding-bottom:0;
-    border-bottom:none;
-    border-right:1px solid var(--line);
-    padding-right:16px;
-    margin-right:16px;
-  }
-  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
-  .nav-label{display:none}
-}
-@media(max-width:700px){
-  .main{padding:16px}
-  .page-header h1{font-size:1.85rem}
-  .chat-head{padding:18px}
-  .chat-body{min-height:320px}
-  .message{max-width:92%}
-  .filter-row{grid-template-columns:1fr}
-}
-
-
-.open-chat-modal-btn{
-  margin-left:auto;
-}
-
-.chat-modal{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:rgba(45,52,47,.28);
-  backdrop-filter:blur(4px);
-  z-index:9999;
-}
-.chat-modal.show{display:flex}
-
-.chat-modal-card{
-  width:min(100%, 680px);
-  max-height:min(88vh, 860px);
-  overflow:auto;
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:30px;
-  box-shadow:var(--shadow-lg);
-  padding:24px;
-}
-
-.chat-modal-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-  margin-bottom:14px;
-}
-.chat-modal-head h3{
-  font-size:1.2rem;
-  font-weight:800;
-  margin-bottom:6px;
-}
-.chat-modal-head p{
-  color:var(--muted);
-  line-height:1.55;
-  font-size:.92rem;
-}
-
-.chat-modal-close{
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background:#fff;
-  color:var(--text2);
-  cursor:pointer;
-  font-size:1.6rem;
-  line-height:1;
-  flex-shrink:0;
-}
-
-.chat-toolbar{
-  display:flex;
-  justify-content:flex-end;
-  gap:12px;
-  margin-bottom:14px;
-  flex-wrap:wrap;
-}
+.chat-foot{padding:18px;border-top:1px solid rgba(223,209,188,.95);background:#fffdfa}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.field textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-radius:16px;padding:12px 13px;font-size:.94rem;color:var(--text);min-height:80px;resize:vertical}
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.info-strip{margin-top:12px;padding:14px 16px;border-radius:18px;background:#eef9f0;border:1px solid #c6e4cf;color:#3f6d4c;font-size:.9rem}
+.empty{padding:28px 20px;text-align:center;color:var(--muted);line-height:1.6}
+@media(max-width:1200px){.grid,.hero,.stats-grid{grid-template-columns:1fr}}
+@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav-label{display:none}}
+@media(max-width:700px){.main{padding:16px}.page-header h1{font-size:1.85rem}.chat-head{padding:18px}.chat-body{min-height:320px}.message{max-width:92%}}
 </style>
 </head>
-<body data-page="admin-chat">
-
+<body>
 <div class="app">
   <aside class="sidebar">
     <div class="logo-wrap">
       <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-      <div>
-        <div class="logo-name">Haushaltsheld</div>
-        <div class="logo-sub">Dein Familien-Assistent</div>
-      </div>
+      <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Familien-Assistent</div></div>
     </div>
-
     <div class="nav-label">Hauptmenü</div>
     <nav class="nav">
-      <a href="index.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 10.5 12 3l9 7.5"></path>
-            <path d="M5 9.5V21h14V9.5"></path>
-          </svg>
-        </span>
-        <span>Dashboard</span>
-      </a>
-
-      <a href="admin.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4Z"></path>
-            <path d="M9.5 12l1.7 1.7L14.8 10"></path>
-          </svg>
-        </span>
-        <span>Familienrechte</span>
-      </a>
-
-    <a href="admin_chat.html" class="active">
-  <span class="nav-icon" style="position:relative;">
-    
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-    </svg>
-
-    <span id="chatBadge" class="chat-badge" style="display:none;">0</span>
-
-  </span>
-
-  <span>Familien-Chat</span>
-</a>
-
+      <a href="index.html"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
+      <a href="admin.html"><span class="nav-icon">🛡️</span><span>Familienrechte</span></a>
+      <a href="admin_chat.html" class="active"><span class="nav-icon" style="position:relative;">💬<span id="chatBadge" class="chat-badge">0</span></span><span>Chat</span></a>
+    </nav>
     <div class="sidebar-footer">
       <div class="mode-switch">
         <button class="mode-btn active" type="button">Eltern</button>
@@ -749,17 +129,9 @@ button,input,select,textarea{font:inherit}
   <main class="main">
     <div class="page-header">
       <div>
-        <h1>
-          <span class="page-title-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-          </span>
-          <span>Familien-Chat</span>
-        </h1>
-        <p>Hier beantwortet ihr die Nachrichten der Kinder. Alle Gespräche laufen über denselben Speicher wie im Kind-Chat, damit nichts doppelt gepflegt werden muss.</p>
+        <h1><span class="page-title-icon">💬</span><span>Familienchat</span></h1>
+        <p>Der Chat ist jetzt ein gemeinsamer Familienchat für alle Nutzer. Kinder ab 6 Jahren schreiben direkt in denselben Verlauf wie die Eltern.</p>
       </div>
-
       <div class="header-right">
         <a class="btn-soft" href="index.html">Zum Dashboard</a>
         <a class="btn-soft" href="admin.html">Zu Familienrechte</a>
@@ -770,60 +142,30 @@ button,input,select,textarea{font:inherit}
 
     <section class="hero">
       <div>
-        <h2>Ein zentraler Chat für die ganze Familie</h2>
-        <p>Diese Seite nutzt bewusst denselben Chat-Speicher wie die Kind-Seite. Kinder starten hier ihre Gespräche, und ihr könnt im Elternmodus lesen, antworten und den Bearbeitungsstatus setzen.</p>
-        <div class="hero-tags">
-          <span class="hero-tag">gleicher Speicher</span>
-          <span class="hero-tag">kein Doppelsystem</span>
-          <span class="hero-tag">Elternantworten</span>
-          <span class="hero-tag">Status steuerbar</span>
-        </div>
+        <h2>Ein gemeinsamer Chat für alle</h2>
+        <p>Keine Titel, keine Kategorien, keine extra Unterhaltungen. Kinder und Eltern schreiben in einem ruhigen Familienchat miteinander.</p>
+        <div class="hero-tags"><span class="hero-tag">Einfach</span><span class="hero-tag">Schnell</span><span class="hero-tag">Gemeinsam</span></div>
       </div>
       <div>
-        <div class="mini"><strong>Alles bleibt zusammen</strong><span>Die Seite liest dieselben Threads aus wie <code>kind_chat.html</code>. Dadurch gibt es keinen zweiten Chat und keine doppelte Pflege.</span></div>
-        <div class="mini"><strong>Klarer Überblick</strong><span>Ihr seht offene Chats, unbeantwortete Kinder-Nachrichten und könnt Gespräche direkt auf erledigt oder in Bearbeitung setzen.</span></div>
+        <div class="mini"><strong>Ab 6 Jahren frei</strong><span>Der Kinderchat ist automatisch frei, sobald das Kind 6 Jahre alt ist.</span></div>
+        <div class="mini"><strong>Gleicher Verlauf</strong><span>Kind- und Elternseite greifen auf denselben Familienchat zu.</span></div>
       </div>
     </section>
+
+    <div class="push-banner" id="pushBanner">Neue Nachricht vom Kind.</div>
 
     <section class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-label">Alle Chats</div>
-        <div class="stat-value" id="allCount">0</div>
-        <div class="stat-sub">Gesamte Unterhaltungen im Familien-Chat</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Neu für Eltern</div>
-        <div class="stat-value" id="unreadParentCount">0</div>
-        <div class="stat-sub">Kinder-Nachrichten mit Rückmeldebedarf</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">In Bearbeitung</div>
-        <div class="stat-value" id="workingCount">0</div>
-        <div class="stat-sub">Chats, die gerade aktiv bearbeitet werden</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Erledigt</div>
-        <div class="stat-value" id="doneCount">0</div>
-        <div class="stat-sub">Bereits geklärte Unterhaltungen</div>
-      </div>
+      <div class="stat-card"><div class="stat-label">Nachrichten</div><div class="stat-value" id="allCount">0</div><div class="stat-sub">im Familienchat</div></div>
+      <div class="stat-card"><div class="stat-label">Neu vom Kind</div><div class="stat-value" id="newCount">0</div><div class="stat-sub">noch ungelesen</div></div>
+      <div class="stat-card"><div class="stat-label">Kinder</div><div class="stat-value" id="childCount">0</div><div class="stat-sub">im Haushalt</div></div>
+      <div class="stat-card"><div class="stat-label">Status</div><div class="stat-value">Offen</div><div class="stat-sub">Familienchat aktiv</div></div>
     </section>
-
-    
-    <div class="chat-toolbar">
-      <button class="btn open-chat-modal-btn" type="button" onclick="openNewChatModal()">Neuen Chat starten</button>
-    </div>
 
     <section class="grid">
       <div>
-<section class="card">
-          <div class="card-title">
-            <span class="section-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              </svg>
-            </span>
-            <span>Alle Gespräche</span>
-          </div>
+        <section class="card">
+          <div class="card-title"><span>💬</span><span>Familienchat</span></div>
+          <div class="card-sub">Die Übersicht bleibt einfach: ein Chat, ein Verlauf, alle Nutzer.</div>
           <div class="thread-list" id="threadList"></div>
         </section>
       </div>
@@ -832,571 +174,187 @@ button,input,select,textarea{font:inherit}
         <section class="card chat-card">
           <div class="chat-head">
             <div>
-              <div class="card-title" style="margin-bottom:6px">
-                <span class="section-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </span>
-                <span id="chatTitleView">Noch kein Chat ausgewählt</span>
-              </div>
-              <div class="thread-meta" id="chatMetaView">Wähle links einen Chat aus.</div>
+              <div class="card-title" style="margin-bottom:6px"><span>💬</span><span>Familienchat</span></div>
+              <div class="thread-meta" id="chatMetaView">Hier laufen alle Nachrichten der Familie zusammen.</div>
             </div>
             <div id="chatStatusBadge" class="badge badge-open">Offen</div>
           </div>
 
-          <div class="chat-body" id="chatMessages">
-            <div class="empty">Wähle links einen Chat aus, um die Unterhaltung zu lesen und zu beantworten.</div>
-          </div>
+          <div class="chat-body" id="chatMessages"><div class="empty">Noch keine Nachrichten vorhanden.</div></div>
 
           <div class="chat-foot">
             <div class="field">
-              <label for="replyMessage">Antwort an das Kind</label>
+              <label for="replyMessage">Antwort in den Familienchat</label>
               <textarea id="replyMessage" placeholder="Hier könnt ihr als Eltern antworten..."></textarea>
             </div>
-
-            <div class="filter-row" style="margin-bottom:12px">
-              <div class="field" style="margin-bottom:0">
-                <label for="statusSelect">Status setzen</label>
-                <select id="statusSelect">
-                  <option value="open">Offen</option>
-                  <option value="read">Gelesen</option>
-                  <option value="working">In Bearbeitung</option>
-                  <option value="done">Erledigt</option>
-                </select>
-              </div>
-              <div class="field" style="margin-bottom:0">
-                <label for="parentName">Antwort von</label>
-                <input id="parentName" type="text" placeholder="z. B. Mama oder Papa">
-              </div>
+            <div class="action-bar">
+              <button class="btn" type="button" onclick="sendMessage()">Senden</button>
+              <button class="btn-line" type="button" onclick="markSeen()">Als gelesen markieren</button>
             </div>
-
-            <div class="row">
-              <button class="btn" type="button" onclick="sendReply()">Antwort senden</button>
-              <button class="btn-line" type="button" onclick="applyStatus()">Status speichern</button>
-              <button class="btn-soft" type="button" onclick="markSeen()">Als gelesen markieren</button>
-              <button class="btn-danger" type="button" onclick="deleteActiveThread()">Chat löschen</button>
-            </div>
-
-            <div class="info-strip">Beim Antworten wird der Chat automatisch für das Kind als neu markiert, damit es die Rückmeldung sieht.</div>
+            <div class="info-strip">Beim Antworten wird der Chat automatisch für die Kinder als neu markiert.</div>
           </div>
         </section>
       </div>
     </section>
-  
-    <div class="chat-modal" id="newChatModal" aria-hidden="true">
-      <div class="chat-modal-card">
-        <div class="chat-modal-head">
-          <div>
-            <h3>Neuen Chat an Kind starten</h3>
-            <p>Hier könnt ihr als Eltern selbst eine neue Unterhaltung eröffnen. Ihr schreibt einfach direkt die erste Nachricht – ohne extra Kurztitel.</p>
-          </div>
-          <button class="chat-modal-close" type="button" onclick="closeNewChatModal()">×</button>
-        </div>
-
-        <div class="field">
-          <label for="newChatChild">Kind auswählen</label>
-          <select id="newChatChild">
-            <option value="">-- Kind auswählen --</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="newChatCategory">Kategorie</label>
-          <select id="newChatCategory">
-            <option value="school">Schule</option>
-            <option value="buy">Einkauf</option>
-            <option value="help">Hilfe</option>
-            <option value="reminder">Erinnerung</option>
-            <option value="other">Sonstiges</option>
-          </select>
-        </div>
-<div class="field">
-          <label for="newChatMessage">Erste Nachricht</label>
-          <textarea id="newChatMessage" placeholder="Schreibt hier eure erste Nachricht an das Kind..."></textarea>
-        </div>
-
-        <div class="row">
-          <button class="btn" type="button" onclick="createParentThread()">Chat starten</button>
-          <button class="btn-soft" type="button" onclick="fillParentExample()">Beispiel einfügen</button>
-          <button class="btn-line" type="button" onclick="closeNewChatModal()">Abbrechen</button>
-        </div>
-
-        <div class="info-strip">So bleibt die Hauptansicht übersichtlich, und neue Gespräche werden in einem eigenen Fenster gestartet.</div>
-      </div>
-    </div>
-
   </main>
 </div>
 
 <script>
-const CHAT_STORAGE_KEY = "hh_family_chat_threads";
+(function(){
+  const AUTH_KEY = "haushaltsheld_user";
+  const USERS_KEY = "haushaltsheld_users";
+  const ROOM_KEY = "hh_family_chat_room";
+  const LEGACY_THREADS_KEY = "hh_family_chat_threads";
+  const PARENT_SEEN_KEY = "hh_family_chat_seen_parent";
 
-let activeThreadId = null;
+  function readJson(key, fallback){ try{ const parsed = JSON.parse(localStorage.getItem(key)); return parsed ?? fallback; }catch(error){ return fallback; } }
+  function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+  function nowIso(){ return new Date().toISOString(); }
+  function fmtDate(v){ if(!v) return "—"; const d = new Date(v); if(Number.isNaN(d.getTime())) return "—"; return d.toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); }
+  function esc(s){ return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 
-function esc(s){
-  return String(s ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-function nowIso(){ return new Date().toISOString(); }
-function fmtDate(v){
-  if(!v) return "—";
-  const d = new Date(v);
-  if(Number.isNaN(d.getTime())) return "—";
-  return d.toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
-}
+  function migrateLegacyThreadsIfNeeded(){
+    const room = readJson(ROOM_KEY, null);
+    if(room && Array.isArray(room.messages)) return;
+    const threads = readJson(LEGACY_THREADS_KEY, []);
+    const messages = [];
+    if(Array.isArray(threads)){
+      threads.forEach(thread => {
+        (thread.messages || []).forEach(msg => {
+          messages.push({
+            id: msg.id || ("legacy_" + Math.random().toString(36).slice(2)),
+            senderType: msg.senderType === "parent" ? "parent" : "child",
+            senderName: msg.senderName || (msg.senderType === "parent" ? "Eltern" : (thread.childName || "Kind")),
+            text: msg.text || "",
+            createdAt: msg.createdAt || thread.updatedAt || thread.createdAt || nowIso()
+          });
+        });
+      });
+    }
+    messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+    writeJson(ROOM_KEY, { messages });
+  }
+  function getRoom(){ migrateLegacyThreadsIfNeeded(); const room = readJson(ROOM_KEY, { messages:[] }); return { messages:Array.isArray(room.messages) ? room.messages : [] }; }
+  function saveRoom(room){ writeJson(ROOM_KEY, room); }
 
-function checkAuth(){
-  let user = null;
-  try{
-    user = JSON.parse(localStorage.getItem("haushaltsheld_user") || "null");
-  }catch{
-    user = null;
+  function checkAuth(){
+    const user = readJson(AUTH_KEY, null);
+    if(!user || user.role === "child"){ window.location.href = "login.html"; return null; }
+    return user;
   }
 
-  if(!user || user.role !== "parent"){
-    user = { name: "Elternteil", role: "parent" };
-    localStorage.setItem("haushaltsheld_user", JSON.stringify(user));
+  function getUsers(){
+    const users = readJson(USERS_KEY, []);
+    return Array.isArray(users) ? users : [];
   }
 
-  const parentName = document.getElementById("parentName");
-  if(parentName && !parentName.value.trim()){
-    parentName.value = user.name || "Elternteil";
-  }
-  return user;
-}
-
-function handleLogout(){
-  if(confirm("Möchtest du dich wirklich abmelden?")){
-    localStorage.removeItem("haushaltsheld_user");
-    localStorage.removeItem("hh_active_child");
-    window.location.href = "login.html";
-  }
-}
-
-
-function getChildren(){
-  let users = [];
-  try{
-    users = JSON.parse(localStorage.getItem("haushaltsheld_users") || "[]");
-    if(!Array.isArray(users)) users = [];
-  }catch{
-    users = [];
-  }
-  return users.filter(user => user && user.role === "child");
-}
-
-function populateNewChatChildren(){
-  const select = document.getElementById("newChatChild");
-  if(!select) return;
-  const current = select.value;
-  const children = getChildren();
-
-  select.innerHTML = '<option value="">-- Kind auswählen --</option>' + children.map(child => {
-    const name = esc(child.name || child.nickname || "Kind");
-    const id = esc(String(child.id || child.name || ""));
-    return `<option value="${id}">${name}</option>`;
-  }).join("");
-
-  if(children.some(child => String(child.id || child.name || "") === current)){
-    select.value = current;
-  }
-}
-
-function fillParentExample(){
-  const childSelect = document.getElementById("newChatChild");
-  const firstChildText = childSelect && childSelect.options.length > 1 ? childSelect.options[1].textContent : "dein Kind";
-  document.getElementById("newChatCategory").value = "reminder";
-  document.getElementById("newChatMessage").value = "Hallo " + firstChildText + ", bitte denk morgen an dein Sportzeug und deine Trinkflasche.";
-}
-
-function createParentThread(){
-  const childId = document.getElementById("newChatChild").value;
-  const category = document.getElementById("newChatCategory").value;
-  const message = document.getElementById("newChatMessage").value.trim();
-  const senderName = document.getElementById("parentName").value.trim() || "Elternteil";
-
-  if(!childId){
-    alert("Bitte wähle zuerst ein Kind aus.");
-    return;
-  }
-  if(!message){
-    alert("Bitte schreibe zuerst eine Nachricht.");
-    return;
+  function getUnreadChildMessages(){
+    const room = getRoom();
+    const seen = Number(localStorage.getItem(PARENT_SEEN_KEY) || 0);
+    return room.messages.filter(msg => msg.senderType === "child" && new Date(msg.createdAt).getTime() > seen);
   }
 
-  const children = getChildren();
-  const selectedChild = children.find(child => String(child.id || child.name || "") === String(childId));
-  const childName = selectedChild?.name || selectedChild?.nickname || "Kind";
-
-  const autoTitleBase = message.replace(/\s+/g, " ").trim().slice(0, 48);
-  const title = autoTitleBase.length >= 48 ? autoTitleBase + "…" : autoTitleBase;
-
-  const threads = getThreads();
-  const id = "chat_" + Date.now();
-
-  threads.push({
-    id,
-    childId: String(childId),
-    childName,
-    category,
-    title,
-    status: "open",
-    createdAt: nowIso(),
-    updatedAt: nowIso(),
-    unreadForChild: true,
-    unreadForParent: false,
-    messages: [{
-      id: "msg_" + Date.now(),
-      senderType: "parent",
-      senderName,
-      text: message,
-      createdAt: nowIso()
-    }]
-  });
-
-  saveThreads(threads);
-  document.getElementById("newChatMessage").value = "";
-
-  const filterChild = document.getElementById("filterChild");
-  const filterStatus = document.getElementById("filterStatus");
-  const filterCategory = document.getElementById("filterCategory");
-
-  if(filterChild) filterChild.value = String(childId);
-  if(filterStatus) filterStatus.value = "all";
-  if(filterCategory) filterCategory.value = "all";
-
-  activeThreadId = id;
-  closeNewChatModal();
-  renderAll();
-  openThread(id);
-}
-
-function openNewChatModal(){
-  const modal = document.getElementById("newChatModal");
-  if(!modal) return;
-  populateNewChatChildren();
-  modal.classList.add("show");
-  modal.setAttribute("aria-hidden","false");
-}
-
-function closeNewChatModal(){
-  const modal = document.getElementById("newChatModal");
-  if(!modal) return;
-  modal.classList.remove("show");
-  modal.setAttribute("aria-hidden","true");
-}
-
-function getThreads(){
-  try{
-    const raw = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY) || "[]");
-    return Array.isArray(raw) ? raw : [];
-  }catch{
-    return [];
-  }
-}
-function saveThreads(threads){
-  localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(threads));
-}
-
-function categoryLabel(value){
-  return {
-    school:"Schule",
-    buy:"Einkauf",
-    help:"Hilfe",
-    reminder:"Erinnerung",
-    other:"Sonstiges"
-  }[value] || "Sonstiges";
-}
-function categoryClass(value){
-  return {
-    school:"badge-school",
-    buy:"badge-buy",
-    help:"badge-help",
-    reminder:"badge-reminder",
-    other:"badge-other"
-  }[value] || "badge-other";
-}
-function statusLabel(value){
-  return {
-    open:"Offen",
-    read:"Gelesen",
-    working:"In Bearbeitung",
-    done:"Erledigt"
-  }[value] || "Offen";
-}
-function statusClass(value){
-  return {
-    open:"badge-open",
-    read:"badge-read",
-    working:"badge-working",
-    done:"badge-done"
-  }[value] || "badge-open";
-}
-
-function getFilters(){
-  return {
-    child: document.getElementById("filterChild").value,
-    status: document.getElementById("filterStatus").value,
-    category: document.getElementById("filterCategory").value
-  };
-}
-
-function getFilteredThreads(){
-  const filters = getFilters();
-  return getThreads()
-    .filter(thread => {
-      if(filters.child !== "all" && String(thread.childId || "") !== filters.child) return false;
-      if(filters.status !== "all" && String(thread.status || "open") !== filters.status) return false;
-      if(filters.category !== "all" && String(thread.category || "other") !== filters.category) return false;
-      return true;
-    })
-    .sort((a,b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
-}
-
-function populateChildFilter(){
-  const select = document.getElementById("filterChild");
-  const current = select.value;
-  const uniqueChildren = [];
-  const seen = new Set();
-
-  getChildren().forEach(child => {
-    const id = String(child.id || child.name || "");
-    const name = child.name || child.nickname || "Kind";
-    if(!id || seen.has(id)) return;
-    seen.add(id);
-    uniqueChildren.push({ id, name });
-  });
-
-  getThreads().forEach(thread => {
-    const id = String(thread.childId || "");
-    const name = thread.childName || "Kind";
-    if(!id || seen.has(id)) return;
-    seen.add(id);
-    uniqueChildren.push({ id, name });
-  });
-
-  select.innerHTML = '<option value="all">Alle Kinder</option>' +
-    uniqueChildren.map(child => `<option value="${esc(child.id)}">${esc(child.name)}</option>`).join("");
-
-  if([...select.options].some(opt => opt.value === current)) select.value = current;
-}
-
-function renderStats(){
-  const threads = getThreads();
-  const allCount = threads.length;
-  const unreadParentCount = threads.filter(t => t && t.unreadForParent).length;
-  const workingCount = threads.filter(t => String(t.status || "") === "working").length;
-  const doneCount = threads.filter(t => String(t.status || "") === "done").length;
-
-  document.getElementById("allCount").textContent = String(allCount);
-  document.getElementById("unreadParentCount").textContent = String(unreadParentCount);
-  document.getElementById("workingCount").textContent = String(workingCount);
-  document.getElementById("doneCount").textContent = String(doneCount);
-}
-
-function renderThreadList(){
-  const threads = getFilteredThreads();
-  const list = document.getElementById("threadList");
-
-  if(!threads.length){
-    list.innerHTML = '<div class="empty">Noch kein passender Chat vorhanden.<br>Die Unterhaltungen aus dem Kindermodus erscheinen automatisch hier.</div>';
-    return;
+  function updateHeaderStats(){
+    const room = getRoom();
+    const unread = getUnreadChildMessages().length;
+    const childCount = getUsers().filter(u => u.role === "child").length;
+    const badge = document.getElementById("chatBadge");
+    document.getElementById("allCount").textContent = String(room.messages.length);
+    document.getElementById("newCount").textContent = String(unread);
+    document.getElementById("childCount").textContent = String(childCount);
+    if(unread > 0){ badge.style.display = "inline-flex"; badge.textContent = unread > 99 ? "99+" : String(unread); }
+    else{ badge.style.display = "none"; badge.textContent = "0"; }
   }
 
-  if(!activeThreadId || !threads.some(t => t.id === activeThreadId)){
-    activeThreadId = threads[0].id;
-  }
-
-  list.innerHTML = threads.map(thread => {
-    const last = (thread.messages || []).slice(-1)[0];
-    return `
-      <div class="thread-item ${thread.id === activeThreadId ? "active" : ""} ${thread.unreadForParent ? "unread" : ""}" onclick="openThread('${esc(thread.id)}')">
+  function renderThreadList(){
+    const room = getRoom();
+    const unread = getUnreadChildMessages();
+    const latest = room.messages[room.messages.length - 1];
+    document.getElementById("threadList").innerHTML = `
+      <div class="thread-item ${unread.length ? "unread" : ""}">
         <div class="thread-head">
-          <div class="thread-title">${esc(thread.childName || "Kind")} · ${esc(thread.title || "Chat")}</div>
-          <div class="thread-meta">${esc(fmtDate(thread.updatedAt || thread.createdAt))}</div>
+          <div class="thread-title">Familienchat</div>
+          <div class="thread-meta">${esc(fmtDate(latest?.createdAt || nowIso()))}</div>
         </div>
-        <div class="thread-preview">${esc(last ? last.text : "Noch keine Nachricht")}</div>
-        <div class="badges">
-          <span class="badge ${categoryClass(thread.category)}">${esc(categoryLabel(thread.category))}</span>
-          <span class="badge ${statusClass(thread.status)}">${esc(statusLabel(thread.status))}</span>
+        <div class="thread-preview">${esc(latest?.text || "Noch keine Nachricht vorhanden.")}</div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="badge badge-open">Alle Nutzer</span>
+          <span class="badge ${unread.length ? "badge-working" : "badge-read"}">${unread.length ? unread.length + " neu" : "Gelesen"}</span>
         </div>
+      </div>`;
+  }
+
+  function renderMessages(){
+    const room = getRoom();
+    const body = document.getElementById("chatMessages");
+    if(!room.messages.length){ body.innerHTML = '<div class="empty">Noch keine Nachrichten vorhanden.</div>'; return; }
+    body.innerHTML = room.messages.map(msg => `
+      <div class="message ${msg.senderType === "parent" ? "parent" : "child"}">
+        <div class="message-meta">${esc(msg.senderName || (msg.senderType === "parent" ? "Eltern" : "Kind"))} · ${esc(fmtDate(msg.createdAt))}</div>
+        <div class="message-text">${esc(msg.text)}</div>
       </div>
-    `;
-  }).join("");
-}
-
-function getActiveThread(){
-  return getThreads().find(t => t.id === activeThreadId) || null;
-}
-
-function openThread(id){
-  activeThreadId = id;
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === id);
-  if(idx >= 0){
-    threads[idx].unreadForParent = false;
-    if(threads[idx].status === "open") threads[idx].status = "read";
-    threads[idx].updatedAt = nowIso();
-    saveThreads(threads);
-  }
-  renderAll();
-}
-
-function renderActiveThread(){
-  const thread = getActiveThread();
-  const titleEl = document.getElementById("chatTitleView");
-  const metaEl = document.getElementById("chatMetaView");
-  const badgeEl = document.getElementById("chatStatusBadge");
-  const bodyEl = document.getElementById("chatMessages");
-  const statusSelect = document.getElementById("statusSelect");
-
-  if(!thread){
-    titleEl.textContent = "Noch kein Chat ausgewählt";
-    metaEl.textContent = "Wähle links einen Chat aus.";
-    badgeEl.className = "badge badge-open";
-    badgeEl.textContent = "Offen";
-    bodyEl.innerHTML = '<div class="empty">Wähle links einen Chat aus, um die Unterhaltung zu lesen und zu beantworten.</div>';
-    statusSelect.value = "open";
-    return;
+    `).join("");
+    body.scrollTop = body.scrollHeight;
   }
 
-  titleEl.textContent = (thread.childName || "Kind") + " · " + (thread.title || "Chat");
-  metaEl.textContent = categoryLabel(thread.category) + " · gestartet am " + fmtDate(thread.createdAt);
-  badgeEl.className = "badge " + statusClass(thread.status);
-  badgeEl.textContent = statusLabel(thread.status);
-  statusSelect.value = thread.status || "open";
-
-  bodyEl.innerHTML = (thread.messages || []).map(msg => `
-    <div class="message ${msg.senderType === "parent" ? "parent" : "child"}">
-      <div class="message-meta">${esc(msg.senderType === "parent" ? (msg.senderName || "Eltern") : (msg.senderName || "Kind"))} · ${esc(fmtDate(msg.createdAt))}</div>
-      <div class="message-text">${esc(msg.text)}</div>
-    </div>
-  `).join("");
-  bodyEl.scrollTop = bodyEl.scrollHeight;
-}
-
-function sendReply(){
-  const text = document.getElementById("replyMessage").value.trim();
-  const senderName = document.getElementById("parentName").value.trim() || "Elternteil";
-
-  if(!activeThreadId){
-    alert("Bitte wähle zuerst einen Chat aus.");
-    return;
-  }
-  if(!text){
-    alert("Bitte schreibe zuerst eine Antwort.");
-    return;
+  function sendMessage(){
+    const input = document.getElementById("replyMessage");
+    const text = input.value.trim();
+    if(!text){ alert("Bitte schreibt zuerst eine Nachricht."); return; }
+    const user = readJson(AUTH_KEY, null);
+    const room = getRoom();
+    room.messages.push({
+      id:"msg_" + Date.now(),
+      senderType:"parent",
+      senderName:user?.name || "Eltern",
+      text,
+      createdAt:nowIso()
+    });
+    saveRoom(room);
+    input.value = "";
+    renderAll();
   }
 
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === activeThreadId);
-  if(idx < 0) return;
-
-  threads[idx].messages = Array.isArray(threads[idx].messages) ? threads[idx].messages : [];
-  threads[idx].messages.push({
-    id: "msg_" + Date.now(),
-    senderType: "parent",
-    senderName,
-    text,
-    createdAt: nowIso()
-  });
-  threads[idx].updatedAt = nowIso();
-  threads[idx].unreadForParent = false;
-  threads[idx].unreadForChild = true;
-  threads[idx].status = document.getElementById("statusSelect").value || "working";
-
-  saveThreads(threads);
-  document.getElementById("replyMessage").value = "";
-  renderAll();
-}
-
-function applyStatus(){
-  if(!activeThreadId){
-    alert("Bitte wähle zuerst einen Chat aus.");
-    return;
+  function markSeen(){
+    const room = getRoom();
+    const latest = room.messages.length ? new Date(room.messages[room.messages.length - 1].createdAt).getTime() : Date.now();
+    localStorage.setItem(PARENT_SEEN_KEY, String(latest));
+    renderAll();
   }
 
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === activeThreadId);
-  if(idx < 0) return;
-
-  threads[idx].status = document.getElementById("statusSelect").value || "read";
-  threads[idx].updatedAt = nowIso();
-  if(threads[idx].status !== "open") threads[idx].unreadForParent = false;
-
-  saveThreads(threads);
-  renderAll();
-}
-
-function markSeen(){
-  if(!activeThreadId) return;
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === activeThreadId);
-  if(idx < 0) return;
-
-  threads[idx].unreadForParent = false;
-  if(threads[idx].status === "open") threads[idx].status = "read";
-  threads[idx].updatedAt = nowIso();
-
-  saveThreads(threads);
-  renderAll();
-}
-
-function deleteActiveThread(){
-  if(!activeThreadId){
-    alert("Bitte wähle zuerst einen Chat aus.");
-    return;
+  function showPushBanner(text){
+    const banner = document.getElementById("pushBanner");
+    banner.textContent = text;
+    banner.classList.add("show");
+    clearTimeout(showPushBanner.timer);
+    showPushBanner.timer = setTimeout(() => banner.classList.remove("show"), 2600);
   }
 
-  const threads = getThreads();
-  const idx = threads.findIndex(t => t.id === activeThreadId);
-  if(idx < 0) return;
+  function renderAll(){ updateHeaderStats(); renderThreadList(); renderMessages(); }
 
-  const thread = threads[idx];
-  const label = `${thread.childName || "Kind"} · ${thread.title || "Chat"}`;
-  if(!confirm(`Möchtest du "${label}" wirklich löschen?`)) return;
+  window.sendMessage = sendMessage;
+  window.markSeen = markSeen;
+  window.handleLogout = function(){ localStorage.removeItem(AUTH_KEY); window.location.href = "login.html"; };
 
-  threads.splice(idx, 1);
-  saveThreads(threads);
-
-  const filtered = getFilteredThreads().filter(t => t.id !== activeThreadId);
-  activeThreadId = filtered[0]?.id || null;
-  document.getElementById("replyMessage").value = "";
-  renderAll();
-}
-
-function renderAll(){
-  populateChildFilter();
-  populateNewChatChildren();
-  renderStats();
-  renderThreadList();
-  renderActiveThread();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  if(!checkAuth()) return;
-  renderAll();
-});
-
-
-document.addEventListener("keydown", (event) => {
-  if(event.key === "Escape"){
-    closeNewChatModal();
+  function init(){
+    if(!checkAuth()) return;
+    renderAll();
+    window.addEventListener("storage", (event) => {
+      if(event.key === ROOM_KEY){
+        const before = getUnreadChildMessages().length;
+        renderAll();
+        const after = getUnreadChildMessages().length;
+        if(after > before){
+          const room = getRoom();
+          const last = room.messages[room.messages.length - 1];
+          if(last && last.senderType === "child"){ showPushBanner("Neue Nachricht von " + (last.senderName || "Kind")); }
+        }
+      }
+    });
   }
-});
 
-document.addEventListener("click", (event) => {
-  const modal = document.getElementById("newChatModal");
-  if(modal && event.target === modal){
-    closeNewChatModal();
-  }
-});
-
+  document.addEventListener("DOMContentLoaded", init);
+})();
 </script>
 </body>
 </html>
