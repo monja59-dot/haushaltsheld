@@ -109,7 +109,11 @@ button,input,textarea{font:inherit}
 .message-meta{font-size:.78rem;font-weight:900;margin-bottom:6px}
 .message.child .message-meta{color:#4b74b8}
 .message.parent .message-meta{color:#c77743}
-.message-text{white-space:pre-wrap;color:inherit}
+.message-text{white-space:pre-wrap;color:inherit;word-break:break-word}
+.message.deleted{opacity:.8;font-style:italic}
+.message-actions{display:flex;justify-content:flex-end;margin-top:8px}
+.small-btn{border:1px solid #d8e3ec;background:#fff;border-radius:12px;padding:7px 10px;font-size:.78rem;font-weight:800;cursor:pointer;color:var(--text2)}
+.small-btn.danger{color:#b55a5a;border-color:#f0caca;background:#fff8f8}
 .reply-box{display:grid;gap:10px;border-top:1px solid #e6edf3;padding-top:14px}
 textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;padding:13px 14px;color:var(--text);resize:vertical;min-height:72px}
 .reply-row{display:flex;gap:10px;flex-wrap:wrap}
@@ -167,7 +171,7 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
     <div class="page-header">
       <div>
         <h1>Mein Chat</h1>
-        <p>Ab 6 Jahren ist der Familienchat frei. Hier schreibt ihr alle in einem gemeinsamen Chat – ohne Titel, ohne Kategorien, einfach direkt.</p>
+        <p>Hier kannst du im Familienchat schreiben oder einer Person direkt privat antworten. Das Design bleibt gleich – der Chat läuft jetzt nur technisch sauber auf demselben System wie im Elternbereich.</p>
       </div>
       <div class="header-badges">
         <span class="header-badge" id="welcomeChildName">Kind</span>
@@ -179,12 +183,12 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
 
     <div class="chat-layout">
       <section class="card">
-        <h2>💬 Familienchat</h2>
-        <p class="card-sub">Links siehst du neue Nachrichten. Rechts läuft der gemeinsame Familienchat.</p>
+        <h2>💬 Chats</h2>
+        <p class="card-sub">Links siehst du Familienchat und Privatnachrichten. Rechts öffnet sich die ausgewählte Unterhaltung.</p>
         <div class="stats">
           <div class="stat"><strong id="allCount">0</strong><span>Nachrichten</span></div>
           <div class="stat"><strong id="newCount">0</strong><span>Neu</span></div>
-          <div class="stat"><strong id="memberCount">0</strong><span>Nutzer</span></div>
+          <div class="stat"><strong id="memberCount">0</strong><span>Kontakte</span></div>
         </div>
         <div class="thread-list" id="threadList"></div>
       </section>
@@ -193,7 +197,7 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
         <div class="chat-top">
           <div>
             <h2 id="chatTitleView">Familienchat</h2>
-            <div class="chat-meta" id="chatMetaView">Hier seht ihr alle Nachrichten der Familie in einem gemeinsamen Verlauf.</div>
+            <div class="chat-meta" id="chatMetaView">Hier siehst du Nachrichten aus dem Familienchat oder aus einer privaten Unterhaltung.</div>
           </div>
           <div class="badge badge-open" id="chatStatusBadge">Offen</div>
         </div>
@@ -207,7 +211,7 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
           <textarea id="replyMessage" placeholder="Schreibe hier deine Nachricht..."></textarea>
           <div class="reply-row">
             <button class="btn" type="button" onclick="sendMessage()">Senden</button>
-            <button class="btn secondary" type="button" onclick="markSeen()">Als gelesen</button>
+            <button class="btn secondary" type="button" onclick="markCurrentSeen()">Als gelesen</button>
           </div>
         </div>
       </section>
@@ -229,10 +233,14 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
   const USERS_KEY = "haushaltsheld_users";
   const CHILD_PERMISSIONS_KEY = "haushaltsheld_child_permissions";
   const ACTIVE_CHILD_KEY = "hh_active_child";
-  const ROOM_KEY = "hh_family_chat_room";
+  const FAMILY_ROOM_KEY = "hh_family_chat_room";
   const LEGACY_THREADS_KEY = "hh_family_chat_threads";
+  const DIRECT_CHATS_KEY = "hh_direct_chats_v2";
+  const DIRECT_SEEN_PREFIX = "hh_direct_seen_";
 
   let child = null;
+  let users = [];
+  let activeConversation = { type:"family", id:"family" };
 
   function readJson(key, fallback){ try{ const parsed = JSON.parse(localStorage.getItem(key)); return parsed ?? fallback; }catch(error){ return fallback; } }
   function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
@@ -243,11 +251,13 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
   function getAgeGroupKey(age){ if(age <= 5) return "age0to5"; if(age <= 10) return "age6to10"; if(age <= 13) return "age11to13"; return "age14to17"; }
   function boolFromRule(value){ return value === "allow" || value === true; }
   function normalizeUsers(users){ return (Array.isArray(users) ? users : []).map((user) => ({...user, rights:user?.rights || {}})); }
-  function childId(){ return String(child?.id || child?.name || "kind"); }
-  function childSeenKey(){ return "hh_family_chat_seen_" + childId(); }
+  function slugify(value){ return String(value || "").toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9äöüß_-]/gi, ""); }
+  function getUserId(user){ return String(user?.id || user?.userId || user?.username || slugify(user?.name || user?.displayName || "user")); }
+  function getUserName(user){ return user?.name || user?.displayName || user?.username || "Nutzer"; }
+  function childId(){ return getUserId(child); }
 
   function migrateLegacyThreadsIfNeeded(){
-    const room = readJson(ROOM_KEY, null);
+    const room = readJson(FAMILY_ROOM_KEY, null);
     if(room && Array.isArray(room.messages)) return;
     const threads = readJson(LEGACY_THREADS_KEY, []);
     const messages = [];
@@ -256,33 +266,59 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
         (thread.messages || []).forEach(msg => {
           messages.push({
             id: msg.id || ("legacy_" + Math.random().toString(36).slice(2)),
-            senderType: msg.senderType === "parent" ? "parent" : "child",
-            senderName: msg.senderName || (msg.senderType === "parent" ? "Eltern" : (thread.childName || "Kind")),
-            text: msg.text || "",
-            createdAt: msg.createdAt || thread.updatedAt || thread.createdAt || nowIso()
+            conversationType: "family",
+            senderId: msg.senderId || slugify(msg.senderName || msg.author || msg.sender || (msg.senderType === "parent" ? "eltern" : (thread.childName || "kind"))),
+            senderName: msg.senderName || msg.author || msg.sender || (msg.senderType === "parent" ? "Eltern" : (thread.childName || "Kind")),
+            text: msg.text || msg.message || "",
+            timestamp: msg.timestamp || msg.createdAt || thread.updatedAt || thread.createdAt || nowIso(),
+            deleted: !!msg.deleted
           });
         });
       });
     }
-    messages.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
-    writeJson(ROOM_KEY, { messages });
+    messages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+    writeJson(FAMILY_ROOM_KEY, { messages });
   }
 
-  function getRoom(){ migrateLegacyThreadsIfNeeded(); const room = readJson(ROOM_KEY, { messages:[] }); return { messages:Array.isArray(room.messages) ? room.messages : [] }; }
-  function saveRoom(room){ writeJson(ROOM_KEY, room); }
+  function normalizeMessage(msg, fallbackType){
+    return {
+      id: msg.id || ("msg_" + Math.random().toString(36).slice(2,10)),
+      conversationType: msg.conversationType || fallbackType,
+      senderId: msg.senderId || msg.authorId || slugify(msg.senderName || msg.author || msg.sender || ""),
+      senderName: msg.senderName || msg.author || msg.sender || "Unbekannt",
+      text: msg.text || msg.message || msg.content || "",
+      timestamp: msg.timestamp || msg.time || msg.createdAt || nowIso(),
+      deleted: !!msg.deleted
+    };
+  }
+
+  function getConversationKeyForUsers(userA, userB){ return [String(userA), String(userB)].sort().join("__"); }
+  function loadFamilyRoom(){ migrateLegacyThreadsIfNeeded(); const room = readJson(FAMILY_ROOM_KEY, { messages:[] }); if(!Array.isArray(room.messages)) room.messages=[]; return room; }
+  function saveFamilyRoom(room){ writeJson(FAMILY_ROOM_KEY, room); }
+  function loadDirectChats(){ const store = readJson(DIRECT_CHATS_KEY, {}); return store && typeof store === "object" ? store : {}; }
+  function saveDirectChats(store){ writeJson(DIRECT_CHATS_KEY, store); }
+  function getFamilyMessages(){ return loadFamilyRoom().messages.map(m => normalizeMessage(m, "family")); }
+  function setFamilyMessages(messages){ const room = loadFamilyRoom(); room.messages = messages; saveFamilyRoom(room); }
+  function getDirectMessages(conversationId){ const chats = loadDirectChats(); const arr = Array.isArray(chats[conversationId]) ? chats[conversationId] : []; return arr.map(m => normalizeMessage(m, "direct")); }
+  function setDirectMessages(conversationId, messages){ const chats = loadDirectChats(); chats[conversationId] = messages; saveDirectChats(chats); }
+
+  function getFamilySeen(){ const seen = readJson("hh_family_chat_seen_parent", {}); return typeof seen === "object" && seen ? seen : {}; }
+  function setFamilySeen(seen){ writeJson("hh_family_chat_seen_parent", seen); }
+  function getDirectSeen(conversationId){ const seen = readJson(DIRECT_SEEN_PREFIX + conversationId, {}); return typeof seen === "object" && seen ? seen : {}; }
+  function setDirectSeen(conversationId, seen){ writeJson(DIRECT_SEEN_PREFIX + conversationId, seen); }
 
   function resolveChildContext(){
     const authUser = readJson(AUTH_KEY, null);
     if(!authUser || authUser.role !== "child"){ window.location.href = "login.html"; return null; }
 
     const allUsers = normalizeUsers(readJson(USERS_KEY, []));
-    const fullUser = allUsers.find((entry) => String(entry.id) === String(authUser.id)) || authUser;
+    const fullUser = allUsers.find((entry) => String(getUserId(entry)) === String(getUserId(authUser))) || authUser;
     const age = calculateAge(fullUser.birthdate || authUser.birthdate || "");
     const permissions = readJson(CHILD_PERMISSIONS_KEY, {});
-    const ageRules = permissions.ageRules || {};
+    const ageRules = permissions.ageRules || permissions.ageGroups || {};
     const childOverrides = permissions.childOverrides || {};
     const baseRights = ageRules[getAgeGroupKey(age)] || {};
-    const customRights = childOverrides[authUser.id] || fullUser.rights || {};
+    const customRights = childOverrides[getUserId(authUser)] || fullUser.rights || {};
     const finalRights = {
       aufgaben: customRights.aufgaben ?? boolFromRule(baseRights.aufgaben),
       meinGeld: customRights.meinGeld ?? boolFromRule(baseRights.meinGeld),
@@ -294,7 +330,7 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
       einkaufsliste: customRights.einkaufsliste ?? boolFromRule(baseRights.einkaufsliste)
     };
 
-    const mergedChild = { ...fullUser, ...authUser, role:"child", age, rights:finalRights };
+    const mergedChild = { ...fullUser, ...authUser, id:getUserId(fullUser), name:getUserName(fullUser), role:"child", age, rights:finalRights };
     writeJson(ACTIVE_CHILD_KEY, mergedChild);
     window.HH_CHILD_CONTEXT = { fullUser:mergedChild, age, rights:finalRights };
     return mergedChild;
@@ -312,9 +348,50 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
     });
   }
 
-  function getParticipants(){
-    const users = normalizeUsers(readJson(USERS_KEY, []));
-    return users.filter(u => u.role === "child" || u.role === "parent" || u.role === "admin");
+  function loadUsersForChat(){
+    const stored = normalizeUsers(readJson(USERS_KEY, []));
+    users = stored
+      .filter(u => ["child","parent","admin"].includes(String(u.role || "").toLowerCase()))
+      .map(u => ({ id:getUserId(u), name:getUserName(u), role:u.role || "", age:calculateAge(u.birthdate || "") || Number(u.age || 0) || null }));
+    if(!users.find(u => u.id === childId())){
+      users.unshift({ id:childId(), name:getUserName(child), role:"child", age:Number(child?.age || 0) || null });
+    }
+  }
+
+  function getInitials(name){ return String(name || "?").split(" ").filter(Boolean).slice(0,2).map(p => p[0]).join("").toUpperCase() || "?"; }
+
+  function getAllConversations(){
+    const familyMessages = getFamilyMessages();
+    const conversations = [{
+      type:"family", id:"family", title:"Familienchat", subtitle:"Alle zusammen", messages:familyMessages, badgeClass:"badge-open", badgeLabel:"Familie", avatar:"👨‍👩‍👧‍👦"
+    }];
+
+    users.filter(u => u.id !== childId()).sort((a,b) => a.name.localeCompare(b.name, "de")).forEach(u => {
+      const key = getConversationKeyForUsers(childId(), u.id);
+      conversations.push({
+        type:"direct", id:key, title:u.name, subtitle:"Privatnachricht", messages:getDirectMessages(key),
+        badgeClass:"badge-working", badgeLabel:"Privat", avatar:getInitials(u.name), partnerId:u.id, partnerName:u.name
+      });
+    });
+    return conversations;
+  }
+
+  function getLastMessageText(messages){
+    if(!messages.length) return "Noch keine Nachricht vorhanden.";
+    const msg = messages[messages.length - 1];
+    return msg.deleted ? "Nachricht gelöscht" : (msg.text || "Neue Nachricht");
+  }
+
+  function getUnreadCount(conversation){
+    const messages = conversation.messages || [];
+    if(conversation.type === "family"){
+      const seen = getFamilySeen();
+      const lastSeen = seen[childId()] || "";
+      return messages.filter(m => m.senderId !== childId() && String(m.timestamp) > String(lastSeen) && !m.deleted).length;
+    }
+    const seen = getDirectSeen(conversation.id);
+    const lastSeen = seen[childId()] || "";
+    return messages.filter(m => m.senderId !== childId() && String(m.timestamp) > String(lastSeen) && !m.deleted).length;
   }
 
   function setTopInfo(rights){
@@ -322,67 +399,84 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
     document.getElementById("chatStatusTop").textContent = rights.chat ? "Chat frei ab 6 Jahren" : "Chat gesperrt";
   }
 
-  function getUnreadMessages(){
-    const room = getRoom();
-    const seen = Number(localStorage.getItem(childSeenKey()) || 0);
-    return room.messages.filter(msg => msg.senderType === "parent" && new Date(msg.createdAt).getTime() > seen);
-  }
-
   function updateBadgeAndStats(){
-    const room = getRoom();
-    const unread = getUnreadMessages().length;
+    const conversations = getAllConversations();
     const badge = document.getElementById("chatBadge");
-    document.getElementById("allCount").textContent = String(room.messages.length);
-    document.getElementById("newCount").textContent = String(unread);
-    document.getElementById("memberCount").textContent = String(getParticipants().length);
-    if(unread > 0){ badge.style.display = "inline-flex"; badge.textContent = unread > 99 ? "99+" : String(unread); }
+    const totalMessages = conversations.reduce((sum, c) => sum + c.messages.length, 0);
+    const unreadTotal = conversations.reduce((sum, c) => sum + getUnreadCount(c), 0);
+    document.getElementById("allCount").textContent = String(totalMessages);
+    document.getElementById("newCount").textContent = String(unreadTotal);
+    document.getElementById("memberCount").textContent = String(conversations.length);
+    if(unreadTotal > 0){ badge.style.display = "inline-flex"; badge.textContent = unreadTotal > 99 ? "99+" : String(unreadTotal); }
     else{ badge.style.display = "none"; badge.textContent = "0"; }
   }
 
   function renderThreadList(){
     const list = document.getElementById("threadList");
-    const room = getRoom();
-    const unread = getUnreadMessages();
-    const latestAny = room.messages[room.messages.length - 1];
-    list.innerHTML = `
-      <div class="thread-item ${unread.length ? "unread active" : "active"}">
-        <div class="thread-row">
-          <div class="thread-avatar">👨‍👩‍👧</div>
-          <div class="thread-main">
-            <div class="thread-topline">
-              <div class="thread-title">Familienchat</div>
-              <div class="thread-meta">${esc(fmtDate(latestAny?.createdAt || nowIso()))}</div>
+    const conversations = getAllConversations();
+    list.innerHTML = conversations.map(conv => {
+      const unread = getUnreadCount(conv);
+      const lastText = getLastMessageText(conv.messages);
+      const lastMeta = conv.messages.length ? fmtDate(conv.messages[conv.messages.length - 1].timestamp) : "—";
+      const isActive = conv.id === activeConversation.id && conv.type === activeConversation.type;
+      return `
+        <div class="thread-item ${unread ? "unread" : ""} ${isActive ? "active" : ""}" onclick="openConversation('${conv.type}','${conv.id}')">
+          <div class="thread-row">
+            <div class="thread-avatar">${esc(conv.avatar)}</div>
+            <div class="thread-main">
+              <div class="thread-topline">
+                <div class="thread-title">${esc(conv.title)}</div>
+                <div class="thread-meta">${lastMeta}</div>
+              </div>
+              <div class="thread-preview ${unread ? "unread-text" : ""}">${esc(lastText)}</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <span class="badge ${conv.badgeClass}">${conv.badgeLabel}</span>
+                <span class="badge ${unread ? "badge-working" : "badge-read"}">${unread ? unread + " neu" : "Gelesen"}</span>
+              </div>
             </div>
-            <div class="thread-preview ${unread.length ? "unread-text" : ""}">${esc(latestAny?.text || "Noch keine Nachricht vorhanden.")}</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="badge badge-open">Alle Nutzer</span>
-              <span class="badge ${unread.length ? "badge-working" : "badge-read"}">${unread.length ? unread.length + " neu" : "Gelesen"}</span>
-            </div>
+            ${unread ? '<span class="unread-dot"></span>' : ''}
           </div>
-          ${unread.length ? '<span class="unread-dot"></span>' : ''}
-        </div>
-      </div>`;
+        </div>`;
+    }).join("");
   }
 
+  window.openConversation = function(type, id){ activeConversation = { type, id }; renderAll(); };
+  function getActiveConversation(){ return getAllConversations().find(c => c.id === activeConversation.id && c.type === activeConversation.type) || getAllConversations()[0] || null; }
+
   function renderMessages(){
+    const conv = getActiveConversation();
     const body = document.getElementById("chatMessages");
-    const room = getRoom();
-    if(!room.messages.length){ body.innerHTML = '<div class="info-note">Noch keine Nachrichten vorhanden. Schreibe unten deine erste Nachricht.</div>'; return; }
-    body.innerHTML = room.messages.map(msg => `
-      <div class="message ${msg.senderType === "child" ? "child" : "parent"}">
-        <div class="message-meta">${esc(msg.senderType === "child" ? (msg.senderName || "Du") : (msg.senderName || "Familie"))} · ${esc(fmtDate(msg.createdAt))}</div>
-        <div class="message-text">${esc(msg.text)}</div>
+    if(!conv){ body.innerHTML = '<div class="info-note">Noch keine Unterhaltung vorhanden.</div>'; return; }
+
+    document.getElementById("chatTitleView").textContent = conv.title;
+    document.getElementById("chatMetaView").textContent = conv.type === "family"
+      ? "Hier laufen alle Nachrichten der Familie zusammen."
+      : ("Private Unterhaltung zwischen dir und " + conv.partnerName + ".");
+    document.getElementById("chatStatusBadge").className = "badge " + (conv.type === "family" ? "badge-open" : "badge-working");
+    document.getElementById("chatStatusBadge").textContent = conv.type === "family" ? "Familie" : "Privat";
+
+    if(!conv.messages.length){ body.innerHTML = '<div class="info-note">Noch keine Nachrichten vorhanden. Schreibe unten deine erste Nachricht.</div>'; return; }
+
+    body.innerHTML = conv.messages.map(msg => `
+      <div class="message ${msg.senderId === childId() ? "child" : "parent"} ${msg.deleted ? "deleted" : ""}">
+        <div class="message-meta">${esc(msg.senderName)} · ${esc(fmtDate(msg.timestamp))}</div>
+        <div class="message-text">${msg.deleted ? "Nachricht gelöscht" : esc(msg.text)}</div>
+        ${msg.senderId === childId() && !msg.deleted ? `<div class="message-actions"><button class="small-btn danger" type="button" onclick="deleteOwnMessage('${conv.type}','${conv.id}','${msg.id}')">Löschen</button></div>` : ""}
       </div>
     `).join("");
     body.scrollTop = body.scrollHeight;
   }
 
-  function markSeen(){
-    const room = getRoom();
-    const latest = room.messages.length ? new Date(room.messages[room.messages.length - 1].createdAt).getTime() : Date.now();
-    localStorage.setItem(childSeenKey(), String(latest));
-    updateBadgeAndStats();
-    renderThreadList();
+  function persistMessageToConversation(convType, convId, message){
+    if(convType === "family"){
+      const messages = getFamilyMessages();
+      messages.push(message);
+      setFamilyMessages(messages);
+    }else{
+      const messages = getDirectMessages(convId);
+      messages.push(message);
+      setDirectMessages(convId, messages);
+    }
   }
 
   function setChatLockedState(){
@@ -395,24 +489,55 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
     document.getElementById("replyMessage").disabled = true;
   }
 
-  function sendMessage(){
+  window.sendMessage = function(){
     if(!window.HH_CHILD_CONTEXT.rights.chat){ setChatLockedState(); return; }
+    const conv = getActiveConversation();
+    if(!conv) return;
     const input = document.getElementById("replyMessage");
     const text = input.value.trim();
     if(!text){ alert("Bitte schreibe zuerst eine Nachricht."); return; }
-    const room = getRoom();
-    room.messages.push({
-      id:"msg_" + Date.now(),
-      senderType:"child",
-      senderName:child?.name || "Kind",
+    const now = nowIso();
+    const message = {
+      id:"msg_" + Math.random().toString(36).slice(2,10) + "_" + Date.now(),
+      conversationType: conv.type,
+      senderId: childId(),
+      senderName: child?.name || "Kind",
       text,
-      createdAt:nowIso()
-    });
-    saveRoom(room);
+      timestamp: now,
+      deleted:false
+    };
+    persistMessageToConversation(conv.type, conv.id, message);
+    if(conv.type === "family"){
+      const seen = getFamilySeen(); seen[childId()] = now; setFamilySeen(seen);
+    }else{
+      const seen = getDirectSeen(conv.id); seen[childId()] = now; setDirectSeen(conv.id, seen);
+    }
     input.value = "";
     renderAll();
-    speakSnail("Deine Nachricht ist raus.");
-  }
+    speakSnail(conv.type === "family" ? "Deine Nachricht ist im Familienchat angekommen." : "Deine Privatnachricht ist raus.");
+  };
+
+  window.deleteOwnMessage = function(convType, convId, msgId){
+    if(!window.confirm("Diese Nachricht wirklich löschen?")) return;
+    if(convType === "family"){
+      setFamilyMessages(getFamilyMessages().map(m => m.id === msgId ? ({...m, deleted:true, text:""}) : m));
+    }else{
+      setDirectMessages(convId, getDirectMessages(convId).map(m => m.id === msgId ? ({...m, deleted:true, text:""}) : m));
+    }
+    renderAll();
+  };
+
+  window.markCurrentSeen = function(){
+    const conv = getActiveConversation();
+    if(!conv || !conv.messages.length) return;
+    const latestTs = conv.messages[conv.messages.length - 1].timestamp;
+    if(conv.type === "family"){
+      const seen = getFamilySeen(); seen[childId()] = latestTs; setFamilySeen(seen);
+    }else{
+      const seen = getDirectSeen(conv.id); seen[childId()] = latestTs; setDirectSeen(conv.id, seen);
+    }
+    renderAll();
+  };
 
   function showPushBanner(text){
     const banner = document.getElementById("pushBanner");
@@ -432,36 +557,52 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
 
   function initSnail(){
     const fab = document.getElementById("kiFab");
-    const messages = ["Hallo! Das ist euer Familienchat. 🐌","Hier schreiben alle in einem gemeinsamen Verlauf.","Ab 6 Jahren ist der Chat automatisch frei.","Kurz schreiben geht oft am schnellsten."];
+    const messages = [
+      "Hallo! Hier gibt es jetzt Familienchat und Privatnachrichten. 🐌",
+      "Du kannst jetzt jeder Person direkt schreiben.",
+      "Eigene Nachrichten kannst du auch wieder löschen.",
+      "Kurz schreiben geht oft am schnellsten."
+    ];
     let idx = 0;
     fab.addEventListener("mouseenter", () => { idx = (idx + 1) % messages.length; speakSnail(messages[idx]); });
-    fab.addEventListener("click", () => speakSnail("Die Kinder-KI bauen wir hier später richtig ein."));
+    fab.addEventListener("click", () => speakSnail("Später bauen wir hier noch mehr KI-Hilfe ein."));
     setTimeout(() => speakSnail(messages[0]), 900);
+  }
+
+  function seedIfEmpty(){
+    const family = loadFamilyRoom();
+    if(!family.messages.length){
+      family.messages = [{
+        id:"seed_fam_1", conversationType:"family", senderId:"mama", senderName:"Mama",
+        text:"Willkommen im Familienchat 💚", timestamp:new Date(Date.now()-3600000).toISOString(), deleted:false
+      }];
+      saveFamilyRoom(family);
+    }
   }
 
   function renderAll(){ updateBadgeAndStats(); renderThreadList(); renderMessages(); }
 
-  window.sendMessage = sendMessage;
-  window.markSeen = markSeen;
   window.handleLogout = function(){ localStorage.removeItem(ACTIVE_CHILD_KEY); window.location.href = "login.html"; };
 
   function init(){
     child = resolveChildContext();
     if(!child) return;
+    loadUsersForChat();
+    seedIfEmpty();
     updateSidebarLocks(window.HH_CHILD_CONTEXT.rights);
     setTopInfo(window.HH_CHILD_CONTEXT.rights);
     initSnail();
     if(!window.HH_CHILD_CONTEXT.rights.chat){ setChatLockedState(); return; }
     renderAll();
     window.addEventListener("storage", (event) => {
-      if(event.key === ROOM_KEY){
-        const before = getUnreadMessages().length;
+      if([FAMILY_ROOM_KEY, DIRECT_CHATS_KEY].includes(event.key) || String(event.key || "").startsWith(DIRECT_SEEN_PREFIX)){
+        const before = getAllConversations().reduce((sum, c) => sum + getUnreadCount(c), 0);
         renderAll();
-        const after = getUnreadMessages().length;
+        const after = getAllConversations().reduce((sum, c) => sum + getUnreadCount(c), 0);
         if(after > before){
-          const room = getRoom();
-          const last = room.messages[room.messages.length - 1];
-          if(last && last.senderType === "parent"){ showPushBanner("Neue Nachricht von " + (last.senderName || "Familie")); }
+          const conv = getActiveConversation();
+          const last = conv?.messages?.[conv.messages.length - 1];
+          if(last && last.senderId !== childId()) showPushBanner("Neue Nachricht von " + (last.senderName || "Familie"));
         }
       }
     });
@@ -470,5 +611,3 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
   document.addEventListener("DOMContentLoaded", init);
 })();
 </script>
-</body>
-</html>

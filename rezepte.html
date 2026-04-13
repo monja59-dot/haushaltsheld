@@ -207,7 +207,96 @@ textarea{min-height:92px;resize:vertical}
 .fav-item{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:11px 13px;background:#fff;font-size:14px}
 @media(max-width:820px){.columns{grid-template-columns:1fr}}
 
-  </style>
+  
+
+/* KI */
+.ki-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:74px;
+  height:74px;
+  border:none;
+  border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9998;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.ki-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
+}
+.ki-fab img{width:40px;height:40px;object-fit:contain}
+.ki-fab-label{
+  position:absolute;
+  bottom:8px;
+  right:10px;
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1;
+}
+.ki-panel{
+  position:fixed;
+  right:22px;
+  bottom:108px;
+  width:min(390px,calc(100vw - 24px));
+  max-height:min(78vh,720px);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 24px 50px rgba(34,48,38,.18);
+  z-index:9999;
+  display:none;
+}
+.ki-panel.open{display:flex;flex-direction:column}
+.ki-head{
+  padding:20px 20px 16px;
+  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.ki-head-left{display:flex;gap:12px;align-items:flex-start}
+.ki-head-avatar{
+  width:48px;height:48px;border-radius:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ki-head-avatar img{width:28px;height:28px;object-fit:contain}
+.ki-head h3{font-size:1.2rem !important;font-weight:800 !important;margin:0 0 4px}
+.ki-head p{font-size:.95rem !important;color:var(--text2);margin:0}
+.ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
+.ki-chat-link:hover{text-decoration:underline}
+.ki-close{
+  width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1;
+}
+.ki-suggestions{padding:16px 20px 14px;display:flex;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);background:#fff}
+.ki-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:.95rem;font-weight:700;color:var(--text2);cursor:pointer}
+.ki-chat{padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px}
+.ki-msg{max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap}
+.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
+.ki-msg.user{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;align-self:flex-end}
+.ki-form{padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}
+.ki-input{border:1.5px solid var(--line);background:var(--bg-2);border-radius:18px;padding:14px 16px;font-size:.97rem;color:var(--text);outline:none;font-family:inherit}
+.ki-send{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20)}
+.ki-typing{opacity:.8;font-style:italic}
+@media(max-width:700px){
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+}
+
+</style>
 </head>
 <body data-page="rezepte">
   <div class="app">
@@ -229,6 +318,8 @@ textarea{min-height:92px;resize:vertical}
     <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
     <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
     <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+    <a href="rezepte.html" class="active"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
     <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
   </nav>
 
@@ -237,7 +328,6 @@ textarea{min-height:92px;resize:vertical}
     <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
     <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
     <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
-    <a href="rezepte.html" class="active"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
     <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
     <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
   </nav>
@@ -729,7 +819,96 @@ document.addEventListener("DOMContentLoaded", function(){
             .badge{display:inline-block; padding:6px 10px; border:1px solid #ccc; border-radius:999px; margin:0 8px 8px 0; font-size:12px;}
             .box{border:1px solid #ddd; border-radius:14px; padding:14px 16px; margin:16px 0;}
             ul{margin:0; padding-left:18px;}
-          </style>
+          
+
+/* KI */
+.ki-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:74px;
+  height:74px;
+  border:none;
+  border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9998;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.ki-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
+}
+.ki-fab img{width:40px;height:40px;object-fit:contain}
+.ki-fab-label{
+  position:absolute;
+  bottom:8px;
+  right:10px;
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1;
+}
+.ki-panel{
+  position:fixed;
+  right:22px;
+  bottom:108px;
+  width:min(390px,calc(100vw - 24px));
+  max-height:min(78vh,720px);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 24px 50px rgba(34,48,38,.18);
+  z-index:9999;
+  display:none;
+}
+.ki-panel.open{display:flex;flex-direction:column}
+.ki-head{
+  padding:20px 20px 16px;
+  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.ki-head-left{display:flex;gap:12px;align-items:flex-start}
+.ki-head-avatar{
+  width:48px;height:48px;border-radius:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ki-head-avatar img{width:28px;height:28px;object-fit:contain}
+.ki-head h3{font-size:1.2rem !important;font-weight:800 !important;margin:0 0 4px}
+.ki-head p{font-size:.95rem !important;color:var(--text2);margin:0}
+.ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
+.ki-chat-link:hover{text-decoration:underline}
+.ki-close{
+  width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1;
+}
+.ki-suggestions{padding:16px 20px 14px;display:flex;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);background:#fff}
+.ki-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:.95rem;font-weight:700;color:var(--text2);cursor:pointer}
+.ki-chat{padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px}
+.ki-msg{max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap}
+.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
+.ki-msg.user{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;align-self:flex-end}
+.ki-form{padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}
+.ki-input{border:1.5px solid var(--line);background:var(--bg-2);border-radius:18px;padding:14px 16px;font-size:.97rem;color:var(--text);outline:none;font-family:inherit}
+.ki-send{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20)}
+.ki-typing{opacity:.8;font-style:italic}
+@media(max-width:700px){
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+}
+
+</style>
         </head>
         <body>
           <h1>${escapeHtml(recipe.titel)}</h1>
@@ -759,7 +938,136 @@ document.addEventListener("DOMContentLoaded", function(){
               <h3>Persönliche Notiz</h3>
               <p>${escapeHtml(recipe.notiz).replace(/\n/g, "<br>")}</p>
             </div>` : ""}
-        </body>
+        
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+  <span class="ki-fab-label">KI</span>
+</button>
+
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <p id="kiContextText"></p>
+        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+  </div>
+
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+  </div>
+
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+
+
+<script>
+(function(){
+  const page = "rezepte";
+  const fab = document.getElementById("kiFab");
+  const panel = document.getElementById("kiPanel");
+  const closeBtn = document.getElementById("kiClose");
+  const form = document.getElementById("kiForm");
+  const input = document.getElementById("kiInput");
+  const chat = document.getElementById("kiChat");
+  const suggestions = document.getElementById("kiSuggestions");
+  const contextText = document.getElementById("kiContextText");
+  const welcome = document.getElementById("kiWelcomeMsg");
+
+  if(!fab || !panel || !closeBtn || !form || !input || !chat || !suggestions || !contextText || !welcome) return;
+
+  const pageSettings = {
+    context: "Ich helfe dir beim Sammeln, Strukturieren und Formulieren von Rezepten und Lieblingsgerichten.",
+    suggestions: ["Hilf mir ein Familienrezept sauber zu formulieren.", "Welche Kategorien sind für Rezepte sinnvoll?", "Mach mir eine Vorlage für Lieblingsgerichte der Kinder."],
+    welcome: "Hallo 👋 Ich bin deine Haushaltsheld KI. Ich unterstütze dich bei Rezepten und Lieblingsgerichten."
+  };
+
+  function escapeHtml(value){
+    return String(value ?? "")
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
+
+  contextText.textContent = pageSettings.context;
+  welcome.textContent = pageSettings.welcome;
+
+  suggestions.innerHTML = pageSettings.suggestions.map(text =>
+    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
+  ).join('');
+
+  suggestions.querySelectorAll('.ki-chip').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      input.value = btn.textContent.trim();
+      input.focus();
+    });
+  });
+
+  function addMsg(role, text){
+    const div = document.createElement('div');
+    div.className = 'ki-msg ' + role;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage(message){
+    addMsg('user', message);
+    const loading = addMsg('bot', 'Ich denke kurz nach …');
+    loading.classList.add('ki-typing');
+
+    try{
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({message, page, mode: 'parent'})
+      });
+      const data = await response.json();
+      loading.remove();
+      addMsg('bot', data.reply || 'Ich konnte gerade nichts Sinnvolles antworten.');
+    }catch(err){
+      loading.remove();
+      addMsg('bot', 'Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.');
+    }
+  }
+
+  fab.addEventListener('click',()=>{
+    panel.classList.add('open');
+    input.focus();
+  });
+  closeBtn.addEventListener('click',()=>{
+    panel.classList.remove('open');
+  });
+  document.addEventListener('keydown',(e)=>{
+    if(e.key === 'Escape') panel.classList.remove('open');
+  });
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const message = input.value.trim();
+    if(!message) return;
+    input.value = '';
+    await sendMessage(message);
+  });
+
+  if(window.lucide && window.lucide.createIcons){
+    try{ window.lucide.createIcons(); }catch(e){}
+  }
+})();
+</script>
+
+</body>
         </html>
       `;
 
@@ -834,5 +1142,134 @@ document.addEventListener("DOMContentLoaded", function(){
 
     renderAll();
   </script>
+
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+  <span class="ki-fab-label">KI</span>
+</button>
+
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <p id="kiContextText"></p>
+        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+  </div>
+
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+  </div>
+
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+
+
+<script>
+(function(){
+  const page = "rezepte";
+  const fab = document.getElementById("kiFab");
+  const panel = document.getElementById("kiPanel");
+  const closeBtn = document.getElementById("kiClose");
+  const form = document.getElementById("kiForm");
+  const input = document.getElementById("kiInput");
+  const chat = document.getElementById("kiChat");
+  const suggestions = document.getElementById("kiSuggestions");
+  const contextText = document.getElementById("kiContextText");
+  const welcome = document.getElementById("kiWelcomeMsg");
+
+  if(!fab || !panel || !closeBtn || !form || !input || !chat || !suggestions || !contextText || !welcome) return;
+
+  const pageSettings = {
+    context: "Ich helfe dir beim Sammeln, Strukturieren und Formulieren von Rezepten und Lieblingsgerichten.",
+    suggestions: ["Hilf mir ein Familienrezept sauber zu formulieren.", "Welche Kategorien sind für Rezepte sinnvoll?", "Mach mir eine Vorlage für Lieblingsgerichte der Kinder."],
+    welcome: "Hallo 👋 Ich bin deine Haushaltsheld KI. Ich unterstütze dich bei Rezepten und Lieblingsgerichten."
+  };
+
+  function escapeHtml(value){
+    return String(value ?? "")
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
+
+  contextText.textContent = pageSettings.context;
+  welcome.textContent = pageSettings.welcome;
+
+  suggestions.innerHTML = pageSettings.suggestions.map(text =>
+    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
+  ).join('');
+
+  suggestions.querySelectorAll('.ki-chip').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      input.value = btn.textContent.trim();
+      input.focus();
+    });
+  });
+
+  function addMsg(role, text){
+    const div = document.createElement('div');
+    div.className = 'ki-msg ' + role;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage(message){
+    addMsg('user', message);
+    const loading = addMsg('bot', 'Ich denke kurz nach …');
+    loading.classList.add('ki-typing');
+
+    try{
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({message, page, mode: 'parent'})
+      });
+      const data = await response.json();
+      loading.remove();
+      addMsg('bot', data.reply || 'Ich konnte gerade nichts Sinnvolles antworten.');
+    }catch(err){
+      loading.remove();
+      addMsg('bot', 'Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.');
+    }
+  }
+
+  fab.addEventListener('click',()=>{
+    panel.classList.add('open');
+    input.focus();
+  });
+  closeBtn.addEventListener('click',()=>{
+    panel.classList.remove('open');
+  });
+  document.addEventListener('keydown',(e)=>{
+    if(e.key === 'Escape') panel.classList.remove('open');
+  });
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const message = input.value.trim();
+    if(!message) return;
+    input.value = '';
+    await sendMessage(message);
+  });
+
+  if(window.lucide && window.lucide.createIcons){
+    try{ window.lucide.createIcons(); }catch(e){}
+  }
+})();
+</script>
+
 </body>
 </html>

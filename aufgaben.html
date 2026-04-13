@@ -1090,6 +1090,7 @@ a.btn-soft:hover{
   box-shadow:0 2px 8px rgba(204,102,102,.28);
 }
 </style>
+<script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body data-page="aufgaben">
 <div class="app">
@@ -1098,106 +1099,35 @@ a.btn-soft:hover{
 <aside class="sidebar">
   <div class="logo-wrap">
     <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-    <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Familien-Assistent</div></div>
+    <div>
+      <div class="logo-name">Haushaltsheld</div>
+      <div class="logo-sub">Dein Familien-Assistent</div>
+    </div>
   </div>
+
   <div class="nav-label">Hauptmenü</div>
   <nav class="nav">
-    <a href="index.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 10.5 12 3l9 7.5"></path>
-          <path d="M5 9.5V21h14V9.5"></path>
-        </svg>
-      </span>
-      <span>Dashboard</span>
-    </a>
-    <a href="finanzen.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="6" width="18" height="12" rx="2"></rect>
-          <path d="M16 12h.01"></path>
-          <path d="M3 10h18"></path>
-        </svg>
-      </span>
-      <span>Finanzen</span>
-    </a>
-    <a href="einkaufsliste.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="20" r="1"></circle>
-          <circle cx="18" cy="20" r="1"></circle>
-          <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
-        </svg>
-      </span>
-      <span>Einkäufe</span>
-    </a>
-    <a href="aufgaben.html" class="active">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 11l3 3L22 4"></path>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-        </svg>
-      </span>
-      <span>Aufgaben</span>
-    </a>
-    <a href="familienplaner.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-          <path d="M16 2v4M8 2v4M3 10h18"></path>
-        </svg>
-      </span>
-      <span>Familienplaner</span>
-    </a>
-<a href="admin_chat.html">
-      <span class="nav-icon" style="position:relative;">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span id="chatBadge" class="chat-badge" style="display:none;">0</span>
-      </span>
-      <span>Familien-Chat</span>
-    </a>
+    <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html" class="active"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+    <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
   </nav>
+
   <div class="nav-label">Extras</div>
   <nav class="nav">
-    <a href="finanzbericht.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3v18h18"></path>
-          <path d="M7 14l4-4 3 3 5-7"></path>
-        </svg>
-      </span>
-      <span>Bericht</span>
-    </a>
-    <a href="finanz_historie.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 8v5l3 2"></path>
-          <circle cx="12" cy="12" r="9"></circle>
-        </svg>
-      </span>
-      <span>Historie</span>
-    </a>
-    <a href="beleg_import.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3v12"></path>
-          <path d="m7 10 5 5 5-5"></path>
-          <path d="M5 21h14"></path>
-        </svg>
-      </span>
-      <span>Belege</span>
-    </a>
-    <a href="kindermodus.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
-        </svg>
-      </span>
-      <span>Kindermodus</span>
-    </a>
+    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+    <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+    <a href="kindermodus.html"><span class="nav-icon"><i data-lucide="star"></i></span><span>Kindermodus</span></a>
   </nav>
+
   <div class="sidebar-footer">
     <div class="mode-switch">
       <button class="mode-btn active" id="adminModeBtn" type="button">Admin</button>
@@ -1646,5 +1576,14 @@ function updateParentChatBadge(){
 document.addEventListener("DOMContentLoaded", updateParentChatBadge);
 window.addEventListener("storage", updateParentChatBadge);
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if (window.lucide && typeof lucide.createIcons === 'function') {
+    lucide.createIcons();
+  }
+});
+</script>
+
 </body>
 </html>

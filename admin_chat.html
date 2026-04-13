@@ -155,50 +155,125 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
   .message{max-width:92%}
   .helper-grid{grid-template-columns:1fr}
 }
+
+.online-strip{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin-bottom:18px;padding:14px 16px;border-radius:20px;
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);box-shadow:var(--shadow-xs);
+}
+.online-strip-title{
+  font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+}
+.online-list{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.online-pill{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+  background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.92);
+  color:var(--text2);font-size:.86rem;font-weight:800;
+}
+.online-dot{width:10px;height:10px;border-radius:50%;background:#c8c8c8;box-shadow:0 0 0 3px rgba(0,0,0,.04)}
+.online-pill.is-online .online-dot{background:#4CAF50;box-shadow:0 0 0 4px rgba(76,175,80,.14)}
+.online-pill.is-offline .online-dot{background:#c8c8c8}
+.toolbar-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.compose-panel{
+  display:none;gap:10px;flex-wrap:wrap;padding:14px;border-radius:18px;
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border:1px solid rgba(223,209,188,.9);margin-bottom:14px;
+}
+.compose-panel.open{display:flex}
+.compose-pill{
+  border:1px solid rgba(223,209,188,.92);background:#fff;border-radius:999px;
+  padding:8px 12px;font-size:.84rem;font-weight:800;color:var(--text2);cursor:pointer;
+}
+.compose-pill:hover{box-shadow:var(--shadow-xs);transform:translateY(-1px)}
+.chat-top-left{display:grid;gap:10px}
+.chat-online-box{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:10px 12px;border-radius:16px;background:#f8fbf8;border:1px solid rgba(223,209,188,.88);
+}
+.chat-online-box strong{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chat-online-list{display:flex;gap:8px;flex-wrap:wrap}
+.thread-empty{padding:16px;border-radius:18px;background:#fffdf9;border:1px dashed #d7d8d0;color:var(--muted);font-size:.9rem;line-height:1.6}
+.thread-item .thread-subline{margin-top:6px;font-size:.78rem;color:var(--muted);font-weight:700}
+.thread-item.is-online .thread-avatar{box-shadow:0 0 0 4px rgba(76,175,80,.14), 0 6px 12px rgba(54,45,28,.08)}
+
+
+.nav-dropdown{display:grid;gap:6px}
+.dropdown-toggle{
+  width:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);
+  font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;
+  border:1px solid transparent;position:relative;background:transparent;cursor:pointer;
+  font-family:var(--font-main);
+}
+.dropdown-toggle:hover{
+  background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text);
+}
+.dropdown-caret{
+  width:18px;height:18px;display:grid;place-items:center;transition:transform .18s ease;color:var(--muted);
+}
+.nav-dropdown.open .dropdown-caret{transform:rotate(180deg)}
+.dropdown-menu{display:none;flex-direction:column;gap:4px;padding-left:10px}
+.nav-dropdown.open .dropdown-menu{display:flex}
+
 </style>
 </head>
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="logo-wrap">
-      <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-      <div>
-        <div class="logo-name">Haushaltsheld</div>
-        <div class="logo-sub">Dein Familien-Assistent</div>
-      </div>
+  <a class="logo-wrap" href="index.html" style="text-decoration:none;color:inherit;">
+    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+    <div>
+      <div class="logo-name">Haushaltsheld</div>
+      <div class="logo-sub">Dein Familien-Assistent</div>
     </div>
+  </a>
 
-    <div class="nav-label">Hauptmenü</div>
-    <nav class="nav">
-      <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
-      <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
-      <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
-      <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
-      <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
-      <a href="admin_chat.html" class="active"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
-    </nav>
+  <div class="nav-label">Hauptmenü</div>
+  <nav class="nav">
+    <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+    <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+    <a href="admin_chat.html" class="active"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
+  </nav>
 
-    <div class="nav-label">Extras</div>
-    <nav class="nav">
+  <div class="nav-label">Extras</div>
+  <div class="nav-dropdown" id="extrasDropdown">
+    <button class="dropdown-toggle" id="extrasToggle" type="button" aria-expanded="false">
+      <span style="display:flex;align-items:center;gap:12px;">
+        <span class="nav-icon"><i data-lucide="folders"></i></span>
+        <span>Extras</span>
+      </span>
+      <span class="dropdown-caret"><i data-lucide="chevron-down"></i></span>
+    </button>
+    <nav class="dropdown-menu">
       <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
       <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
       <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
       <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
       <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
     </nav>
+  </div>
 
-    <div class="sidebar-footer">
-      <div class="user-info">
-        <strong id="userName">👋 Willkommen</strong>
-        <span id="userRole">Eltern-Modus</span>
-      </div>
-      <div class="mode-switch">
-        <button class="mode-btn active" type="button">Eltern</button>
-        <button class="mode-btn" type="button" onclick="window.location.href='kindermodus.html'">Kind</button>
-      </div>
-      <button class="logout-btn" type="button" onclick="handleLogout()">🚪 Abmelden</button>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <strong id="userName">👋 Willkommen</strong>
+      <span id="userRole">Eltern-Modus</span>
     </div>
-  </aside>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+      <button class="mode-btn" id="childBtn" type="button">Kind</button>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+  </div>
+</aside>
 
   <main class="main">
     <div class="page-header">
@@ -230,6 +305,11 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
       </div>
     </section>
 
+    <div class="online-strip">
+      <div class="online-strip-title">Familie online</div>
+      <div class="online-list" id="globalOnlineList"></div>
+    </div>
+
     <section class="stats-grid">
       <div class="stat-card"><div class="stat-label">Unterhaltungen</div><div class="stat-value" id="conversationCount">0</div><div class="stat-sub">Familienchat + Privatnachrichten</div></div>
       <div class="stat-card"><div class="stat-label">Nachrichten gesamt</div><div class="stat-value" id="messageCount">0</div><div class="stat-sub">in allen Unterhaltungen</div></div>
@@ -241,18 +321,32 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
       <section class="card">
         <div class="card-title"><i data-lucide="messages-square"></i><span>Unterhaltungen</span></div>
         <p class="card-sub">Links wählst du den Familienchat oder einen Einzelchat aus.</p>
+
+        <div class="toolbar-row">
+          <button class="btn" type="button" id="newMessageBtn"><i data-lucide="plus"></i>Neue Nachricht</button>
+          <button class="btn-line" type="button" onclick="openConversation('family','family')"><i data-lucide="users"></i>Familienchat</button>
+        </div>
+
+        <div class="compose-panel" id="composePanel"></div>
         <div class="thread-list" id="threadList"></div>
       </section>
 
       <section class="card chat-view">
         <div class="chat-top">
-          <div>
-            <div class="card-title" style="margin-bottom:6px;"><i data-lucide="message-circle"></i><span id="chatTitleView">Familienchat</span></div>
-            <div class="chat-meta" id="chatMetaView">Hier laufen alle Nachrichten der Familie zusammen.</div>
+          <div class="chat-top-left">
+            <div>
+              <div class="card-title" style="margin-bottom:6px;"><i data-lucide="message-circle"></i><span id="chatTitleView">Familienchat</span></div>
+              <div class="chat-meta" id="chatMetaView">Hier laufen alle Nachrichten der Familie zusammen.</div>
+            </div>
+            <div class="chat-online-box">
+              <strong>Online</strong>
+              <div class="chat-online-list" id="chatOnlineList"></div>
+            </div>
           </div>
           <div class="chat-actions">
             <span class="badge badge-open" id="chatStatusBadge">Offen</span>
             <button class="btn-line" type="button" onclick="markCurrentSeen()">Als gelesen markieren</button>
+<button class="btn-line" type="button" onclick="deleteAllMessages()">Chat leeren</button>
           </div>
         </div>
 
@@ -282,6 +376,10 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
   const PARENT_SEEN_KEY = "hh_family_chat_seen_parent";
   const DIRECT_CHATS_KEY = "hh_direct_chats_v2";
   const DIRECT_SEEN_PREFIX = "hh_direct_seen_";
+  const FAMILY_CLEARED_KEY = "hh_family_chat_cleared_v1";
+  const ONLINE_PREFIX = "hh_user_online_";
+  const ONLINE_TTL = 15000;
+  const ONLINE_HEARTBEAT_MS = 5000;
 
   let auth = null;
   let currentUserId = "";
@@ -343,6 +441,45 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
   function saveFamilyRoom(room){ writeJSON(FAMILY_ROOM_KEY, room); }
   function loadDirectChats(){ const store = readJSON(DIRECT_CHATS_KEY, {}); return store && typeof store === "object" ? store : {}; }
   function saveDirectChats(store){ writeJSON(DIRECT_CHATS_KEY, store); }
+
+
+  function getSafeTs(value){ const n = Number(value || 0); return Number.isFinite(n) ? n : 0; }
+  function heartbeatOnline(){
+    const payload = { name: currentUserName, id: currentUserId, role: currentUserRole, ts: Date.now() };
+    localStorage.setItem(ONLINE_PREFIX + currentUserId, JSON.stringify(payload));
+  }
+  function readOnlineEntry(userId){ return readJSON(ONLINE_PREFIX + userId, null); }
+  function isUserOnline(userId){
+    const entry = readOnlineEntry(userId);
+    if(!entry || !entry.ts) return false;
+    return (Date.now() - Number(entry.ts)) <= ONLINE_TTL;
+  }
+  function getOnlineUsers(){
+    return users.map(u => ({...u, online:isUserOnline(u.id)}));
+  }
+  function renderOnlineLists(){
+    const globalWrap = document.getElementById("globalOnlineList");
+    const chatWrap = document.getElementById("chatOnlineList");
+    const items = getOnlineUsers().sort((a,b) => {
+      if(a.id === currentUserId) return -1;
+      if(b.id === currentUserId) return 1;
+      if(a.online !== b.online) return a.online ? -1 : 1;
+      return a.name.localeCompare(b.name, "de");
+    });
+    const pills = items.map(u => `<span class="online-pill ${u.online ? "is-online" : "is-offline"}"><span class="online-dot"></span><span>${escapeHtml(u.id === currentUserId ? u.name + " (du)" : u.name)}</span></span>`).join("");
+    if(globalWrap) globalWrap.innerHTML = pills || '<span class="online-pill is-offline"><span class="online-dot"></span><span>Niemand erkannt</span></span>';
+    if(chatWrap) chatWrap.innerHTML = pills || '<span class="online-pill is-offline"><span class="online-dot"></span><span>Niemand erkannt</span></span>';
+  }
+  function renderComposePanel(){
+    const panel = document.getElementById("composePanel");
+    if(!panel) return;
+    const others = users.filter(u => u.id !== currentUserId).sort((a,b) => a.name.localeCompare(b.name, "de"));
+    panel.innerHTML = others.length ? others.map(u => `
+      <button class="compose-pill" type="button" onclick="startDirectChat('${u.id}')">
+        ${isUserOnline(u.id) ? "🟢" : "⚪"} ${escapeHtml(u.name)}
+      </button>
+    `).join("") : '<div class="thread-empty">Keine weiteren Nutzer gefunden.</div>';
+  }
 
   function normalizeMessage(msg, fallbackType){
     return {
@@ -416,8 +553,9 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
       const lastText = getLastMessageText(conv.messages);
       const lastMeta = conv.messages.length ? formatTime(conv.messages[conv.messages.length - 1].timestamp) : "—";
       const isActive = conv.id === activeConversation.id && conv.type === activeConversation.type;
+      const partnerOnline = conv.type === "direct" && conv.partnerId ? isUserOnline(conv.partnerId) : false;
       return `
-        <div class="thread-item ${unread ? "unread" : ""} ${isActive ? "active" : ""}" onclick="openConversation('${conv.type}','${conv.id}')">
+        <div class="thread-item ${unread ? "unread" : ""} ${isActive ? "active" : ""} ${partnerOnline ? "is-online" : ""}" onclick="openConversation('${conv.type}','${conv.id}')">
           <div class="thread-row">
             <div class="thread-avatar">${conv.avatar}</div>
             <div class="thread-main">
@@ -428,6 +566,7 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
               <div class="thread-preview ${unread ? "unread-text" : ""}">${escapeHtml(lastText)}</div>
               <div class="thread-badges">
                 <span class="badge ${conv.badgeClass}">${conv.badgeLabel}</span>
+                ${conv.type === "direct" ? `<span class="badge badge-read">${partnerOnline ? "online" : "offline"}</span>` : ""}
                 ${unread ? `<span class="badge badge-read">${unread} neu</span>` : ""}
               </div>
             </div>
@@ -457,7 +596,9 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
 
     document.getElementById("chatTitleView").textContent = conv.title;
     document.getElementById("chatMetaView").textContent =
-      conv.type === "family" ? "Hier laufen alle Nachrichten der Familie zusammen." : ("Private Unterhaltung zwischen dir und " + conv.partnerName + ".");
+      conv.type === "family"
+        ? "Hier laufen alle Nachrichten der Familie zusammen."
+        : ("Private Unterhaltung zwischen dir und " + conv.partnerName + (isUserOnline(conv.partnerId) ? " · online" : " · offline") + ".");
     document.getElementById("chatStatusBadge").textContent = conv.type === "family" ? "Familie" : "Privat";
 
     if(!conv.messages.length){
@@ -509,6 +650,79 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
       setDirectMessages(convId, messages);
     }
   }
+
+
+  window.startDirectChat = function(userId){
+    const target = users.find(u => u.id === userId);
+    if(!target) return;
+    const key = getConversationKeyForUsers(currentUserId, target.id);
+    activeConversation = { type:"direct", id:key };
+    const panel = document.getElementById("composePanel");
+    if(panel) panel.classList.remove("open");
+    renderAll();
+  };
+
+  function bindComposeToggle(){
+    const btn = document.getElementById("newMessageBtn");
+    const panel = document.getElementById("composePanel");
+    if(btn && panel){
+      btn.addEventListener("click", function(){
+        panel.classList.toggle("open");
+      });
+    }
+  }
+
+
+  
+  window.deleteAllMessages = function(){
+    if(!confirm("Wirklich alle Nachrichten löschen?")) return;
+
+    const active = getActiveConversation();
+
+    if(active.type === "family"){
+      const room = loadFamilyRoom();
+      room.messages = [];
+      writeJSON(FAMILY_ROOM_KEY, room);
+      localStorage.setItem(FAMILY_CLEARED_KEY, "true");
+    }else if(active.type === "direct"){
+      const store = loadDirectChats();
+      store[active.id] = [];
+      writeJSON(DIRECT_CHATS_KEY, store);
+    }
+
+    renderAll();
+  };
+
+window.deleteCurrentMessage = function(messageId){
+    if(!messageId) return;
+    if(!confirm("Nachricht wirklich löschen?")) return;
+
+    const active = getActiveConversation();
+
+    if(active.type === "family"){
+      const room = loadFamilyRoom();
+      const msg = room.messages.find(m => m.id === messageId);
+      if(msg && String(msg.senderId) === String(currentUserId)){
+        msg.deleted = true;
+        msg.text = "Nachricht gelöscht";
+        msg.editedAt = Date.now();
+        writeJSON(FAMILY_ROOM_KEY, room);
+      }
+    }else if(active.type === "direct"){
+      const store = loadDirectChats();
+      const list = Array.isArray(store[active.id]) ? store[active.id] : [];
+      const msg = list.find(m => m.id === messageId);
+      if(msg && String(msg.senderId) === String(currentUserId)){
+        msg.deleted = true;
+        msg.text = "Nachricht gelöscht";
+        msg.editedAt = Date.now();
+        store[active.id] = list;
+        writeJSON(DIRECT_CHATS_KEY, store);
+      }
+    }
+
+    renderAll();
+  };
 
   window.sendMessage = function(){
     const conv = getActiveConversation();
@@ -576,7 +790,8 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
 
   function seedIfEmpty(){
     const family = loadFamilyRoom();
-    if(!family.messages.length){
+    const wasCleared = localStorage.getItem(FAMILY_CLEARED_KEY) === "true";
+    if(!family.messages.length && !wasCleared){
       family.messages = [{
         id:"seed_fam_1", conversationType:"family", senderId:"mama", senderName:"Mama",
         text:"Willkommen im Familienchat 💚", timestamp:new Date(Date.now()-3600000).toISOString(), deleted:false
@@ -586,6 +801,8 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
   }
 
   function renderAll(){
+    renderOnlineLists();
+    renderComposePanel();
     renderConversationList();
     renderMessages();
     updateStats();
@@ -595,8 +812,132 @@ textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-rad
   loadAuth();
   loadUsers();
   seedIfEmpty();
+  heartbeatOnline();
+  bindComposeToggle();
   renderAll();
+
+  setInterval(function(){
+    heartbeatOnline();
+    renderOnlineLists();
+    renderComposePanel();
+    renderConversationList();
+    if(getActiveConversation().type === "direct" || getActiveConversation().type === "family"){
+      renderMessages();
+    }
+  }, ONLINE_HEARTBEAT_MS);
+
+  window.addEventListener("storage", function(e){
+    if((e.key && e.key.startsWith(ONLINE_PREFIX)) || e.key === FAMILY_ROOM_KEY || e.key === DIRECT_CHATS_KEY || e.key === USERS_KEY){
+      renderAll();
+    }
+  });
+
+  window.addEventListener("beforeunload", function(){
+    const payload = { name: currentUserName, id: currentUserId, role: currentUserRole, ts: Date.now() - (ONLINE_TTL + 1000) };
+    localStorage.setItem(ONLINE_PREFIX + currentUserId, JSON.stringify(payload));
+  });
 })();
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const childBtn = document.getElementById('childBtn');
+  if(childBtn && !childBtn.dataset.boundToChildMode){
+    childBtn.dataset.boundToChildMode = '1';
+    childBtn.addEventListener('click', function(){ window.location.href = 'kindermodus.html'; });
+  }
+});
+</script>
+
+
+<!-- Chat-Erklärungsblase -->
+<div id="chatInfoBubble" style="
+position:fixed;
+right:22px;
+bottom:108px;
+max-width:340px;
+background:#fff;
+border:1px solid #dfd1bc;
+border-radius:20px;
+box-shadow:0 12px 30px rgba(54,45,28,.12);
+padding:18px;
+z-index:99997;
+display:none;
+font-size:14px;
+line-height:1.6;
+color:#2d342f;
+">
+  <strong style="display:block;margin-bottom:8px;font-size:1rem;">💬 Willkommen im Familien-Chat</strong>
+  <p style="margin:0 0 10px 0;">
+    Hier kannst du mit deiner Familie gemeinsam schreiben oder gezielt einzelne Unterhaltungen öffnen.
+  </p>
+  <ul style="margin:0 0 12px 18px;padding:0;">
+    <li><strong>Links</strong> siehst du alle Unterhaltungen auf einen Blick.</li>
+    <li><strong>Neue Nachricht</strong> öffnet dir direkt die Auswahl für einen privaten Chat.</li>
+    <li><strong>Online-Anzeige</strong> zeigt dir, wer gerade aktiv in der App ist.</li>
+    <li><strong>Familienchat</strong> ist für alle sichtbar, private Chats nur für die beteiligten Personen.</li>
+    <li><strong>Als gelesen markieren</strong> hilft dir, den Überblick bei neuen Nachrichten zu behalten.</li>
+  </ul>
+  <p style="margin:0 0 12px 0;">
+    So bleibt eure Kommunikation übersichtlich, schnell und alltagstauglich – ähnlich wie bei WhatsApp, aber passend zu deinem HaushaltsHeld.
+  </p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <button id="chatBubbleRemind" class="small-btn" type="button">Später erinnern</button>
+    <button id="chatBubbleHide" class="small-btn danger" type="button">Nicht mehr anzeigen</button>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const STORAGE_KEY = "hh_chat_help_hidden_v1";
+  const bubble = document.getElementById("chatInfoBubble");
+  const remindBtn = document.getElementById("chatBubbleRemind");
+  const hideBtn = document.getElementById("chatBubbleHide");
+
+  if(!bubble || !remindBtn || !hideBtn) return;
+
+  if(localStorage.getItem(STORAGE_KEY) !== "true"){
+    setTimeout(function(){
+      bubble.style.display = "block";
+    }, 1400);
+  }
+
+  remindBtn.addEventListener("click", function(){
+    bubble.style.display = "none";
+  });
+
+  hideBtn.addEventListener("click", function(){
+    localStorage.setItem(STORAGE_KEY, "true");
+    bubble.style.display = "none";
+  });
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const dropdown = document.getElementById("extrasDropdown");
+  const toggle = document.getElementById("extrasToggle");
+  if(dropdown && toggle){
+    toggle.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = dropdown.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(isOpen));
+      if(window.lucide && typeof lucide.createIcons === "function"){
+        lucide.createIcons();
+      }
+    });
+
+    document.addEventListener("click", function(e){
+      if(!dropdown.contains(e.target)){
+        dropdown.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+});
+</script>
+
 </body>
 </html>

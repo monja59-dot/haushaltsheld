@@ -748,46 +748,48 @@ button,input,select,textarea{font:inherit}
 
 <div class="app">
   <aside class="sidebar">
-    <div class="logo-wrap">
-      <img src="assetsschnecke.png" alt="Haushaltsheld">
-      <div>
-        <div class="logo-name">Haushaltsheld</div>
-        <div class="logo-sub">Dein Familien-Assistent</div>
-      </div>
+  <div class="logo-wrap">
+    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+    <div>
+      <div class="logo-name">Haushaltsheld</div>
+      <div class="logo-sub">Dein Familien-Assistent</div>
     </div>
+  </div>
 
-    <div class="nav-label">Hauptmenü</div>
-    <nav class="nav">
-      <a href="index.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 10.5 12 3l9 7.5"></path>
-            <path d="M5 9.5V21h14V9.5"></path>
-          </svg>
-        </span>
-        <span>Dashboard</span>
-      </a>
-    </nav>
+  <div class="nav-label">Hauptmenü</div>
+  <nav class="nav">
+    <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+    <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
+  </nav>
 
-    <div class="nav-label">Einstellungen</div>
-    <nav class="nav">
-      <a href="nutzer-verwalten.html" class="active">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-        </span>
-        <span>Nutzer verwalten</span>
-      </a>
-    </nav>
+  <div class="nav-label">Extras</div>
+  <nav class="nav">
+    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+    <a href="nutzer-verwalten.html" class="active"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+    <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+  </nav>
 
-    <div class="sidebar-footer">
-      <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <strong id="userName">👋 Willkommen</strong>
+      <span id="userRole">Eltern-Modus</span>
     </div>
-  </aside>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+      <button class="mode-btn" id="childBtn" type="button">Kind</button>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+  </div>
+</aside>
 
   <main class="main">
     <div class="page-header">
@@ -1387,6 +1389,17 @@ window.addEventListener('DOMContentLoaded', () => {
   const familyPinToggle = document.getElementById('familyPinEnabledToggle');
   if(familyPinToggle) familyPinToggle.addEventListener('click', updateFamilyPinStatus);
   updateRoleDisplay();
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const childBtn = document.getElementById('childBtn');
+  if(childBtn && !childBtn.dataset.boundToChildMode){
+    childBtn.dataset.boundToChildMode = '1';
+    childBtn.addEventListener('click', function(){ window.location.href = 'kindermodus.html'; });
+  }
 });
 </script>
 

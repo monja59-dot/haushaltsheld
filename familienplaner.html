@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Haushaltsheld – Familienplaner</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ki-schnecke.css">
-
 <style>
 :root{
   --bg:#f7f2e9;
@@ -27,46 +22,41 @@
   --accent-dark:#3E8E41;
   --accent-soft:#e7f5e8;
 
+  --beige:#f2e6d7;
+  --sand:#e8d7c2;
   --blue:#6b96d9;
   --blue-soft:#e9f1ff;
   --red:#cc6666;
   --red-soft:#fdeaea;
-  --green:#5ca66f;
-  --green-soft:#e7f4ea;
   --yellow:#b5882f;
   --yellow-soft:#fbf4df;
-  --brown:#4d3c2c;
-  --brown-dark:#433324;
-
-  --birthday:#fdeef3;
-  --birthday-line:#efcad6;
-  --birthday-text:#7a3550;
-
-  --vacation:#eaf4ff;
-  --vacation-line:#cfe0f8;
-  --vacation-text:#35608e;
-
-  --doctor:#ebf7ee;
-  --doctor-line:#cce5d3;
-  --doctor-text:#2f6a43;
-
-  --event:#fff5e8;
-  --event-line:#eed9b8;
-  --event-text:#8a6030;
+  --green:#5ca66f;
+  --green-soft:#e7f4ea;
 
   --shadow-xs:0 2px 8px rgba(54,45,28,.05);
   --shadow-sm:0 6px 18px rgba(54,45,28,.08);
   --shadow:0 12px 34px rgba(54,45,28,.10);
   --shadow-lg:0 18px 48px rgba(54,45,28,.12);
 
+  --r-xs:12px;
+  --r-sm:16px;
+  --r:22px;
+  --r-lg:28px;
+  --r-xl:34px;
   --sidebar-w:258px;
+
+  --font-main:"Outfit", sans-serif;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;overflow-x:hidden}
+
+html,body{
+  width:100%;
+  overflow-x:hidden;
+}
 
 body{
-  font-family:"Outfit",sans-serif;
+  font-family:var(--font-main);
   background:
     radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
     linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
@@ -78,20 +68,23 @@ body{
 }
 
 h1,h2,h3,h4,h5,h6{
-  font-family:"Outfit",sans-serif;
+  font-family:var(--font-main) !important;
   letter-spacing:-0.03em;
   line-height:1.15;
 }
 
-button,input,select,textarea{font:inherit}
+button,input,select,textarea{
+  font:inherit;
+}
 
+/* ── App Shell ── */
 .app{
   display:grid;
   grid-template-columns:var(--sidebar-w) 1fr;
   min-height:100vh;
 }
 
-/* Sidebar */
+/* ── Sidebar ── */
 .sidebar{
   background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
   border-right:1px solid rgba(223,209,188,.85);
@@ -106,6 +99,7 @@ button,input,select,textarea{font:inherit}
   z-index:10;
   box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
 }
+
 .logo-wrap{
   display:flex;
   align-items:center;
@@ -114,14 +108,26 @@ button,input,select,textarea{font:inherit}
   border-bottom:1px solid var(--line);
   margin-bottom:8px;
 }
+
 .logo-wrap img{
   width:48px;
   height:48px;
   object-fit:contain;
   filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
 }
-.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
-.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+
+.logo-name{
+  font-weight:800;
+  font-size:1.25rem !important;
+  color:var(--text);
+}
+
+.logo-sub{
+  font-size:.75rem;
+  color:var(--muted);
+  margin-top:2px;
+}
+
 .nav-label{
   font-size:.7rem;
   font-weight:800;
@@ -130,11 +136,13 @@ button,input,select,textarea{font:inherit}
   color:var(--muted);
   padding:16px 10px 6px;
 }
+
 .nav{
   display:flex;
   flex-direction:column;
   gap:4px;
 }
+
 .nav a{
   display:flex;
   align-items:center;
@@ -143,11 +151,13 @@ button,input,select,textarea{font:inherit}
   border-radius:18px;
   text-decoration:none;
   color:var(--text2);
-  font-weight:700;
-  font-size:.98rem;
+  font-weight:700 !important;
+  font-size:.98rem !important;
   transition:all .18s ease;
   border:1px solid transparent;
+  position:relative;
 }
+
 .nav a:hover{
   background:rgba(255,255,255,.72);
   border-color:rgba(223,209,188,.9);
@@ -155,6 +165,7 @@ button,input,select,textarea{font:inherit}
   box-shadow:var(--shadow-xs);
   color:var(--text);
 }
+
 .nav a.active{
   background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
   color:#fff;
@@ -164,11 +175,7 @@ button,input,select,textarea{font:inherit}
     0 14px 26px rgba(62,142,65,.20),
     inset 0 1px 0 rgba(255,255,255,.18);
 }
-.nav a.active .nav-icon{
-  background:rgba(255,255,255,.16);
-  border-color:rgba(255,255,255,.22);
-  color:#fff;
-}
+
 .nav-icon{
   width:36px;
   height:36px;
@@ -181,12 +188,69 @@ button,input,select,textarea{font:inherit}
   flex-shrink:0;
   box-shadow:0 2px 8px rgba(54,45,28,.05);
 }
-.nav-icon svg{width:18px;height:18px;stroke:currentColor}
+
+.nav-icon svg,
+.nav-icon i{
+  width:18px;
+  height:18px;
+  stroke:currentColor;
+}
+
+.nav a.active .nav-icon{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+}
+
 .sidebar-footer{
   margin-top:auto;
   padding-top:18px;
   border-top:1px solid var(--line);
+  display:grid;
+  gap:10px;
 }
+
+.user-info{
+  background:rgba(255,255,255,.7);
+  border:1px solid rgba(223,209,188,.7);
+  border-radius:16px;
+  padding:12px 14px;
+  font-size:.8rem;
+  margin-bottom:8px;
+}
+
+.user-info strong{
+  display:block;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:4px;
+}
+
+.user-info span{
+  display:block;
+  color:var(--muted);
+  font-size:.75rem;
+}
+
+.logout-btn{
+  width:100%;
+  border:1.5px solid #ddcbb4;
+  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
+  color:#665646;
+  padding:10px 12px;
+  border-radius:16px;
+  font-size:.88rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72);
+}
+
+.logout-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 0 #cdb394, 0 12px 22px rgba(110,82,40,.14), inset 0 1px 0 rgba(255,255,255,.72);
+}
+
 .mode-switch{
   display:flex;
   gap:6px;
@@ -196,6 +260,7 @@ button,input,select,textarea{font:inherit}
   padding:5px;
   box-shadow:var(--shadow-xs);
 }
+
 .mode-btn{
   flex:1;
   border:none;
@@ -207,7 +272,9 @@ button,input,select,textarea{font:inherit}
   font-weight:800;
   cursor:pointer;
   transition:.18s ease;
+  font-family:var(--font-main);
 }
+
 .mode-btn.active{
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
   color:#fff;
@@ -217,41 +284,39 @@ button,input,select,textarea{font:inherit}
     inset 0 1px 0 rgba(255,255,255,.2);
 }
 
-/* Main */
+/* ── Main ── */
 .main{
   width:100%;
   max-width:1580px;
   padding:32px;
+  overflow-x:hidden;
 }
 
-/* Header */
+/* ── Page Header ── */
 .page-header{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
   gap:18px;
-  flex-wrap:wrap;
   margin-bottom:22px;
+  flex-wrap:wrap;
 }
+
 .page-header h1{
-  font-size:2.35rem;
-  font-weight:800;
+  font-size:2.35rem !important;
+  font-weight:800 !important;
   margin-bottom:8px;
   display:flex;
   align-items:center;
   gap:12px;
 }
+
 .page-header p{
   color:var(--muted);
   font-size:.98rem;
-  max-width:860px;
+  max-width:760px;
 }
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
+
 .mode-badge{
   display:inline-flex;
   align-items:center;
@@ -265,43 +330,54 @@ button,input,select,textarea{font:inherit}
   color:var(--text2);
   box-shadow:var(--shadow-xs);
 }
+
+.mode-badge svg,
+.mode-badge i{
+  width:16px;
+  height:16px;
+  stroke-width:2.2;
+}
+
 .mode-badge.child{
   background:var(--blue-soft);
   border-color:#cbdcf8;
   color:#496d9d;
 }
 
-/* Icons */
-.page-title-icon,
-.section-icon{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  display:inline-grid;
-  place-items:center;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-  border:1px solid rgba(76,175,80,.16);
-  box-shadow:var(--shadow-xs);
-  flex-shrink:0;
+.chat-badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#cc6666;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:800;
+  line-height:18px;
+  text-align:center;
+  border:2px solid #fff;
+  box-shadow:0 2px 8px rgba(204,102,102,.28);
 }
-.page-title-icon svg,.section-icon svg{width:18px;height:18px;stroke:currentColor}
 
-/* Hero */
+/* ── Hero ── */
 .hero{
   background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
   border:1px solid rgba(76,175,80,.18);
   border-radius:30px;
   padding:28px 30px;
   display:grid;
-  grid-template-columns:1.05fr .95fr;
-  gap:20px;
-  align-items:stretch;
+  grid-template-columns:1fr 150px;
+  gap:24px;
+  align-items:center;
   margin-bottom:24px;
   box-shadow:var(--shadow-sm);
   position:relative;
   overflow:hidden;
 }
+
 .hero::after{
   content:"";
   position:absolute;
@@ -313,24 +389,26 @@ button,input,select,textarea{font:inherit}
   background:rgba(76,175,80,.07);
   pointer-events:none;
 }
+
 .hero h2{
-  font-size:1.55rem;
-  font-weight:800;
+  font-size:1.6rem !important;
+  font-weight:800 !important;
   margin-bottom:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
 }
+
 .hero p{
   color:var(--text2);
   line-height:1.65;
-  margin-bottom:16px;
+  max-width:720px;
+  margin-bottom:18px;
 }
+
 .hero-tags{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
 }
+
 .hero-tag{
   display:inline-flex;
   align-items:center;
@@ -344,254 +422,455 @@ button,input,select,textarea{font:inherit}
   color:var(--text2);
   box-shadow:0 1px 4px rgba(54,45,28,.04);
 }
+
+.hero-tag svg,
+.hero-tag i{
+  width:16px;
+  height:16px;
+  stroke-width:2.1;
+}
+
 .hero-tag.accent{
   background:#f8ebda;
   border-color:#ecd1ad;
 }
-.hero-side{
-  display:grid;
-  gap:12px;
-}
-.mini{
-  background:rgba(255,255,255,.78);
-  border-radius:20px;
-  padding:16px;
-  border:1px solid rgba(223,209,188,.85);
-  box-shadow:var(--shadow-xs);
-}
-.mini strong{
-  display:block;
-  margin-bottom:6px;
-  font-size:.96rem;
-  font-weight:800;
-}
-.mini span{
-  color:var(--muted);
-  font-size:.88rem;
-  line-height:1.55;
+
+.hero-img{
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-/* Grid */
-.planner-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
+.hero-img img{
+  width:112px;
+  object-fit:contain;
+  filter:drop-shadow(0 10px 18px rgba(62,142,65,.10));
 }
 
-/* Category Cards */
-.cat-card{
-  border-radius:28px;
-  padding:24px;
+/* ── Stats Grid ── */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.stat-card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:26px;
+  padding:20px;
   box-shadow:var(--shadow-sm);
-  border:1px solid transparent;
   transition:transform .18s ease, box-shadow .18s ease;
+  position:relative;
+  overflow:hidden;
 }
-.cat-card:hover{
+
+.stat-card::after{
+  content:"";
+  position:absolute;
+  inset:auto -18px -18px auto;
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  background:rgba(76,175,80,.07);
+  pointer-events:none;
+}
+
+.stat-card:hover{
   transform:translateY(-2px);
   box-shadow:var(--shadow);
 }
-.cat-card h2{
-  font-size:1.16rem;
-  font-weight:800;
-  margin-bottom:14px;
+
+.stat-card .stat-icon{
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  margin-bottom:12px;
+  background:var(--accent-soft);
+  border:1px solid rgba(76,175,80,.18);
+  color:var(--accent-dark);
+  box-shadow:var(--shadow-xs);
+}
+
+.stat-card .stat-icon svg,
+.stat-card .stat-icon i{
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+  stroke-width:2.1;
+}
+
+.stat-card .stat-label{
+  font-size:.72rem !important;
+  font-weight:800 !important;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+
+.stat-card .stat-value{
+  font-size:2rem !important;
+  font-weight:800 !important;
+  font-family:var(--font-main);
+  margin-bottom:4px;
+  letter-spacing:-0.04em;
+}
+
+.stat-card .stat-sub{
+  font-size:.84rem;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.stat-green .stat-value{color:var(--green)}
+.stat-red .stat-value{color:var(--red)}
+
+/* ── Content Grid ── */
+.content-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:18px;
+  margin-bottom:20px;
+}
+
+/* ── Cards ── */
+.card{
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:28px;
+  padding:24px;
+  box-shadow:var(--shadow-sm);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+
+.card-title{
   display:flex;
   align-items:center;
   gap:10px;
+  font-size:1.16rem !important;
+  font-weight:800 !important;
+  margin-bottom:18px;
+  color:var(--text);
 }
-.birthday-card{background:linear-gradient(180deg,#fff8fb 0%, var(--birthday) 100%);border-color:var(--birthday-line)}
-.birthday-card h2{color:var(--birthday-text)}
-.vacation-card{background:linear-gradient(180deg,#f8fbff 0%, var(--vacation) 100%);border-color:var(--vacation-line)}
-.vacation-card h2{color:var(--vacation-text)}
-.doctor-card{background:linear-gradient(180deg,#f9fdf9 0%, var(--doctor) 100%);border-color:var(--doctor-line)}
-.doctor-card h2{color:var(--doctor-text)}
-.event-card{background:linear-gradient(180deg,#fffaf4 0%, var(--event) 100%);border-color:var(--event-line)}
-.event-card h2{color:var(--event-text)}
 
-/* Entry Items */
-.entry-list{
+.card-title svg,
+.card-title i{
+  width:18px;
+  height:18px;
+  stroke-width:2.1;
+  color:#b17a2f;
+}
+
+/* ── Task Items ── */
+.task-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.task-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  background:linear-gradient(180deg,#f5fbf5 0%, #eef6ef 100%);
+  border:1px solid transparent;
+  border-radius:20px;
+  padding:15px 16px;
+  transition:.18s ease;
+}
+
+.task-item:hover{
+  border-color:rgba(200,185,165,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+}
+
+.task-info strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:.98rem;
+  font-weight:800;
+}
+
+.task-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:.76rem;
+  font-weight:800;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--text2);
+  box-shadow:0 1px 4px rgba(54,45,28,.04);
+}
+
+.chip-high{
+  background:var(--red-soft);
+  border-color:#efc1c1;
+  color:#b65454;
+}
+
+.chip-med{
+  background:var(--yellow-soft);
+  border-color:#ead7a2;
+  color:var(--yellow);
+}
+
+.chip-low{
+  background:var(--green-soft);
+  border-color:#bddfca;
+  color:var(--green);
+}
+
+/* ── List Items ── */
+.list-items{
   display:flex;
   flex-direction:column;
   gap:10px;
-  margin-bottom:16px;
 }
-.entry-item{
-  background:rgba(255,255,255,.9);
-  border-radius:18px;
-  padding:14px 15px;
+
+.list-row{
   display:flex;
   justify-content:space-between;
-  align-items:flex-start;
-  gap:12px;
-  border:1px solid rgba(255,255,255,.6);
-  box-shadow:0 1px 0 rgba(255,255,255,.65);
+  align-items:center;
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border:1px solid transparent;
+  border-radius:18px;
+  padding:13px 16px;
+  gap:14px;
+  font-size:.93rem;
+  transition:.18s ease;
 }
-.entry-info strong{
-  display:block;
-  font-size:.95rem;
-  margin-bottom:4px;
-  color:var(--text);
+
+.list-row:hover{
+  border-color:rgba(200,185,165,.9);
+  box-shadow:var(--shadow-xs);
 }
-.entry-info small{
-  display:block;
-  font-size:.84rem;
-  color:var(--muted);
-  line-height:1.45;
-}
-.entry-date{
-  font-size:.82rem;
-  font-weight:800;
+
+.list-row span:last-child{
   color:var(--text2);
+  font-weight:800;
   white-space:nowrap;
 }
-.entry-actions{
-  display:flex;
+
+/* ── CTA ── */
+.cta-link{
+  display:inline-flex;
   align-items:center;
   gap:8px;
-}
-.delete-entry{
-  width:34px;
-  height:34px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(135deg,#fff 0%, #fff8f8 100%);
-  color:var(--muted);
-  cursor:pointer;
-  display:grid;
-  place-items:center;
-  border:1px solid rgba(223,209,188,.7);
-  box-shadow:var(--shadow-xs);
-  transition:.18s ease;
-}
-.delete-entry svg{
-  width:16px;
-  height:16px;
-  stroke:currentColor;
-}
-.delete-entry:hover{
-  color:var(--red);
-  border-color:#e2bbbb;
-  background:var(--red-soft);
-}
-.empty-hint{
-  color:var(--muted);
-  font-size:.88rem;
-  text-align:center;
-  padding:14px;
-  background:rgba(255,255,255,.62);
-  border-radius:18px;
-  border:1px dashed rgba(223,209,188,.9);
-}
-
-/* Add Form */
-.add-form{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:2px;
-}
-.form-in{
-  width:100%;
-  border:1.5px solid rgba(255,255,255,.8);
-  background:rgba(255,255,255,.92);
+  margin-top:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff !important;
+  padding:12px 18px;
   border-radius:16px;
-  padding:12px 13px;
-  font-size:.9rem;
-  color:var(--text);
-  outline:none;
-  font-family:"Outfit",sans-serif;
+  font-weight:800 !important;
+  font-size:.92rem !important;
+  text-decoration:none;
+  box-shadow:
+    0 4px 0 #2f6f33,
+    0 10px 22px rgba(62,142,65,.22),
+    inset 0 1px 0 rgba(255,255,255,.20);
   transition:.18s ease;
-  min-height:48px;
-}
-.form-in:focus{
-  border-color:rgba(76,175,80,.7);
-  box-shadow:0 0 0 4px rgba(76,175,80,.10);
-  background:#fff;
-}
-.add-form .wide{
-  grid-column:1 / -1;
 }
 
-/* Buttons */
-.btn,
-button.btn,
-a.btn{
+.cta-link:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 14px 28px rgba(62,142,65,.26),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.small-note{
+  color:var(--muted);
+  font-size:.88rem !important;
+  line-height:1.6 !important;
+  margin-top:14px;
+}
+
+/* ── Hidden ── */
+.finance-sensitive.child-hidden{display:none!important}
+.child-only{display:none}
+.child-mode .child-only{display:block}
+
+/* ── General Buttons ── */
+.btn, button.btn, a.btn{
   border:none;
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
   color:#fff !important;
   padding:13px 22px;
-  border-radius:16px;
+  border-radius:16px !important;
   font-size:.95rem !important;
   font-weight:800 !important;
   text-decoration:none;
   cursor:pointer;
   display:inline-flex;
   align-items:center;
-  justify-content:center;
   gap:8px;
-  white-space:nowrap;
   box-shadow:
     0 4px 0 #2f6f33,
     0 10px 22px rgba(62,142,65,.22),
     inset 0 1px 0 rgba(255,255,255,.20);
-  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
   letter-spacing:.01em;
+  position:relative;
 }
-.btn:hover,
-button.btn:hover,
-a.btn:hover{
+
+.btn:hover, button.btn:hover, a.btn:hover{
   transform:translateY(-2px);
   box-shadow:
     0 6px 0 #2f6f33,
     0 14px 28px rgba(62,142,65,.26),
     inset 0 1px 0 rgba(255,255,255,.22);
-  filter:brightness(1.02);
 }
-.btn:active,
-button.btn:active,
-a.btn:active{
+
+.btn:active, button.btn:active, a.btn:active{
   transform:translateY(1px);
   box-shadow:
     0 2px 0 #2f6f33,
     0 6px 14px rgba(62,142,65,.18),
     inset 0 1px 0 rgba(255,255,255,.16);
 }
-.btn-soft{
-  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
-  color:var(--brown) !important;
-  border:1.5px solid #d7c0a6 !important;
-  border-radius:16px !important;
+
+.btn-soft, button.btn-soft, a.btn-soft{
+  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%) !important;
+  color:#665646 !important;
+  border:1.5px solid #ddcbb4 !important;
   box-shadow:
-    0 4px 0 #c7ae91,
+    0 3px 0 #cdb394,
     0 8px 18px rgba(110,82,40,.10),
-    inset 0 1px 0 rgba(255,255,255,.65) !important;
-  opacity:1 !important;
-  filter:none !important;
-}
-.btn.btn-soft,
-button.btn.btn-soft,
-a.btn.btn-soft,
-.btn-soft span,
-.btn-soft svg{
-  color:var(--brown) !important;
-  stroke:currentColor !important;
-}
-.btn-soft:hover,
-button.btn-soft:hover,
-a.btn-soft:hover{
-  background:linear-gradient(180deg,#f1e1cf 0%, #e4cfb7 100%) !important;
-  color:var(--brown-dark) !important;
-  box-shadow:
-    0 6px 0 #c7ae91,
-    0 12px 22px rgba(110,82,40,.12),
-    inset 0 1px 0 rgba(255,255,255,.68) !important;
-}
-.btn-soft:hover span,
-.btn-soft:hover svg{
-  color:var(--brown-dark) !important;
-  stroke:currentColor !important;
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
 }
 
-/* KI */
+.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 5px 0 #cdb394,
+    0 12px 22px rgba(110,82,40,.14),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.mini-btn{
+  border:1.5px solid #ddcbb4 !important;
+  background:linear-gradient(135deg,#fffdf9 0%, #f4e8da 100%) !important;
+  color:#655846 !important;
+  padding:8px 12px !important;
+  border-radius:999px !important;
+  font-size:.78rem !important;
+  font-weight:800 !important;
+  cursor:pointer;
+  transition:all .15s ease;
+  box-shadow:0 3px 8px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+
+.mini-btn:hover{
+  background:linear-gradient(135deg,#fef5ea 0%, #ebdcc9 100%) !important;
+  border-color:#cdb394 !important;
+  transform:translateY(-1px);
+}
+
+.mini-btn.delete-btn:hover{
+  background:linear-gradient(135deg,#fff2f2 0%, #f8d9d9 100%) !important;
+  border-color:#e3a5a5 !important;
+  color:#b74f4f !important;
+}
+
+.pill-btn.active{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%) !important;
+  color:#fff !important;
+  box-shadow:0 3px 0 #2f6f33, 0 6px 14px rgba(62,142,65,.24) !important;
+}
+
+.quick-btn{
+  box-shadow:0 4px 0 #2f6f33, 0 8px 20px rgba(62,142,65,.22), inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+.quick-btn:hover{
+  transform:translateY(-2px) !important;
+  box-shadow:0 6px 0 #2f6f33, 0 14px 28px rgba(62,142,65,.26), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+.add-star-btn{
+  box-shadow:0 4px 0 #8d6f18, 0 8px 20px rgba(181,136,47,.22) !important;
+}
+
+.add-star-btn:hover{
+  transform:scale(1.04) translateY(-1px) !important;
+  box-shadow:0 6px 0 #8d6f18, 0 12px 26px rgba(181,136,47,.26) !important;
+}
+
+/* Typography */
+h1{font-size:2.4rem !important;font-weight:800 !important;}
+h2{font-size:1.5rem !important;font-weight:700 !important;}
+h3{font-size:1.15rem !important;font-weight:700 !important;}
+
+.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
+.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
+.stat .value, .pocket-amount, .stars-count{
+  font-family:var(--font-main) !important;
+}
+
+.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
+.pill-btn, .pill-toggle button, .mode-switch button,
+label, .field label, .form-label, .section-label,
+.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
+select, input, textarea, button, .mini-btn,
+.chip, .hero-tag, .badge, .mode-badge,
+.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
+p, span, div, li, td, th{
+  font-family:var(--font-main) !important;
+}
+
+p, .sub, .card-sub, .body, .helper, .small-note,
+.ki-note, .mode-note, .section-note, .filter-note{
+  font-size:15px !important;
+  line-height:1.65 !important;
+}
+
+.stat-value, .stat .value, .stat-val, .pocket-amount{
+  font-size:2rem !important;
+  font-weight:800 !important;
+  letter-spacing:-0.03em;
+}
+
+.field label, .form-label, .stat-label, .stat-lbl,
+.nav-lbl, .section-label, .opt-name{
+  font-size:0.72rem !important;
+  font-weight:700 !important;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+}
+
+input, select, textarea{
+  font-size:0.95rem !important;
+  font-weight:500 !important;
+}
+
+.wrap, .hero, .savings-card, .pocket-card,
+.tasks-card, .stars-banner, .quick-card,
+.kid-tab, .add-goal-btn, .quick-btn{
+  font-family:var(--font-main) !important;
+}
+
+/* ===== KI-Schnecke ===== */
 .ki-fab{
   position:fixed;
   right:22px;
@@ -601,7 +880,9 @@ a.btn-soft:hover{
   border:none;
   border-radius:24px;
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  box-shadow:
+    0 6px 0 #2f6f33,
+    0 16px 30px rgba(62,142,65,.24);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -609,11 +890,20 @@ a.btn-soft:hover{
   z-index:9998;
   transition:transform .18s ease, box-shadow .18s ease;
 }
+
 .ki-fab:hover{
   transform:translateY(-3px);
-  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
+  box-shadow:
+    0 8px 0 #2f6f33,
+    0 20px 34px rgba(62,142,65,.28);
 }
-.ki-fab img{width:40px;height:40px;object-fit:contain}
+
+.ki-fab img{
+  width:40px;
+  height:40px;
+  object-fit:contain;
+}
+
 .ki-fab-label{
   position:absolute;
   bottom:8px;
@@ -623,6 +913,7 @@ a.btn-soft:hover{
   font-weight:800;
   line-height:1;
 }
+
 .ki-panel{
   position:fixed;
   right:22px;
@@ -637,7 +928,12 @@ a.btn-soft:hover{
   z-index:9999;
   display:none;
 }
-.ki-panel.open{display:flex;flex-direction:column}
+
+.ki-panel.open{
+  display:flex;
+  flex-direction:column;
+}
+
 .ki-head{
   padding:20px 20px 16px;
   background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
@@ -647,11 +943,13 @@ a.btn-soft:hover{
   justify-content:space-between;
   gap:14px;
 }
+
 .ki-head-left{
   display:flex;
   gap:12px;
   align-items:flex-start;
 }
+
 .ki-head-avatar{
   width:48px;
   height:48px;
@@ -663,34 +961,25 @@ a.btn-soft:hover{
   justify-content:center;
   flex-shrink:0;
 }
+
 .ki-head-avatar img{
   width:28px;
   height:28px;
   object-fit:contain;
 }
+
 .ki-head h3{
   font-size:1.2rem !important;
   font-weight:800 !important;
   margin:0 0 4px;
 }
+
 .ki-head p{
   font-size:.95rem !important;
   color:var(--text2);
   margin:0;
 }
-.ki-chat-link{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  margin-top:8px;
-  font-size:.9rem;
-  font-weight:800;
-  color:var(--accent-dark);
-  text-decoration:none;
-}
-.ki-chat-link:hover{
-  text-decoration:underline;
-}
+
 .ki-close{
   width:46px;
   height:46px;
@@ -703,6 +992,7 @@ a.btn-soft:hover{
   font-size:1.8rem;
   line-height:1;
 }
+
 .ki-suggestions{
   padding:16px 20px 14px;
   display:flex;
@@ -711,6 +1001,7 @@ a.btn-soft:hover{
   border-bottom:1px solid var(--line);
   background:#fff;
 }
+
 .ki-chip{
   border:1px solid var(--line);
   background:#fff;
@@ -721,6 +1012,7 @@ a.btn-soft:hover{
   color:var(--text2);
   cursor:pointer;
 }
+
 .ki-chat{
   padding:18px 16px;
   overflow:auto;
@@ -730,6 +1022,7 @@ a.btn-soft:hover{
   gap:14px;
   min-height:220px;
 }
+
 .ki-msg{
   max-width:84%;
   padding:14px 16px;
@@ -738,16 +1031,19 @@ a.btn-soft:hover{
   line-height:1.5;
   white-space:pre-wrap;
 }
+
 .ki-msg.bot{
   background:#f7eee0;
   border:1px solid #ebd3b5;
   color:#5f4332;
 }
+
 .ki-msg.user{
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
   color:#fff;
   align-self:flex-end;
 }
+
 .ki-form{
   padding:14px;
   border-top:1px solid var(--line);
@@ -756,6 +1052,7 @@ a.btn-soft:hover{
   grid-template-columns:1fr auto;
   gap:10px;
 }
+
 .ki-input{
   border:1.5px solid var(--line);
   background:var(--bg-2);
@@ -766,6 +1063,7 @@ a.btn-soft:hover{
   outline:none;
   font-family:inherit;
 }
+
 .ki-send{
   border:none;
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
@@ -777,12 +1075,33 @@ a.btn-soft:hover{
   cursor:pointer;
   box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
 }
-.ki-typing{opacity:.8;font-style:italic}
 
-/* Responsive */
-@media(max-width:1200px){
-  .planner-grid,.hero{grid-template-columns:1fr}
+.ki-typing{
+  opacity:.8;
+  font-style:italic;
 }
+
+
+/* ── Klickbare Dashboard-Karten ── */
+.click-card{
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.click-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow);
+  border-color:rgba(76,175,80,.28) !important;
+}
+.click-card:active{
+  transform:translateY(-1px);
+}
+
+/* ── Responsive ── */
+@media(max-width:1300px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .content-grid{grid-template-columns:1fr}
+}
+
 @media(max-width:960px){
   .app{grid-template-columns:1fr}
   .sidebar{
@@ -811,27 +1130,39 @@ a.btn-soft:hover{
     padding:10px 12px;
   }
   .nav-label,.sidebar-footer{display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-img{display:none}
 }
+
 @media(max-width:700px){
   .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
   .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
 }
+
 @media(max-width:600px){
   .main{padding:16px}
-  .page-header h1{font-size:1.95rem}
-  .cat-card{padding:18px;border-radius:24px}
-  .add-form{grid-template-columns:1fr}
-  .add-form .wide{grid-column:auto}
+  .page-header h1{font-size:1.95rem !important}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .hero{padding:22px 20px}
+  .card,.stat-card{padding:18px}
 }
+
 @media(max-width:420px){
-  .page-header h1{font-size:1.75rem}
+  .stats-grid{grid-template-columns:1fr}
+  .page-header h1{font-size:1.75rem !important}
   .mode-badge{width:100%;justify-content:center}
 }
 </style>
-</head>
-<body data-page="familienplaner">
-<div class="app">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<link rel="stylesheet" href="ki-schnecke.css">
+</head>
+<body>
+<div class="app">
 <aside class="sidebar">
   <div class="logo-wrap">
     <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
@@ -843,509 +1174,179 @@ a.btn-soft:hover{
 
   <div class="nav-label">Hauptmenü</div>
   <nav class="nav">
-    <a href="index.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 10.5 12 3l9 7.5"></path>
-          <path d="M5 9.5V21h14V9.5"></path>
-        </svg>
-      </span>
-      <span>Dashboard</span>
-    </a>
-    <a href="finanzen.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="6" width="18" height="12" rx="2"></rect>
-          <path d="M16 12h.01"></path>
-          <path d="M3 10h18"></path>
-        </svg>
-      </span>
-      <span>Finanzen</span>
-    </a>
-    <a href="einkaufsliste.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="20" r="1"></circle>
-          <circle cx="18" cy="20" r="1"></circle>
-          <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
-        </svg>
-      </span>
-      <span>Einkäufe</span>
-    </a>
-    <a href="aufgaben.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 11l3 3L22 4"></path>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-        </svg>
-      </span>
-      <span>Aufgaben</span>
-    </a>
-    <a href="familienplaner.html" class="active">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-          <path d="M16 2v4M8 2v4M3 10h18"></path>
-        </svg>
-      </span>
-      <span>Familienplaner</span>
-    </a>
-<a href="admin_chat.html">
-  <span class="nav-icon">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-    </svg>
-  </span>
-  <span>Familien-Chat</span>
-</a>
+    <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html" class="active"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+    <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
   </nav>
 
   <div class="nav-label">Extras</div>
   <nav class="nav">
-    <a href="finanzbericht.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3v18h18"></path>
-          <path d="M7 14l4-4 3 3 5-7"></path>
-        </svg>
-      </span>
-      <span>Bericht</span>
-    </a>
-    <a href="finanz_historie.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 8v5l3 2"></path>
-          <circle cx="12" cy="12" r="9"></circle>
-        </svg>
-      </span>
-      <span>Historie</span>
-    </a>
-    <a href="beleg_import.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3v12"></path>
-          <path d="m7 10 5 5 5-5"></path>
-          <path d="M5 21h14"></path>
-        </svg>
-      </span>
-      <span>Belege</span>
-    </a>
-    <a href="kindermodus.html">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
-        </svg>
-      </span>
-      <span>Kindermodus</span>
-    </a>
+    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+    <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
   </nav>
 
   <div class="sidebar-footer">
-    <div class="mode-switch">
-      <button class="mode-btn active" id="adminModeBtn" type="button">Eltern</button>
-      <button class="mode-btn" id="childModeBtn" type="button">Kind</button>
+    <div class="user-info">
+      <strong id="userName">👋 Willkommen</strong>
+      <span id="userRole">Eltern-Modus</span>
     </div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+      <button class="mode-btn" id="childBtn" type="button">Kind</button>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
   </div>
 </aside>
-
 <main class="main">
   <div class="page-header">
     <div>
-      <h1>
-        <span class="page-title-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-            <path d="M16 2v4M8 2v4M3 10h18"></path>
-          </svg>
-        </span>
-        <span>Familienplaner</span>
-      </h1>
-      <p>Geburtstage, Urlaub, Arzttermine und Feiern übersichtlich an einem Ort – weich, klar und familienfreundlich.</p>
+      <h1>Familienplaner</h1>
+      <p>Plane Termine, Familienaufgaben und wichtige Erinnerungen zentral im Elternmodus.</p>
     </div>
     <div class="header-right">
-      <a class="btn btn-soft" href="index.html"><span>Zum Dashboard</span></a>
-      <a class="btn btn-soft" href="aufgaben.html"><span>Zu Aufgaben</span></a>
-      <span class="mode-badge" id="modeBadge">📅 Planermodus aktiv</span>
+      <span class="mode-badge">📅 Familienorganisation</span>
     </div>
   </div>
 
-  <section class="hero">
-    <div>
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-            <path d="M16 2v4M8 2v4M3 10h18"></path>
-          </svg>
-        </span>
-        <span>Alles Wichtige im Blick</span>
-      </h2>
-      <p>Plane Geburtstage, Reisen, Arzttermine und Familienfeiern zentral. Die Termine bleiben gespeichert und sind für deine Familie schnell erreichbar.</p>
-      <div class="hero-tags">
-        <span class="hero-tag">Geburtstage</span>
-        <span class="hero-tag">Urlaub & Reisen</span>
-        <span class="hero-tag accent">Familientermine</span>
+  <div class="hero-grid" style="display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start;">
+    <section class="hero-card" style="background:linear-gradient(135deg,#fffdfa 0%,#f7efe4 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:26px;box-shadow:var(--shadow-sm);">
+      <div class="card-title" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-weight:800;font-size:1.1rem;">🗓️ Wochenübersicht</div>
+      <p class="small-note" style="margin-bottom:18px;color:var(--muted);">Trage Termine direkt ein. Alle Daten werden im Browser unter <code>hh_family_planner_events</code> gespeichert.</p>
+      <div id="plannerGrid" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;"></div>
+    </section>
+
+    <section class="hero-card" style="background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:26px;box-shadow:var(--shadow-sm);">
+      <div class="card-title" style="display:flex;align-items:center;gap:10px;margin-bottom:12px;font-weight:800;font-size:1.1rem;">➕ Termin anlegen</div>
+      <form id="plannerForm" style="display:grid;gap:12px;">
+        <input id="eventTitle" type="text" placeholder="z. B. Elternabend" required style="padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:#fff;">
+        <select id="eventDay" required style="padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:#fff;">
+          <option value="Montag">Montag</option>
+          <option value="Dienstag">Dienstag</option>
+          <option value="Mittwoch">Mittwoch</option>
+          <option value="Donnerstag">Donnerstag</option>
+          <option value="Freitag">Freitag</option>
+          <option value="Samstag">Samstag</option>
+          <option value="Sonntag">Sonntag</option>
+        </select>
+        <input id="eventTime" type="time" required style="padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:#fff;">
+        <input id="eventPlace" type="text" placeholder="Ort / Notiz" style="padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:#fff;">
+        <textarea id="eventNote" rows="4" placeholder="Zusätzliche Infos" style="padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:#fff;resize:vertical;"></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-primary" type="submit">Termin speichern</button>
+          <button class="btn-secondary" type="button" id="clearPlannerBtn">Alle Termine löschen</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <section class="content-card" style="margin-top:18px;background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:26px;box-shadow:var(--shadow-sm);">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+      <div>
+        <h2 style="font-size:1.25rem;font-weight:800;margin-bottom:4px;">Anstehende Termine</h2>
+        <p style="color:var(--muted);">Hier siehst du die komplette Liste aller gespeicherten Einträge.</p>
       </div>
+      <span class="mode-badge" id="plannerCountBadge">0 Einträge</span>
     </div>
-    <div class="hero-side">
-      <div class="mini"><strong>Übersichtlich</strong><span>Jede Kategorie hat ihren eigenen Bereich für einen schnellen Überblick.</span></div>
-      <div class="mini"><strong>Dauerhaft gespeichert</strong><span>Einträge bleiben in deinem Browser erhalten und können jederzeit ergänzt oder gelöscht werden.</span></div>
-    </div>
-  </section>
-
-  <section class="planner-grid">
-    <section class="cat-card birthday-card">
-      <h2>
-        <span class="section-icon" style="background:#fff4f8;color:var(--birthday-text);border-color:rgba(239,202,214,.65);">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v6"></path>
-            <path d="M8 8h8"></path>
-            <path d="M6 10h12l-1 10H7L6 10Z"></path>
-            <path d="M8 14h8"></path>
-          </svg>
-        </span>
-        <span>Geburtstage</span>
-      </h2>
-
-      <div class="entry-list" id="birthdayList"></div>
-
-      <div class="add-form">
-        <input class="form-in" type="text" id="bName" placeholder="Name (z. B. Mama)" />
-        <input class="form-in" type="text" id="bDate" placeholder="Datum (z. B. 12.04)" />
-        <input class="form-in wide" type="text" id="bNote" placeholder="Notiz (optional)" />
-        <button class="btn" onclick="addEntry('birthday')" type="button">Hinzufügen</button>
-      </div>
-    </section>
-
-    <section class="cat-card vacation-card">
-      <h2>
-        <span class="section-icon" style="background:#f4f8ff;color:var(--vacation-text);border-color:rgba(207,224,248,.75);">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 20h16"></path>
-            <path d="M8 20v-6"></path>
-            <path d="M16 20v-6"></path>
-            <path d="M12 4v10"></path>
-            <path d="M7 9c2-1 3-1 5 0"></path>
-            <path d="M12 9c2-1 3-1 5 0"></path>
-          </svg>
-        </span>
-        <span>Urlaub & Reisen</span>
-      </h2>
-
-      <div class="entry-list" id="vacationList"></div>
-
-      <div class="add-form">
-        <input class="form-in" type="text" id="vName" placeholder="Wohin? (z. B. Ostsee)" />
-        <input class="form-in" type="text" id="vDate" placeholder="Wann? (z. B. Juli)" />
-        <input class="form-in wide" type="text" id="vNote" placeholder="Notiz" />
-        <button class="btn" onclick="addEntry('vacation')" type="button">Hinzufügen</button>
-      </div>
-    </section>
-
-    <section class="cat-card doctor-card">
-      <h2>
-        <span class="section-icon" style="background:#f4fbf6;color:var(--doctor-text);border-color:rgba(204,229,211,.8);">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14"></path>
-            <path d="M5 12h14"></path>
-            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
-          </svg>
-        </span>
-        <span>Arzttermine</span>
-      </h2>
-
-      <div class="entry-list" id="doctorList"></div>
-
-      <div class="add-form">
-        <input class="form-in" type="text" id="dName" placeholder="Wer? (z. B. Kinderarzt)" />
-        <input class="form-in" type="date" id="dDate" />
-        <input class="form-in wide" type="text" id="dNote" placeholder="Notiz" />
-        <button class="btn" onclick="addEntry('doctor')" type="button">Hinzufügen</button>
-      </div>
-    </section>
-
-    <section class="cat-card event-card">
-      <h2>
-        <span class="section-icon" style="background:#fffaf2;color:var(--event-text);border-color:rgba(238,217,184,.85);">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v4"></path>
-            <path d="M12 18v4"></path>
-            <path d="M4.93 4.93l2.83 2.83"></path>
-            <path d="M16.24 16.24l2.83 2.83"></path>
-            <path d="M2 12h4"></path>
-            <path d="M18 12h4"></path>
-          </svg>
-        </span>
-        <span>Feiern & Termine</span>
-      </h2>
-
-      <div class="entry-list" id="eventList"></div>
-
-      <div class="add-form">
-        <input class="form-in" type="text" id="eName" placeholder="Was? (z. B. Grillabend)" />
-        <input class="form-in" type="text" id="eDate" placeholder="Wann? (z. B. Samstag)" />
-        <input class="form-in wide" type="text" id="eNote" placeholder="Notiz" />
-        <button class="btn" onclick="addEntry('event')" type="button">Hinzufügen</button>
-      </div>
-    </section>
+    <div id="plannerList" style="display:grid;gap:12px;"></div>
   </section>
 </main>
 </div>
 
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-  <span class="ki-fab-label">KI</span>
+  <span>💬</span>
 </button>
-
 <section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
-  <div class="ki-head">
-    <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
-      <div>
-        <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText">Ich unterstütze dich hier direkt im Elternbereich.</p>
-        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
-      </div>
+  <header class="ki-header">
+    <div>
+      <strong>Haushaltsheld KI</strong>
+      <p>Hilfe bei Planung, Struktur und Wochenorganisation</p>
     </div>
     <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
-  </div>
-
-  <div class="ki-suggestions" id="kiSuggestions"></div>
-
+  </header>
   <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.</div>
+    <div class="ki-msg bot">Hallo 👋 Ich helfe dir beim Strukturieren von Terminen, Familienalltag und Wochenplanung.</div>
   </div>
-
+  <div class="ki-suggestions" id="kiSuggestions"></div>
   <form class="ki-form" id="kiForm">
-    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Frage zur Familienplanung..." autocomplete="off">
     <button class="ki-send" type="submit">Senden</button>
   </form>
 </section>
 
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
-const CATS = {
-  birthday: {
-    key:"bName",
-    dateKey:"bDate",
-    noteKey:"bNote",
-    listId:"birthdayList",
-    defaults:[
-      {name:"Mama",date:"12.04",note:"Geschenk planen"},
-      {name:"Oma",date:"28.04",note:""}
-    ]
-  },
-  vacation: {
-    key:"vName",
-    dateKey:"vDate",
-    noteKey:"vNote",
-    listId:"vacationList",
-    defaults:[
-      {name:"Sommerurlaub",date:"Juli",note:"Budget planen"}
-    ]
-  },
-  doctor: {
-    key:"dName",
-    dateKey:"dDate",
-    noteKey:"dNote",
-    listId:"doctorList",
-    defaults:[
-      {name:"Kinderarzt",date:"2026-05-05",note:""}
-    ]
-  },
-  event: {
-    key:"eName",
-    dateKey:"eDate",
-    noteKey:"eNote",
-    listId:"eventList",
-    defaults:[
-      {name:"Grillabend",date:"Samstag",note:"Alle einladen"}
-    ]
-  }
-};
-
-function escapeHtml(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-function storageKey(cat){
-  return "hh_planner_" + cat;
-}
-function getData(cat){
-  const stored = localStorage.getItem(storageKey(cat));
-  if(stored) return JSON.parse(stored);
-  return [...CATS[cat].defaults];
-}
-function saveData(cat, data){
-  localStorage.setItem(storageKey(cat), JSON.stringify(data));
-}
-function fmtDate(value){
-  if(!value) return "";
-  const d = new Date(value);
-  if(!Number.isNaN(d.getTime()) && value.includes("-")){
-    return d.toLocaleDateString("de-DE");
-  }
-  return value;
-}
-function deleteIcon(){
-  return `
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 6h18"></path>
-      <path d="M8 6V4h8v2"></path>
-      <path d="M19 6l-1 14H6L5 6"></path>
-      <path d="M10 11v6"></path>
-      <path d="M14 11v6"></path>
-    </svg>
-  `;
-}
-function renderCat(cat){
-  const data = getData(cat);
-  const el = document.getElementById(CATS[cat].listId);
-
-  if(!data.length){
-    el.innerHTML = `<div class="empty-hint">Noch keine Einträge. Trag deinen ersten ein!</div>`;
-    return;
-  }
-
-  el.innerHTML = data.map((entry,index)=>`
-    <div class="entry-item">
-      <div class="entry-info">
-        <strong>${escapeHtml(entry.name)}</strong>
-        ${entry.note ? `<small>${escapeHtml(entry.note)}</small>` : ``}
-      </div>
-      <div class="entry-actions">
-        <span class="entry-date">${escapeHtml(fmtDate(entry.date))}</span>
-        <button class="delete-entry" onclick="deleteEntry('${cat}',${index})" type="button" title="Löschen">${deleteIcon()}</button>
-      </div>
+const DAYS=["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+const STORAGE_KEY="hh_family_planner_events";
+function getPlannerEvents(){ try{ const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); return Array.isArray(data)?data:[]; }catch{ return []; } }
+function savePlannerEvents(events){ localStorage.setItem(STORAGE_KEY, JSON.stringify(events)); }
+function escapeHtml(v){ return String(v??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function renderPlanner(){
+  const events=getPlannerEvents().sort((a,b)=> (a.dayIndex-b.dayIndex) || String(a.time).localeCompare(String(b.time)));
+  const grid=document.getElementById('plannerGrid');
+  const list=document.getElementById('plannerList');
+  const badge=document.getElementById('plannerCountBadge');
+  badge.textContent=`${events.length} Einträge`;
+  grid.innerHTML=DAYS.map((day,idx)=>{
+    const items=events.filter(e=>e.day===day);
+    return `<div style="background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px;min-height:220px;box-shadow:var(--shadow-xs);">
+      <div style="font-weight:800;margin-bottom:10px;">${day}</div>
+      ${items.length?items.map(item=>`<div style="padding:10px 12px;border-radius:16px;background:var(--soft);margin-bottom:8px;border:1px solid rgba(223,209,188,.7);">
+        <div style="font-weight:700;">${escapeHtml(item.time)} · ${escapeHtml(item.title)}</div>
+        <div style="font-size:.88rem;color:var(--muted);">${escapeHtml(item.place||'Ohne Ort')}</div>
+      </div>`).join(''):'<div style="color:var(--muted);font-size:.92rem;">Noch nichts geplant.</div>'}
+    </div>`;
+  }).join('');
+  list.innerHTML=events.length?events.map((item,index)=>`<article style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:16px 18px;border-radius:20px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow-xs);">
+    <div>
+      <div style="font-weight:800;">${escapeHtml(item.day)} · ${escapeHtml(item.time)} · ${escapeHtml(item.title)}</div>
+      <div style="color:var(--muted);margin-top:4px;">${escapeHtml(item.place||'Ohne Ort')}</div>
+      ${item.note?`<div style="margin-top:8px;">${escapeHtml(item.note)}</div>`:''}
     </div>
-  `).join("");
+    <div><button type="button" class="btn-secondary" onclick="removePlannerEvent(${index})">Löschen</button></div>
+  </article>`).join(''):'<div style="color:var(--muted);">Noch keine Termine gespeichert.</div>';
 }
-function renderAll(){
-  Object.keys(CATS).forEach(renderCat);
+function removePlannerEvent(index){ const events=getPlannerEvents().sort((a,b)=> (a.dayIndex-b.dayIndex) || String(a.time).localeCompare(String(b.time))); events.splice(index,1); savePlannerEvents(events); renderPlanner(); }
+document.getElementById('plannerForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const title=document.getElementById('eventTitle').value.trim();
+  const day=document.getElementById('eventDay').value;
+  const time=document.getElementById('eventTime').value;
+  const place=document.getElementById('eventPlace').value.trim();
+  const note=document.getElementById('eventNote').value.trim();
+  if(!title || !day || !time) return;
+  const events=getPlannerEvents();
+  events.push({title,day,time,place,note,dayIndex:DAYS.indexOf(day),createdAt:Date.now()});
+  savePlannerEvents(events);
+  this.reset();
+  renderPlanner();
+});
+document.getElementById('clearPlannerBtn').addEventListener('click', function(){ if(confirm('Wirklich alle Familienplaner-Einträge löschen?')){ localStorage.removeItem(STORAGE_KEY); renderPlanner(); } });
+function handleLogout(){ localStorage.removeItem('haushaltsheld_logged_in'); localStorage.removeItem('haushaltsheld_current_user'); window.location.href='login.html'; }
+const adminBtn=document.getElementById('adminBtn'); const childBtn=document.getElementById('childBtn');
+if(adminBtn) adminBtn.addEventListener('click',()=>localStorage.setItem('haushaltsheld_mode','parent'));
+if(childBtn) childBtn.addEventListener('click',()=>{ localStorage.setItem('haushaltsheld_mode','child'); window.location.href='kindermodus.html'; });
+function updateParentChatBadge(){
+  const badge=document.getElementById('chatBadge'); if(!badge) return;
+  let threads=[]; try{ threads=JSON.parse(localStorage.getItem('hh_family_chat_threads')||'[]'); if(!Array.isArray(threads)) threads=[]; }catch{ threads=[]; }
+  const unreadCount=threads.filter(t=>t&&t.unreadForParent).length;
+  if(unreadCount>0){ badge.style.display='inline-block'; badge.textContent=unreadCount>99?'99+':String(unreadCount); }
+  else{ badge.style.display='none'; badge.textContent='0'; }
 }
-function addEntry(cat){
-  const cfg = CATS[cat];
-  const name = document.getElementById(cfg.key).value.trim();
-  const date = document.getElementById(cfg.dateKey).value.trim();
-  const note = document.getElementById(cfg.noteKey).value.trim();
-
-  if(!name){
-    alert("Bitte mindestens einen Namen eingeben.");
-    return;
-  }
-
-  const data = getData(cat);
-  data.push({name,date,note});
-  saveData(cat,data);
-
-  document.getElementById(cfg.key).value = "";
-  document.getElementById(cfg.dateKey).value = "";
-  document.getElementById(cfg.noteKey).value = "";
-
-  renderCat(cat);
-}
-function deleteEntry(cat,index){
-  const data = getData(cat);
-  data.splice(index,1);
-  saveData(cat,data);
-  renderCat(cat);
-}
-
-/* KI */
-(function(){
-  const page = "familienplaner";
-  const fab = document.getElementById("kiFab");
-  const panel = document.getElementById("kiPanel");
-  const closeBtn = document.getElementById("kiClose");
-  const form = document.getElementById("kiForm");
-  const input = document.getElementById("kiInput");
-  const chat = document.getElementById("kiChat");
-  const suggestions = document.getElementById("kiSuggestions");
-  const contextText = document.getElementById("kiContextText");
-  const welcome = document.getElementById("kiWelcomeMsg");
-
-  const pageSettings = {
-    context: "Ich helfe dir beim Planen von Terminen, Geburtstagen, Urlaub und Familienfeiern.",
-    suggestions: [
-      "Hilf mir bei der Planung eines Kindergeburtstags.",
-      "Was sollte ich für einen Sommerurlaub früh eintragen?",
-      "Mach mir eine kleine Checkliste für einen Arzttermin."
-    ]
-  };
-
-  contextText.textContent = "Ich unterstütze dich hier direkt im Elternbereich.";
-  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.";
-
-  suggestions.innerHTML = pageSettings.suggestions.map(text =>
-    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
-  ).join("");
-
-  suggestions.querySelectorAll(".ki-chip").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      input.value = btn.textContent.trim();
-      input.focus();
-    });
-  });
-
-  function addMsg(role, text){
-    const div = document.createElement("div");
-    div.className = "ki-msg " + role;
-    div.textContent = text;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-    return div;
-  }
-
-  async function sendMessage(message){
-    addMsg("user", message);
-    const loading = addMsg("bot", "Ich denke kurz nach …");
-    loading.classList.add("ki-typing");
-
-    try{
-      const response = await fetch("/.netlify/functions/chat", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({
-          message,
-          page,
-          mode: "parent"
-        })
-      });
-
-      const data = await response.json();
-      loading.remove();
-      addMsg("bot", data.reply || "Ich konnte gerade nichts Sinnvolles antworten.");
-    }catch(err){
-      loading.remove();
-      addMsg("bot", "Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.");
-    }
-  }
-
-  fab.addEventListener("click",()=>{
-    panel.classList.add("open");
-    input.focus();
-  });
-  closeBtn.addEventListener("click",()=>{
-    panel.classList.remove("open");
-  });
-
-  document.addEventListener("keydown",(e)=>{
-    if(e.key === "Escape") panel.classList.remove("open");
-  });
-
-  form.addEventListener("submit",async(e)=>{
-    e.preventDefault();
-    const message = input.value.trim();
-    if(!message) return;
-    input.value = "";
-    await sendMessage(message);
-  });
-})();
-
-renderAll();
+function addKiMessage(role,text){ const chat=document.getElementById('kiChat'); const msg=document.createElement('div'); msg.className=`ki-msg ${role==='user'?'user':'bot'}`; msg.textContent=text; chat.appendChild(msg); chat.scrollTop=chat.scrollHeight; return msg; }
+function setKiSuggestions(){ const suggestions=['Plane mir eine ruhige Familienwoche.','Welche Termine sollte ich zentral sammeln?','Hilf mir beim Strukturieren von Schul- und Arztterminen.']; document.getElementById('kiSuggestions').innerHTML=suggestions.map(text=>`<button class="ki-chip" type="button">${escapeHtml(text)}</button>`).join(''); document.querySelectorAll('.ki-chip').forEach(btn=>btn.addEventListener('click',()=>{ document.getElementById('kiInput').value=btn.textContent.trim(); document.getElementById('kiInput').focus(); })); }
+async function sendKiMessage(message){ addKiMessage('user',message); const typing=addKiMessage('bot','Ich denke kurz nach …'); try{ const response=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,page:'familienplaner',mode:'parent'})}); if(!response.ok) throw new Error('Netzwerkfehler'); const data=await response.json().catch(()=>({})); typing.textContent=data.reply||data.message||'Ich helfe dir gern bei Planung und Struktur.'; }catch(error){ typing.textContent='Gerade ist keine Verbindung zur KI möglich. Deine Termine im Familienplaner bleiben trotzdem gespeichert.'; } }
+(function setupKi(){ const fab=document.getElementById('kiFab'); const panel=document.getElementById('kiPanel'); const close=document.getElementById('kiClose'); const form=document.getElementById('kiForm'); const input=document.getElementById('kiInput'); fab.addEventListener('click',()=>{ panel.classList.add('open'); input.focus(); }); close.addEventListener('click',()=>panel.classList.remove('open')); document.addEventListener('keydown',e=>{ if(e.key==='Escape') panel.classList.remove('open'); }); form.addEventListener('submit',async e=>{ e.preventDefault(); const message=input.value.trim(); if(!message) return; input.value=''; await sendKiMessage(message); }); setKiSuggestions(); })();
+document.addEventListener('DOMContentLoaded', function(){ renderPlanner(); updateParentChatBadge(); if(window.lucide&&typeof lucide.createIcons==='function') lucide.createIcons(); });
+window.addEventListener('storage', function(){ renderPlanner(); updateParentChatBadge(); });
 </script>
 </body>
 </html>

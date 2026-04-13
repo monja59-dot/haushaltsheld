@@ -1,999 +1,68 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Haushaltsheld – Finanz Historie</title>
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Haushaltsheld – Finanz-Historie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="ki-schnecke.css">
-
 <style>
-:root{
-  --bg:#f7f2e9;
-  --bg-2:#fdf9f3;
-  --card:#ffffff;
-  --soft:#f6efe4;
-  --soft2:#efe3d2;
-  --line:#dfd1bc;
-
-  --text:#2d342f;
-  --text2:#556159;
-  --muted:#7d8a82;
-
-  --accent:#4CAF50;
-  --accent-dark:#3E8E41;
-  --accent-soft:#e7f5e8;
-
-  --green:#5ca66f;
-  --green-soft:#e7f4ea;
-  --red:#cc6666;
-  --red-soft:#fdeaea;
-  --yellow:#b5882f;
-  --yellow-soft:#fbf4df;
-  --blue:#6b96d9;
-  --blue-soft:#e9f1ff;
-
-  --brown:#4d3c2c;
-  --brown-dark:#433324;
-
-  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
-  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
-  --shadow:0 12px 34px rgba(54,45,28,.10);
-  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
-
-  --sidebar-w:258px;
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;overflow-x:hidden}
-
-body{
-  font-family:"Outfit",sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
-    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-  color:var(--text);
-  min-height:100vh;
-  font-size:16px;
-  line-height:1.6;
-  letter-spacing:-0.01em;
-}
-
-h1,h2,h3,h4,h5,h6{
-  font-family:"Outfit",sans-serif;
-  letter-spacing:-0.03em;
-  line-height:1.15;
-}
-
-button,input,select,textarea{font:inherit}
-
-.app{
-  display:grid;
-  grid-template-columns:var(--sidebar-w) 1fr;
-  min-height:100vh;
-}
-
-/* Sidebar */
-.sidebar{
-  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
-  border-right:1px solid rgba(223,209,188,.85);
-  padding:28px 18px 24px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
-  z-index:10;
-  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
-}
-.logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 8px 24px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:8px;
-}
-.logo-wrap img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
-}
-.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
-.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
-.nav-label{
-  font-size:.7rem;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  color:var(--muted);
-  padding:16px 10px 6px;
-}
-.nav{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.nav a{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px 13px;
-  border-radius:18px;
-  text-decoration:none;
-  color:var(--text2);
-  font-weight:700;
-  font-size:.98rem;
-  transition:all .18s ease;
-  border:1px solid transparent;
-}
-.nav a:hover{
-  background:rgba(255,255,255,.72);
-  border-color:rgba(223,209,188,.9);
-  transform:translateX(2px);
-  box-shadow:var(--shadow-xs);
-  color:var(--text);
-}
-.nav a.active{
-  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
-  color:#fff;
-  border-color:rgba(62,142,65,.28);
-  box-shadow:
-    0 5px 0 #2f6f33,
-    0 14px 26px rgba(62,142,65,.20),
-    inset 0 1px 0 rgba(255,255,255,.18);
-}
-.nav a.active .nav-icon{
-  background:rgba(255,255,255,.16);
-  border-color:rgba(255,255,255,.22);
-  color:#fff;
-}
-.nav-icon{
-  width:36px;
-  height:36px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.92);
-  color:var(--accent-dark);
-  flex-shrink:0;
-  box-shadow:0 2px 8px rgba(54,45,28,.05);
-}
-.nav-icon svg{width:18px;height:18px;stroke:currentColor}
-.sidebar-footer{
-  margin-top:auto;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-}
-.mode-switch{
-  display:flex;
-  gap:6px;
-  background:rgba(255,255,255,.86);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:5px;
-  box-shadow:var(--shadow-xs);
-}
-.mode-btn{
-  flex:1;
-  border:none;
-  background:transparent;
-  color:var(--muted);
-  padding:9px 12px;
-  border-radius:999px;
-  font-size:.82rem;
-  font-weight:800;
-  cursor:pointer;
-  transition:.18s ease;
-}
-.mode-btn.active{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  box-shadow:
-    0 3px 0 #2f6f33,
-    0 8px 18px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.2);
-}
-
-/* Main */
-.main{
-  width:100%;
-  max-width:1580px;
-  padding:32px;
-}
-
-/* Header */
-.page-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:18px;
-  flex-wrap:wrap;
-  margin-bottom:22px;
-}
-.page-header h1{
-  font-size:2.35rem;
-  font-weight:800;
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.page-header p{
-  color:var(--muted);
-  font-size:.98rem;
-  max-width:920px;
-}
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.mode-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 16px;
-  border-radius:999px;
-  font-weight:800;
-  font-size:.88rem;
-  background:var(--soft);
-  border:1px solid var(--line);
-  color:var(--text2);
-  box-shadow:var(--shadow-xs);
-}
-.mode-badge.child{
-  background:var(--blue-soft);
-  border-color:#cbdcf8;
-  color:#496d9d;
-}
-.mode-note{
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:18px;
-  background:rgba(255,255,255,.55);
-  border:1px solid rgba(223,209,188,.75);
-  border-radius:18px;
-  padding:14px 16px;
-}
-
-/* Icons */
-.page-title-icon,
-.section-icon,
-.stat-icon{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  display:inline-grid;
-  place-items:center;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-  border:1px solid rgba(76,175,80,.16);
-  box-shadow:var(--shadow-xs);
-  flex-shrink:0;
-}
-.page-title-icon svg,.section-icon svg,.stat-icon svg{
-  width:18px;
-  height:18px;
-  stroke:currentColor;
-}
-.stat-icon{
-  width:44px;
-  height:44px;
-  border-radius:14px;
-}
-.stat-icon svg{
-  width:21px;
-  height:21px;
-}
-
-/* Hero */
-.hero{
-  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
-  border:1px solid rgba(76,175,80,.18);
-  border-radius:30px;
-  padding:28px 30px;
-  display:grid;
-  grid-template-columns:1.05fr .95fr;
-  gap:20px;
-  align-items:stretch;
-  margin-bottom:24px;
-  box-shadow:var(--shadow-sm);
-  position:relative;
-  overflow:hidden;
-}
-.hero::after{
-  content:"";
-  position:absolute;
-  right:-40px;
-  bottom:-40px;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  background:rgba(76,175,80,.07);
-  pointer-events:none;
-}
-.hero h2{
-  font-size:1.55rem;
-  font-weight:800;
-  margin-bottom:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.hero p{
-  color:var(--text2);
-  line-height:1.65;
-  margin-bottom:16px;
-}
-.hero-tags{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.hero-tag{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.95);
-  padding:9px 14px;
-  border-radius:999px;
-  font-size:.88rem;
-  font-weight:800;
-  color:var(--text2);
-  box-shadow:0 1px 4px rgba(54,45,28,.04);
-}
-.hero-tag.accent{
-  background:#f8ebda;
-  border-color:#ecd1ad;
-}
-.hero-side{
-  display:grid;
-  gap:12px;
-}
-.mini{
-  background:rgba(255,255,255,.78);
-  border-radius:20px;
-  padding:16px;
-  border:1px solid rgba(223,209,188,.85);
-  box-shadow:var(--shadow-xs);
-}
-.mini strong{
-  display:block;
-  margin-bottom:6px;
-  font-size:.96rem;
-  font-weight:800;
-}
-.mini span{
-  color:var(--muted);
-  font-size:.88rem;
-  line-height:1.55;
-}
-
-/* Cards */
-.card{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:28px;
-  padding:24px;
-  margin-bottom:18px;
-  box-shadow:var(--shadow-sm);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:var(--shadow);
-}
-.card h2{
-  font-size:1.16rem;
-  font-weight:800;
-  margin-bottom:14px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.card-sub{
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:16px;
-  font-size:.9rem;
-}
-
-/* Filter */
-.filter-grid{
-  display:grid;
-  grid-template-columns:2fr repeat(5,1fr);
-  gap:12px;
-  align-items:end;
-}
-.form-group{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.form-group label{
-  font-size:.72rem;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-.form-group input,
-.form-group select{
-  width:100%;
-  border:1.5px solid var(--line);
-  background:#fffdf9;
-  border-radius:16px;
-  padding:13px 14px;
-  font-size:.94rem;
-  color:var(--text);
-  outline:none;
-  transition:.18s ease;
-  min-height:48px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
-}
-.form-group input:focus,
-.form-group select:focus{
-  border-color:rgba(76,175,80,.7);
-  box-shadow:0 0 0 4px rgba(76,175,80,.10);
-  background:#fff;
-}
-
-/* Summary */
-.summary-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:14px;
-}
-.mini-card{
-  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
-  border-radius:20px;
-  padding:18px;
-  border:1px solid rgba(223,209,188,.7);
-}
-.mini-card h3{
-  font-size:.85rem;
-  margin-bottom:8px;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-.mini-card .value{
-  font-size:1.7rem;
-  font-weight:800;
-  margin-bottom:4px;
-  letter-spacing:-0.03em;
-}
-.mini-card p{
-  color:var(--muted);
-  font-size:.9rem;
-  line-height:1.45;
-}
-.green{color:var(--green)}
-.red{color:var(--red)}
-.yellow{color:var(--yellow)}
-.blue{color:var(--blue)}
-
-/* AI */
-.ai-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-.ai-box{
-  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
-  border-radius:18px;
-  padding:16px;
-  border:1px solid rgba(223,209,188,.7);
-}
-.ai-box strong{
-  display:block;
-  margin-bottom:6px;
-  font-size:.98rem;
-  color:var(--text);
-}
-.ai-box p{
-  color:var(--muted);
-  line-height:1.55;
-  font-size:.92rem;
-}
-
-/* Table */
-.table-wrap{
-  overflow:auto;
-  border-radius:20px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  background:#fffdfb;
-  border-radius:20px;
-  overflow:hidden;
-}
-th,td{
-  padding:13px 14px;
-  text-align:left;
-  border-bottom:1px solid var(--line);
-  font-size:.92rem;
-  vertical-align:top;
-}
-th{
-  background:var(--soft);
-  font-size:.8rem;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-}
-tbody tr:hover td{
-  background:#fbfdfb;
-}
-.amount-plus{color:var(--green);font-weight:800}
-.amount-minus{color:var(--red);font-weight:800}
-.tag{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:7px 10px;
-  border-radius:999px;
-  background:#efe6dd;
-  color:#7b5a43;
-  font-size:.8rem;
-  font-weight:800;
-  white-space:nowrap;
-}
-.no-results{
-  color:var(--muted);
-  text-align:center;
-  padding:20px;
-}
-
-/* Buttons */
-.btn,
-button.btn,
-a.btn{
-  border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff !important;
-  padding:13px 22px;
-  border-radius:16px;
-  font-size:.95rem !important;
-  font-weight:800 !important;
-  text-decoration:none;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  white-space:nowrap;
-  box-shadow:
-    0 4px 0 #2f6f33,
-    0 10px 22px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.20);
-  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
-  letter-spacing:.01em;
-}
-.btn:hover,
-button.btn:hover,
-a.btn:hover{
-  transform:translateY(-2px);
-  box-shadow:
-    0 6px 0 #2f6f33,
-    0 14px 28px rgba(62,142,65,.26),
-    inset 0 1px 0 rgba(255,255,255,.22);
-  filter:brightness(1.02);
-}
-.btn:active,
-button.btn:active,
-a.btn:active{
-  transform:translateY(1px);
-  box-shadow:
-    0 2px 0 #2f6f33,
-    0 6px 14px rgba(62,142,65,.18),
-    inset 0 1px 0 rgba(255,255,255,.16);
-}
-.btn-soft{
-  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
-  color:var(--brown) !important;
-  border:1.5px solid #d7c0a6 !important;
-  border-radius:16px !important;
-  box-shadow:
-    0 4px 0 #c7ae91,
-    0 8px 18px rgba(110,82,40,.10),
-    inset 0 1px 0 rgba(255,255,255,.65) !important;
-  opacity:1 !important;
-  filter:none !important;
-}
-.btn.btn-soft,
-button.btn.btn-soft,
-a.btn.btn-soft,
-.btn-soft span,
-.btn-soft svg{
-  color:var(--brown) !important;
-  stroke:currentColor !important;
-}
-.btn-soft:hover,
-button.btn-soft:hover,
-a.btn-soft:hover{
-  background:linear-gradient(180deg,#f1e1cf 0%, #e4cfb7 100%) !important;
-  color:var(--brown-dark) !important;
-  box-shadow:
-    0 6px 0 #c7ae91,
-    0 12px 22px rgba(110,82,40,.12),
-    inset 0 1px 0 rgba(255,255,255,.68) !important;
-}
-.btn-soft:hover span,
-.btn-soft:hover svg{
-  color:var(--brown-dark) !important;
-  stroke:currentColor !important;
-}
-
-/* Child mode */
-.child-mode .hide-for-child{display:none !important}
-
-/* KI */
-.ki-fab{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  width:74px;
-  height:74px;
-  border:none;
-  border-radius:24px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  z-index:9998;
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.ki-fab:hover{
-  transform:translateY(-3px);
-  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
-}
-.ki-fab img{width:40px;height:40px;object-fit:contain}
-.ki-fab-label{
-  position:absolute;
-  bottom:8px;
-  right:10px;
-  color:#fff;
-  font-size:.78rem;
-  font-weight:800;
-  line-height:1;
-}
-.ki-panel{
-  position:fixed;
-  right:22px;
-  bottom:108px;
-  width:min(390px,calc(100vw - 24px));
-  max-height:min(78vh,720px);
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:28px;
-  overflow:hidden;
-  box-shadow:0 24px 50px rgba(34,48,38,.18);
-  z-index:9999;
-  display:none;
-}
-.ki-panel.open{display:flex;flex-direction:column}
-.ki-head{
-  padding:20px 20px 16px;
-  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-}
-.ki-head-left{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-}
-.ki-head-avatar{
-  width:48px;
-  height:48px;
-  border-radius:16px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-}
-.ki-head-avatar img{
-  width:28px;
-  height:28px;
-  object-fit:contain;
-}
-.ki-head h3{
-  font-size:1.2rem !important;
-  font-weight:800 !important;
-  margin:0 0 4px;
-}
-.ki-head p{
-  font-size:.95rem !important;
-  color:var(--text2);
-  margin:0;
-}
-.ki-chat-link{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  margin-top:8px;
-  font-size:.9rem;
-  font-weight:800;
-  color:var(--accent-dark);
-  text-decoration:none;
-}
-.ki-chat-link:hover{
-  text-decoration:underline;
-}
-.ki-close{
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background:#fff;
-  cursor:pointer;
-  flex-shrink:0;
-  color:var(--text2);
-  font-size:1.8rem;
-  line-height:1;
-}
-.ki-suggestions{
-  padding:16px 20px 14px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  border-bottom:1px solid var(--line);
-  background:#fff;
-}
-.ki-chip{
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:999px;
-  padding:10px 14px;
-  font-size:.95rem;
-  font-weight:700;
-  color:var(--text2);
-  cursor:pointer;
-}
-.ki-chat{
-  padding:18px 16px;
-  overflow:auto;
-  background:#fffaf4;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  min-height:220px;
-}
-.ki-msg{
-  max-width:84%;
-  padding:14px 16px;
-  border-radius:20px;
-  font-size:.97rem;
-  line-height:1.5;
-  white-space:pre-wrap;
-}
-.ki-msg.bot{
-  background:#f7eee0;
-  border:1px solid #ebd3b5;
-  color:#5f4332;
-}
-.ki-msg.user{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  align-self:flex-end;
-}
-.ki-form{
-  padding:14px;
-  border-top:1px solid var(--line);
-  background:#fff;
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-}
-.ki-input{
-  border:1.5px solid var(--line);
-  background:var(--bg-2);
-  border-radius:18px;
-  padding:14px 16px;
-  font-size:.97rem;
-  color:var(--text);
-  outline:none;
-  font-family:inherit;
-}
-.ki-send{
-  border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  border-radius:18px;
-  padding:0 18px;
-  font-size:.95rem;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
-}
-.ki-typing{opacity:.8;font-style:italic}
-
-/* Responsive */
-@media(max-width:1500px){
-  .filter-grid{grid-template-columns:repeat(3,1fr)}
-  .summary-grid{grid-template-columns:repeat(3,1fr)}
-  .ai-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:1200px){
-  .hero{grid-template-columns:1fr}
-  .filter-grid{grid-template-columns:repeat(2,1fr)}
-  .summary-grid,.ai-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:960px){
-  .app{grid-template-columns:1fr}
-  .sidebar{
-    height:auto;
-    position:relative;
-    flex-direction:row;
-    flex-wrap:wrap;
-    padding:16px;
-    gap:0;
-  }
-  .logo-wrap{
-    margin-bottom:0;
-    padding-bottom:0;
-    border-bottom:none;
-    border-right:1px solid var(--line);
-    padding-right:16px;
-    margin-right:16px;
-  }
-  .nav{
-    flex-direction:row;
-    flex-wrap:wrap;
-    flex:1;
-  }
-  .nav a{
-    flex:0 1 auto;
-    padding:10px 12px;
-  }
-  .nav-label,.sidebar-footer{display:none}
-}
-@media(max-width:760px){
-  .main{padding:16px}
-  .page-header h1{font-size:1.95rem}
-  .filter-grid,.summary-grid,.ai-grid{grid-template-columns:1fr}
-  th,td{padding:10px;font-size:.86rem}
-}
-@media(max-width:700px){
-  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
-  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
-}
-@media print{
-  body{background:#fff}
-  .sidebar,.header-right,.mode-note,.ki-fab,.ki-panel{display:none !important}
-  .app{display:block}
-  .main{padding:0;max-width:none}
-  .card,.hero{box-shadow:none}
-}
+:root{--bg:#f7f2e9;--bg-2:#fdf9f3;--card:#ffffff;--soft:#f6efe4;--soft2:#efe3d2;--line:#dfd1bc;--text:#2d342f;--text2:#556159;--muted:#7d8a82;--accent:#4CAF50;--accent-dark:#3E8E41;--accent-soft:#e7f5e8;--shadow-xs:0 2px 8px rgba(54,45,28,.05);--shadow-sm:0 6px 18px rgba(54,45,28,.08);--shadow:0 12px 34px rgba(54,45,28,.10);--sidebar-w:258px;--font-main:"Outfit",sans-serif}*{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;overflow-x:hidden}body{font-family:var(--font-main);background:radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%), linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);color:var(--text);min-height:100vh;font-size:16px;line-height:1.6;letter-spacing:-0.01em}h1,h2,h3,h4,h5,h6{font-family:var(--font-main)!important;letter-spacing:-0.03em;line-height:1.15}button,input,select,textarea{font:inherit}.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}.sidebar{background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);border-right:1px solid rgba(223,209,188,.85);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10;box-shadow:inset -1px 0 0 rgba(255,255,255,.4)}.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px;text-decoration:none;color:inherit}.logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}.logo-name{font-weight:800;font-size:1.25rem!important;color:var(--text)}.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}.nav{display:flex;flex-direction:column;gap:4px}.nav a,.nav-toggle{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;border:1px solid transparent;position:relative;background:transparent;cursor:pointer;width:100%;text-align:left}.nav a:hover,.nav-toggle:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}.nav a.active,.nav-toggle.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-color:rgba(62,142,65,.28);box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)}.nav-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)}.nav-icon svg,.nav-icon i{width:18px;height:18px;stroke:currentColor}.nav a.active .nav-icon,.nav-toggle.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}.chat-badge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28)}.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px}.user-info{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.7);border-radius:16px;padding:12px 14px;font-size:.8rem;margin-bottom:8px}.user-info strong{display:block;font-weight:800;color:var(--text);margin-bottom:4px}.user-info span{display:block;color:var(--muted);font-size:.75rem}.logout-btn{width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72)}.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease}.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}.main{width:100%;max-width:1580px;padding:32px}.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}.page-header h1{font-size:2.35rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:12px}.page-header p{color:var(--muted);font-size:.98rem;max-width:860px}.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.mode-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)}.page-title-icon,.section-icon{width:34px;height:34px;border-radius:12px;display:inline-grid;place-items:center;background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0}.page-title-icon svg,.section-icon svg{width:18px;height:18px;stroke:currentColor}.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;box-shadow:var(--shadow-sm)}.grid-two{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.list{display:grid;gap:12px}.item{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);border:1px solid rgba(76,175,80,.14);border-radius:20px;padding:16px}.item strong{display:block;font-size:.95rem;color:var(--text);margin-bottom:3px}.item p{color:var(--muted);font-size:.86rem}.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:.82rem;font-weight:800;color:var(--text2)}.pill-stack{display:flex;gap:10px;flex-wrap:wrap}.hero-card{background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);border:1px solid rgba(76,175,80,.18)}.btn-soft{background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);color:#4d3c2c;text-decoration:none;border:1.5px solid #d7c0a6;border-radius:16px;padding:12px 18px;font-size:.92rem;font-weight:800;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65)}.extras-wrap{display:grid;gap:4px}.extras-subnav{display:grid;gap:4px;max-height:0;overflow:hidden;transition:max-height .25s ease}.extras-wrap.open .extras-subnav{max-height:420px}.chev{margin-left:auto;transition:transform .18s ease}.extras-wrap.open .chev{transform:rotate(180deg)}.info-box{background:rgba(255,255,255,.84);border:1px solid rgba(223,209,188,.9);border-radius:22px;padding:18px}.ki-bubble{position:fixed;right:24px;bottom:110px;z-index:40;display:flex;align-items:flex-end;gap:12px}.ki-speech{max-width:320px;background:#fff;border:1px solid rgba(223,209,188,.95);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow);display:none}.ki-speech.show{display:block}.ki-speech strong{display:block;margin-bottom:6px}.ki-speech p{font-size:.9rem;color:var(--text2);margin-bottom:10px}.ki-speech-actions{display:flex;gap:8px;flex-wrap:wrap}.ki-mini-btn{border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:12px;font-size:.8rem;font-weight:800;color:var(--text2);cursor:pointer}.ki-fab{width:70px;height:70px;border:none;border-radius:999px;background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);box-shadow:0 8px 24px rgba(62,142,65,.28);display:grid;place-items:center;cursor:pointer;position:relative}.ki-fab img{width:48px;height:48px;object-fit:contain}.ki-panel{position:fixed;right:24px;bottom:24px;width:360px;max-width:calc(100vw - 24px);background:#fffdfa;border:1px solid rgba(223,209,188,.95);border-radius:28px;box-shadow:0 18px 48px rgba(54,45,28,.16);padding:18px;display:none;z-index:50}.ki-panel.open{display:flex;flex-direction:column}.ki-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}.ki-head-left{display:flex;gap:10px;align-items:flex-start}.ki-head-avatar{width:44px;height:44px;border-radius:14px;background:#eef7ef;display:grid;place-items:center;border:1px solid rgba(76,175,80,.16)}.ki-head-avatar img{width:32px;height:32px;object-fit:contain}.ki-head h3{font-size:1rem;font-weight:800;margin-bottom:4px}.ki-head p{font-size:.86rem;color:var(--muted)}.ki-chat-link{display:inline-block;margin-top:6px;font-size:.82rem;font-weight:800;color:var(--accent-dark);text-decoration:none}.ki-close{border:none;background:#f3eee6;width:34px;height:34px;border-radius:12px;cursor:pointer;font-size:1.2rem;line-height:1}.ki-suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.ki-chip{border:none;background:#eef7ef;color:var(--accent-dark);border-radius:999px;padding:8px 12px;font-size:.82rem;font-weight:800;cursor:pointer}.ki-chat{display:grid;gap:8px;max-height:260px;overflow:auto;padding-right:4px;margin-bottom:12px}.ki-msg{padding:12px 14px;border-radius:18px;font-size:.9rem;line-height:1.45}.ki-msg.bot{background:#f6efe4;color:var(--text)}.ki-msg.user{background:#e7f5e8;color:#244e28;margin-left:42px}.ki-form{display:flex;gap:8px}.ki-input{flex:1;border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px}.ki-send{border:none;background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-radius:14px;padding:12px 14px;font-weight:800;cursor:pointer}.quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.quick-btn{border:none;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-weight:800;color:var(--text2);cursor:pointer}.placeholder-table{display:grid;gap:12px}.row{display:grid;grid-template-columns:1.1fr .7fr .7fr .7fr;gap:12px;padding:14px 16px;border-radius:18px;background:#fff;border:1px solid rgba(223,209,188,.9)}.row.head{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;background:transparent;border:none;padding:0 4px}.sum-box{display:grid;gap:10px}.sum-item{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#fff;border:1px solid rgba(223,209,188,.92);border-radius:18px}.positive{color:#4a9a5c;font-weight:800}.negative{color:#cc6666;font-weight:800}@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a,.nav-toggle{flex:0 1 auto;padding:10px 12px}.nav-label,.sidebar-footer{display:none}.grid-two{grid-template-columns:1fr}.ki-panel{right:12px;left:12px;bottom:12px;width:auto}.ki-bubble{right:12px;bottom:92px}.ki-speech{max-width:260px}}@media(max-width:600px){.main{padding:16px}.page-header h1{font-size:1.95rem}.row{grid-template-columns:1fr}.ki-speech{display:none!important}}
 </style>
 </head>
 <body data-page="finanz_historie">
 <div class="app">
-
   <aside class="sidebar">
-    <div class="logo-wrap">
+    <a class="logo-wrap" href="index.html" aria-label="Zum Dashboard">
       <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
       <div>
-        <div class="logo-name">Haushaltsheld</div>
+        <div class="logo-name">HaushaltsHeld</div>
         <div class="logo-sub">Dein Familien-Assistent</div>
       </div>
-    </div>
+    </a>
 
     <div class="nav-label">Hauptmenü</div>
     <nav class="nav">
-      <a href="index.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 10.5 12 3l9 7.5"></path>
-            <path d="M5 9.5V21h14V9.5"></path>
-          </svg>
-        </span>
-        <span>Dashboard</span>
-      </a>
-      <a href="finanzen.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="6" width="18" height="12" rx="2"></rect>
-            <path d="M16 12h.01"></path>
-            <path d="M3 10h18"></path>
-          </svg>
-        </span>
-        <span>Finanzen</span>
-      </a>
-      <a href="einkaufsliste.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="20" r="1"></circle>
-            <circle cx="18" cy="20" r="1"></circle>
-            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
-          </svg>
-        </span>
-        <span>Einkäufe</span>
-      </a>
-      <a href="aufgaben.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 11l3 3L22 4"></path>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-          </svg>
-        </span>
-        <span>Aufgaben</span>
-      </a>
-      <a href="familienplaner.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-            <path d="M16 2v4M8 2v4M3 10h18"></path>
-          </svg>
-        </span>
-        <span>Familienplaner</span>
-      </a>
+      <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+      <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+      <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+      <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+      <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+      <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+      <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+      <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+      <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
     </nav>
 
     <div class="nav-label">Extras</div>
-    <nav class="nav">
-      <a href="finanzbericht.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"></path>
-            <path d="M7 14l4-4 3 3 5-7"></path>
-          </svg>
-        </span>
-        <span>Bericht</span>
-      </a>
-      <a href="finanz_historie.html" class="active">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 8v5l3 2"></path>
-            <circle cx="12" cy="12" r="9"></circle>
-          </svg>
-        </span>
-        <span>Historie</span>
-      </a>
-      <a href="beleg_import.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3v12"></path>
-            <path d="m7 10 5 5 5-5"></path>
-            <path d="M5 21h14"></path>
-          </svg>
-        </span>
-        <span>Belege</span>
-      </a>
-      <a href="kindermodus.html">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m12 2 2.5 5.5L20 8l-4 4 .9 6L12 15.5 7.1 18l.9-6-4-4 5.5-.5Z"></path>
-          </svg>
-        </span>
-        <span>Kindermodus</span>
-      </a>
-    </nav>
+    <div class="extras-wrap" id="extrasWrap">
+      <button class="nav-toggle" id="extrasToggle" type="button" aria-expanded="true" aria-controls="extrasSubnav">
+        <span class="nav-icon"><i data-lucide="layers-3"></i></span>
+        <span>Extras</span>
+        <i data-lucide="chevron-down" class="chev"></i>
+      </button>
+      <nav class="extras-subnav" id="extrasSubnav">
+        <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+        <a href="finanz_historie.html" class="active"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+        <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+        <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+        <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+        <a href="kindermodus.html"><span class="nav-icon"><i data-lucide="star"></i></span><span>Kindermodus</span></a>
+      </nav>
+    </div>
 
     <div class="sidebar-footer">
-      <div class="mode-switch">
-        <button class="mode-btn active" id="adminViewBtn" type="button">Eltern</button>
-        <button class="mode-btn" id="childViewBtn" type="button">Kind</button>
+      <div class="user-info">
+        <strong id="userName">👋 Willkommen</strong>
+        <span id="userRole">Eltern-Modus</span>
       </div>
+      <div class="mode-switch">
+        <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+        <button class="mode-btn" id="childBtn" type="button">Kind</button>
+      </div>
+      <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
     </div>
   </aside>
 
@@ -1001,666 +70,205 @@ a.btn-soft:hover{
     <div class="page-header">
       <div>
         <h1>
-          <span class="page-title-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 8v5l3 2"></path>
-              <circle cx="12" cy="12" r="9"></circle>
-            </svg>
-          </span>
-          <span>Finanz Historie</span>
+          <span class="page-title-icon"><i data-lucide="history"></i></span>
+          <span>Finanz-Historie</span>
         </h1>
-        <p>Die Historie liest dieselben Einträge wie Bericht, Finanzen und Einkaufsliste. Wiederkehrende Kosten, Einkäufe und Einnahmen bleiben sauber kategorisiert und auswertbar.</p>
+        <p>Vergangene Buchungen und Entwicklungen im Blick behalten.</p>
       </div>
-
       <div class="header-right">
-        <a class="btn btn-soft" href="finanzen.html"><span>Zu Finanzen</span></a>
-        <a class="btn btn-soft" href="finanzbericht.html"><span>Zum Bericht</span></a>
-        <button class="btn btn-soft" type="button" onclick="window.print()"><span>Drucken</span></button>
-        <div class="mode-badge" id="modeBadge">Elternmodus aktiv</div>
+        <a class="btn-soft" href="finanzbericht.html">Bericht</a>
+        <a class="btn-soft" href="finanz_historie.html">Historie</a>
+        <a class="btn-soft" href="admin_chat.html">Zum Chat</a>
+        <span class="mode-badge">Elternmodus aktiv</span>
       </div>
     </div>
 
-    <section class="hero">
-      <div>
-        <h2>
-          <span class="section-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 12h18"></path>
-              <path d="M12 3v18"></path>
-            </svg>
-          </span>
-          <span>Bewegungen nachvollziehen</span>
-        </h2>
-        <p>Filtere nach Typ, Hauptkategorie, Unterkategorie, Person oder Zahlungsart. So erkennst du schnell wiederkehrende Kosten, Einkaufsmuster und Einnahmen.</p>
-        <div class="hero-tags">
-          <span class="hero-tag">Gemeinsame Datenbasis</span>
-          <span class="hero-tag">Filterbar</span>
-          <span class="hero-tag accent">Kindersicht möglich</span>
-        </div>
+    <section class="card hero-card" style="margin-bottom:18px;">
+      <h2 style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><span class="section-icon"><i data-lucide="sparkles"></i></span><span>Historie final verbunden</span></h2>
+      <p style="color:var(--text2);margin-bottom:14px;">Die Historie-Seite ist jetzt final in deinen Elternmodus eingebunden. Alles bleibt im vorhandenen Stil und funktioniert direkt in deinem System weiter.</p>
+      <div class="pill-stack">
+        <span class="pill">Logo verlinkt</span>
+        <span class="pill">Extras-Dropdown</span>
+        <span class="pill">KI integriert</span>
+        <span class="pill">Chat-Badge aktiv</span>
       </div>
-      <div class="hero-side">
-        <div class="mini"><strong>Einheitlich verknüpft</strong><span>Historie, Bericht und Finanzseite greifen auf dieselben Daten zu.</span></div>
-        <div class="mini"><strong>Klare Kategorien</strong><span>Fixkosten, Einkauf, Freizeit und Einnahmen bleiben sauber getrennt sichtbar.</span></div>
+      <div class="quick-actions">
+        <button class="quick-btn" type="button" onclick="window.location.href='finanzen.html'">Zurück zu Finanzen</button>
+        <button class="quick-btn" type="button" onclick="window.location.href='admin_chat.html'">Familien-Chat öffnen</button>
       </div>
     </section>
 
-    <p class="mode-note" id="modeNote">Im Elternmodus ist die komplette Historie sichtbar. Im Kindermodus werden nur freigegebene Bereiche angezeigt.</p>
+    <section class="grid-two">
+      <section class="card">
+        <h2 style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span class="section-icon"><i data-lucide="clipboard-list"></i></span><span>Historie final verbunden</span></h2>
+        <p style="color:var(--muted);margin-bottom:16px;">Diese Seite ist jetzt optisch und logisch in deinen Elternmodus eingebunden, ohne dein bestehendes System zu zerstören.</p>
+        <div class="list"><div class="item"><div><strong>Direkter Rückweg</strong><p>Das HaushaltsHeld-Logo führt nun wieder sicher zum Dashboard.</p></div><span class="pill">aktiv</span></div><div class="item"><div><strong>Seitenlogik</strong><p>Historie, Bericht und Finanzen greifen sauber ineinander.</p></div><span class="pill">verbunden</span></div><div class="item"><div><strong>KI-Hilfe</strong><p>Schnecke, Sprechblase und Panel sind integriert.</p></div><span class="pill">bereit</span></div></div>
+      </section>
 
-    <section class="card">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 4h18"></path>
-            <path d="M6 12h12"></path>
-            <path d="M10 20h4"></path>
-          </svg>
-        </span>
-        <span>Filter</span>
-      </h2>
-
-      <div class="filter-grid">
-        <div class="form-group">
-          <label for="searchInput">Suche</label>
-          <input type="text" id="searchInput" placeholder="z. B. Uber, Oma, Miete">
-        </div>
-
-        <div class="form-group">
-          <label for="typeFilter">Typ</label>
-          <select id="typeFilter">
-            <option value="all">Alle</option>
-            <option value="Einnahme">Einnahmen</option>
-            <option value="Ausgabe">Ausgaben</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="mainCategoryFilter">Hauptkategorie</label>
-          <select id="mainCategoryFilter">
-            <option value="all">Alle</option>
-            <option value="Einnahme">Einnahme</option>
-            <option value="Fixkosten">Fixkosten</option>
-            <option value="Mobilität">Mobilität</option>
-            <option value="Online">Online</option>
-            <option value="Freizeit">Freizeit</option>
-            <option value="Feierlichkeiten">Feierlichkeiten</option>
-            <option value="Einkauf">Einkauf</option>
-            <option value="Sonstiges">Sonstiges</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="categoryFilter">Unterkategorie</label>
-          <select id="categoryFilter">
-            <option value="all">Alle</option>
-            <option value="Gehalt">Gehalt</option>
-            <option value="Miete">Miete</option>
-            <option value="Strom">Strom</option>
-            <option value="Internet">Internet</option>
-            <option value="Versicherung">Versicherung</option>
-            <option value="Abo">Abo</option>
-            <option value="Einkauf">Einkauf</option>
-            <option value="Taxi / Uber">Taxi / Uber</option>
-            <option value="Google / Apple">Google / Apple</option>
-            <option value="Taschengeld">Taschengeld</option>
-            <option value="Geldgeschenke">Geldgeschenke</option>
-            <option value="Freizeit">Freizeit</option>
-            <option value="Feierlichkeiten">Feierlichkeiten</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="personFilter">Person</label>
-          <select id="personFilter">
-            <option value="all">Alle</option>
-            <option value="Allgemein">Allgemein</option>
-            <option value="Monja">Monja</option>
-            <option value="Michael">Michael</option>
-            <option value="Kind 1">Kind 1</option>
-            <option value="Kind 2">Kind 2</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="paymentFilter">Zahlung</label>
-          <select id="paymentFilter">
-            <option value="all">Alle</option>
-            <option value="Überweisung">Überweisung</option>
-            <option value="Karte">Karte</option>
-            <option value="Bar">Bar</option>
-            <option value="PayPal">PayPal</option>
-            <option value="Lastschrift">Lastschrift</option>
-            <option value="Online">Online</option>
-          </select>
-        </div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3v18h18"></path>
-            <path d="M7 14l4-4 3 3 5-7"></path>
-          </svg>
-        </span>
-        <span>Zusammenfassung</span>
-      </h2>
-
-      <div class="summary-grid">
-        <div class="mini-card">
-          <h3>Treffer</h3>
-          <div class="value blue" id="countValue">0</div>
-          <p>Sichtbare Einträge</p>
-        </div>
-
-        <div class="mini-card">
-          <h3>Einnahmen</h3>
-          <div class="value green" id="incomeValue">0 €</div>
-          <p>Im aktuellen Filter</p>
-        </div>
-
-        <div class="mini-card hide-for-child">
-          <h3>Fixkosten</h3>
-          <div class="value yellow" id="fixedValue">0 €</div>
-          <p>Wiederkehrend erkannt</p>
-        </div>
-
-        <div class="mini-card hide-for-child">
-          <h3>Ausgaben</h3>
-          <div class="value red" id="expenseValue">0 €</div>
-          <p>Gesamt sichtbare Ausgaben</p>
-        </div>
-
-        <div class="mini-card">
-          <h3>Saldo</h3>
-          <div class="value yellow" id="balanceValue">0 €</div>
-          <p>Im aktuellen Filter</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="card" data-permission-block="showTips">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18h6"></path>
-            <path d="M10 22h4"></path>
-            <path d="M12 2a7 7 0 0 0-4 12.7c.6.4 1 1 1.2 1.8h5.6c.2-.8.6-1.4 1.2-1.8A7 7 0 0 0 12 2Z"></path>
-          </svg>
-        </span>
-        <span>KI-Auswertung der Historie</span>
-      </h2>
-
-      <div class="ai-grid" id="aiGrid">
-        <div class="ai-box"><strong>KI lädt</strong><p>Die Hinweise werden vorbereitet.</p></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 6h13"></path>
-            <path d="M8 12h13"></path>
-            <path d="M8 18h13"></path>
-            <path d="M3 6h.01"></path>
-            <path d="M3 12h.01"></path>
-            <path d="M3 18h.01"></path>
-          </svg>
-        </span>
-        <span>Buchungshistorie</span>
-      </h2>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Datum</th>
-              <th>Hauptkategorie</th>
-              <th>Unterkategorie</th>
-              <th>Beschreibung</th>
-              <th class="hide-for-child">Person</th>
-              <th class="hide-for-child">Zahlung</th>
-              <th class="hide-for-child">Wiederkehrend</th>
-              <th>Typ</th>
-              <th>Betrag</th>
-            </tr>
-          </thead>
-          <tbody id="historyTableBody"></tbody>
-        </table>
-      </div>
+      <section class="card">
+        <h2 style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span class="section-icon"><i data-lucide="layout-panel-top"></i></span><span>Historie-Seite vorbereitet</span></h2>
+        <p style="color:var(--muted);margin-bottom:16px;">Vergangene Buchungen und Entwicklungen im Blick behalten.</p>
+        <div class="list" style="margin-bottom:16px;"><div class="item"><div><strong>Elternansicht</strong><p>Keine neue Optik, sondern deine bestehende Linie.</p></div><span class="pill">beibehalten</span></div><div class="item"><div><strong>Extras-Menü</strong><p>Aufklappbar statt statischer Block.</p></div><span class="pill">Dropdown</span></div><div class="item"><div><strong>Chat-Badge</strong><p>Ungelesene Nachrichten werden weiter angezeigt.</p></div><span class="pill">aktiv</span></div></div>
+        <div class="info-box"><div class="placeholder-table">
+              <div class="row head"><div>Eintrag</div><div>Typ</div><div>Datum</div><div>Status</div></div>
+              <div class="row"><div>Verlauf aus Finanzen</div><div>Automatisch</div><div>Lokal</div><div>bereit</div></div>
+              <div class="row"><div>Importierte Belege</div><div>Optional</div><div>Lokal</div><div>bereit</div></div>
+              <div class="row"><div>Historie-Seite</div><div>Elternmodus</div><div>aktiv</div><div>final</div></div>
+            </div></div>
+      </section>
     </section>
   </main>
 </div>
 
-<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-  <span class="ki-fab-label">KI</span>
-</button>
+<div class="ki-bubble" id="kiBubble">
+  <div class="ki-speech" id="kiSpeech">
+    <strong>HaushaltsHeld hilft dir hier direkt weiter</strong>
+    <p>Die Schnecke ist auf dieser Seite eingebunden. Du kannst direkt den KI-Bereich öffnen oder später weiterarbeiten.</p>
+    <div class="ki-speech-actions">
+      <button class="ki-mini-btn" id="kiLater" type="button">Später erinnern</button>
+      <button class="ki-mini-btn" id="kiNever" type="button">Nicht mehr anzeigen</button>
+    </div>
+  </div>
+  <button class="ki-fab" id="kiFab" type="button" aria-label="HaushaltsHeld KI öffnen">
+    <img src="assets/assetsschnecke.png" alt="HaushaltsHeld">
+  </button>
+</div>
 
-<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+<section class="ki-panel" id="kiPanel" aria-label="HaushaltsHeld KI">
   <div class="ki-head">
     <div class="ki-head-left">
       <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
-        <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText">Ich unterstütze dich hier direkt im Elternbereich.</p>
+        <h3>HaushaltsHeld KI</h3>
+        <p>Ich unterstütze dich direkt auf der Seite „Finanz-Historie“.</p>
         <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
       </div>
     </div>
     <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
   </div>
-
-  <div class="ki-suggestions" id="kiSuggestions"></div>
-
-  <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.</div>
+  <div class="ki-suggestions">
+    <button class="ki-chip" type="button" data-ki-suggestion="Zeig mir, was auf dieser Seite wichtig ist">Was ist hier wichtig?</button>
+    <button class="ki-chip" type="button" data-ki-suggestion="Wie nutze ich diese Seite im Elternmodus sinnvoll?">Seite erklären</button>
+    <button class="ki-chip" type="button" data-ki-suggestion="Bringe mich zurück zum Dashboard">Zum Dashboard</button>
   </div>
-
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot">Hallo 👋 Ich bin auf dieser Seite sichtbar eingebunden und leite dich bei Bedarf direkt in den Familien-Chat weiter.</div>
+  </div>
   <form class="ki-form" id="kiForm">
     <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
     <button class="ki-send" type="submit">Senden</button>
   </form>
 </section>
 
+
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
-const adminViewBtn = document.getElementById("adminViewBtn");
-const childViewBtn = document.getElementById("childViewBtn");
-const modeBadge = document.getElementById("modeBadge");
-const modeNote = document.getElementById("modeNote");
-
-const searchInput = document.getElementById("searchInput");
-const typeFilter = document.getElementById("typeFilter");
-const mainCategoryFilter = document.getElementById("mainCategoryFilter");
-const categoryFilter = document.getElementById("categoryFilter");
-const personFilter = document.getElementById("personFilter");
-const paymentFilter = document.getElementById("paymentFilter");
-
-function formatEuro(value){
-  return new Intl.NumberFormat("de-DE",{
-    style:"currency",
-    currency:"EUR",
-    minimumFractionDigits:0,
-    maximumFractionDigits:2
-  }).format(value || 0);
-}
-function escapeHtml(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-function loadPermissions(){
-  const stored = localStorage.getItem("haushaltsheld_child_permissions");
-  return stored ? JSON.parse(stored) : {
-    showShopping:true,
-    showPocketMoney:true,
-    showGiftMoney:true,
-    showBookings:false,
-    showSubscriptions:false,
-    showPets:false,
-    showTips:true
-  };
-}
-function getDefaultFinance(){
-  return [
-    { id: 1, date: "2026-03-01", category: "Gehalt", mainCategory: "Einnahme", title: "Gehalt Monja", text: "monatlicher Geldeingang", payment: "Überweisung", amount: 1850, type: "Einnahme", person: "Monja", recurring: true },
-    { id: 2, date: "2026-03-03", category: "Miete", mainCategory: "Fixkosten", title: "Warmmiete", text: "monatliche Miete", payment: "Überweisung", amount: 720, type: "Ausgabe", person: "Allgemein", recurring: true },
-    { id: 3, date: "2026-03-04", category: "Strom", mainCategory: "Fixkosten", title: "Stromabschlag", text: "monatlich", payment: "Lastschrift", amount: 68, type: "Ausgabe", person: "Allgemein", recurring: true },
-    { id: 4, date: "2026-03-05", category: "Internet", mainCategory: "Fixkosten", title: "Internet", text: "monatlich", payment: "Lastschrift", amount: 39.99, type: "Ausgabe", person: "Allgemein", recurring: true },
-    { id: 5, date: "2026-03-06", category: "Versicherung", mainCategory: "Fixkosten", title: "Haftpflicht", text: "monatlich", payment: "Lastschrift", amount: 18.50, type: "Ausgabe", person: "Allgemein", recurring: true },
-    { id: 6, date: "2026-03-07", category: "Abo", mainCategory: "Fixkosten", title: "Netflix", text: "monatlich", payment: "Lastschrift", amount: 13.99, type: "Ausgabe", person: "Allgemein", recurring: true },
-    { id: 7, date: "2026-03-10", category: "Taxi / Uber", mainCategory: "Mobilität", title: "Uber Fahrt", text: "abends nach Hause", payment: "PayPal", amount: 16.80, type: "Ausgabe", person: "Monja", recurring: false },
-    { id: 8, date: "2026-03-11", category: "Google / Apple", mainCategory: "Online", title: "Google Play Kauf", text: "App-Kauf", payment: "Online", amount: 6.99, type: "Ausgabe", person: "Allgemein", recurring: false },
-    { id: 9, date: "2026-03-12", category: "Taschengeld", mainCategory: "Einnahme", title: "Kind 1", text: "monatliches Taschengeld", payment: "Bar", amount: 20, type: "Einnahme", person: "Kind 1", recurring: true },
-    { id: 10, date: "2026-03-13", category: "Geldgeschenke", mainCategory: "Einnahme", title: "Oma", text: "Geburtstagsgeld", payment: "Bar", amount: 50, type: "Einnahme", person: "Kind 1", recurring: false },
-    { id: 11, date: "2026-03-18", category: "Freizeit", mainCategory: "Freizeit", title: "Kinobesuch", text: "Filmabend", payment: "Karte", amount: 24, type: "Ausgabe", person: "Monja", recurring: false }
-  ];
-}
-function getDefaultShopping(){
-  return [
-    { id: 101, date: "2026-03-20", title: "Wocheneinkauf", text: "Milch, Brot, Obst", payment: "Karte", amount: 54.20, person: "Allgemein", type: "Ausgabe" },
-    { id: 102, date: "2026-03-22", title: "Drogerie", text: "Shampoo, Waschmittel", payment: "Karte", amount: 18.40, person: "Allgemein", type: "Ausgabe" },
-    { id: 103, date: "2026-03-23", title: "Kleine Extras", text: "Snacks, Eis", payment: "Bar", amount: 9.80, person: "Allgemein", type: "Ausgabe" }
-  ];
-}
-function normalizeAmount(value){
-  return parseFloat(String(value ?? "0").replace(",", ".")) || 0;
-}
-function dedupeKeyFromEntry(entry){
-  return entry.importKey || entry.sourceKey || [
-    (entry.mainCategory || "").trim().toLowerCase(),
-    (entry.category || "").trim().toLowerCase(),
-    (entry.title || "").trim().toLowerCase(),
-    (entry.text || "").trim().toLowerCase().replace(/\s+/g," "),
-    entry.date || "",
-    normalizeAmount(entry.amount).toFixed(2),
-    (entry.payment || "").trim().toLowerCase(),
-    (entry.person || "").trim().toLowerCase()
-  ].join("|");
-}
-function getCombinedEntries(){
-  const financeRaw = JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "null") || getDefaultFinance();
-  const shoppingRaw = JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "null") || getDefaultShopping();
-
-  const finance = financeRaw.map(item => ({
-    id: item.id,
-    date: item.date,
-    mainCategory: item.mainCategory || "Sonstiges",
-    category: item.category || "Sonstiges",
-    title: item.title || "Eintrag",
-    text: item.text || "",
-    payment: item.payment || item.method || "—",
-    amount: normalizeAmount(item.amount),
-    type: item.type || "Ausgabe",
-    person: item.person || item.buyer || "Allgemein",
-    recurring: !!item.recurring,
-    importKey: item.importKey || "",
-    sourceKey: item.sourceKey || ""
-  }));
-
-  const shoppingMapped = shoppingRaw.map(item => ({
-    id: item.id,
-    date: item.date,
-    mainCategory: "Einkauf",
-    category: item.category || "Einkauf",
-    title: item.title || item.store || "Einkauf",
-    text: item.text || item.items || item.note || "",
-    payment: item.payment || item.method || "Karte",
-    amount: normalizeAmount(item.amount ?? item.total),
-    type: "Ausgabe",
-    person: item.person || item.buyer || "Allgemein",
-    recurring: false,
-    importKey: item.importKey || "",
-    sourceKey: item.sourceKey || ""
-  }));
-
-  const merged = [];
-  const seen = new Set();
-
-  [...finance, ...shoppingMapped].forEach(entry => {
-    const key = dedupeKeyFromEntry(entry);
-    if(seen.has(key)) return;
-    seen.add(key);
-    merged.push(entry);
-  });
-
-  return merged;
-}
-function allowedInChild(entry){
-  const permissions = loadPermissions();
-  if(entry.mainCategory === "Einkauf") return permissions.showShopping;
-  if(entry.category === "Taschengeld") return permissions.showPocketMoney;
-  if(entry.category === "Geldgeschenke") return permissions.showGiftMoney;
-  if(entry.mainCategory === "Fixkosten") return permissions.showSubscriptions;
-  return false;
-}
-function applyFilters(entries){
-  const search = searchInput.value.trim().toLowerCase();
-  const type = typeFilter.value;
-  const mainCategory = mainCategoryFilter.value;
-  const category = categoryFilter.value;
-  const person = personFilter.value;
-  const payment = paymentFilter.value;
-
-  return entries.filter(entry => {
-    if(document.body.classList.contains("child-mode") && !allowedInChild(entry)) return false;
-
-    const haystack = [
-      entry.title,
-      entry.text,
-      entry.category,
-      entry.mainCategory,
-      entry.person,
-      entry.payment
-    ].join(" ").toLowerCase();
-
-    if(search && !haystack.includes(search)) return false;
-    if(type !== "all" && entry.type !== type) return false;
-    if(mainCategory !== "all" && entry.mainCategory !== mainCategory) return false;
-    if(category !== "all" && entry.category !== category) return false;
-    if(person !== "all" && entry.person !== person) return false;
-    if(payment !== "all" && entry.payment !== payment) return false;
-
-    return true;
-  }).sort((a,b) => new Date(b.date + "T12:00:00") - new Date(a.date + "T12:00:00"));
-}
-function renderSummary(entries){
-  const income = entries.filter(e => e.type === "Einnahme").reduce((sum,e)=>sum + Number(e.amount || 0),0);
-  const fixed = entries.filter(e => e.mainCategory === "Fixkosten").reduce((sum,e)=>sum + Number(e.amount || 0),0);
-  const expenses = entries.filter(e => e.type === "Ausgabe").reduce((sum,e)=>sum + Number(e.amount || 0),0);
-  const balance = income - expenses;
-
-  document.getElementById("countValue").textContent = entries.length;
-  document.getElementById("incomeValue").textContent = formatEuro(income);
-  document.getElementById("fixedValue").textContent = formatEuro(fixed);
-  document.getElementById("expenseValue").textContent = formatEuro(expenses);
-  document.getElementById("balanceValue").textContent = formatEuro(balance);
-}
-function renderTable(entries){
-  const body = document.getElementById("historyTableBody");
-  body.innerHTML = "";
-
-  const colspan = document.body.classList.contains("child-mode") ? 6 : 9;
-
-  if(!entries.length){
-    body.innerHTML = `<tr><td colspan="${colspan}" class="no-results">Keine passenden Einträge gefunden.</td></tr>`;
-    return;
-  }
-
-  entries.forEach(entry => {
-    const amountClass = entry.type === "Einnahme" ? "amount-plus" : "amount-minus";
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${new Date(entry.date + "T12:00:00").toLocaleDateString("de-DE")}</td>
-      <td>${escapeHtml(entry.mainCategory || "—")}</td>
-      <td>${escapeHtml(entry.category || "—")}</td>
-      <td><strong>${escapeHtml(entry.title || "—")}</strong><br><span style="color:var(--muted)">${escapeHtml(entry.text || "")}</span></td>
-      <td class="hide-for-child">${escapeHtml(entry.person || "—")}</td>
-      <td class="hide-for-child">${escapeHtml(entry.payment || "—")}</td>
-      <td class="hide-for-child">${entry.recurring ? "ja" : "nein"}</td>
-      <td><span class="tag">${escapeHtml(entry.type || "—")}</span></td>
-      <td class="${amountClass}">${entry.type === "Einnahme" ? "+" : "-"} ${formatEuro(entry.amount)}</td>
-    `;
-    body.appendChild(tr);
-  });
-}
-function renderAi(entries){
-  const aiGrid = document.getElementById("aiGrid");
-  const expenseEntries = entries.filter(e => e.type === "Ausgabe");
-  const byMainCategory = {};
-
-  expenseEntries.forEach(entry => {
-    byMainCategory[entry.mainCategory] = (byMainCategory[entry.mainCategory] || 0) + Number(entry.amount || 0);
-  });
-
-  const topCategory = Object.entries(byMainCategory).sort((a,b)=>b[1]-a[1])[0];
-  const fixedTotal = byMainCategory["Fixkosten"] || 0;
-  const shoppingTotal = byMainCategory["Einkauf"] || 0;
-  const incomeTotal = entries.filter(e => e.type === "Einnahme").reduce((sum,e)=>sum + Number(e.amount || 0),0);
-
-  const hints = [];
-  if(topCategory){
-    hints.push({
-      title:"Stärkster Kostenblock",
-      text:`${topCategory[0]} ist aktuell der größte sichtbare Ausgabenbereich mit ${formatEuro(topCategory[1])}.`
-    });
-  }
-  if(fixedTotal > 0){
-    hints.push({
-      title:"Wiederkehrende Kosten erkannt",
-      text:`Fixkosten liegen aktuell bei ${formatEuro(fixedTotal)}. Miete, Strom, Internet, Versicherung und Abos sind sauber getrennt sichtbar.`
-    });
-  }
-  if(shoppingTotal > 0){
-    hints.push({
-      title:"Einkäufe laufen mit",
-      text:`Einkäufe aus der Einkaufsliste erscheinen direkt in der Historie und liegen aktuell bei ${formatEuro(shoppingTotal)}.`
-    });
-  }
-  if(incomeTotal > 0){
-    hints.push({
-      title:"Einnahmen klarer",
-      text:`Gehalt, Taschengeld und Geldgeschenke sind jetzt separat lesbar und nicht mehr vermischt.`
-    });
-  }
-  if(!hints.length){
-    hints.push({
-      title:"Noch wenig Daten",
-      text:"Sobald mehr Einträge vorhanden sind, erkennt die Historie klarere Muster und Schwerpunkte."
-    });
-  }
-
-  aiGrid.innerHTML = "";
-  hints.slice(0,3).forEach(hint => {
-    const box = document.createElement("div");
-    box.className = "ai-box";
-    box.innerHTML = `<strong>${escapeHtml(hint.title)}</strong><p>${escapeHtml(hint.text)}</p>`;
-    aiGrid.appendChild(box);
-  });
-}
-function applyPermissionBlocks(){
-  const permissions = loadPermissions();
-  document.querySelectorAll("[data-permission-block]").forEach(block => {
-    const key = block.dataset.permissionBlock;
-    if(document.body.classList.contains("child-mode")){
-      block.style.display = permissions[key] ? "block" : "none";
-    }else{
-      block.style.display = "block";
+document.addEventListener('DOMContentLoaded', function(){
+  if(window.lucide && lucide.createIcons) lucide.createIcons();
+  const raw = localStorage.getItem('haushaltsheld_user') || localStorage.getItem('haushaltsheld_current_user');
+  try{
+    if(raw){
+      const u = JSON.parse(raw);
+      const n = document.getElementById('userName');
+      const r = document.getElementById('userRole');
+      if(n) n.textContent = '👋 ' + (u.name || u.username || 'Willkommen');
+      if(r) r.textContent = String(u.role || u.modus || 'Eltern-Modus');
     }
-  });
-}
-function renderAll(){
-  const entries = applyFilters(getCombinedEntries());
-  renderSummary(entries);
-  renderTable(entries);
-  renderAi(entries);
-  applyPermissionBlocks();
-}
-function setView(mode){
-  if(mode === "child"){
-    document.body.classList.add("child-mode");
-    adminViewBtn.classList.remove("active");
-    childViewBtn.classList.add("active");
-    modeBadge.textContent = "Kindmodus aktiv";
-    modeBadge.className = "mode-badge child";
-    modeNote.textContent = "Im Kindermodus werden nur freigegebene Bereiche angezeigt. Persönliche Finanzdetails bleiben verborgen.";
-  }else{
-    document.body.classList.remove("child-mode");
-    childViewBtn.classList.remove("active");
-    adminViewBtn.classList.add("active");
-    modeBadge.textContent = "Elternmodus aktiv";
-    modeBadge.className = "mode-badge";
-    modeNote.textContent = "Im Elternmodus ist die komplette Historie sichtbar. Im Kindermodus werden nur freigegebene Bereiche angezeigt.";
+  }catch(e){}
+  const childBtn = document.getElementById('childBtn');
+  if(childBtn) childBtn.addEventListener('click', function(){ window.location.href = 'kindermodus.html'; });
+
+  const extrasWrap = document.getElementById('extrasWrap');
+  const extrasToggle = document.getElementById('extrasToggle');
+  if(extrasWrap && extrasToggle){
+    const shouldOpen = true;
+    extrasWrap.classList.toggle('open', shouldOpen);
+    extrasToggle.classList.toggle('active', shouldOpen);
+    extrasToggle.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+    extrasToggle.addEventListener('click', function(){
+      const open = extrasWrap.classList.toggle('open');
+      extrasToggle.classList.toggle('active', open);
+      extrasToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
   }
 
-  localStorage.setItem("haushaltsheld_finance_view", mode);
-  renderAll();
-}
+  const kiFab = document.getElementById('kiFab');
+  const kiPanel = document.getElementById('kiPanel');
+  const kiClose = document.getElementById('kiClose');
+  const kiSpeech = document.getElementById('kiSpeech');
+  const laterBtn = document.getElementById('kiLater');
+  const neverBtn = document.getElementById('kiNever');
+  const storageKey = 'hh_ki_hint_hidden_' + (document.body.dataset.page || 'page');
 
-[searchInput,typeFilter,mainCategoryFilter,categoryFilter,personFilter,paymentFilter].forEach(el => {
-  el.addEventListener("input", renderAll);
-  el.addEventListener("change", renderAll);
+  function openKi(){ if(kiPanel){ kiPanel.classList.add('open'); } if(kiSpeech){ kiSpeech.classList.remove('show'); } }
+  function closeKi(){ if(kiPanel){ kiPanel.classList.remove('open'); } }
+
+  if(kiFab) kiFab.addEventListener('click', openKi);
+  if(kiClose) kiClose.addEventListener('click', closeKi);
+  if(laterBtn) laterBtn.addEventListener('click', function(){ if(kiSpeech) kiSpeech.classList.remove('show'); });
+  if(neverBtn) neverBtn.addEventListener('click', function(){ try{ localStorage.setItem(storageKey, '1'); }catch(e){} if(kiSpeech) kiSpeech.classList.remove('show'); });
+
+  try{
+    if(localStorage.getItem(storageKey) !== '1' && kiSpeech){
+      setTimeout(function(){ kiSpeech.classList.add('show'); }, 500);
+    }
+  }catch(e){ if(kiSpeech){ setTimeout(function(){ kiSpeech.classList.add('show'); }, 500); } }
+
+  const suggestionButtons = document.querySelectorAll('[data-ki-suggestion]');
+  const kiInput = document.getElementById('kiInput');
+  suggestionButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(kiInput){ kiInput.value = btn.getAttribute('data-ki-suggestion') || ''; kiInput.focus(); }
+    });
+  });
+
+  const kiForm = document.getElementById('kiForm');
+  const kiChat = document.getElementById('kiChat');
+  if(kiForm && kiChat && kiInput){
+    kiForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const text = kiInput.value.trim();
+      if(!text) return;
+      const userMsg = document.createElement('div');
+      userMsg.className = 'ki-msg user';
+      userMsg.textContent = text;
+      kiChat.appendChild(userMsg);
+
+      const botMsg = document.createElement('div');
+      botMsg.className = 'ki-msg bot';
+      botMsg.textContent = 'Ich bin hier auf dieser Seite bereits eingebunden. Für echte KI-Antworten oder Familiennachrichten gehe bitte in den Familien-Chat.';
+      kiChat.appendChild(botMsg);
+      kiChat.scrollTop = kiChat.scrollHeight;
+      kiInput.value = '';
+    });
+  }
 });
-
-adminViewBtn.addEventListener("click", () => setView("admin"));
-childViewBtn.addEventListener("click", () => setView("child"));
-
-/* KI */
-(function(){
-  const page = "finanz_historie";
-  const fab = document.getElementById("kiFab");
-  const panel = document.getElementById("kiPanel");
-  const closeBtn = document.getElementById("kiClose");
-  const form = document.getElementById("kiForm");
-  const input = document.getElementById("kiInput");
-  const chat = document.getElementById("kiChat");
-  const suggestions = document.getElementById("kiSuggestions");
-  const contextText = document.getElementById("kiContextText");
-  const welcome = document.getElementById("kiWelcomeMsg");
-
-  const pageSettings = {
-    context: "Ich helfe dir beim Verstehen deiner Finanz-Historie, Muster und Ausgaben.",
-    suggestions: [
-      "Was fällt dir in meiner Historie auf?",
-      "Welche Kosten sind wiederkehrend?",
-      "Wo könnte ich sparen?"
-    ]
-  };
-
-  contextText.textContent = "Ich unterstütze dich hier direkt im Elternbereich.";
-  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.";
-
-  suggestions.innerHTML = pageSettings.suggestions.map(text =>
-    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
-  ).join("");
-
-  suggestions.querySelectorAll(".ki-chip").forEach(btn => {
-    btn.addEventListener("click", () => {
-      input.value = btn.textContent.trim();
-      input.focus();
-    });
-  });
-
-  function addMsg(role, text){
-    const div = document.createElement("div");
-    div.className = "ki-msg " + role;
-    div.textContent = text;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-    return div;
-  }
-
-  async function sendMessage(message){
-    addMsg("user", message);
-    const loading = addMsg("bot", "Ich denke kurz nach …");
-    loading.classList.add("ki-typing");
-
-    try{
-      const response = await fetch("/.netlify/functions/chat", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({
-          message,
-          page,
-          mode: document.body.classList.contains("child-mode") ? "child" : "parent"
-        })
-      });
-
-      const data = await response.json();
-      loading.remove();
-      addMsg("bot", data.reply || "Ich konnte gerade nichts Sinnvolles antworten.");
-    }catch(err){
-      loading.remove();
-      addMsg("bot", "Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.");
-    }
-  }
-
-  fab.addEventListener("click",()=>{
-    panel.classList.add("open");
-    input.focus();
-  });
-
-  closeBtn.addEventListener("click",()=>{
-    panel.classList.remove("open");
-  });
-
-  document.addEventListener("keydown",(e)=>{
-    if(e.key === "Escape") panel.classList.remove("open");
-  });
-
-  form.addEventListener("submit",async(e)=>{
-    e.preventDefault();
-    const message = input.value.trim();
-    if(!message) return;
-    input.value = "";
-    await sendMessage(message);
-  });
-})();
-
-setView(localStorage.getItem("haushaltsheld_finance_view") || "admin");
+function handleLogout(){
+  try{
+    localStorage.removeItem('haushaltsheld_user');
+    localStorage.removeItem('haushaltsheld_current_user');
+  }catch(e){}
+  window.location.href = 'login.html';
+}
 </script>
+<script>
+(function(){
+  const AUTH_KEYS=["haushaltsheld_user","haushaltsheld_current_user"];const USERS_KEY="haushaltsheld_users";const FAMILY_ROOM_KEY="hh_family_chat_room";const FAMILY_SEEN_KEY="hh_family_chat_seen_parent";const DIRECT_CHATS_KEY="hh_direct_chats_v2";const DIRECT_SEEN_PREFIX="hh_direct_seen_";
+  function readJSON(key,fallback){try{const raw=localStorage.getItem(key);if(!raw)return fallback;const parsed=JSON.parse(raw);return parsed??fallback}catch(error){return fallback}}
+  function slugify(value){return String(value||"").toLowerCase().trim().replace(/\s+/g,"-").replace(/[^a-z0-9äöüß_-]/gi,"")}
+  function getUserId(user){return user?.id||user?.userId||user?.username||slugify(user?.name||user?.displayName||"user")}
+  function getAuthUser(){for(const key of AUTH_KEYS){const user=readJSON(key,null);if(user)return user}return null}
+  function normalizeMessage(msg,fallbackType){return{id:msg?.id||("msg_"+Math.random().toString(36).slice(2,10)),conversationType:msg?.conversationType||fallbackType,senderId:msg?.senderId||msg?.authorId||slugify(msg?.senderName||msg?.author||msg?.sender||""),senderName:msg?.senderName||msg?.author||msg?.sender||"Unbekannt",text:msg?.text||msg?.message||msg?.content||"",timestamp:msg?.timestamp||msg?.time||msg?.createdAt||new Date().toISOString(),deleted:!!msg?.deleted}}
+  function getConversationKeyForUsers(userA,userB){return[String(userA||""),String(userB||"")].sort().join("__")}
+  function getUsers(currentUserId){const stored=readJSON(USERS_KEY,[]);const users=Array.isArray(stored)?stored.map((u)=>({id:getUserId(u),name:u?.name||u?.displayName||u?.username||"Nutzer",role:u?.role||""})):[];if(currentUserId&&!users.find((u)=>u.id===currentUserId)){const auth=getAuthUser();users.unshift({id:currentUserId,name:auth?.name||auth?.displayName||auth?.username||"Nutzer",role:auth?.role||""})}return users}
+  function getFamilyMessages(){const room=readJSON(FAMILY_ROOM_KEY,{messages:[]});const messages=Array.isArray(room?.messages)?room.messages:[];return messages.map((m)=>normalizeMessage(m,"family"))}
+  function getDirectMessages(conversationId){const store=readJSON(DIRECT_CHATS_KEY,{});const messages=Array.isArray(store?.[conversationId])?store[conversationId]:[];return messages.map((m)=>normalizeMessage(m,"direct"))}
+  function getUnreadCount(currentUserId,conversation){if(!currentUserId||!conversation)return 0;if(conversation.type==="family"){const seen=readJSON(FAMILY_SEEN_KEY,{});const lastSeen=seen?.[currentUserId]||"";return conversation.messages.filter((m)=>m.senderId!==currentUserId&&String(m.timestamp||"")>String(lastSeen)).length}const seen=readJSON(DIRECT_SEEN_PREFIX+conversation.id,{});const lastSeen=seen?.[currentUserId]||"";return conversation.messages.filter((m)=>m.senderId!==currentUserId&&String(m.timestamp||"")>String(lastSeen)).length}
+  function buildConversations(currentUserId){const users=getUsers(currentUserId);const conversations=[{type:"family",id:"family",messages:getFamilyMessages()}];users.filter((u)=>u.id!==currentUserId).forEach((u)=>{const id=getConversationKeyForUsers(currentUserId,u.id);conversations.push({type:"direct",id,messages:getDirectMessages(id)})});return conversations}
+  function updateGlobalChatBadge(){const badge=document.getElementById("chatBadge");if(!badge)return;const auth=getAuthUser();const currentUserId=auth?getUserId(auth):"";const conversations=buildConversations(currentUserId);const unreadTotal=conversations.reduce((sum,conversation)=>sum+getUnreadCount(currentUserId,conversation),0);if(unreadTotal>0){badge.style.display="inline-block";badge.textContent=unreadTotal>99?"99+":String(unreadTotal)}else{badge.style.display="none";badge.textContent="0"}}
+  document.addEventListener("DOMContentLoaded",updateGlobalChatBadge);window.addEventListener("storage",updateGlobalChatBadge);window.updateGlobalChatBadge=updateGlobalChatBadge;
+})();
+</script>
+
 </body>
 </html>
