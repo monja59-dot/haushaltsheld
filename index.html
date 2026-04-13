@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Haushaltsheld – Dashboard</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="ki-schnecke.css">
+
 <style>
 :root{
   --bg:#f7f2e9;
@@ -13,15 +19,12 @@
   --soft:#f6efe4;
   --soft2:#efe3d2;
   --line:#dfd1bc;
-
   --text:#2d342f;
   --text2:#556159;
   --muted:#7d8a82;
-
   --accent:#4CAF50;
   --accent-dark:#3E8E41;
   --accent-soft:#e7f5e8;
-
   --beige:#f2e6d7;
   --sand:#e8d7c2;
   --blue:#6b96d9;
@@ -32,29 +35,20 @@
   --yellow-soft:#fbf4df;
   --green:#5ca66f;
   --green-soft:#e7f4ea;
-
   --shadow-xs:0 2px 8px rgba(54,45,28,.05);
   --shadow-sm:0 6px 18px rgba(54,45,28,.08);
   --shadow:0 12px 34px rgba(54,45,28,.10);
   --shadow-lg:0 18px 48px rgba(54,45,28,.12);
-
   --r-xs:12px;
   --r-sm:16px;
   --r:22px;
   --r-lg:28px;
   --r-xl:34px;
   --sidebar-w:258px;
-
   --font-main:"Outfit", sans-serif;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
-
-html,body{
-  width:100%;
-  overflow-x:hidden;
-}
-
+html,body{width:100%;overflow-x:hidden}
 body{
   font-family:var(--font-main);
   background:
@@ -66,25 +60,13 @@ body{
   line-height:1.6;
   letter-spacing:-0.01em;
 }
+h1,h2,h3,h4,h5,h6{font-family:var(--font-main)!important;letter-spacing:-0.03em;line-height:1.15}
+button,input,select,textarea{font:inherit}
+a{color:inherit}
 
-h1,h2,h3,h4,h5,h6{
-  font-family:var(--font-main) !important;
-  letter-spacing:-0.03em;
-  line-height:1.15;
-}
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
 
-button,input,select,textarea{
-  font:inherit;
-}
-
-/* ── App Shell ── */
-.app{
-  display:grid;
-  grid-template-columns:var(--sidebar-w) 1fr;
-  min-height:100vh;
-}
-
-/* ── Sidebar ── */
+/* Sidebar */
 .sidebar{
   background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
   border-right:1px solid rgba(223,209,188,.85);
@@ -99,1555 +81,1752 @@ button,input,select,textarea{
   z-index:10;
   box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
 }
-
 .logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 8px 24px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:8px;
-}
-
-.logo-wrap img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
-}
-
-.logo-name{
-  font-weight:800;
-  font-size:1.25rem !important;
-  color:var(--text);
-}
-
-.logo-sub{
-  font-size:.75rem;
-  color:var(--muted);
-  margin-top:2px;
-}
-
-.nav-label{
-  font-size:.7rem;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  color:var(--muted);
-  padding:16px 10px 6px;
-}
-
-.nav{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-
-.nav a{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px 13px;
-  border-radius:18px;
+  display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px;
   text-decoration:none;
-  color:var(--text2);
-  font-weight:700 !important;
-  font-size:.98rem !important;
-  transition:all .18s ease;
-  border:1px solid transparent;
-  position:relative;
 }
-
-.nav a:hover{
-  background:rgba(255,255,255,.72);
-  border-color:rgba(223,209,188,.9);
-  transform:translateX(2px);
-  box-shadow:var(--shadow-xs);
-  color:var(--text);
+.logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}
+.logo-name{font-weight:800;font-size:1.25rem!important;color:var(--text)}
+.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);
+  font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;border:1px solid transparent;position:relative;
 }
-
+.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}
 .nav a.active{
-  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
-  color:#fff;
-  border-color:rgba(62,142,65,.28);
-  box-shadow:
-    0 5px 0 #2f6f33,
-    0 14px 26px rgba(62,142,65,.20),
-    inset 0 1px 0 rgba(255,255,255,.18);
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-color:rgba(62,142,65,.28);
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
 }
-
 .nav-icon{
-  width:36px;
-  height:36px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.92);
-  color:var(--accent-dark);
-  flex-shrink:0;
-  box-shadow:0 2px 8px rgba(54,45,28,.05);
+  width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05);
 }
-
-.nav-icon svg,
-.nav-icon i{
-  width:18px;
-  height:18px;
-  stroke:currentColor;
+.nav-icon svg,.nav-icon i{width:18px;height:18px;stroke:currentColor}
+.nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
+.chat-badge{
+  position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;
+  font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28);display:none;
 }
-
-.nav a.active .nav-icon{
-  background:rgba(255,255,255,.16);
-  border-color:rgba(255,255,255,.22);
-  color:#fff;
-}
-
-.sidebar-footer{
-  margin-top:auto;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-  display:grid;
-  gap:10px;
-}
-
-.user-info{
-  background:rgba(255,255,255,.7);
-  border:1px solid rgba(223,209,188,.7);
-  border-radius:16px;
-  padding:12px 14px;
-  font-size:.8rem;
-  margin-bottom:8px;
-}
-
-.user-info strong{
-  display:block;
-  font-weight:800;
-  color:var(--text);
-  margin-bottom:4px;
-}
-
-.user-info span{
-  display:block;
-  color:var(--muted);
-  font-size:.75rem;
-}
-
+.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px}
+.user-info{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.7);border-radius:16px;padding:12px 14px;font-size:.8rem;margin-bottom:8px}
+.user-info strong{display:block;font-weight:800;color:var(--text);margin-bottom:4px}
+.user-info span{display:block;color:var(--muted);font-size:.75rem}
 .logout-btn{
-  width:100%;
-  border:1.5px solid #ddcbb4;
-  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
-  color:#665646;
-  padding:10px 12px;
-  border-radius:16px;
-  font-size:.88rem;
-  font-weight:800;
-  cursor:pointer;
-  transition:.18s ease;
+  width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;
+  padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;
   box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72);
 }
-
-.logout-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 5px 0 #cdb394, 0 12px 22px rgba(110,82,40,.14), inset 0 1px 0 rgba(255,255,255,.72);
-}
-
-.mode-switch{
-  display:flex;
-  gap:6px;
-  background:rgba(255,255,255,.86);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:5px;
-  box-shadow:var(--shadow-xs);
-}
-
+.logout-btn:hover{transform:translateY(-2px)}
+.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}
 .mode-btn{
-  flex:1;
-  border:none;
-  background:transparent;
-  color:var(--muted);
-  padding:9px 12px;
-  border-radius:999px;
-  font-size:.82rem;
-  font-weight:800;
-  cursor:pointer;
-  transition:.18s ease;
-  font-family:var(--font-main);
+  flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease;
 }
+.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
 
-.mode-btn.active{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  box-shadow:
-    0 3px 0 #2f6f33,
-    0 8px 18px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.2);
-}
-
-/* ── Main ── */
-.main{
-  width:100%;
-  max-width:1580px;
-  padding:32px;
-  overflow-x:hidden;
-}
-
-/* ── Page Header ── */
-.page-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:18px;
-  margin-bottom:22px;
-  flex-wrap:wrap;
-}
-
-.page-header h1{
-  font-size:2.35rem !important;
-  font-weight:800 !important;
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.page-header p{
-  color:var(--muted);
-  font-size:.98rem;
-  max-width:760px;
-}
-
+/* Main */
+.main{width:100%;max-width:1600px;padding:32px;overflow-x:hidden}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.page-header h1{font-size:2.35rem!important;font-weight:800!important;margin-bottom:8px}
+.page-header p{color:var(--muted);font-size:.98rem;max-width:760px}
 .mode-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 16px;
-  border-radius:999px;
-  font-weight:800;
-  font-size:.88rem;
-  background:var(--soft);
-  border:1px solid var(--line);
-  color:var(--text2);
-  box-shadow:var(--shadow-xs);
+  display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;
+  background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs);
 }
 
-.mode-badge svg,
-.mode-badge i{
-  width:16px;
-  height:16px;
-  stroke-width:2.2;
-}
-
-.mode-badge.child{
-  background:var(--blue-soft);
-  border-color:#cbdcf8;
-  color:#496d9d;
-}
-
-.chat-badge{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  min-width:18px;
-  height:18px;
-  padding:0 5px;
-  border-radius:999px;
-  background:#cc6666;
-  color:#fff;
-  font-size:.68rem;
-  font-weight:800;
-  line-height:18px;
-  text-align:center;
-  border:2px solid #fff;
-  box-shadow:0 2px 8px rgba(204,102,102,.28);
-}
-
-/* ── Hero ── */
+/* Welcome */
 .hero{
   background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
   border:1px solid rgba(76,175,80,.18);
   border-radius:30px;
   padding:28px 30px;
   display:grid;
-  grid-template-columns:1fr 150px;
-  gap:24px;
-  align-items:center;
-  margin-bottom:24px;
+  grid-template-columns:minmax(0,1.2fr) 340px;
+  gap:22px;
+  align-items:stretch;
+  margin-bottom:22px;
   box-shadow:var(--shadow-sm);
   position:relative;
   overflow:hidden;
 }
-
 .hero::after{
-  content:"";
-  position:absolute;
-  right:-40px;
-  bottom:-40px;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  background:rgba(76,175,80,.07);
-  pointer-events:none;
+  content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;
+  background:rgba(76,175,80,.07);pointer-events:none;
 }
-
-.hero h2{
-  font-size:1.6rem !important;
-  font-weight:800 !important;
-  margin-bottom:10px;
-}
-
-.hero p{
-  color:var(--text2);
-  line-height:1.65;
-  max-width:720px;
-  margin-bottom:18px;
-}
-
-.hero-tags{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
+.hero h2{font-size:1.7rem!important;font-weight:800!important;margin-bottom:8px}
+.hero p{color:var(--text2);line-height:1.65;margin-bottom:14px}
+.hero-meta{display:flex;gap:10px;flex-wrap:wrap}
 .hero-tag{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.95);
-  padding:9px 14px;
-  border-radius:999px;
-  font-size:.88rem;
-  font-weight:800;
-  color:var(--text2);
-  box-shadow:0 1px 4px rgba(54,45,28,.04);
+  display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.95);
+  padding:9px 14px;border-radius:999px;font-size:.88rem;font-weight:800;color:var(--text2);box-shadow:0 1px 4px rgba(54,45,28,.04);
 }
-
-.hero-tag svg,
-.hero-tag i{
-  width:16px;
-  height:16px;
-  stroke-width:2.1;
+.hero-side{
+  display:grid;gap:12px;align-content:start;
 }
-
-.hero-tag.accent{
-  background:#f8ebda;
-  border-color:#ecd1ad;
+.quote-box,.mini-box{
+  background:rgba(255,255,255,.78);border-radius:22px;padding:16px;border:1px solid rgba(223,209,188,.85);box-shadow:var(--shadow-xs);
 }
+.quote-box strong,.mini-box strong{display:block;margin-bottom:6px;font-size:.96rem;font-weight:800}
+.quote-box span,.mini-box span{color:var(--muted);font-size:.9rem;line-height:1.55}
+.quote-box em{display:block;color:var(--text2);font-style:normal;font-weight:700;line-height:1.55}
 
-.hero-img{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.hero-img img{
-  width:112px;
-  object-fit:contain;
-  filter:drop-shadow(0 10px 18px rgba(62,142,65,.10));
-}
-
-/* ── Stats Grid ── */
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-bottom:24px;
-}
-
-.stat-card{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:26px;
-  padding:20px;
-  box-shadow:var(--shadow-sm);
-  transition:transform .18s ease, box-shadow .18s ease;
-  position:relative;
-  overflow:hidden;
-}
-
-.stat-card::after{
-  content:"";
-  position:absolute;
-  inset:auto -18px -18px auto;
-  width:82px;
-  height:82px;
-  border-radius:50%;
-  background:rgba(76,175,80,.07);
-  pointer-events:none;
-}
-
-.stat-card:hover{
-  transform:translateY(-2px);
-  box-shadow:var(--shadow);
-}
-
-.stat-card .stat-icon{
-  width:46px;
-  height:46px;
-  display:grid;
-  place-items:center;
-  border-radius:14px;
-  margin-bottom:12px;
-  background:var(--accent-soft);
-  border:1px solid rgba(76,175,80,.18);
-  color:var(--accent-dark);
-  box-shadow:var(--shadow-xs);
-}
-
-.stat-card .stat-icon svg,
-.stat-card .stat-icon i{
-  width:22px;
-  height:22px;
-  stroke:currentColor;
-  stroke-width:2.1;
-}
-
-.stat-card .stat-label{
-  font-size:.72rem !important;
-  font-weight:800 !important;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  margin-bottom:8px;
-}
-
-.stat-card .stat-value{
-  font-size:2rem !important;
-  font-weight:800 !important;
-  font-family:var(--font-main);
-  margin-bottom:4px;
-  letter-spacing:-0.04em;
-}
-
-.stat-card .stat-sub{
-  font-size:.84rem;
-  color:var(--muted);
-  line-height:1.5;
-}
-
-.stat-green .stat-value{color:var(--green)}
-.stat-red .stat-value{color:var(--red)}
-
-/* ── Content Grid ── */
-.content-grid{
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:18px;
-  margin-bottom:20px;
-}
-
-/* ── Cards ── */
+/* content grids */
+.grid-main{display:grid;grid-template-columns:minmax(0,1.1fr) 360px;gap:18px;align-items:start}
+.stack{display:grid;gap:18px}
 .card{
   background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
   border:1px solid rgba(223,209,188,.95);
   border-radius:28px;
-  padding:24px;
+  padding:22px;
   box-shadow:var(--shadow-sm);
-  transition:transform .18s ease, box-shadow .18s ease;
 }
+.card-title{display:flex;align-items:center;gap:10px;font-size:1.16rem!important;font-weight:800!important;margin-bottom:12px;color:var(--text)}
+.card-sub{color:var(--muted);line-height:1.6;margin-bottom:16px;font-size:.9rem}
+.card-title svg,.card-title i{width:18px;height:18px;stroke-width:2.1;color:#b17a2f}
 
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:var(--shadow);
+
+/* extras dropdown */
+.nav-dropdown{display:grid;gap:6px}
+.dropdown-toggle{
+  width:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);
+  font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;
+  border:1px solid transparent;position:relative;background:transparent;cursor:pointer;
+  font-family:var(--font-main);
 }
-
-.card-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:1.16rem !important;
-  font-weight:800 !important;
-  margin-bottom:18px;
-  color:var(--text);
+.dropdown-toggle:hover{
+  background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text);
 }
-
-.card-title svg,
-.card-title i{
-  width:18px;
-  height:18px;
-  stroke-width:2.1;
-  color:#b17a2f;
+.dropdown-caret{
+  width:18px;height:18px;display:grid;place-items:center;transition:transform .18s ease;color:var(--muted);
 }
+.nav-dropdown.open .dropdown-caret{transform:rotate(180deg)}
+.dropdown-menu{display:none;flex-direction:column;gap:4px;padding-left:10px}
+.nav-dropdown.open .dropdown-menu{display:flex}
 
-/* ── Task Items ── */
-.task-list{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+/* pastel quick cards */
+.quick-card.pastel-finanzen{background:linear-gradient(180deg,#eef7ff 0%, #e6f1fb 100%);border-color:#cfe0f2}
+.quick-card.pastel-aufgaben{background:linear-gradient(180deg,#f2f8ed 0%, #eaf4e1 100%);border-color:#d2e3c2}
+.quick-card.pastel-termine{background:linear-gradient(180deg,#fff6e9 0%, #fbeed7 100%);border-color:#ecdab4}
+.quick-card.pastel-essen{background:linear-gradient(180deg,#fff1ef 0%, #fde6e2 100%);border-color:#efcdc7}
+.quick-card.pastel-rezepte{background:linear-gradient(180deg,#f7f0ff 0%, #efe3fb 100%);border-color:#dccaf0}
+
+.quick-card.pastel-finanzen .quick-icon{background:#dcebfa;border-color:#c2d8ef;color:#5e87b0}
+.quick-card.pastel-aufgaben .quick-icon{background:#deeed0;border-color:#c7ddb1;color:#6d9561}
+.quick-card.pastel-termine .quick-icon{background:#f8e7c8;border-color:#edd7ab;color:#b18331}
+.quick-card.pastel-essen .quick-icon{background:#f9dcd7;border-color:#efc6be;color:#c67062}
+.quick-card.pastel-rezepte .quick-icon{background:#e8d9fb;border-color:#d9c3f3;color:#8a68b5}
+
+/* quick access */
+.quick-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.quick-card{
+  text-decoration:none;background:linear-gradient(180deg,#fcfdfc 0%, #f6faf6 100%);border:1px solid rgba(223,209,188,.85);border-radius:24px;
+  padding:18px 14px;display:grid;gap:10px;min-height:140px;transition:.18s ease;box-shadow:var(--shadow-xs);
 }
-
-.task-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  background:linear-gradient(180deg,#f5fbf5 0%, #eef6ef 100%);
-  border:1px solid transparent;
-  border-radius:20px;
-  padding:15px 16px;
-  transition:.18s ease;
+.quick-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:rgba(76,175,80,.24)}
+.quick-icon{
+  width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--accent-soft);border:1px solid rgba(76,175,80,.18);color:var(--accent-dark)
 }
+.quick-icon svg{width:22px;height:22px;stroke:currentColor}
+.quick-card strong{font-size:1rem}
+.quick-card span{color:var(--muted);font-size:.86rem;line-height:1.45}
 
-.task-item:hover{
-  border-color:rgba(200,185,165,.9);
-  transform:translateX(2px);
-  box-shadow:var(--shadow-xs);
-}
-
-.task-info strong{
-  display:block;
-  margin-bottom:6px;
-  font-size:.98rem;
-  font-weight:800;
-}
-
-.task-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-}
-
-.chip{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  padding:5px 10px;
-  border-radius:999px;
-  font-size:.76rem;
-  font-weight:800;
-  background:rgba(255,255,255,.86);
-  border:1px solid rgba(223,209,188,.92);
-  color:var(--text2);
-  box-shadow:0 1px 4px rgba(54,45,28,.04);
-}
-
-.chip-high{
-  background:var(--red-soft);
-  border-color:#efc1c1;
-  color:#b65454;
-}
-
-.chip-med{
-  background:var(--yellow-soft);
-  border-color:#ead7a2;
-  color:var(--yellow);
-}
-
-.chip-low{
-  background:var(--green-soft);
-  border-color:#bddfca;
-  color:var(--green);
-}
-
-/* ── List Items ── */
-.list-items{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.list-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
-  border:1px solid transparent;
-  border-radius:18px;
-  padding:13px 16px;
-  gap:14px;
-  font-size:.93rem;
-  transition:.18s ease;
-}
-
-.list-row:hover{
-  border-color:rgba(200,185,165,.9);
-  box-shadow:var(--shadow-xs);
-}
-
-.list-row span:last-child{
-  color:var(--text2);
-  font-weight:800;
-  white-space:nowrap;
-}
-
-/* ── CTA ── */
-.cta-link{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  margin-top:16px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff !important;
-  padding:12px 18px;
-  border-radius:16px;
-  font-weight:800 !important;
-  font-size:.92rem !important;
-  text-decoration:none;
-  box-shadow:
-    0 4px 0 #2f6f33,
-    0 10px 22px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.20);
-  transition:.18s ease;
-}
-
-.cta-link:hover{
-  transform:translateY(-2px);
-  box-shadow:
-    0 6px 0 #2f6f33,
-    0 14px 28px rgba(62,142,65,.26),
-    inset 0 1px 0 rgba(255,255,255,.22);
-}
-
-.small-note{
-  color:var(--muted);
-  font-size:.88rem !important;
-  line-height:1.6 !important;
-  margin-top:14px;
-}
-
-/* ── Hidden ── */
-.finance-sensitive.child-hidden{display:none!important}
-.child-only{display:none}
-.child-mode .child-only{display:block}
-
-/* ── General Buttons ── */
-.btn, button.btn, a.btn{
-  border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff !important;
-  padding:13px 22px;
-  border-radius:16px !important;
-  font-size:.95rem !important;
-  font-weight:800 !important;
-  text-decoration:none;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  box-shadow:
-    0 4px 0 #2f6f33,
-    0 10px 22px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.20);
-  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-  letter-spacing:.01em;
-  position:relative;
-}
-
-.btn:hover, button.btn:hover, a.btn:hover{
-  transform:translateY(-2px);
-  box-shadow:
-    0 6px 0 #2f6f33,
-    0 14px 28px rgba(62,142,65,.26),
-    inset 0 1px 0 rgba(255,255,255,.22);
-}
-
-.btn:active, button.btn:active, a.btn:active{
-  transform:translateY(1px);
-  box-shadow:
-    0 2px 0 #2f6f33,
-    0 6px 14px rgba(62,142,65,.18),
-    inset 0 1px 0 rgba(255,255,255,.16);
-}
-
-.btn-soft, button.btn-soft, a.btn-soft{
-  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%) !important;
-  color:#665646 !important;
-  border:1.5px solid #ddcbb4 !important;
-  box-shadow:
-    0 3px 0 #cdb394,
-    0 8px 18px rgba(110,82,40,.10),
-    inset 0 1px 0 rgba(255,255,255,.72) !important;
-}
-
-.btn-soft:hover, button.btn-soft:hover, a.btn-soft:hover{
-  transform:translateY(-2px);
-  box-shadow:
-    0 5px 0 #cdb394,
-    0 12px 22px rgba(110,82,40,.14),
-    inset 0 1px 0 rgba(255,255,255,.72) !important;
-}
-
-.mini-btn{
-  border:1.5px solid #ddcbb4 !important;
-  background:linear-gradient(135deg,#fffdf9 0%, #f4e8da 100%) !important;
-  color:#655846 !important;
-  padding:8px 12px !important;
-  border-radius:999px !important;
-  font-size:.78rem !important;
-  font-weight:800 !important;
-  cursor:pointer;
-  transition:all .15s ease;
-  box-shadow:0 3px 8px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.82) !important;
-}
-
-.mini-btn:hover{
-  background:linear-gradient(135deg,#fef5ea 0%, #ebdcc9 100%) !important;
-  border-color:#cdb394 !important;
-  transform:translateY(-1px);
-}
-
-.mini-btn.delete-btn:hover{
-  background:linear-gradient(135deg,#fff2f2 0%, #f8d9d9 100%) !important;
-  border-color:#e3a5a5 !important;
-  color:#b74f4f !important;
-}
-
-.pill-btn.active{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%) !important;
-  color:#fff !important;
-  box-shadow:0 3px 0 #2f6f33, 0 6px 14px rgba(62,142,65,.24) !important;
-}
-
-.quick-btn{
-  box-shadow:0 4px 0 #2f6f33, 0 8px 20px rgba(62,142,65,.22), inset 0 1px 0 rgba(255,255,255,.2) !important;
-}
-
-.quick-btn:hover{
-  transform:translateY(-2px) !important;
-  box-shadow:0 6px 0 #2f6f33, 0 14px 28px rgba(62,142,65,.26), inset 0 1px 0 rgba(255,255,255,.22) !important;
-}
-
-.add-star-btn{
-  box-shadow:0 4px 0 #8d6f18, 0 8px 20px rgba(181,136,47,.22) !important;
-}
-
-.add-star-btn:hover{
-  transform:scale(1.04) translateY(-1px) !important;
-  box-shadow:0 6px 0 #8d6f18, 0 12px 26px rgba(181,136,47,.26) !important;
-}
-
-/* Typography */
-h1{font-size:2.4rem !important;font-weight:800 !important;}
-h2{font-size:1.5rem !important;font-weight:700 !important;}
-h3{font-size:1.15rem !important;font-weight:700 !important;}
-
-.logo-name, .page-title h1, .page-h1, .hero h2, .card h2,
-.card-title, .s-logo-text, .hero-h2, .stat-val, .stat-value,
-.stat .value, .pocket-amount, .stars-count{
-  font-family:var(--font-main) !important;
-}
-
-.nav a, .nav-item, .mode-btn, .btn, .btn-soft,
-.pill-btn, .pill-toggle button, .mode-switch button,
-label, .field label, .form-label, .section-label,
-.topnav-links a, .topnav-logo, .tn-logo, .tn-link,
-select, input, textarea, button, .mini-btn,
-.chip, .hero-tag, .badge, .mode-badge,
-.nav-lbl, .stat-lbl, .stat-sub, .sub, .muted,
-p, span, div, li, td, th{
-  font-family:var(--font-main) !important;
-}
-
-p, .sub, .card-sub, .body, .helper, .small-note,
-.ki-note, .mode-note, .section-note, .filter-note{
-  font-size:15px !important;
-  line-height:1.65 !important;
-}
-
-.stat-value, .stat .value, .stat-val, .pocket-amount{
-  font-size:2rem !important;
-  font-weight:800 !important;
-  letter-spacing:-0.03em;
-}
-
-.field label, .form-label, .stat-label, .stat-lbl,
-.nav-lbl, .section-label, .opt-name{
-  font-size:0.72rem !important;
-  font-weight:700 !important;
-  letter-spacing:0.07em;
-  text-transform:uppercase;
-}
-
-input, select, textarea{
-  font-size:0.95rem !important;
-  font-weight:500 !important;
-}
-
-.wrap, .hero, .savings-card, .pocket-card,
-.tasks-card, .stars-banner, .quick-card,
-.kid-tab, .add-goal-btn, .quick-btn{
-  font-family:var(--font-main) !important;
-}
-
-/* ===== KI-Schnecke ===== */
-.ki-fab{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  width:74px;
-  height:74px;
-  border:none;
-  border-radius:24px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:
-    0 6px 0 #2f6f33,
-    0 16px 30px rgba(62,142,65,.24);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  z-index:9998;
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-
-.ki-fab:hover{
-  transform:translateY(-3px);
-  box-shadow:
-    0 8px 0 #2f6f33,
-    0 20px 34px rgba(62,142,65,.28);
-}
-
-.ki-fab img{
-  width:40px;
-  height:40px;
-  object-fit:contain;
-}
-
-.ki-fab-label{
-  position:absolute;
-  bottom:8px;
-  right:10px;
-  color:#fff;
-  font-size:.78rem;
-  font-weight:800;
-  line-height:1;
-}
-
-.ki-panel{
-  position:fixed;
-  right:22px;
-  bottom:108px;
-  width:min(390px,calc(100vw - 24px));
-  max-height:min(78vh,720px);
-  background:#fff;
-  border:1px solid var(--line);
+/* WhatsApp-like chat */
+.chat-shell{
+  background:linear-gradient(180deg,#f6fbf6 0%, #eef6ef 100%);
+  border:1px solid rgba(76,175,80,.15);
   border-radius:28px;
   overflow:hidden;
-  box-shadow:0 24px 50px rgba(34,48,38,.18);
-  z-index:9999;
-  display:none;
 }
-
-.ki-panel.open{
-  display:flex;
-  flex-direction:column;
+.chat-head{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid rgba(223,209,188,.9);background:#fffdfa;
 }
-
-.ki-head{
-  padding:20px 20px 16px;
-  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
+.chat-head-left{display:flex;align-items:center;gap:12px;min-width:0}
+.chat-avatar{
+  width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.18)
 }
-
-.ki-head-left{
-  display:flex;
+.chat-avatar svg{width:22px;height:22px;stroke:currentColor}
+.chat-head h3{font-size:1.1rem!important;font-weight:800!important}
+.chat-head p{font-size:.86rem;color:var(--muted)}
+.chat-action{
+  text-decoration:none;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;
+  padding:10px 12px;border-radius:14px;font-size:.85rem;font-weight:800;white-space:nowrap
+}
+.chat-messages{
+  padding:18px;
+  display:grid;
   gap:12px;
-  align-items:flex-start;
+  max-height:420px;
+  overflow:auto;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.55)),
+    linear-gradient(135deg,#f8efe3 0%, #fdf9f4 100%);
 }
-
-.ki-head-avatar{
-  width:48px;
-  height:48px;
-  border-radius:16px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
+.bubble{
+  max-width:82%;
+  border-radius:22px;
+  padding:12px 14px;
+  box-shadow:var(--shadow-xs);
+  word-break:break-word;
 }
-
-.ki-head-avatar img{
-  width:28px;
-  height:28px;
-  object-fit:contain;
+.bubble.me{
+  margin-left:auto;
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;
+  border-bottom-right-radius:8px;
 }
-
-.ki-head h3{
-  font-size:1.2rem !important;
-  font-weight:800 !important;
-  margin:0 0 4px;
-}
-
-.ki-head p{
-  font-size:.95rem !important;
-  color:var(--text2);
-  margin:0;
-}
-
-.ki-close{
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  border:1px solid var(--line);
+.bubble.other{
   background:#fff;
-  cursor:pointer;
-  flex-shrink:0;
+  color:var(--text);
+  border:1px solid rgba(223,209,188,.88);
+  border-bottom-left-radius:8px;
+}
+.bubble-top{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:6px;font-size:.78rem;font-weight:900
+}
+.bubble.me .bubble-top{color:rgba(255,255,255,.84)}
+.bubble.other .bubble-top{color:#7c6a56}
+.bubble-text{white-space:pre-wrap;line-height:1.5}
+.chat-empty{
+  text-align:center;padding:36px 18px;color:var(--muted);font-size:.95rem
+}
+.chat-form{
+  display:grid;grid-template-columns:1fr auto;gap:10px;padding:16px;border-top:1px solid rgba(223,209,188,.9);background:#fffdfa;
+}
+.chat-input{
+  min-height:54px;border:1.5px solid var(--line);background:#fffdf9;border-radius:18px;padding:14px 16px;outline:none;color:var(--text);resize:vertical
+}
+.chat-send{
+  border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20)
+}
+
+/* side cards */
+.info-list{display:grid;gap:10px}
+.info-row{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border:1px solid transparent;border-radius:18px;padding:13px 16px;font-size:.93rem;
+}
+.info-row strong{font-size:.95rem}
+.info-row span:last-child{color:var(--text2);font-weight:800;white-space:nowrap}
+.note-box{padding:16px;border-radius:20px;background:#f8fbf8;border:1px solid rgba(223,209,188,.9)}
+.note-box p{color:var(--text2);font-size:.92rem;line-height:1.6}
+.note-box + .note-box{margin-top:12px}
+
+
+/* dashboard upgrades */
+.favorite-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:16px 0 18px;
+}
+.favorite-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  text-decoration:none;
   color:var(--text2);
-  font-size:1.8rem;
+  font-weight:800;
+  font-size:.88rem;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  box-shadow:var(--shadow-xs);
+}
+.favorite-chip:hover{
+  transform:translateY(-1px);
+  box-shadow:var(--shadow-sm);
+}
+.favorite-chip svg{width:16px;height:16px;stroke:currentColor}
+
+.overview-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.mini-stat{
+  padding:16px;
+  border-radius:20px;
+  border:1px solid rgba(223,209,188,.9);
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  display:grid;
+  gap:6px;
+}
+.mini-stat strong{
+  font-size:1.35rem;
+  font-weight:800;
   line-height:1;
 }
-
-.ki-suggestions{
-  padding:16px 20px 14px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  border-bottom:1px solid var(--line);
-  background:#fff;
+.mini-stat span{
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.45;
 }
-
-.ki-chip{
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:999px;
-  padding:10px 14px;
-  font-size:.95rem;
-  font-weight:700;
+.mini-stat em{
   color:var(--text2);
-  cursor:pointer;
+  font-style:normal;
+  font-weight:700;
+  font-size:.9rem;
 }
 
-.ki-chat{
-  padding:18px 16px;
-  overflow:auto;
-  background:#fffaf4;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  min-height:220px;
-}
-
-.ki-msg{
-  max-width:84%;
-  padding:14px 16px;
-  border-radius:20px;
-  font-size:.97rem;
-  line-height:1.5;
-  white-space:pre-wrap;
-}
-
-.ki-msg.bot{
-  background:#f7eee0;
-  border:1px solid #ebd3b5;
-  color:#5f4332;
-}
-
-.ki-msg.user{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  align-self:flex-end;
-}
-
-.ki-form{
-  padding:14px;
-  border-top:1px solid var(--line);
-  background:#fff;
+.editor-box{
   display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
+  gap:12px;
 }
-
-.ki-input{
+.editor-textarea,.editor-input{
+  width:100%;
   border:1.5px solid var(--line);
   background:var(--bg-2);
   border-radius:18px;
   padding:14px 16px;
-  font-size:.97rem;
+  font-size:.95rem;
   color:var(--text);
   outline:none;
-  font-family:inherit;
+  font-family:var(--font-main);
+}
+.editor-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.soft-hint{
+  color:var(--muted);
+  font-size:.85rem;
+  line-height:1.55;
 }
 
-.ki-send{
-  border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  border-radius:18px;
-  padding:0 18px;
-  font-size:.95rem;
+.status-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.status-card{
+  border:1px solid rgba(223,209,188,.9);
+  border-radius:20px;
+  padding:16px;
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+}
+.status-card strong{
+  display:block;
+  font-size:1.4rem;
   font-weight:800;
-  cursor:pointer;
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  margin-bottom:4px;
+}
+.status-card span{
+  color:var(--muted);
+  font-size:.88rem;
+}
+.status-card em{
+  display:block;
+  margin-top:6px;
+  font-style:normal;
+  color:var(--text2);
+  font-size:.9rem;
+  font-weight:700;
 }
 
-.ki-typing{
-  opacity:.8;
-  font-style:italic;
+.reminder-list{
+  display:grid;
+  gap:10px;
+}
+.reminder-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  padding:13px 14px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#fff9f1 0%, #fdf3e3 100%);
+  border:1px solid #ecdab4;
+}
+.reminder-row strong{
+  display:block;
+  font-size:.95rem;
+}
+.reminder-row span{
+  color:var(--muted);
+  font-size:.86rem;
+  line-height:1.45;
 }
 
+.focus-box{
+  display:grid;
+  gap:12px;
+}
+.focus-preview{
+  padding:16px;
+  border-radius:20px;
+  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
+  border:1px solid rgba(76,175,80,.18);
+}
+.focus-preview strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:1rem;
+}
+.focus-preview p{
+  color:var(--text2);
+  font-size:.92rem;
+  line-height:1.6;
+}
 
-/* ── Klickbare Dashboard-Karten ── */
-.click-card{
-  cursor:pointer;
-  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+@media(max-width:1320px){
+  .overview-grid{grid-template-columns:1fr}
 }
-.click-card:hover{
-  transform:translateY(-3px);
-  box-shadow:var(--shadow);
-  border-color:rgba(76,175,80,.28) !important;
-}
-.click-card:active{
-  transform:translateY(-1px);
+@media(max-width:720px){
+  .status-grid{grid-template-columns:1fr}
 }
 
-/* ── Responsive ── */
-@media(max-width:1300px){
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .content-grid{grid-template-columns:1fr}
+/* KI */
+.ki-fab{
+  position:fixed;right:22px;bottom:22px;width:74px;height:74px;border:none;border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9998;text-decoration:none;
 }
+.ki-fab img{width:40px;height:40px;object-fit:contain}
+.ki-fab-label{position:absolute;bottom:8px;right:10px;color:#fff;font-size:.78rem;font-weight:800;line-height:1}
 
+@media(max-width:1320px){
+  .quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:1180px){
+  .hero{grid-template-columns:1fr}
+  .grid-main{grid-template-columns:1fr}
+}
 @media(max-width:960px){
   .app{grid-template-columns:1fr}
-  .sidebar{
-    height:auto;
-    position:relative;
-    flex-direction:row;
-    flex-wrap:wrap;
-    padding:16px;
-    gap:0;
-  }
-  .logo-wrap{
-    margin-bottom:0;
-    padding-bottom:0;
-    border-bottom:none;
-    border-right:1px solid var(--line);
-    padding-right:16px;
-    margin-right:16px;
-  }
-  .nav{
-    flex-direction:row;
-    flex-wrap:wrap;
-    flex:1;
-  }
-  .nav a{
-    flex:0 1 auto;
-    padding:10px 12px;
-  }
+  .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}
+  .logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
+  .nav a{flex:0 1 auto;padding:10px 12px}
   .nav-label,.sidebar-footer{display:none}
-  .hero{grid-template-columns:1fr}
-  .hero-img{display:none}
 }
-
-@media(max-width:700px){
-  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
-  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
-}
-
-@media(max-width:600px){
+@media(max-width:760px){
   .main{padding:16px}
-  .page-header h1{font-size:1.95rem !important}
-  .stats-grid{grid-template-columns:1fr 1fr;gap:12px}
-  .hero{padding:22px 20px}
-  .card,.stat-card{padding:18px}
+  .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chat-form{grid-template-columns:1fr}
+  .bubble{max-width:92%}
+}
+@media(max-width:460px){
+  .quick-grid{grid-template-columns:1fr}
+  .page-header h1{font-size:1.9rem!important}
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
 }
 
-@media(max-width:420px){
-  .stats-grid{grid-template-columns:1fr}
-  .page-header h1{font-size:1.75rem !important}
-  .mode-badge{width:100%;justify-content:center}
+/* online status */
+.online-strip{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+  padding:14px 16px;
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:20px;
+  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+  box-shadow:var(--shadow-xs);
 }
+.online-strip-title{
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.online-list{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.online-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--text2);
+  font-size:.88rem;
+  font-weight:800;
+}
+.online-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#c7c7c7;
+  box-shadow:0 0 0 3px rgba(0,0,0,.04);
+}
+.online-pill.is-online .online-dot{
+  background:#4CAF50;
+  box-shadow:0 0 0 4px rgba(76,175,80,.14);
+}
+.online-pill.is-offline .online-dot{
+  background:#c8c8c8;
+}
+.chat-online-box{
+  margin-bottom:14px;
+  padding:12px 14px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
+  border:1px solid rgba(223,209,188,.92);
+}
+.chat-online-title{
+  font-size:.74rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+.chat-online-list{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
 </style>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
-
-<link rel="stylesheet" href="ki-schnecke.css">
 </head>
 <body data-page="dashboard">
 <div class="app">
+  <aside class="sidebar">
+    <a class="logo-wrap" href="index.html" aria-label="Zur Startseite">
+      <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+      <div>
+        <div class="logo-name">HaushaltsHeld</div>
+        <div class="logo-sub">Dein Familien-Assistent</div>
+      </div>
+    </a>
 
-<!-- ════ Sidebar ════ -->
-<aside class="sidebar">
-  <div class="logo-wrap">
-    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-    <div>
-      <div class="logo-name">Haushaltsheld</div>
-      <div class="logo-sub">Dein Familien-Assistent</div>
+    <div class="nav-label">Hauptmenü</div>
+    <nav class="nav">
+      <a href="index.html" class="active"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+      <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+      <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+      <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+      <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+      <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+      <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+      <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+      <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge">0</span></span><span>Familien-Chat</span></a>
+    </nav>
+
+    <div class="nav-label">Extras</div>
+    <div class="nav-dropdown" id="extrasDropdown">
+      <button class="dropdown-toggle" id="extrasToggle" type="button" aria-expanded="false">
+        <span style="display:flex;align-items:center;gap:12px;">
+          <span class="nav-icon"><i data-lucide="folders"></i></span>
+          <span>Extras</span>
+        </span>
+        <span class="dropdown-caret"><i data-lucide="chevron-down"></i></span>
+      </button>
+      <nav class="dropdown-menu">
+        <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+        <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+        <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+        <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+        <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+      </nav>
     </div>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <strong id="sidebarUserName">Willkommen</strong>
+        <span id="sidebarUserRole">Eltern-Modus</span>
+      </div>
+      <div class="mode-switch">
+        <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+        <button class="mode-btn" id="childBtn" type="button">Kind</button>
+      </div>
+      <button class="logout-btn" type="button" onclick="handleLogout()">Abmelden</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="page-header">
+      <div>
+        <h1 id="welcomeTextTop">Willkommen</h1>
+        <p id="todayDateTop">Heute</p>
+      </div>
+      <div class="mode-badge"><i data-lucide="sparkles"></i><span id="motivationTextTop">Heute wird ein guter Tag.</span></div>
+    </header>
+
+<div class="online-strip" id="dashboardOnlineStrip">
+  <div class="online-strip-title">Familie online</div>
+  <div class="online-list" id="dashboardOnlineList"></div>
+</div>
+
+
+    <section class="hero">
+      <div>
+        <h2>Dein Familien-Dashboard</h2>
+        <p>Hier findest du deinen direkten Familienchat, deine wichtigsten Schnellzugriffe und jeden Tag einen neuen kleinen Motivationsschub.</p>
+        <div class="hero-meta">
+          <span class="hero-tag"><i data-lucide="message-circle-heart"></i>Direkt schreiben</span>
+          <span class="hero-tag"><i data-lucide="rocket"></i>Schnellzugriffe</span>
+          <span class="hero-tag"><i data-lucide="sun-medium"></i>Täglich neu</span>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="quote-box">
+          <strong>Motivationsspruch des Tages</strong>
+          <em id="dailyQuote">Gemeinsam ist jeder Tag leichter.</em>
+        </div>
+        <div class="mini-box">
+          <strong>Heute im Blick</strong>
+          <span id="focusInfo">Ein kurzer Überblick für deinen Tag.</span>
+        </div>
+      </div>
+    </section>
+
+    
+<div class="grid-main">
+      <div class="stack">
+        <div class="favorite-row" id="favoriteRow">
+          <a class="favorite-chip" href="admin_chat.html"><i data-lucide="message-circle-heart"></i>Chat</a>
+          <a class="favorite-chip" href="aufgaben.html"><i data-lucide="check-check"></i>Aufgaben</a>
+          <a class="favorite-chip" href="familienplaner.html"><i data-lucide="calendar-range"></i>Heute & Termine</a>
+          <a class="favorite-chip" href="einkaufsliste.html"><i data-lucide="shopping-basket"></i>Einkauf</a>
+        </div>
+
+        <section class="card">
+          <div class="card-title"><i data-lucide="zap"></i><span>Schnellzugriff</span></div>
+          <p class="card-sub">Alles Wichtige mit einem Klick.</p>
+          <div class="quick-grid">
+            <a href="finanzen.html" class="quick-card pastel-finanzen">
+              <span class="quick-icon"><i data-lucide="wallet"></i></span>
+              <strong>Finanzen</strong>
+              <span>Einnahmen, Ausgaben und Überblick öffnen.</span>
+            </a>
+            <a href="aufgaben.html" class="quick-card pastel-aufgaben">
+              <span class="quick-icon"><i data-lucide="check-square"></i></span>
+              <strong>Aufgaben</strong>
+              <span>Offene Aufgaben direkt verwalten.</span>
+            </a>
+            <a href="familienplaner.html" class="quick-card pastel-termine">
+              <span class="quick-icon"><i data-lucide="calendar-days"></i></span>
+              <strong>Termine</strong>
+              <span>Familienplaner und kommende Einträge ansehen.</span>
+            </a>
+            <a href="essensplan.html" class="quick-card pastel-essen">
+              <span class="quick-icon"><i data-lucide="utensils-crossed"></i></span>
+              <strong>Essensplan</strong>
+              <span>Mahlzeiten planen und abstimmen.</span>
+            </a>
+            <a href="rezepte.html" class="quick-card pastel-rezepte">
+              <span class="quick-icon"><i data-lucide="book-open"></i></span>
+              <strong>Rezepte</strong>
+              <span>Ideen für heute und die Woche öffnen.</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-title"><i data-lucide="sun-dim"></i><span>Tagesübersicht</span></div>
+          <p class="card-sub">Das Wichtigste für heute auf einen Blick.</p>
+          <div class="overview-grid" id="dailyOverview"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-title"><i data-lucide="sticky-note"></i><span>Familien-Notiz</span></div>
+          <p class="card-sub">Eine kurze Info für alle, direkt auf der Startseite.</p>
+          <div class="editor-box">
+            <textarea id="familyNoteInput" class="editor-textarea" rows="4" placeholder="Zum Beispiel: Heute bitte an Sportsachen, Elternabend oder Milch denken..."></textarea>
+            <div class="editor-actions">
+              <button class="btn" type="button" id="saveFamilyNoteBtn">Notiz speichern</button>
+              <button class="btn-soft" type="button" id="clearFamilyNoteBtn">Leeren</button>
+            </div>
+            <div class="focus-preview">
+              <strong>Aktuelle Familien-Notiz</strong>
+              <p id="familyNotePreview">Noch keine gemeinsame Notiz gespeichert.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="chat-shell">
+          <div class="chat-head">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;">
+    <button class="chat-action" type="button" onclick="markIndexChatSeen()">Als gelesen</button>
+    <button class="chat-action" type="button" onclick="clearIndexChat()">Chat leeren</button>
+    <a class="chat-action" href="admin_chat.html">Ganzer Chat</a>
   </div>
+            <div class="chat-head-left">
+              <div class="chat-avatar"><i data-lucide="messages-square"></i></div>
+              <div>
+                <h3>Familienchat</h3>
+                <p>Wie bei WhatsApp – direkt hier schreiben.</p>
+              </div>
+            </div>
+            <a class="chat-action" href="admin_chat.html">Ganzer Chat</a>
+          </div>
 
-  <div class="nav-label">Hauptmenü</div>
-  <nav class="nav">
-    <a href="index.html" class="active"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
-    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
-    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
-    <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
-    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
-  </nav>
+          <div class="chat-online-box" id="chatOnlineBox">
+            <div class="chat-online-title">Jetzt online</div>
+            <div class="chat-online-list" id="chatOnlineList"></div>
+          </div>
 
- <div class="nav-label">Extras</div>
-<nav class="nav">
-  <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
-  <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
-  <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
-  <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
-  <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
-</nav>
+          <div class="chat-messages" id="familyChatPreview"></div>
 
-  <div class="sidebar-footer">
-    <div class="user-info">
-      <strong id="userName">👋 Willkommen</strong>
-      <span id="userRole">Eltern-Modus</span>
-    </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
-      <button class="mode-btn" id="childBtn" type="button">Kind</button>
-    </div>
-    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
-  </div>
+          <form class="chat-form" id="familyChatForm">
+            <textarea class="chat-input" id="familyChatInput" placeholder="Schreibe eine Nachricht an deine Familie..." rows="2"></textarea>
+            <button class="chat-send" type="submit">Senden</button>
+          </form>
+        </section>
+      </div>
+
+      <aside class="stack">
+        <section class="card">
+          <div class="card-title"><i data-lucide="calendar-clock"></i><span>Nächste Termine</span></div>
+          <p class="card-sub">Direkt aus dem Familienplaner.</p>
+          <div class="info-list" id="plannerPreview"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-title"><i data-lucide="bell-ring"></i><span>Erinnerungen & wichtige Tage</span></div>
+          <p class="card-sub">Alles, was du diese Woche im Blick behalten solltest.</p>
+          <div class="reminder-list" id="reminderList"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-title"><i data-lucide="target"></i><span>Wochenfokus</span></div>
+          <p class="card-sub">Halte das wichtigste Ziel oder Thema der Woche fest.</p>
+          <div class="focus-box">
+            <input id="weeklyFocusTitle" class="editor-input" type="text" placeholder="Zum Beispiel: Schulwoche ruhig organisieren">
+            <textarea id="weeklyFocusText" class="editor-textarea" rows="3" placeholder="Kurze Notiz zum Fokus der Woche..."></textarea>
+            <div class="editor-actions">
+              <button class="btn" type="button" id="saveWeeklyFocusBtn">Wochenfokus speichern</button>
+            </div>
+            <div class="focus-preview">
+              <strong id="weeklyFocusPreviewTitle">Noch kein Wochenfokus</strong>
+              <p id="weeklyFocusPreviewText">Wenn du hier etwas speicherst, sieht die Familie direkt auf der Startseite, was diese Woche wichtig ist.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-title"><i data-lucide="activity"></i><span>Familien-Status</span></div>
+          <p class="card-sub">Ein kompakter Überblick über Haushalt, Planung und Kommunikation.</p>
+          <div class="status-grid" id="householdStatus"></div>
+     </section> 
 </aside>
-
-<!-- ════ Main ════ -->
-<main class="main">
-  <div class="page-header">
-    <div>
-      <h1>📊 Dashboard</h1>
-      <p>Dein ruhiger Überblick über Haushalt, Aufgaben und Alltag.</p>
     </div>
-    <span class="mode-badge" id="modeBadge"><i data-lucide="wrench"></i>Elternmodus aktiv</span>
-  </div>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div>
-      <h2>Haushaltsheld denkt im Alltag mit</h2>
-      <p>Aufgaben, Finanzen, Einkäufe und Familienplanung — alles an einem Ort, übersichtlich und für die ganze Familie.</p>
-      <div class="hero-tags">
-        <span class="hero-tag accent"><i data-lucide="sparkles"></i>KI-Hinweise aktiv</span>
-        <span class="hero-tag"><i data-lucide="link-2"></i>Aufgaben verknüpft</span>
-        <span class="hero-tag"><i data-lucide="heart"></i>Kindermodus verfügbar</span>
-        <span class="hero-tag"><i data-lucide="paperclip"></i>Daten verknüpft</span>
+  </main>
+</div>
+
+<a class="ki-fab" href="admin_chat.html" aria-label="Haushaltsheld KI öffnen">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+  <span class="ki-fab-label">KI</span>
+</a>
+
+<script src="js/app.js"></script>
+<script>
+(function(){
+  const AUTH_KEYS = ["haushaltsheld_user","haushaltsheld_current_user"];
+  const USERS_KEY = "haushaltsheld_users";
+  const FAMILY_ROOM_KEY = "hh_family_chat_room";
+  const FAMILY_SEEN_KEY = "hh_family_chat_seen_parent";
+  const LEGACY_THREADS_KEY = "hh_family_chat_threads";
+  const PLANNER_KEY = "haushaltsheld_family_planner";
+  const TASKS_KEY = "haushaltsheld_tasks";
+  const FINANCE_KEY = "haushaltsheld_finance_entries_v2";
+  const FOOD_KEY = "haushaltsheld_food_data";
+  const SHOPPING_KEY = "haushaltsheld_shopping_entries_v2";
+  const FAMILY_NOTE_KEY = "hh_dashboard_family_note_v1";
+  const WEEKLY_FOCUS_KEY = "hh_dashboard_weekly_focus_v1";
+
+  function readJSON(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      if(!raw) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed ?? fallback;
+    }catch(e){
+      return fallback;
+    }
+  }
+
+  function writeJSON(key, value){
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function slugify(value){
+    return String(value || "").toLowerCase().trim().replace(/\s+/g,"-").replace(/[^a-z0-9äöüß_-]/gi,"");
+  }
+
+  function getAuthUser(){
+    for(const key of AUTH_KEYS){
+      const user = readJSON(key, null);
+      if(user) return user;
+    }
+    return null;
+  }
+
+  function getUserId(user){
+    return user?.id || user?.userId || user?.username || slugify(user?.name || user?.displayName || "user");
+  }
+
+  function getDisplayName(){
+    const user = getAuthUser();
+    return user?.name || user?.displayName || user?.username || "Willkommen";
+  }
+
+  function getRoleLabel(){
+    const user = getAuthUser();
+    return user?.role || user?.modus || "Eltern-Modus";
+  }
+
+  function escapeHtml(value){
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function normalizeMessage(msg, fallbackType){
+    return {
+      id: msg?.id || ("msg_" + Math.random().toString(36).slice(2,10)),
+      conversationType: msg?.conversationType || fallbackType,
+      senderId: msg?.senderId || msg?.authorId || slugify(msg?.senderName || msg?.author || msg?.sender || ""),
+      senderName: msg?.senderName || msg?.author || msg?.sender || "Unbekannt",
+      text: msg?.text || msg?.message || msg?.content || "",
+      timestamp: msg?.timestamp || msg?.time || msg?.createdAt || new Date().toISOString(),
+      deleted: !!msg?.deleted
+    };
+  }
+
+  function getFamilyRoom(){
+    const room = readJSON(FAMILY_ROOM_KEY, {messages:[]});
+    const messages = Array.isArray(room?.messages) ? room.messages.map((m)=>normalizeMessage(m,"family")) : [];
+    return {messages};
+  }
+
+  function saveFamilyRoom(room){
+    writeJSON(FAMILY_ROOM_KEY, {messages:Array.isArray(room?.messages) ? room.messages : []});
+  }
+
+  function seedFamilyRoomIfNeeded(){
+    const room = getFamilyRoom();
+    if(room.messages.length) return;
+    room.messages = [{
+      id:"seed_fam_1",
+      conversationType:"family",
+      senderId:"mama",
+      senderName:"Mama",
+      text:"Willkommen im Familienchat 💚",
+      timestamp:new Date(Date.now()-3600000).toISOString(),
+      deleted:false
+    }];
+    saveFamilyRoom(room);
+  }
+
+  function getPlannerEntries(){
+    const raw = readJSON(PLANNER_KEY, []);
+    if(Array.isArray(raw)) return raw;
+    return [];
+  }
+
+  function getFriendlyDateText(date){
+    return new Date(date).toLocaleDateString("de-DE", {
+      weekday:"long", day:"numeric", month:"long", year:"numeric"
+    });
+  }
+
+  function getDailyQuote(){
+    const quotes = [
+      "Heute ist ein guter Tag, um kleine Schritte groß werden zu lassen.",
+      "Gemeinsam läuft es leichter – und schöner.",
+      "Du musst nicht alles auf einmal schaffen. Der nächste Schritt reicht.",
+      "Auch ein ruhiger Tag darf ein erfolgreicher Tag sein.",
+      "Familie bedeutet nicht Perfektion, sondern Zusammenhalt.",
+      "Mit Wärme, Struktur und Geduld wird aus viel Alltag etwas Gutes.",
+      "Jeder erledigte kleine Punkt ist ein echter Fortschritt.",
+      "Heute darf freundlich, klar und leicht sein.",
+      "Zusammen schafft ihr mehr, als ihr im ersten Moment denkt.",
+      "Ein guter Plan macht den Alltag nicht schwerer, sondern freier.",
+      "Es ist okay, langsam zu sein – Hauptsache, ihr geht weiter.",
+      "Liebe steckt oft in den kleinen Dingen des Alltags.",
+      "Ordnung ist kein Druck, sondern Entlastung.",
+      "Jeder neue Tag ist eine neue Chance für ein gutes Miteinander.",
+      "Du machst das besser, als du manchmal glaubst."
+    ];
+    const now = new Date();
+    const start = new Date(now.getFullYear(),0,0);
+    const diff = now - start;
+    const day = Math.floor(diff / 86400000);
+    return quotes[day % quotes.length];
+  }
+
+  
+  function getTodayDateInput(){
+    const d = new Date();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const day = String(d.getDate()).padStart(2,"0");
+    return d.getFullYear() + "-" + m + "-" + day;
+  }
+
+  function getTasks(){
+    const raw = readJSON(TASKS_KEY, []);
+    return Array.isArray(raw) ? raw : [];
+  }
+
+  function getFinanceEntries(){
+    const raw = readJSON(FINANCE_KEY, []);
+    return Array.isArray(raw) ? raw : [];
+  }
+
+  function getShoppingEntries(){
+    const raw = readJSON(SHOPPING_KEY, []);
+    return Array.isArray(raw) ? raw : [];
+  }
+
+  function getFoodEntries(){
+    const raw = readJSON(FOOD_KEY, {essensEintraege:[]});
+    if(Array.isArray(raw)) return raw;
+    return Array.isArray(raw?.essensEintraege) ? raw.essensEintraege : [];
+  }
+
+  function formatMoney(value){
+    const num = Number(value || 0);
+    return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(num);
+  }
+
+  function getGreetingText(name){
+    const hour = new Date().getHours();
+    const weekday = new Date().toLocaleDateString("de-DE",{weekday:"long"});
+    let part = "Willkommen";
+    if(hour < 11) part = "Guten Morgen";
+    else if(hour < 17) part = "Schön, dass du da bist";
+    else part = "Guten Abend";
+    return part + " " + name + " · " + weekday;
+  }
+
+  function getFamilyNote(){
+    return readJSON(FAMILY_NOTE_KEY, {text:"", updatedAt:""});
+  }
+
+  function saveFamilyNote(text){
+    writeJSON(FAMILY_NOTE_KEY, {text:text, updatedAt:new Date().toISOString()});
+  }
+
+  function getWeeklyFocus(){
+    return readJSON(WEEKLY_FOCUS_KEY, {title:"", text:""});
+  }
+
+  function saveWeeklyFocus(title, text){
+    writeJSON(WEEKLY_FOCUS_KEY, {title:title, text:text});
+  }
+
+  function getTodayMealText(){
+    const entries = getFoodEntries();
+    const today = getTodayDateInput();
+    const todays = entries.filter((e)=> String(e?.datum || e?.date || "") === today);
+    if(!todays.length) return "Noch nichts geplant";
+    const latest = todays[todays.length - 1];
+    return latest?.gericht || latest?.titel || latest?.name || latest?.beschreibung || latest?.essen || "Mahlzeit eingetragen";
+  }
+
+  function getUpcomingPlannerEntries(limit){
+    const entries = getPlannerEntries();
+    const daysOrder = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+    return entries
+      .map((item)=>({
+        title:item?.title || "Termin",
+        day:item?.day || "",
+        time:item?.time || "",
+        place:item?.place || "",
+        note:item?.note || "",
+        dayIndex: typeof item?.dayIndex === "number" ? item.dayIndex : Math.max(0, daysOrder.indexOf(item?.day))
+      }))
+      .sort((a,b)=> (a.dayIndex - b.dayIndex) || String(a.time).localeCompare(String(b.time)))
+      .slice(0, limit || 3);
+  }
+
+  function renderDailyOverview(){
+    const wrap = document.getElementById("dailyOverview");
+    if(!wrap) return;
+    const tasks = getTasks();
+    const openTasks = tasks.filter((t)=>!t.done);
+    const dueToday = openTasks.filter((t)=> String(t.date || "") === getTodayDateInput()).length;
+    const nextAppointment = getUpcomingPlannerEntries(1)[0];
+    const meal = getTodayMealText();
+
+    wrap.innerHTML = `
+      <div class="mini-stat">
+        <strong>${dueToday}</strong>
+        <span>Heute fällige Aufgaben</span>
+        <em>${dueToday ? "Ein guter Moment zum Abarbeiten." : "Für heute ist nichts fix terminiert."}</em>
       </div>
-    </div>
-    <div class="hero-img">
-      <link rel="stylesheet" href="ki-schnecke.css">
-    </div>
-  </section>
+      <div class="mini-stat">
+        <strong>${escapeHtml(nextAppointment ? (nextAppointment.time || nextAppointment.day || "Termin") : "Frei")}</strong>
+        <span>Nächster Termin</span>
+        <em>${escapeHtml(nextAppointment ? nextAppointment.title : "Heute ist noch kein Termin gespeichert.")}</em>
+      </div>
+      <div class="mini-stat">
+        <strong>${escapeHtml(meal)}</strong>
+        <span>Essensplan heute</span>
+        <em>${meal === "Noch nichts geplant" ? "Im Essensplan kannst du direkt etwas festlegen." : "Schon eingetragen – sehr gut vorbereitet."}</em>
+      </div>
+    `;
+  }
 
-  <!-- ════ Familien-Startbereich ════ -->
-  <section id="familyWelcomeSection" style="margin-bottom:24px;">
-    <div class="card" style="background:linear-gradient(180deg,#f7fcf7 0%, #eef8ef 100%); border:1px solid rgba(76,175,80,.24);">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
+  function renderFamilyNote(){
+    const preview = document.getElementById("familyNotePreview");
+    const input = document.getElementById("familyNoteInput");
+    const note = getFamilyNote();
+    if(input) input.value = note?.text || "";
+    if(preview) preview.textContent = note?.text ? note.text : "Noch keine gemeinsame Notiz gespeichert.";
+  }
+
+  function bindFamilyNote(){
+    const saveBtn = document.getElementById("saveFamilyNoteBtn");
+    const clearBtn = document.getElementById("clearFamilyNoteBtn");
+    const input = document.getElementById("familyNoteInput");
+    if(saveBtn && input){
+      saveBtn.addEventListener("click", function(){
+        saveFamilyNote(input.value.trim());
+        renderFamilyNote();
+      });
+    }
+    if(clearBtn && input){
+      clearBtn.addEventListener("click", function(){
+        input.value = "";
+        saveFamilyNote("");
+        renderFamilyNote();
+      });
+    }
+  }
+
+  function renderReminders(){
+    const wrap = document.getElementById("reminderList");
+    if(!wrap) return;
+    const reminders = getUpcomingPlannerEntries(3);
+    if(!reminders.length){
+      wrap.innerHTML = `
+        <div class="reminder-row">
+          <div>
+            <strong>Noch keine Erinnerungen</strong>
+            <span>Lege im Familienplaner Geburtstage, Schultermine oder wichtige Fristen an.</span>
+          </div>
+          <a href="familienplaner.html" style="text-decoration:none;font-weight:800;color:var(--accent-dark);">Planer</a>
+        </div>
+      `;
+      return;
+    }
+
+    wrap.innerHTML = reminders.map(item => `
+      <div class="reminder-row">
         <div>
-          <div style="font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Familienstart</div>
-          <h2 id="welcomeTextTop" style="margin:0 0 6px 0;font-size:1.8rem;font-weight:800;">Willkommen</h2>
-          <div id="todayDateTop" style="color:var(--text2);font-weight:700;"></div>
+          <strong>${escapeHtml(item.title)}</strong>
+          <span>${escapeHtml((item.day || "Bald") + (item.time ? " · " + item.time : "") + (item.place ? " · " + item.place : ""))}</span>
         </div>
-
-        <div class="mode-badge" style="align-self:flex-start;">
-          <i data-lucide="bell-ring"></i>
-          <span>Push: <span id="pushStatusTop">nicht aktiv</span></span>
-        </div>
+        <a href="familienplaner.html" style="text-decoration:none;font-weight:800;color:var(--accent-dark);">Öffnen</a>
       </div>
+    `).join("");
+  }
 
-      <div id="motivationTextTop" style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:18px;">
-        Gemeinsam schaffen wir alles 💚
+  function renderWeeklyFocus(){
+    const data = getWeeklyFocus();
+    const titleInput = document.getElementById("weeklyFocusTitle");
+    const textInput = document.getElementById("weeklyFocusText");
+    const previewTitle = document.getElementById("weeklyFocusPreviewTitle");
+    const previewText = document.getElementById("weeklyFocusPreviewText");
+    if(titleInput) titleInput.value = data?.title || "";
+    if(textInput) textInput.value = data?.text || "";
+    if(previewTitle) previewTitle.textContent = data?.title || "Noch kein Wochenfokus";
+    if(previewText) previewText.textContent = data?.text || "Wenn du hier etwas speicherst, sieht die Familie direkt auf der Startseite, was diese Woche wichtig ist.";
+  }
+
+  function bindWeeklyFocus(){
+    const btn = document.getElementById("saveWeeklyFocusBtn");
+    const titleInput = document.getElementById("weeklyFocusTitle");
+    const textInput = document.getElementById("weeklyFocusText");
+    if(btn && titleInput && textInput){
+      btn.addEventListener("click", function(){
+        saveWeeklyFocus(titleInput.value.trim(), textInput.value.trim());
+        renderWeeklyFocus();
+      });
+    }
+  }
+
+  function renderHouseholdStatus(){
+    const wrap = document.getElementById("householdStatus");
+    if(!wrap) return;
+    const tasks = getTasks();
+    const finances = getFinanceEntries();
+    const shopping = getShoppingEntries();
+    const room = getFamilyRoom();
+    const openTasks = tasks.filter((t)=>!t.done).length;
+    const income = finances.filter((e)=> String(e?.type || "").toLowerCase() === "einnahme")
+      .reduce((sum,e)=> sum + Number(e?.amount || 0), 0);
+    const expense = finances.filter((e)=> String(e?.type || "").toLowerCase() !== "einnahme")
+      .reduce((sum,e)=> sum + Number(e?.amount || 0), 0);
+    const openShopping = shopping.filter((e)=>!e?.checked && !e?.done).length;
+    const visibleMessages = room.messages.filter((m)=>!m.deleted && String(m.text || "").trim()).length;
+
+    wrap.innerHTML = `
+      <div class="status-card">
+        <strong>${openTasks}</strong>
+        <span>Offene Aufgaben</span>
+        <em>${openTasks ? "Es gibt noch etwas zu tun." : "Alles abgearbeitet – stark!"}</em>
       </div>
-
-      <div class="content-grid" style="margin-bottom:0;">
-        <div class="card" style="padding:18px;">
-          <div class="card-title"><i data-lucide="users"></i>Wer ist gerade in der App?</div>
-          <div class="list-items" id="activeUsersTop">
-            <div class="list-row"><span>Noch niemand aktiv</span><span>—</span></div>
-          </div>
-        </div>
-
-        <div class="card click-card" data-href="familienplaner.html" style="padding:18px;">
-          <div class="card-title"><i data-lucide="calendar-days"></i>Termine</div>
-          <div class="list-items" id="appointmentsTop">
-            <div class="list-row"><span>Keine Termine eingetragen</span><span>📅</span></div>
-          </div>
-        </div>
+      <div class="status-card">
+        <strong>${formatMoney(income - expense)}</strong>
+        <span>Aktueller Finanzsaldo</span>
+        <em>${finances.length ? "Aus deinen gespeicherten Finanzeinträgen." : "Noch keine Finanzen gespeichert."}</em>
       </div>
+      <div class="status-card">
+        <strong>${openShopping}</strong>
+        <span>Offene Einkaufspunkte</span>
+        <em>${openShopping ? "Ein Blick auf die Einkaufsliste lohnt sich." : "Einkaufsliste wirkt gerade entspannt."}</em>
+      </div>
+      <div class="status-card">
+        <strong>${visibleMessages}</strong>
+        <span>Nachrichten im Familienchat</span>
+        <em>${visibleMessages ? "Bei euch ist Kommunikation drin." : "Der Chat ist noch ganz ruhig."}</em>
+      </div>
+    `;
+  }
 
-      <div class="content-grid" style="margin-top:18px;margin-bottom:0;">
-        <div class="card click-card" data-href="admin_chat.html" style="padding:18px;">
-          <div class="card-title"><i data-lucide="message-circle"></i>Familien-Chat</div>
-          <div class="list-items" id="chatPreviewTop">
-            <div class="list-row"><span>Noch keine neuen Nachrichten</span><span>💬</span></div>
+  function renderHeader(){
+    const name = getDisplayName();
+    const role = getRoleLabel();
+    const welcome = document.getElementById("welcomeTextTop");
+    const date = document.getElementById("todayDateTop");
+    const sidebarName = document.getElementById("sidebarUserName");
+    const sidebarRole = document.getElementById("sidebarUserRole");
+    const quote = document.getElementById("dailyQuote");
+
+    if(welcome) welcome.textContent = getGreetingText(name);
+    if(date) date.textContent = getFriendlyDateText(new Date());
+    if(sidebarName) sidebarName.textContent = name;
+    if(sidebarRole) sidebarRole.textContent = role;
+    if(quote) quote.textContent = getDailyQuote();
+  }
+
+  function renderMotivation(){
+    const room = getFamilyRoom();
+    const visibleMessages = room.messages.filter((m)=>!m.deleted && String(m.text || "").trim());
+    const plannerCount = getPlannerEntries().length;
+    const openTasks = getTasks().filter((t)=>!t.done).length;
+    const motivation = document.getElementById("motivationTextTop");
+    const focus = document.getElementById("focusInfo");
+    const chatSummary = document.getElementById("chatSummaryText");
+    const daySummary = document.getElementById("daySummaryText");
+
+    let topText = "Heute wird ein guter Tag für euch.";
+    if(visibleMessages.length >= 8) topText = "Bei euch ist heute richtig Leben im Chat 💬";
+    else if(plannerCount >= 3) topText = "Ihr habt einiges vor – mit Plan wird es leichter 📅";
+    else if(openTasks >= 5) topText = "Heute lohnt sich ein klarer Fokus auf eure Aufgaben ✅";
+    else if(visibleMessages.length <= 1) topText = "Ein ruhiger Start – perfekt für einen guten Überblick ✨";
+
+    if(motivation) motivation.textContent = topText;
+    if(focus) focus.textContent = plannerCount
+      ? "Heute sind " + plannerCount + " Termin" + (plannerCount === 1 ? "" : "e") + " gespeichert."
+      : "Noch keine Termine gespeichert – du kannst jederzeit starten.";
+
+    const latest = visibleMessages[visibleMessages.length - 1];
+    if(chatSummary){
+      chatSummary.textContent = latest
+        ? latest.senderName + ": " + latest.text
+        : "Noch keine Nachrichten vorhanden.";
+    }
+    if(daySummary){
+      daySummary.textContent = plannerCount
+        ? "Heute sind Termine im Planer hinterlegt und " + openTasks + " Aufgabe" + (openTasks === 1 ? "" : "n") + " offen."
+        : "Heute sind " + openTasks + " Aufgabe" + (openTasks === 1 ? "" : "n") + " offen – du hast trotzdem Raum für gute Momente.";
+    }
+  }
+
+  function formatMessageTime(ts){
+    const date = new Date(ts || Date.now());
+    return date.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+  }
+
+  function renderFamilyChatPreview(){
+    const box = document.getElementById("familyChatPreview");
+    if(!box) return;
+    const me = getUserId(getAuthUser());
+    const room = getFamilyRoom();
+    const visible = room.messages.filter((m)=>!m.deleted && String(m.text || "").trim());
+    const recent = visible.slice(-8);
+
+    if(!recent.length){
+      box.innerHTML = '<div class="chat-empty">Noch keine Nachrichten. Schreibe hier direkt deine erste Nachricht.</div>';
+      return;
+    }
+
+    box.innerHTML = recent.map((msg)=>{
+      const mine = msg.senderId === me;
+      return `
+        <article class="bubble ${mine ? 'me' : 'other'}">
+          <div class="bubble-top">
+            <span>${escapeHtml(msg.senderName || "Unbekannt")}</span>
+            <span>${escapeHtml(formatMessageTime(msg.timestamp))}</span>
           </div>
-          <a class="cta-link" href="admin_chat.html">Zum Familien-Chat</a>
-        </div>
+          <div class="bubble-text">${escapeHtml(msg.text)}</div>
+        </article>
+      `;
+    }).join("");
+    box.scrollTop = box.scrollHeight;
+  }
 
-        <div class="card" style="padding:18px;">
-          <div class="card-title"><i data-lucide="sparkles"></i>Hinweise für heute</div>
-          <div class="list-items">
-            <div class="list-row">
-              <span>Neue Chat-Nachrichten</span>
-              <span id="chatCountTop">0 offen</span>
+  function appendFamilyMessage(text){
+    const clean = String(text || "").trim();
+    if(!clean) return;
+    const auth = getAuthUser();
+    const senderId = getUserId(auth);
+    const senderName = getDisplayName();
+    const now = new Date().toISOString();
+
+    const room = getFamilyRoom();
+    room.messages.push({
+      id: "msg_" + Math.random().toString(36).slice(2,10) + "_" + Date.now(),
+      conversationType: "family",
+      senderId,
+      senderName,
+      text: clean,
+      timestamp: now,
+      deleted: false
+    });
+    saveFamilyRoom(room);
+
+    const seen = readJSON(FAMILY_SEEN_KEY, {});
+    seen[senderId] = now;
+    writeJSON(FAMILY_SEEN_KEY, seen);
+
+    syncLegacyChatBadge();
+  }
+
+  function bindFamilyChatForm(){
+    const form = document.getElementById("familyChatForm");
+    const input = document.getElementById("familyChatInput");
+    if(!form || !input) return;
+
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      const text = input.value.trim();
+      if(!text) return;
+      appendFamilyMessage(text);
+      input.value = "";
+      renderFamilyChatPreview();
+      renderMotivation();
+      renderHouseholdStatus();
+      updateGlobalChatBadge();
+      if(window.lucide && typeof lucide.createIcons === "function")
+lucide.createIcons();
+    });
+  }
+
+  function renderPlannerPreview(){
+    const wrap = document.getElementById("plannerPreview");
+    if(!wrap) return;
+    const daysOrder = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+    const entries = getPlannerEntries()
+      .map((item)=>({
+        title:item?.title || "Termin",
+        day:item?.day || "",
+        time:item?.time || "",
+        place:item?.place || "Ohne Ort",
+        note:item?.note || "",
+        dayIndex: typeof item?.dayIndex === "number" ? item.dayIndex : daysOrder.indexOf(item?.day)
+      }))
+      .sort((a,b)=> (a.dayIndex - b.dayIndex) || String(a.time).localeCompare(String(b.time)))
+      .slice(0,4);
+
+    wrap.innerHTML = entries.length
+      ? entries.map((item)=>`
+          <div class="info-row">
+            <div>
+              <strong>${escapeHtml(item.day || "Termin")} · ${escapeHtml(item.time || "--:--")}</strong>
+              <div style="color:var(--muted);margin-top:4px;">${escapeHtml(item.title)}${item.place ? " · " + escapeHtml(item.place) : ""}</div>
             </div>
-            <div class="list-row">
-              <span>Aufgaben für Eltern</span>
-              <span id="waitingTaskCountTop">0 warten</span>
-            </div>
-            <div class="list-row">
-              <span>Benachrichtigungen</span>
-              <span id="pushPermissionTop">nicht freigegeben</span>
-            </div>
+            <a href="familienplaner.html" style="text-decoration:none;font-weight:800;color:var(--accent-dark);">Öffnen</a>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        `).join("")
+      : '<div class="info-row"><div><strong>Noch keine Termine</strong><div style="color:var(--muted);margin-top:4px;">Lege im Familienplaner den ersten Eintrag an.</div></div><a href="familienplaner.html" style="text-decoration:none;font-weight:800;color:var(--accent-dark);">Planer</a></div>';
+  }
+
+  function updateGlobalChatBadge(){
+    const badge = document.getElementById("chatBadge");
+    if(!badge) return;
+
+    let unreadTotal = 0;
+
+    try{
+      const legacyThreads = readJSON(LEGACY_THREADS_KEY, []);
+      if(Array.isArray(legacyThreads) && legacyThreads.length){
+        unreadTotal = legacyThreads.filter((t)=>t && t.unreadForParent).length;
+      }else{
+        const auth = getAuthUser();
+        const currentUserId = auth ? getUserId(auth) : "";
+        const room = getFamilyRoom();
+        const seen = readJSON(FAMILY_SEEN_KEY, {});
+        const lastSeen = seen?.[currentUserId] || "";
+        unreadTotal = room.messages.filter((m)=>m.senderId !== currentUserId && String(m.timestamp || "") > String(lastSeen) && !m.deleted).length;
+      }
+    }catch(e){
+      unreadTotal = 0;
+    }
+
+    if(unreadTotal > 0){
+      badge.style.display = "inline-block";
+      badge.textContent = unreadTotal > 99 ? "99+" : String(unreadTotal);
+    }else{
+      badge.style.display = "none";
+      badge.textContent = "0";
+    }
+  }
+
+  function syncLegacyChatBadge(){
+    const room = getFamilyRoom();
+    const visible = room.messages.filter((m)=>!m.deleted);
+    const legacy = [{
+      id:"family",
+      unreadForParent:false,
+      lastMessage: visible.length ? visible[visible.length - 1].text : "",
+      updatedAt: visible.length ? visible[visible.length - 1].timestamp : new Date().toISOString()
+    }];
+    writeJSON(LEGACY_THREADS_KEY, legacy);
+  }
+
+  function handleLogoutInternal(){
+    try{
+      localStorage.removeItem("haushaltsheld_user");
+      localStorage.removeItem("haushaltsheld_current_user");
+    }catch(e){}
+    window.location.href = "login.html";
+  }
+
+  window.handleLogout = handleLogoutInternal;
+
+  function bindModeButtons(){
+    const adminBtn = document.getElementById("adminBtn");
+    const childBtn = document.getElementById("childBtn");
+    if(adminBtn){
+      adminBtn.addEventListener("click", function(){
+        localStorage.setItem("haushaltsheld_mode", "admin");
+        adminBtn.classList.add("active");
+        if(childBtn) childBtn.classList.remove("active");
+      });
+    }
+    if(childBtn){
+      childBtn.addEventListener("click", function(){
+        localStorage.setItem("haushaltsheld_mode", "child");
+        childBtn.classList.add("active");
+        if(adminBtn) adminBtn.classList.remove("active");
+        window.location.href = "kindermodus.html";
+      });
+    }
+  }
+
+  function init(){
+    seedFamilyRoomIfNeeded();
+    renderHeader();
+    renderMotivation();
+    renderPlannerPreview();
+    renderDailyOverview();
+    renderFamilyNote();
+    renderReminders();
+    renderWeeklyFocus();
+    renderHouseholdStatus();
+    renderFamilyChatPreview();
+    bindFamilyChatForm();
+    bindFamilyNote();
+    bindWeeklyFocus();
+    updateGlobalChatBadge();
+    bindModeButtons();
+
+    if(window.lucide && typeof lucide.createIcons === "function"){
+      lucide.createIcons();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+  window.addEventListener("storage", function(){
+    renderHeader();
+    renderMotivation();
+    renderPlannerPreview();
+    renderDailyOverview();
+    renderFamilyNote();
+    renderReminders();
+    renderWeeklyFocus();
+    renderHouseholdStatus();
+    renderFamilyChatPreview();
+    updateGlobalChatBadge();
+  });
+})();
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const dropdown = document.getElementById("extrasDropdown");
+  const toggle = document.getElementById("extrasToggle");
+  if(dropdown && toggle){
+    toggle.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = dropdown.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("click", function(e){
+      if(!dropdown.contains(e.target)){
+        dropdown.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  if(window.lucide && typeof lucide.createIcons === "function"){
+    lucide.createIcons();
+  }
+});
+</script>
 
 
-  <!-- Schnellzugriff -->
-  <section class="card" style="margin-bottom:24px;">
-    <div class="card-title"><i data-lucide="mouse-pointer-click"></i>Schnellzugriff</div>
-    <div class="content-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:0;gap:14px;">
-      <div class="card click-card" data-href="rezepte.html" style="padding:18px;background:linear-gradient(180deg,#fffdfa 0%, #fdf6ee 100%);">
-        <div class="card-title"><i data-lucide="book-open"></i>Rezepte</div>
-        <p class="small-note" style="margin-top:0;">Lieblingsgerichte sammeln, Rezepte speichern und später ausdrucken.</p>
-      </div>
+<!-- Erklärung Sprechblase -->
+<div id="infoBubble" style="
+position:fixed;
+bottom:110px;
+right:20px;
+max-width:320px;
+background:#fff;
+border:1px solid #dfd1bc;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+padding:18px;
+z-index:9999;
+display:none;
+font-size:14px;
+line-height:1.6;
+">
+  <strong>💡 Willkommen im HaushaltsHeld Dashboard</strong>
+  <p>
+    Hier hast du deine komplette Familie im Überblick:
+  </p>
+  <ul style="padding-left:18px;margin:8px 0;">
+    <li><strong>Schnellzugriff:</strong> Direkter Zugang zu Finanzen, Aufgaben, Termine, Essensplan und Rezepte</li>
+    <li><strong>Chat:</strong> Schreibe direkt mit deiner Familie – wie bei WhatsApp</li>
+    <li><strong>Organisation:</strong> Plane den Alltag strukturiert und stressfrei</li>
+  </ul>
+  <p>
+    Nutze die Schnecke unten rechts für Tipps, Hilfe oder Ideen 💚
+  </p>
 
-      <div class="card click-card" data-href="essensplan.html" style="padding:18px;background:linear-gradient(180deg,#f8fcf8 0%, #eef8ef 100%);">
-        <div class="card-title"><i data-lucide="utensils-crossed"></i>Essensplan</div>
-        <p class="small-note" style="margin-top:0;">Mahlzeiten planen, Verhalten auswerten und Vorschläge speichern.</p>
-      </div>
-
-      <div class="card click-card" data-href="admin_chat.html" style="padding:18px;background:linear-gradient(180deg,#f9fbff 0%, #eef4ff 100%);">
-        <div class="card-title"><i data-lucide="message-circle"></i>Familien-Chat</div>
-        <p class="small-note" style="margin-top:0;">Schnell in den Chat springen und Nachrichten lesen.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats -->
-  <section class="stats-grid">
-    <div class="stat-card finance-sensitive click-card" data-href="finanzen.html">
-      <div class="stat-icon"><i data-lucide="wallet"></i></div>
-      <div class="stat-label">Heute ausgegeben</div>
-      <div class="stat-value" id="statToday">–</div>
-      <div class="stat-sub">aus Einträgen von heute</div>
-    </div>
-    <div class="stat-card finance-sensitive stat-green click-card" data-href="finanzen.html">
-      <div class="stat-icon"><i data-lucide="badge-euro"></i></div>
-      <div class="stat-label">Monatliches Ergebnis</div>
-      <div class="stat-value" id="statBalance">–</div>
-      <div class="stat-sub">Einnahmen minus Ausgaben</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon"><i data-lucide="clipboard-list"></i></div>
-      <div class="stat-label">Offene Aufgaben</div>
-      <div class="stat-value" id="statOpenTasks">0</div>
-      <div class="stat-sub">noch zu erledigen</div>
-    </div>
-    <div class="stat-card stat-red">
-      <div class="stat-icon"><i data-lucide="star"></i></div>
-      <div class="stat-label">Wichtige Aufgaben</div>
-      <div class="stat-value" id="statImportantTasks">0</div>
-      <div class="stat-sub">Priorität: Wichtig</div>
-    </div>
-  </section>
-
-  <!-- Content Grid -->
-  <section class="content-grid">
-    <!-- Aufgaben -->
-    <div class="card">
-      <div class="card-title"><i data-lucide="pin"></i>Heute offen</div>
-      <div class="task-list" id="taskList">
-        <div class="list-row"><span>Wird geladen…</span><span>⏳</span></div>
-      </div>
-      <a class="cta-link" href="aufgaben.html">Alle Aufgaben ansehen →</a>
-    </div>
-
-    <!-- KI-Hinweise -->
-    <div class="card">
-      <div class="card-title"><i data-lucide="sparkles"></i>KI-Hinweise</div>
-      <div class="list-items">
-        <div class="list-row"><span>Taschengeld-Tipp</span><span>sichtbar</span></div>
-        <div class="list-row"><span>Wiederkehrende Ausgaben</span><span>erkennbar</span></div>
-        <div class="list-row"><span>Alltagsmuster</span><span>mitgedacht</span></div>
-      </div>
-      <p class="small-note">KI-Hinweise bleiben auch im Kindermodus sichtbar — sie helfen beim Taschengeld, kleinen Sparzielen und Routinen.</p>
-    </div>
-  </section>
-
-  <!-- Second Row -->
-  <section class="content-grid">
-    <!-- Kategorien -->
-    <div class="card">
-      <div class="card-title"><i data-lucide="folders"></i>Aufgaben nach Bereich</div>
-      <div class="list-items" id="categoryList">
-        <div class="list-row"><span>Keine offenen Aufgaben</span><span>0</span></div>
-      </div>
-    </div>
-
-    <!-- Finanzen -->
-    <div class="card finance-sensitive">
-      <div class="card-title"><i data-lucide="receipt-text"></i>Finanzbereich</div>
-      <div class="list-items" id="financeList">
-        <div class="list-row"><span>Lade Daten…</span><span>💰</span></div>
-      </div>
-      <a class="cta-link" href="finanzen.html">Zu den Finanzen →</a>
-    </div>
-  </section>
-</main>
+  <div style="display:flex;gap:8px;margin-top:12px;">
+    <button id="remindLater" class="mini-btn">Später erinnern</button>
+    <button id="hideForever" class="mini-btn">Nicht mehr anzeigen</button>
+  </div>
 </div>
 
 <script>
-// ── AUTH CHECK ──────────────────────────────────────────────────
-function checkAuth() {
-  const user = JSON.parse(localStorage.getItem('haushaltsheld_user'));
-  if (!user || user.role !== 'parent') {
-    window.location.href = 'login.html';
-    return false;
+document.addEventListener("DOMContentLoaded", function(){
+  const bubble = document.getElementById("infoBubble");
+
+  if(localStorage.getItem("hh_hide_info") === "true"){
+    return;
   }
-  
-  // User Info aktualisieren
-  document.getElementById('userName').textContent = '👋 ' + user.name;
-  document.getElementById('userRole').textContent = 'Eltern-Modus';
-  return true;
-}
 
-function handleLogout() {
-  if (confirm('Möchten Sie sich wirklich abmelden?')) {
-    localStorage.removeItem('haushaltsheld_user');
-    localStorage.removeItem('hh_active_child');
-    window.location.href = 'login.html';
+  setTimeout(()=>{ bubble.style.display = "block"; }, 1500);
+
+  document.getElementById("remindLater").onclick = () => {
+    bubble.style.display = "none";
+  };
+
+  document.getElementById("hideForever").onclick = () => {
+    localStorage.setItem("hh_hide_info", "true");
+    bubble.style.display = "none";
+  };
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const CHAT_STORAGE_KEY = "hh_family_chat_room";
+  const LAST_SEEN_KEY = "hh_index_last_seen_chat_ts";
+  const CHAT_PREVIEW_LIST = document.getElementById("chatPreviewList");
+  const chatBadge = document.getElementById("chatBadge");
+  const floatingPush = document.createElement("div");
+
+  floatingPush.id = "messagePushHint";
+  floatingPush.style.position = "fixed";
+  floatingPush.style.top = "24px";
+  floatingPush.style.right = "24px";
+  floatingPush.style.maxWidth = "340px";
+  floatingPush.style.background = "#ffffff";
+  floatingPush.style.border = "1px solid #dfd1bc";
+  floatingPush.style.borderRadius = "18px";
+  floatingPush.style.boxShadow = "0 12px 30px rgba(54,45,28,.12)";
+  floatingPush.style.padding = "14px 16px";
+  floatingPush.style.zIndex = "99999";
+  floatingPush.style.display = "none";
+  floatingPush.style.cursor = "pointer";
+  floatingPush.innerHTML = '<strong style="display:block;margin-bottom:4px;">Neue Nachricht</strong><span id="messagePushText" style="color:#556159;font-size:14px;line-height:1.5;"></span>';
+  document.body.appendChild(floatingPush);
+
+  const pushText = floatingPush.querySelector("#messagePushText");
+
+  function getMessages(){
+    try{
+      const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    }catch(e){
+      return [];
+    }
   }
-}
 
-// ── Helpers ──────────────────────────────────────────────────────
-function fmt(v){ return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(v||0); }
-function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-function fmtDate(s){ if(!s) return "ohne Datum"; const d=new Date(s); return isNaN(d)?s:d.toLocaleDateString("de-DE"); }
-
-// ── Data ──────────────────────────────────────────────────────────
-function getTasks(){ return JSON.parse(localStorage.getItem("haushaltsheld_tasks")||"[]").map(t=>({category:"Sonstiges",priority:"Normal",...t})); }
-function getFinance(){ return JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2")||"[]"); }
-
-// ── Stats ──────────────────────────────────────────────────────────
-function loadStats(){
-  const finance = getFinance();
-  const today = new Date().toISOString().split("T")[0];
-  const todaySpent = finance.filter(e=>e.type==="Ausgabe"&&e.date===today).reduce((s,e)=>s+Number(e.amount||0),0);
-  const income = finance.filter(e=>e.type==="Einnahme").reduce((s,e)=>s+Number(e.amount||0),0);
-  const expenses = finance.filter(e=>e.type==="Ausgabe").reduce((s,e)=>s+Number(e.amount||0),0);
-
-  document.getElementById("statToday").textContent = finance.some(e=>e.date===today) ? fmt(todaySpent) : "0 €";
-  const balEl = document.getElementById("statBalance");
-  const bal = income - expenses;
-  balEl.textContent = fmt(bal);
-  balEl.parentElement.classList.toggle("stat-green", bal>=0);
-  balEl.parentElement.classList.toggle("stat-red", bal<0);
-
-  const recent = [...finance].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,3);
-  const fl = document.getElementById("financeList");
-  fl.innerHTML = recent.length
-    ? recent.map(e=>`<div class="list-row"><span>${esc(e.title)}</span><span>${e.type==="Einnahme"?"+":"–"} ${fmt(e.amount)}</span></div>`).join("")
-    : `<div class="list-row"><span>Noch keine Buchungen</span><span>—</span></div>`;
-}
-
-// ��─ Tasks ──────────────────────────────────────────────────────────
-function priorityClass(p){ return p==="Wichtig"?"chip-high":p==="Weniger wichtig"?"chip-low":"chip-med"; }
-function priorityWeight(p){ return p==="Wichtig"?0:p==="Normal"?1:2; }
-
-function loadTasks(){
-  const all = getTasks();
-  const open = all.filter(t=>!t.done);
-  document.getElementById("statOpenTasks").textContent = open.length;
-  document.getElementById("statImportantTasks").textContent = open.filter(t=>t.priority==="Wichtig").length;
-
-  const sorted = [...open].sort((a,b)=>{
-    const pd = priorityWeight(a.priority)-priorityWeight(b.priority);
-    if(pd!==0) return pd;
-    if(a.date&&b.date) return new Date(a.date)-new Date(b.date);
-    if(a.date&&!b.date) return -1;
-    if(!a.date&&b.date) return 1;
-    return 0;
-  }).slice(0,4);
-
-  const tl = document.getElementById("taskList");
-  tl.innerHTML = sorted.length
-    ? sorted.map(t=>`
-      <div class="task-item">
-        <div class="task-info">
-          <strong>${esc(t.text)}</strong>
-          <div class="task-meta">
-            <span class="chip">${esc(t.category)}</span>
-            <span class="chip ${priorityClass(t.priority)}">${esc(t.priority)}</span>
-            <span class="chip">${fmtDate(t.date)}</span>
-          </div>
-        </div>
-        <div class="chip">${esc(t.person)}</div>
-      </div>`).join("")
-    : `<div class="list-row"><span>Gerade ist nichts offen 🌿</span><span>✓</span></div>`;
-
-  const counts = {};
-  open.forEach(t=>{ counts[t.category]=(counts[t.category]||0)+1; });
-  const cl = document.getElementById("categoryList");
-  const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-  cl.innerHTML = entries.length
-    ? entries.map(([cat,n])=>`<div class="list-row"><span>${esc(cat)}</span><span>${n}</span></div>`).join("")
-    : `<div class="list-row"><span>Keine offenen Aufgaben</span><span>0</span></div>`;
-}
-
-// ── Mode Toggle ──────────────────────────────────────────────────
-const adminBtn = document.getElementById("adminBtn");
-const childBtn  = document.getElementById("childBtn");
-const modeBadge = document.getElementById("modeBadge");
-
-function setMode(mode){
-  const finCards = document.querySelectorAll(".finance-sensitive");
-  if(mode==="child"){
-    finCards.forEach(c=>c.classList.add("child-hidden"));
-    adminBtn.classList.remove("active");
-    childBtn.classList.add("active");
-    modeBadge.className="mode-badge child";
-    modeBadge.innerHTML = '<i data-lucide="baby"></i>Kindmodus aktiv';
-  } else {
-    finCards.forEach(c=>c.classList.remove("child-hidden"));
-    childBtn.classList.remove("active");
-    adminBtn.classList.add("active");
-    modeBadge.className="mode-badge";
-    modeBadge.innerHTML = '<i data-lucide="wrench"></i>Elternmodus aktiv';
+  function normalizeTimestamp(value){
+    const ts = Number(value || 0);
+    return Number.isFinite(ts) ? ts : 0;
   }
-  if (window.lucide) lucide.createIcons();
-  localStorage.setItem("haushaltsheld_mode",mode);
-}
 
-adminBtn.addEventListener("click",()=>setMode("admin"));
-childBtn.addEventListener("click",()=>{ setMode("child"); window.location.href = "kindermodus.html"; });
+  function getLatestMessage(messages){
+    return messages
+      .filter(msg => msg && (msg.text || msg.message))
+      .sort((a,b) => normalizeTimestamp(b.timestamp || b.ts || b.createdAt) - normalizeTimestamp(a.timestamp || a.ts || a.createdAt))[0] || null;
+  }
 
-// ── Familien-Startbereich ────────────────────────────────────────
-const HH_ONLINE_USERS_KEY = "hh_online_users";
-const HH_APPOINTMENTS_KEY = "hh_termine";
+  function updateBadge(){
+    const messages = getMessages();
+    const lastSeen = normalizeTimestamp(localStorage.getItem(LAST_SEEN_KEY));
+    const unreadCount = messages.filter(msg => normalizeTimestamp(msg.timestamp || msg.ts || msg.createdAt) > lastSeen).length;
 
-function getCurrentDisplayName(){
-  const user = JSON.parse(localStorage.getItem('haushaltsheld_user') || "null");
-  return user?.name || "Nutzer";
-}
+    if(chatBadge){
+      if(unreadCount > 0){
+        chatBadge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+        chatBadge.style.display = "inline-flex";
+      }else{
+        chatBadge.textContent = "";
+        chatBadge.style.display = "none";
+      }
+    }
+  }
 
-function renderTopWelcome(){
-  const el = document.getElementById("welcomeTextTop");
-  if(!el) return;
-  el.textContent = "Willkommen " + getCurrentDisplayName();
-}
+  function showPush(latest){
+    if(!latest) return;
+    const sender = latest.senderName || latest.user || latest.name || "Familie";
+    const text = latest.text || latest.message || "";
+    pushText.textContent = sender + ": " + text;
+    floatingPush.style.display = "block";
 
-function renderTopDate(){
-  const el = document.getElementById("todayDateTop");
-  if(!el) return;
-  const d = new Date();
-  el.textContent = d.toLocaleDateString("de-DE", {
-    weekday:"long", day:"numeric", month:"long", year:"numeric"
+    clearTimeout(window.__hhPushTimeout);
+    window.__hhPushTimeout = setTimeout(() => {
+      floatingPush.style.display = "none";
+    }, 6000);
+
+    if("Notification" in window && Notification.permission === "granted"){
+      try{
+        new Notification("HaushaltsHeld – Neue Nachricht", {
+          body: sender + ": " + text,
+          tag: "haushaltsheld-chat"
+        });
+      }catch(e){}
+    }
+  }
+
+  function checkForNewMessages(){
+    const messages = getMessages();
+    const latest = getLatestMessage(messages);
+    updateBadge();
+
+    if(!latest) return;
+    const latestTs = normalizeTimestamp(latest.timestamp || latest.ts || latest.createdAt);
+    const lastSeen = normalizeTimestamp(localStorage.getItem(LAST_SEEN_KEY));
+
+    if(latestTs > lastSeen){
+      showPush(latest);
+    }
+  }
+
+  if("Notification" in window && Notification.permission === "default"){
+    Notification.requestPermission().catch(() => {});
+  }
+
+  floatingPush.addEventListener("click", function(){
+    const messages = getMessages();
+    const latest = getLatestMessage(messages);
+    const latestTs = latest ? normalizeTimestamp(latest.timestamp || latest.ts || latest.createdAt) : Date.now();
+    localStorage.setItem(LAST_SEEN_KEY, String(latestTs));
+    floatingPush.style.display = "none";
+    updateBadge();
+    window.location.href = "admin_chat.html";
   });
-}
 
-function getWaitingParentTasks(){
-  return getTasks().filter(t => t && t.status === "waiting_parent");
-}
+  const chatOpenTargets = [
+    document.getElementById("openChatBtn"),
+    document.getElementById("chatPreviewCard"),
+    document.querySelector('a[href="admin_chat.html"]')
+  ].filter(Boolean);
 
-function getUnreadThreads(){
-  const threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
-  return (Array.isArray(threads) ? threads : []).filter(t => t && t.unreadForParent);
-}
-
-function renderTopMotivation(){
-  const el = document.getElementById("motivationTextTop");
-  if(!el) return;
-
-  const unreadChats = getUnreadThreads().length;
-  const waitingTasks = getWaitingParentTasks().length;
-  const openTasks = getTasks().filter(t => !t.done).length;
-
-  let text = "Gemeinsam schaffen wir alles 💚";
-  if(waitingTasks > 0) text = "Heute wartet mindestens eine Aufgabe auf eure Rückmeldung 💚";
-  else if(unreadChats > 0) text = "Es gibt neue Nachrichten in eurem Familien-Chat 💬";
-  else if(openTasks >= 5) text = "Heute packt ihr gemeinsam viel an – Schritt für Schritt 💪";
-  else if(openTasks === 0) text = "Alles sieht ruhig aus – genießt euren Tag zusammen 🌞";
-  else text = "Ein kleiner Schritt ist auch Fortschritt ✨";
-
-  el.textContent = text;
-}
-
-function rememberOnlineUser(){
-  const now = Date.now();
-  const me = getCurrentDisplayName();
-  let users = JSON.parse(localStorage.getItem(HH_ONLINE_USERS_KEY) || "[]");
-  users = Array.isArray(users) ? users : [];
-
-  const cutoff = now - 5 * 60 * 1000;
-  users = users.filter(u => u && u.name && Number(u.lastSeen || 0) >= cutoff);
-
-  const existing = users.find(u => u.name === me);
-  if(existing) existing.lastSeen = now;
-  else users.push({ name: me, lastSeen: now });
-
-  localStorage.setItem(HH_ONLINE_USERS_KEY, JSON.stringify(users));
-}
-
-function initDashboard(){
-  if (!checkAuth()) return;
-
-  if (window.lucide) lucide.createIcons();
-
-  if (typeof loadStats === "function") loadStats();
-  if (typeof renderTasks === "function") renderTasks();
-  if (typeof renderCategories === "function") renderCategories();
-  if (typeof renderFinance === "function") renderFinance();
-
-  const savedMode = localStorage.getItem("haushaltsheld_mode") || "admin";
-  if (typeof setMode === "function") setMode(savedMode);
-
-  if (typeof renderTopWelcome === "function") renderTopWelcome();
-  if (typeof renderTopDate === "function") renderTopDate();
-  if (typeof renderTopMotivation === "function") renderTopMotivation();
-  if (typeof rememberOnlineUser === "function") rememberOnlineUser();
-}
-
-document.addEventListener('DOMContentLoaded', initDashboard);
-</script>
-
-<script>
-function updateParentChatBadge(){
-  const badge = document.getElementById("chatBadge");
-  if(!badge) return;
-
-  let threads = [];
-  try{
-    threads = JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
-    if(!Array.isArray(threads)) threads = [];
-  }catch{
-    threads = [];
-  }
-
-  const unreadCount = threads.filter(t => t && t.unreadForParent).length;
-
-  if(unreadCount > 0){
-    badge.style.display = "inline-block";
-    badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
-  }else{
-    badge.style.display = "none";
-    badge.textContent = "0";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", updateParentChatBadge);
-window.addEventListener("storage", updateParentChatBadge);
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-href]").forEach(function(card){
-    card.addEventListener("click", function(e){
-      const target = e.target.closest("a, button, input, select, textarea");
-      if (target) return;
-      const href = card.getAttribute("data-href");
-      if (href) window.location.href = href;
+  chatOpenTargets.forEach(el => {
+    el.addEventListener("click", function(){
+      const latest = getLatestMessage(getMessages());
+      const latestTs = latest ? normalizeTimestamp(latest.timestamp || latest.ts || latest.createdAt) : Date.now();
+      localStorage.setItem(LAST_SEEN_KEY, String(latestTs));
+      updateBadge();
     });
+  });
+
+  window.addEventListener("storage", function(e){
+    if(e.key === CHAT_STORAGE_KEY){
+      checkForNewMessages();
+    }
+  });
+
+  setInterval(checkForNewMessages, 4000);
+  checkForNewMessages();
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const ONLINE_PREFIX = "hh_user_online_";
+  const ACTIVE_USER_KEY = "hh_active_user";
+  const USER_PROFILE_KEY = "hh_current_user";
+  const ONLINE_TTL = 15000;
+  const HEARTBEAT_MS = 5000;
+
+  function safeRead(key, fallback=null){
+    try{
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    }catch(e){
+      return fallback;
+    }
+  }
+
+  function detectCurrentUserName(){
+    const direct = localStorage.getItem(ACTIVE_USER_KEY);
+    if(direct && direct.trim()) return direct.trim();
+
+    const profile = safeRead(USER_PROFILE_KEY, null);
+    if(profile){
+      const candidate = profile.name || profile.username || profile.displayName || profile.vorname || profile.user;
+      if(candidate && String(candidate).trim()) return String(candidate).trim();
+    }
+
+    const fallbackName = localStorage.getItem("hh_username") || localStorage.getItem("loggedInUserName") || localStorage.getItem("currentUserName");
+    if(fallbackName && fallbackName.trim()) return fallbackName.trim();
+
+    return "Ich";
+  }
+
+  function heartbeat(){
+    const userName = detectCurrentUserName();
+    const payload = {
+      name: userName,
+      ts: Date.now()
+    };
+    localStorage.setItem(ONLINE_PREFIX + userName, JSON.stringify(payload));
+  }
+
+  function collectKnownUsers(){
+    const names = new Set();
+    const current = detectCurrentUserName();
+    if(current) names.add(current);
+
+    for(let i=0;i<localStorage.length;i++){
+      const key = localStorage.key(i);
+      if(key && key.startsWith(ONLINE_PREFIX)){
+        const raw = safeRead(key, null);
+        if(raw && raw.name) names.add(String(raw.name));
+        else names.add(key.replace(ONLINE_PREFIX, ""));
+      }
+    }
+
+    const chatKeys = ["hh_family_chat_room", "hh_family_chat_threads"];
+    chatKeys.forEach(chatKey => {
+      const data = safeRead(chatKey, []);
+      const visit = (item) => {
+        if(!item) return;
+        if(Array.isArray(item)){ item.forEach(visit); return; }
+        if(typeof item !== "object") return;
+        const n = item.senderName || item.user || item.name || item.username;
+        if(n) names.add(String(n));
+        Object.values(item).forEach(v => {
+          if(Array.isArray(v)) v.forEach(visit);
+        });
+      };
+      visit(data);
+    });
+
+    return Array.from(names).filter(Boolean);
+  }
+
+  function isOnline(name){
+    const data = safeRead(ONLINE_PREFIX + name, null);
+    if(!data || !data.ts) return false;
+    return (Date.now() - Number(data.ts)) <= ONLINE_TTL;
+  }
+
+  function renderOnlineList(targetId){
+    const container = document.getElementById(targetId);
+    if(!container) return;
+    const names = collectKnownUsers();
+    const current = detectCurrentUserName();
+
+    const ordered = names.sort((a,b) => {
+      if(a === current) return -1;
+      if(b === current) return 1;
+      return a.localeCompare(b, "de");
+    });
+
+    container.innerHTML = "";
+    if(!ordered.length){
+      container.innerHTML = '<span class="online-pill is-offline"><span class="online-dot"></span>Niemand erkannt</span>';
+      return;
+    }
+
+    ordered.forEach(name => {
+      const online = isOnline(name);
+      const pill = document.createElement("span");
+      pill.className = "online-pill " + (online ? "is-online" : "is-offline");
+      pill.innerHTML = '<span class="online-dot"></span><span>' + (name === current ? name + ' (du)' : name) + '</span>';
+      container.appendChild(pill);
+    });
+  }
+
+  function refreshOnlineUi(){
+    renderOnlineList("dashboardOnlineList");
+    renderOnlineList("chatOnlineList");
+  }
+
+  heartbeat();
+  refreshOnlineUi();
+
+  setInterval(() => {
+    heartbeat();
+    refreshOnlineUi();
+  }, HEARTBEAT_MS);
+
+  window.addEventListener("storage", function(e){
+    if(e.key && e.key.startsWith(ONLINE_PREFIX)){
+      refreshOnlineUi();
+    }
+  });
+
+  window.addEventListener("beforeunload", function(){
+    const current = detectCurrentUserName();
+    const data = safeRead(ONLINE_PREFIX + current, null) || {name: current};
+    data.ts = Date.now() - (ONLINE_TTL + 1000);
+    localStorage.setItem(ONLINE_PREFIX + current, JSON.stringify(data));
   });
 });
 </script>
+
 </body>
 </html>
