@@ -72,11 +72,13 @@ button,input,select,textarea{font:inherit}
 .info-bubble h2{font-size:1.08rem;margin-bottom:6px}
 .info-bubble p{color:var(--text2);font-size:.94rem}
 .bubble-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.btn,.btn-soft,.chip-btn{border:none;border-radius:16px;padding:12px 18px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20);background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff}
+.btn,.btn-soft,.chip-btn{border:none;border-radius:16px;padding:12px 18px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20);background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;transition:transform .16s ease, box-shadow .16s ease, filter .16s ease, border-color .16s ease}
 .btn-soft,.chip-btn{background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);color:#4d3c2c;box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.65)}
+.btn:hover,.btn-soft:hover,.chip-btn:hover{transform:translateY(-2px);filter:brightness(1.02)}
+.btn:active,.btn-soft:active,.chip-btn:active{transform:translateY(0)}
 .top-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.85fr);gap:18px;align-items:start}
 .left-stack,.right-stack{display:grid;gap:18px}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:22px;box-shadow:var(--shadow-sm)}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:22px;box-shadow:var(--shadow-sm);transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
 .card h3{font-size:1.08rem;margin-bottom:6px;display:flex;align-items:center;gap:10px}
 .card-sub{color:var(--muted);font-size:.9rem;margin-bottom:14px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
@@ -92,7 +94,9 @@ button,input,select,textarea{font:inherit}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(76,175,80,.7);box-shadow:0 0 0 4px rgba(76,175,80,.10);background:#fff}
 .filter-actions,.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .quick-add{display:flex;gap:10px;flex-wrap:wrap}
-.quick-pill{padding:10px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:800;color:var(--text2);cursor:pointer}
+.quick-pill{padding:10px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:800;color:var(--text2);cursor:pointer;transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease}
+.quick-pill:hover{transform:translateY(-2px);box-shadow:var(--shadow-xs);border-color:rgba(76,175,80,.38);background:#fffdfa}
+.quick-pill:active{transform:translateY(0)}
 .accordion{display:grid;gap:12px}
 .acc-item{border:1px solid rgba(223,209,188,.95);border-radius:24px;background:#fffdf9;overflow:hidden;box-shadow:var(--shadow-xs)}
 .acc-head{width:100%;border:none;background:transparent;padding:18px 18px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer}
@@ -136,6 +140,17 @@ button,input,select,textarea{font:inherit}
   .entry{grid-template-columns:1fr}
   .info-bubble{grid-template-columns:1fr}
 }
+.left-stack .card:hover,.right-stack .card:hover,.acc-item:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow);
+  border-color:rgba(76,175,80,.22);
+}
+.acc-head:hover .icon-chip{
+  transform:translateY(-1px);
+}
+.acc-head .icon-chip{
+  transition:transform .16s ease, box-shadow .16s ease;
+}
 
 .ki-fab{
   position:fixed; right:22px; bottom:22px; width:74px; height:74px; border:none; border-radius:24px;
@@ -177,6 +192,21 @@ button,input,select,textarea{font:inherit}
 .quick-custom-item{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--text2);font-weight:700}
 .quick-remove{border:none;background:transparent;color:var(--danger);font-weight:900;cursor:pointer;font-size:1rem;line-height:1}
 @media(max-width:700px){ .ki-fab{right:14px;bottom:14px;width:68px;height:68px} .ki-panel{right:10px;left:10px;bottom:94px;width:auto} .quick-manage{grid-template-columns:1fr} }
+
+.bank-config-grid{display:grid;grid-template-columns:1.1fr .9fr .9fr auto;gap:10px;margin-top:14px}
+.bank-config-grid .field{gap:6px}
+.bank-config-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.bank-chip-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.bank-chip{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--text2);font-weight:700;cursor:pointer;transition:transform .16s ease, box-shadow .16s ease,border-color .16s ease}
+.bank-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow-xs);border-color:rgba(76,175,80,.35)}
+.bank-summary-link{cursor:pointer;transition:transform .16s ease, background .16s ease}
+.bank-summary-link:hover{transform:translateX(2px);background:#fffdfa}
+.bank-active-note{font-size:.8rem;color:var(--muted);margin-top:8px}
+.bank-chip small{color:var(--muted);font-weight:700}
+.bank-remove{border:none;background:transparent;color:var(--danger);font-weight:900;cursor:pointer;font-size:1rem;line-height:1}
+.bank-note{font-size:.84rem;color:var(--muted);margin-top:10px;line-height:1.6}
+@media(max-width:700px){ .bank-config-grid,.bank-config-meta{grid-template-columns:1fr} }
+
 
 @media print{
   .sidebar,.bubble-actions,.filter-actions,.form-actions,.quick-add,.mode-badge,.btn,.btn-soft,.chip-btn,.nav-drop-head,.logout-btn,.mode-switch,.ki-fab,.ki-panel{display:none!important}
@@ -278,6 +308,24 @@ button,input,select,textarea{font:inherit}
         </div>
 
         <div class="card">
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z"></path><path d="M3 10h18"></path><path d="M17 14h.01"></path></svg></span>Banken, Konten & Karten</h3>
+          <p class="card-sub">Hier verwaltest du deine Zahlungsquellen für spätere Bank-API, Kreditkarten und mehrere Konten pro Nutzer. Die Auswahl steht dir danach in allen Finanz-Einträgen und Filtern zur Verfügung.</p>
+          <div class="bank-config-grid">
+            <div class="field"><label for="bankLabel">Anzeigename</label><input id="bankLabel" type="text" placeholder="z. B. Sparkasse Mama oder Visa Urlaub"></div>
+            <div class="field"><label for="bankType">Typ</label><select id="bankType"><option value="Girokonto">Girokonto</option><option value="Gemeinschaftskonto">Gemeinschaftskonto</option><option value="Tagesgeld">Tagesgeld</option><option value="Debitkarte">Debitkarte</option><option value="Kreditkarte">Kreditkarte</option><option value="Prepaid-Karte">Prepaid-Karte</option></select></div>
+            <div class="field"><label for="bankOwner">Zuordnung</label><select id="bankOwner"><option value="Mama">Mama</option><option value="Papa">Papa</option><option value="Kind">Kind</option><option value="Familie">Familie</option></select></div>
+            <button class="btn-soft" type="button" id="addBankSource" style="align-self:end">+ Hinzufügen</button>
+          </div>
+          <div class="bank-config-meta">
+            <div class="field"><label for="bankInstitute">Bank / Anbieter</label><input id="bankInstitute" type="text" placeholder="z. B. Sparkasse, ING, Visa"></div>
+            <div class="field"><label for="bankDigits">Endziffern</label><input id="bankDigits" type="text" placeholder="z. B. 1234"></div>
+            <div class="field"><label for="bankConnection">API-Status</label><select id="bankConnection"><option value="geplant">API geplant</option><option value="manuell">Nur manuell</option><option value="bereit">API vorbereitet</option><option value="verbunden">API verbunden</option></select></div>
+          </div>
+          <div id="bankSourceList" class="bank-chip-list"></div>
+          <div class="bank-note">Gedacht für mehrere Bankkarten, Kreditkarten und Konten pro Nutzer. Später kann jede Zahlung dadurch sauber mit Bank-API, Karte oder manuellem Eintrag verknüpft werden.</div>
+        </div>
+
+        <div class="card">
           <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg></span>Filter & Druck</h3>
           <p class="card-sub">Die Filter gelten für alle gespeicherten Einträge. Gedruckt wird immer die aktuell gefilterte Ansicht.</p>
           <div class="filters-grid">
@@ -286,7 +334,9 @@ button,input,select,textarea{font:inherit}
             <div class="field"><label for="filterPerson">Zuordnung</label><select id="filterPerson"><option value="">Alle</option><option>Mama</option><option>Papa</option><option>Kind</option></select></div>
             <div class="field"><label for="filterType">Typ</label><select id="filterType"><option value="">Alle</option><option value="income">Einnahme</option><option value="expense">Ausgabe</option><option value="saving">Sparen</option></select></div>
             <div class="field"><label for="filterRecurring">Wiederkehrend</label><select id="filterRecurring"><option value="">Alle</option><option value="ja">Ja</option><option value="nein">Nein</option></select></div>
-            <div class="field"><label for="filterSearch">Suche</label><input id="filterSearch" type="text" placeholder="z. B. Netflix oder Rewe"></div>
+            <div class="field"><label for="filterAccount">Konto / Karte</label><select id="filterAccount"><option value="">Alle</option></select></div>
+            <div class="field"><label for="filterSource">Erfasst über</label><select id="filterSource"><option value="">Alle</option><option value="manual">Manuell</option><option value="bank_api">Bank-API</option><option value="card_import">Kartenimport</option><option value="scanner">Scanner / Beleg</option><option value="recurring_rule">Wiederkehrende Regel</option></select></div>
+            <div class="field"><label for="filterSearch">Suche</label><input id="filterSearch" type="text" placeholder="z. B. Netflix, Taxi oder Visa"></div>
             <div class="field"><label for="filterDateFrom">Vorgangsdatum von</label><input id="filterDateFrom" type="date"></div>
             <div class="field"><label for="filterDateTo">Vorgangsdatum bis</label><input id="filterDateTo" type="date"></div>
             <div class="field"><label for="filterCreatedFrom">Eingetragen am von</label><input id="filterCreatedFrom" type="date"></div>
@@ -317,6 +367,11 @@ button,input,select,textarea{font:inherit}
             <div class="stat"><span>Differenz</span><strong id="sumDiff">0,00 €</strong><small>Plus / Minus</small></div>
             <div class="stat"><span>Größte Kategorie</span><strong id="biggestCategory">—</strong><small>nach Betrag</small></div>
           </div>
+        </div>
+
+        <div class="card small-card">
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z"></path><path d="M3 10h18"></path><path d="M17 14h.01"></path></svg></span>Konten & Karten</h3>
+          <div class="side-card-list" id="bankSummaryList"></div>
         </div>
 
         <div class="card small-card">
@@ -388,9 +443,22 @@ button,input,select,textarea{font:inherit}
   </form>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const STORAGE_KEY = 'hh_finance_entries_v7';
+const STORAGE_KEY = 'hh_finance_entries_v8';
 const BUBBLE_KEY = 'hh_finance_bubble_hidden';
+const BANK_SOURCES_KEY = 'hh_finance_bank_sources_v1';
+const DEFAULT_BANK_SOURCES = [
+  {id:'source_family_giro', label:'Familienkonto', type:'Gemeinschaftskonto', owner:'Familie', bankName:'Hausbank', lastDigits:'', connectionStatus:'geplant'},
+  {id:'source_mama_card', label:'Mama Debitkarte', type:'Debitkarte', owner:'Mama', bankName:'Hausbank', lastDigits:'', connectionStatus:'manuell'},
+  {id:'source_papa_card', label:'Papa Kreditkarte', type:'Kreditkarte', owner:'Papa', bankName:'Visa / Mastercard', lastDigits:'', connectionStatus:'geplant'}
+];
+const BASE_BANK_FIELDS = [
+  {name:'paymentMethod',label:'Zahlungsart',type:'select',options:['Karte','Kreditkarte','Debitkarte','Bankeinzug','Überweisung','Bargeld','Online','Sonstiges']},
+  {name:'accountId',label:'Konto / Karte',type:'dynamic-select',source:'bank-sources',required:false},
+  {name:'entrySource',label:'Erfasst über',type:'select',options:['manual','bank_api','card_import','scanner','recurring_rule']},
+  {name:'externalReference',label:'Bank / Referenz-ID',type:'text',placeholder:'optional für spätere API oder Abgleich'}
+];
 const BUDGETS = {
   'Variable Ausgaben>Einkäufe': 500,
   'Variable Ausgaben>Freizeit': 150,
@@ -438,8 +506,8 @@ const CATEGORIES = [
     ]
   },
   {
-    id:'mobility', title:'Mobilität', desc:'Tanken, ÖPNV und Autokosten mit Zusatzfeldern.', accent:'accent-red', type:'expense',
-    subs:['Tanken','Öffentliche Verkehrsmittel','Auto (Reparaturen, TÜV)'],
+    id:'mobility', title:'Mobilität', desc:'Tanken, Bahn, Taxi, Uber, Pendlerfahrten und Autokosten mit Zusatzfeldern.', accent:'accent-red', type:'expense',
+    subs:['Tanken','Bahnfahrten','Bus & Straßenbahn','Taxi','Uber','Sonstige Fahrdienste','Pendlerfahrt Auto','Pendlerfahrt Bahn','Pendlerfahrt gemischt','Parken','Werkstatt & Auto'],
     fields:[
       {name:'title',label:'Bezeichnung',type:'text',placeholder:'z. B. Tankstelle oder Werkstatt',required:true},
       {name:'subCategory',label:'Unterkategorie',type:'select'},
@@ -540,91 +608,222 @@ const recurringList = document.getElementById('recurringList');
 const reminderList = document.getElementById('reminderList');
 
 function euro(v){ return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(Number(v||0)); }
+const SUPABASE_URL = 'HIER_DEINE_SUPABASE_URL_EINTRAGEN';
+const SUPABASE_ANON_KEY = 'HIER_DEINEN_SUPABASE_ANON_KEY_EINTRAGEN';
+
+let supabaseClient = null;
+const appState = {
+  entries: [],
+  bankSources: [],
+  currentUser: null,
+  currentHouseholdId: null,
+  supabaseReady: false
+};
+
 function readJSON(key,fallback){ try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }catch(e){ return fallback; } }
 function writeJSON(key,value){ localStorage.setItem(key, JSON.stringify(value)); }
-function getEntries(){ return readJSON(STORAGE_KEY, []); }
-function setEntries(entries){ writeJSON(STORAGE_KEY, entries); }
-function uid(){ return 'entry_' + Math.random().toString(36).slice(2,10); }
+function getEntries(){ return Array.isArray(appState.entries) ? appState.entries : []; }
+function setEntries(entries){ appState.entries = Array.isArray(entries) ? entries : []; persistShadowCache(); }
+function uid(){ return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('entry_' + Math.random().toString(36).slice(2,10)); }
 function today(){ return new Date().toISOString().slice(0,10); }
 function createdDateOnly(s){ return String(s||'').slice(0,10); }
 function compareDate(val, from, to){ if(!val) return true; if(from && val < from) return false; if(to && val > to) return false; return true; }
 
-function buildFilterOptions(){
-  filterMain.innerHTML = '<option value="">Alle</option>' + CATEGORIES.map(c => `<option value="${c.title}">${c.title}</option>`).join('');
-  updateSubFilter();
-}
-function updateSubFilter(){
-  const main = filterMain.value;
-  let subs = [];
-  if(main){ const cat = CATEGORIES.find(c => c.title === main); subs = cat ? cat.subs : []; }
-  else { subs = [...new Set(CATEGORIES.flatMap(c => c.subs))]; }
-  filterSub.innerHTML = '<option value="">Alle</option>' + subs.map(s => `<option value="${s}">${s}</option>`).join('');
+function hasSupabaseConfig(){
+  return !SUPABASE_URL.includes('HIER_DEINE_SUPABASE_URL_EINTRAGEN') && !SUPABASE_ANON_KEY.includes('HIER_DEINEN_SUPABASE_ANON_KEY_EINTRAGEN');
 }
 
-function renderAccordion(){
-  accordion.innerHTML = CATEGORIES.map((cat, idx) => `
-    <div class="acc-item ${idx===0?'open':''}" data-acc="${cat.id}">
-      <button class="acc-head" type="button">
-        <span class="icon-chip ${cat.accent}">${getCategoryIcon(cat.id)}</span>
-        <span class="acc-title"><strong>${cat.title}</strong><span>${cat.desc}</span></span>
-        <span class="acc-arrow">⌄</span>
-      </button>
-      <div class="acc-body">
-        <form class="category-form" data-cat="${cat.id}">
-          <div class="sub-grid">
-            ${cat.fields.map(field => fieldHTML(field, cat)).join('')}
-          </div>
-          <div class="form-actions">
-            <button class="btn" type="submit">Eintrag speichern</button>
-            <button class="btn-soft" type="reset">Zurücksetzen</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  `).join('');
+function persistShadowCache(){
+  try{
+    writeJSON(STORAGE_KEY, getEntries());
+    writeJSON(BANK_SOURCES_KEY, getBankSources());
+  }catch(e){}
+}
 
-  accordion.querySelectorAll('.acc-head').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.acc-item');
-      const isOpen = item.classList.contains('open');
-      accordion.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
-      if(!isOpen) item.classList.add('open');
-    });
-  });
+function getBankSources(){
+  const items = Array.isArray(appState.bankSources) ? appState.bankSources : [];
+  return items.length ? items : DEFAULT_BANK_SOURCES;
+}
+function setBankSources(items){ appState.bankSources = Array.isArray(items) ? items : []; persistShadowCache(); }
+function getBankSourceOptions(){
+  return getBankSources().map(item => ({ value:item.id, label:`${item.label} · ${item.type}${item.owner ? ' · ' + item.owner : ''}` }));
+}
+function getBankSourceById(id){ return getBankSources().find(item => item.id === id) || null; }
+function applyAccountFilter(accountId){
+  const accountFilter = document.getElementById('filterAccount');
+  if(!accountFilter) return;
+  accountFilter.value = accountId || '';
+  renderAll();
+  document.getElementById('filtersVisible')?.scrollIntoView({behavior:'smooth', block:'start'});
+}
 
-  accordion.querySelectorAll('.category-form').forEach(form => {
-    const cat = CATEGORIES.find(c => c.id === form.dataset.cat);
-    const subSelect = form.querySelector('[name="subCategory"]');
-    if(subSelect) subSelect.innerHTML = cat.subs.map(s => `<option value="${s}">${s}</option>`).join('');
-    const recurring = form.querySelector('[name="recurring"]');
-    const interval = form.querySelector('[name="interval"]');
-    if(interval && !recurring){ interval.closest('.field')?.classList.add('hidden'); }
-    if(recurring && interval){
-      const toggleInterval = () => interval.closest('.field').classList.toggle('hidden', recurring.value !== 'ja');
-      recurring.addEventListener('change', toggleInterval); toggleInterval();
+function ensureSupabase(){
+  if(!hasSupabaseConfig() || !window.supabase) return null;
+  if(!supabaseClient) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return supabaseClient;
+}
+
+function parseMetaFromNotes(rawNotes){
+  const input = String(rawNotes || '');
+  const marker = '[HH_META]';
+  const idx = input.indexOf(marker);
+  if(idx === -1) return { cleanNotes: input.trim(), meta: {} };
+  const clean = input.slice(0, idx).trim();
+  const jsonText = input.slice(idx + marker.length).trim();
+  try{ return { cleanNotes: clean, meta: JSON.parse(jsonText) || {} }; }catch(e){ return { cleanNotes: input.trim(), meta: {} }; }
+}
+
+function combineNotesWithMeta(notes, meta){
+  const cleanNotes = String(notes || '').trim();
+  const cleanMeta = Object.fromEntries(Object.entries(meta || {}).filter(([,value]) => value));
+  if(!Object.keys(cleanMeta).length) return cleanNotes;
+  return `${cleanNotes}${cleanNotes ? '\\n\\n' : ''}[HH_META]${JSON.stringify(cleanMeta)}`;
+}
+
+function mapAccountRow(row){
+  return {
+    id: row.id,
+    label: row.label || 'Konto / Karte',
+    type: row.account_type || 'Konto',
+    owner: row.owner_label || '',
+    bankName: row.bank_name || '',
+    lastDigits: row.last_digits || '',
+    connectionStatus: row.connection_status || 'manuell'
+  };
+}
+
+function mapEntryRow(row){
+  const parsed = parseMetaFromNotes(row.notes || '');
+  const meta = parsed.meta || {};
+  return {
+    id: row.id,
+    mainCategory: row.main_category || '',
+    subCategory: row.sub_category || '',
+    type: row.entry_type || '',
+    title: row.title || '',
+    amount: Number(row.amount || 0),
+    person: row.person_label || '',
+    paymentMethod: row.payment_method || '',
+    accountId: row.account_id || '',
+    entrySource: row.entry_source || 'manual',
+    externalReference: row.external_reference || '',
+    recurring: row.recurring || 'nein',
+    interval: row.interval_label || '',
+    date: row.entry_date || '',
+    dueDate: meta.dueDate || '',
+    goalDate: meta.goalDate || '',
+    nextAppointment: meta.nextAppointment || '',
+    kilometers: row.kilometers || '',
+    liters: row.liters || '',
+    pricePerLiter: row.price_per_liter || '',
+    consumption: row.consumption || '',
+    vet: row.vet || '',
+    treatment: row.treatment || '',
+    occasion: row.occasion || '',
+    notes: parsed.cleanNotes || '',
+    createdAt: row.created_at || '',
+    accountLabel: row.account_label || '',
+    accountType: row.account_type || '',
+    accountOwner: row.owner_label || '',
+    bankName: row.bank_name || '',
+    cardName: row.card_name || '',
+    importKey: row.import_key || '',
+    sourceKey: row.source_key || ''
+  };
+}
+
+async function resolveCurrentHouseholdId(client, currentUser){
+  const localUser = readJSON('haushaltsheld_user', null) || readJSON('haushaltsheld_current_user', null) || {};
+  const candidates = [
+    currentUser?.user_metadata?.household_id,
+    currentUser?.app_metadata?.household_id,
+    localUser?.household_id,
+    localUser?.householdId
+  ].filter(Boolean);
+  if(candidates.length) return candidates[0];
+
+  try{
+    const profileQuery = await client.from('profiles').select('*').eq('id', currentUser?.id || '').maybeSingle();
+    const profile = profileQuery.data || {};
+    if(profile.household_id) return profile.household_id;
+  }catch(e){}
+
+  try{
+    const householdQuery = await client.from('households').select('id').limit(1);
+    const householdId = householdQuery?.data?.[0]?.id;
+    if(householdId) return householdId;
+  }catch(e){}
+
+  return null;
+}
+
+async function seedDefaultBankSources(client, householdId){
+  if(!householdId) return;
+  const payload = DEFAULT_BANK_SOURCES.map(item => ({
+    household_id: householdId,
+    label: item.label,
+    account_type: item.type,
+    owner_label: item.owner,
+    bank_name: item.bankName,
+    last_digits: item.lastDigits,
+    connection_status: item.connectionStatus || 'geplant'
+  }));
+  const { error } = await client.from('finance_accounts').insert(payload);
+  if(error) console.warn('Standard-Konten konnten nicht angelegt werden:', error.message);
+}
+
+async function loadSupabaseState(){
+  const client = ensureSupabase();
+  if(!client){
+    appState.entries = [];
+    appState.bankSources = [...DEFAULT_BANK_SOURCES];
+    appState.supabaseReady = false;
+    persistShadowCache();
+    return;
+  }
+
+  const userResult = await client.auth.getUser().catch(() => ({ data:{ user:null } }));
+  appState.currentUser = userResult?.data?.user || null;
+  appState.currentHouseholdId = await resolveCurrentHouseholdId(client, appState.currentUser);
+
+  if(!appState.currentHouseholdId){
+    appState.entries = [];
+    appState.bankSources = [...DEFAULT_BANK_SOURCES];
+    appState.supabaseReady = true;
+    persistShadowCache();
+    return;
+  }
+
+  const bankResult = await client.from('finance_accounts').select('*').eq('household_id', appState.currentHouseholdId).order('created_at', { ascending:true });
+  if(bankResult.error){
+    console.warn('Konten konnten nicht geladen werden:', bankResult.error.message);
+    appState.bankSources = [...DEFAULT_BANK_SOURCES];
+  }else{
+    appState.bankSources = (bankResult.data || []).map(mapAccountRow);
+    if(!appState.bankSources.length){
+      await seedDefaultBankSources(client, appState.currentHouseholdId);
+      const seeded = await client.from('finance_accounts').select('*').eq('household_id', appState.currentHouseholdId).order('created_at', { ascending:true });
+      appState.bankSources = (seeded.data || []).map(mapAccountRow);
     }
-    if(form.querySelector('[name="date"]')) form.querySelector('[name="date"]').value = today();
-    form.addEventListener('submit', (e) => saveEntry(e, cat));
-  });
+  }
+
+  const entriesResult = await client.from('finance_entries_v2').select('*').eq('household_id', appState.currentHouseholdId).order('entry_date', { ascending:false }).order('created_at', { ascending:false });
+  if(entriesResult.error){
+    console.warn('Finanz-Einträge konnten nicht geladen werden:', entriesResult.error.message);
+    appState.entries = [];
+  }else{
+    appState.entries = (entriesResult.data || []).map(mapEntryRow);
+  }
+
+  appState.supabaseReady = true;
+  persistShadowCache();
 }
 
-function fieldHTML(field, cat){
-  const colSpan = field.type === 'textarea' ? 'style="grid-column:span 3"' : '';
-  if(field.type === 'select'){
-    const opts = field.name === 'subCategory'
-      ? ''
-      : (field.options||[]).map(v => `<option value="${v}">${v}</option>`).join('');
-    return `<div class="field" ${colSpan}><label>${field.label}</label><select name="${field.name}" ${field.required?'required':''}>${opts}</select></div>`;
-  }
-  if(field.type === 'textarea'){
-    return `<div class="field" ${colSpan}><label>${field.label}</label><textarea name="${field.name}" placeholder="${field.placeholder||''}"></textarea></div>`;
-  }
-  return `<div class="field"><label>${field.label}</label><input name="${field.name}" type="${field.type}" ${field.placeholder?`placeholder="${field.placeholder}"`:''} ${field.step?`step="${field.step}"`:''} ${field.required?'required':''}></div>`;
-}
-
-function saveEntry(e, cat){
+async function saveEntry(e, cat){
   e.preventDefault();
   const form = e.currentTarget;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if(submitBtn) submitBtn.disabled = true;
   const data = Object.fromEntries(new FormData(form).entries());
   const entry = {
     id: uid(),
@@ -635,6 +834,9 @@ function saveEntry(e, cat){
     amount: Number(data.amount || 0),
     person: data.person || '',
     paymentMethod: data.paymentMethod || '',
+    accountId: data.accountId || '',
+    entrySource: data.entrySource || 'manual',
+    externalReference: data.externalReference || '',
     recurring: data.recurring || 'nein',
     interval: data.interval || '',
     date: data.date || today(),
@@ -650,13 +852,26 @@ function saveEntry(e, cat){
     notes: data.notes || '',
     createdAt: new Date().toISOString()
   };
-  const entries = getEntries();
-  entries.unshift(entry);
-  setEntries(entries);
-  form.reset();
-  const dateField = form.querySelector('[name="date"]'); if(dateField) dateField.value = today();
-  const sub = form.querySelector('[name="subCategory"]'); if(sub && cat.subs.length) sub.value = cat.subs[0];
-  renderAll();
+  const source = getBankSourceById(entry.accountId);
+  entry.accountLabel = source ? source.label : '';
+  entry.accountType = source ? source.type : '';
+  entry.accountOwner = source ? source.owner : '';
+  entry.bankName = source ? source.bankName : '';
+  entry.cardName = source && /karte/i.test(source.type) ? source.label : '';
+
+  try{
+    await saveEntryToSupabase(entry);
+    form.reset();
+    const dateField = form.querySelector('[name="date"]'); if(dateField) dateField.value = today();
+    const sub = form.querySelector('[name="subCategory"]'); if(sub && cat.subs.length) sub.value = cat.subs[0];
+    syncBankSelects();
+    renderAll();
+  }catch(error){
+    console.error(error);
+    alert('Der Eintrag konnte nicht gespeichert werden. Prüfe später die Supabase-Werte und die Tabellenstruktur.');
+  }finally{
+    if(submitBtn) submitBtn.disabled = false;
+  }
 }
 
 function filteredEntries(){
@@ -665,6 +880,8 @@ function filteredEntries(){
   const person = document.getElementById('filterPerson').value;
   const type = document.getElementById('filterType').value;
   const recurring = document.getElementById('filterRecurring').value;
+  const account = document.getElementById('filterAccount').value;
+  const source = document.getElementById('filterSource').value;
   const search = document.getElementById('filterSearch').value.trim().toLowerCase();
   const dateFrom = document.getElementById('filterDateFrom').value;
   const dateTo = document.getElementById('filterDateTo').value;
@@ -676,8 +893,10 @@ function filteredEntries(){
     if(person && entry.person !== person) return false;
     if(type && entry.type !== type) return false;
     if(recurring && entry.recurring !== recurring) return false;
+    if(account && entry.accountId !== account) return false;
+    if(source && entry.entrySource !== source) return false;
     if(search){
-      const hay = `${entry.title} ${entry.notes} ${entry.subCategory} ${entry.mainCategory} ${entry.vet} ${entry.treatment}`.toLowerCase();
+      const hay = `${entry.title} ${entry.notes} ${entry.subCategory} ${entry.mainCategory} ${entry.vet} ${entry.treatment} ${entry.accountLabel} ${entry.bankName} ${entry.cardName} ${entry.externalReference}`.toLowerCase();
       if(!hay.includes(search)) return false;
     }
     if(!compareDate(entry.date, dateFrom, dateTo)) return false;
@@ -702,6 +921,8 @@ function renderEntries(){
           <span class="meta">🕒 Eingetragen: ${formatDate(createdDateOnly(entry.createdAt))}</span>
           ${entry.recurring === 'ja' ? `<span class="meta">🔁 ${escapeHtml(entry.interval || 'wiederkehrend')}</span>` : ''}
           ${entry.paymentMethod ? `<span class="meta">💳 ${escapeHtml(entry.paymentMethod)}</span>` : ''}
+          ${entry.accountLabel ? `<span class="meta">🏦 ${escapeHtml(entry.accountLabel)}</span>` : ''}
+          ${entry.entrySource ? `<span class="meta">🔗 ${escapeHtml(({manual:'Manuell',bank_api:'Bank-API',card_import:'Kartenimport',scanner:'Scanner / Beleg',recurring_rule:'Wiederkehrende Regel'})[entry.entrySource] || entry.entrySource)}</span>` : ''}
           ${entry.kilometers ? `<span class="meta">🚗 ${escapeHtml(entry.kilometers)} km</span>` : ''}
           ${entry.liters ? `<span class="meta">⛽ ${escapeHtml(entry.liters)} L</span>` : ''}
           ${entry.vet ? `<span class="meta">🐾 ${escapeHtml(entry.vet)}</span>` : ''}
@@ -749,6 +970,16 @@ function renderOverview(){
     return {key,target,used};
   });
   budgetList.innerHTML = budgets.map(b => `<div class="side-line"><span>${escapeHtml(b.key.replace('>',' › '))}</span><strong>${euro(b.used)} / ${euro(b.target)}</strong></div>`).join('');
+
+  const sourceStats = getBankSources().map(source => {
+    const count = getEntries().filter(e => e.accountId === source.id).length;
+    return {source, count};
+  });
+  const bankSummaryList = document.getElementById('bankSummaryList');
+  if(bankSummaryList){
+    bankSummaryList.innerHTML = sourceStats.length ? sourceStats.map(({source, count}) => `<div class="side-line bank-summary-link" data-bank-filter="${escapeHtml(source.id)}"><span>${escapeHtml(source.label)}</span><strong>${count} Buchung${count===1?'':'en'}</strong></div>`).join('') : '<div class="empty">Noch keine Konten oder Karten angelegt.</div>';
+    bankSummaryList.querySelectorAll('[data-bank-filter]').forEach(row => row.addEventListener('click', () => applyAccountFilter(row.getAttribute('data-bank-filter'))));
+  }
 
   const recurring = getEntries().filter(e => e.recurring === 'ja').slice(0,6);
   recurringList.innerHTML = recurring.length ? recurring.map(e => `<div class="side-line"><span>${escapeHtml(e.title)}</span><strong>${euro(e.amount)}${e.interval ? ' · ' + escapeHtml(e.interval) : ''}</strong></div>`).join('') : '<div class="empty">Noch keine wiederkehrenden Einträge.</div>';
@@ -836,6 +1067,77 @@ function addQuickAccessItem(){
   labelEl.value = '';
   renderQuickAccess();
 }
+
+function syncBankSelects(){
+  const options = '<option value="">Bitte wählen</option>' + getBankSourceOptions().map(opt => `<option value="${escapeHtml(opt.value)}">${escapeHtml(opt.label)}</option>`).join('');
+  document.querySelectorAll('select[data-dynamic-source="bank-sources"]').forEach(select => {
+    const current = select.value;
+    select.innerHTML = options;
+    if(current) select.value = current;
+  });
+}
+
+function renderBankSourceList(){
+  const list = document.getElementById('bankSourceList');
+  if(!list) return;
+  const items = getBankSources();
+  const counts = Object.fromEntries(items.map(item => [item.id, getEntries().filter(e => e.accountId === item.id).length]));
+  list.innerHTML = items.length ? items.map(item => `
+    <span class="bank-chip" data-bank-filter="${escapeHtml(item.id)}" title="Nach ${escapeHtml(item.label)} filtern">
+      ${escapeHtml(item.label)}
+      <small>${escapeHtml(item.type)} · ${escapeHtml(item.owner || '—')} · ${counts[item.id] || 0} Buchung${(counts[item.id]||0)===1?'':'en'}</small>
+      <button class="bank-remove" type="button" data-remove-bank="${escapeHtml(item.id)}" aria-label="Entfernen">×</button>
+    </span>`).join('') : '<div class="empty">Noch keine Konten oder Karten angelegt.</div>';
+  list.querySelectorAll('[data-remove-bank]').forEach(btn => btn.addEventListener('click', async (ev) => {
+    ev.stopPropagation();
+    const id = btn.getAttribute('data-remove-bank');
+    try{
+      await removeBankSourceFromSupabase(id);
+      renderBankingUI();
+      renderAll();
+    }catch(error){
+      console.error(error);
+      alert('Das Konto oder die Karte konnte nicht entfernt werden.');
+    }
+  }));
+  list.querySelectorAll('[data-bank-filter]').forEach(chip => chip.addEventListener('click', () => applyAccountFilter(chip.getAttribute('data-bank-filter'))));
+  const existingNote = document.getElementById('bankActiveNote');
+  if(existingNote) existingNote.remove();
+  if(items.length){
+    const note = document.createElement('div');
+    note.id = 'bankActiveNote';
+    note.className = 'bank-active-note';
+    note.textContent = 'Tipp: Klicke auf ein Konto oder eine Karte, um den Verlauf direkt danach zu filtern.';
+    list.insertAdjacentElement('afterend', note);
+  }
+}
+
+function renderBankingUI(){
+  renderBankSourceList();
+  buildFilterOptions();
+  syncBankSelects();
+}
+
+async function addBankSource(){
+  const label = String(document.getElementById('bankLabel')?.value || '').trim();
+  const type = document.getElementById('bankType')?.value || 'Girokonto';
+  const owner = document.getElementById('bankOwner')?.value || 'Familie';
+  const bankName = String(document.getElementById('bankInstitute')?.value || '').trim();
+  const lastDigits = String(document.getElementById('bankDigits')?.value || '').trim();
+  const connectionStatus = document.getElementById('bankConnection')?.value || 'geplant';
+  if(!label) return;
+  try{
+    await addBankSourceToSupabase({ label, type, owner, bankName, lastDigits, connectionStatus });
+    ['bankLabel','bankInstitute','bankDigits'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    const conn = document.getElementById('bankConnection'); if(conn) conn.value='geplant';
+    renderBankingUI();
+    renderAll();
+  }catch(error){
+    console.error(error);
+    alert('Das Konto oder die Karte konnte nicht gespeichert werden.');
+  }
+}
+
 function setupKi(){
   const fab = document.getElementById('kiFab');
   const panel = document.getElementById('kiPanel');
@@ -881,16 +1183,19 @@ function setupKi(){
   });
 }
 
-function initUI(){
-  buildFilterOptions();
+async function initUI(){
+  await loadSupabaseState();
+  renderBankingUI();
   renderAccordion();
   renderAll();
   filterMain.addEventListener('change', ()=>{ updateSubFilter(); renderAll(); });
-  ['filterSub','filterPerson','filterType','filterRecurring','filterSearch','filterDateFrom','filterDateTo','filterCreatedFrom','filterCreatedTo'].forEach(id => document.getElementById(id).addEventListener('input', renderAll));
-  document.getElementById('resetFilters').addEventListener('click', () => { document.querySelectorAll('#filterMain,#filterSub,#filterPerson,#filterType,#filterRecurring,#filterSearch,#filterDateFrom,#filterDateTo,#filterCreatedFrom,#filterCreatedTo').forEach(el => el.value = ''); buildFilterOptions(); renderAll(); });
+  ['filterSub','filterPerson','filterType','filterRecurring','filterAccount','filterSource'].forEach(id => document.getElementById(id).addEventListener('change', renderAll));
+  ['filterSearch','filterDateFrom','filterDateTo','filterCreatedFrom','filterCreatedTo'].forEach(id => document.getElementById(id).addEventListener('input', renderAll));
+  document.getElementById('resetFilters').addEventListener('click', () => { document.querySelectorAll('#filterMain,#filterSub,#filterPerson,#filterType,#filterRecurring,#filterAccount,#filterSource,#filterSearch,#filterDateFrom,#filterDateTo,#filterCreatedFrom,#filterCreatedTo').forEach(el => el.value = ''); buildFilterOptions(); renderAll(); });
   document.getElementById('printBtn').addEventListener('click', () => window.print());
   renderQuickAccess();
   document.getElementById('addQuickAccess').addEventListener('click', addQuickAccessItem);
+  document.getElementById('addBankSource').addEventListener('click', addBankSource);
   document.querySelector('#extrasDrop .nav-drop-head').addEventListener('click', ()=> document.getElementById('extrasDrop').classList.toggle('open'));
   document.getElementById('childBtn').addEventListener('click', ()=> window.location.href = 'kindermodus.html');
 
@@ -902,11 +1207,19 @@ function initUI(){
   try{ if(raw){ const u = JSON.parse(raw); document.getElementById('userName').textContent = '👋 ' + (u.name || u.username || 'Willkommen'); document.getElementById('userRole').textContent = String(u.role || u.modus || 'Eltern-Modus'); } }catch(e){}
   updateChatBadge();
   setupKi();
+
+  if(!hasSupabaseConfig()){
+    console.info('Supabase-Platzhalter sind noch gesetzt. Trage URL und Anon Key erst ganz am Schluss ein.');
+  }
 }
 
-
-function handleLogout(){
-  try{ localStorage.removeItem('haushaltsheld_user'); localStorage.removeItem('haushaltsheld_current_user'); }catch(e){}
+async function handleLogout(){
+  try{
+    const client = ensureSupabase();
+    if(client) await client.auth.signOut().catch(()=>{});
+    localStorage.removeItem('haushaltsheld_user');
+    localStorage.removeItem('haushaltsheld_current_user');
+  }catch(e){}
   window.location.href = 'login.html';
 }
 
