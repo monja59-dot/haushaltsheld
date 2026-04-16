@@ -405,7 +405,7 @@ button,input,select,textarea{font:inherit}
             <button class="btn-soft" id="demoBtn" type="button">Beispieldaten einsetzen</button>
           </div>
 
-          <div class="helper">Tipp: Für Lebensmittel möglichst <strong>Artikelname + Oberbegriff</strong> pflegen.</div>
+          <div class="helper">Tipp: Die Einkaufsliste merkt sich jetzt Kategorien automatisch. Wenn du z. B. einmal „Milch“ als Lebensmittel speicherst, wird das beim nächsten Mal automatisch vorgeschlagen.</div>
         </section>
 
         <section class="card">
@@ -499,6 +499,7 @@ button,input,select,textarea{font:inherit}
 
 <script>
 const STORAGE_KEY = "haushaltsheld_einkaufsliste_stabil_v1";
+const CATEGORY_MEMORY_KEY = "haushaltsheld_einkauf_kategorien_v1";
 let cachedEntries = [];
 
 function getTodayDate(){
@@ -522,6 +523,80 @@ function loadEntries(){
 }
 function saveEntries(entries){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+function normalizeMemoryKey(value){
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/ä/g,"ae")
+    .replace(/ö/g,"oe")
+    .replace(/ü/g,"ue")
+    .replace(/ß/g,"ss")
+    .replace(/\s+/g," ")
+    .replace(/[^a-z0-9 ]/g,"")
+    .trim();
+}
+function loadCategoryMemory(){
+  try{
+    const parsed = JSON.parse(localStorage.getItem(CATEGORY_MEMORY_KEY) || "{}");
+    return parsed && typeof parsed === "object" ? parsed : {};
+  }catch{
+    return {};
+  }
+}
+function saveCategoryMemory(memory){
+  localStorage.setItem(CATEGORY_MEMORY_KEY, JSON.stringify(memory));
+}
+function rememberCategoryForEntry(entry){
+  if(!entry || !entry.category) return;
+  const memory = loadCategoryMemory();
+  const keys = [
+    normalizeMemoryKey(entry.title),
+    normalizeMemoryKey(entry.baseGroup)
+  ].filter(Boolean);
+
+  keys.forEach(key => {
+    memory[key] = entry.category;
+  });
+
+  saveCategoryMemory(memory);
+}
+function detectSmartCategory(title, baseGroup){
+  const memory = loadCategoryMemory();
+  const titleKey = normalizeMemoryKey(title);
+  const groupKey = normalizeMemoryKey(baseGroup);
+
+  if(titleKey && memory[titleKey]) return memory[titleKey];
+  if(groupKey && memory[groupKey]) return memory[groupKey];
+
+  const text = `${String(title || "")} ${String(baseGroup || "")}`.toLowerCase();
+
+  const rules = [
+    [/milch|brot|brötchen|toast|käse|joghurt|butter|eier|nudel|spaghetti|reis|kartoffel|tomate|gurke|paprika|banane|apfel|salat|mehl|zucker|öl|wasser|saft/, "Lebensmittel"],
+    [/cola|fanta|sprite|tee|kaffee|kakao/, "Getränke"],
+    [/shampoo|duschgel|zahnpasta|seife|deo|creme|binden|windeln|waschgel/, "Drogerie"],
+    [/spülmittel|putzmittel|müllbeutel|toilettenpapier|küchenrolle|tabs|reiniger/, "Haushalt"],
+    [/ibuprofen|paracetamol|vitamin|pflaster|nasenspray/, "Apotheke"],
+    [/baby|feuchttücher|schnuller|babynahrung/, "Kind/Baby"],
+    [/hundefutter|katzenfutter|streu/, "Tier"],
+    [/lampe|kissen|deko|regal/, "Wohnen"],
+    [/kabel|akku|batterie|kopfhörer|maus|tastatur/, "Technik"]
+  ];
+
+  for(const [regex, category] of rules){
+    if(regex.test(text)) return category;
+  }
+
+  return "Lebensmittel";
+}
+function applySmartCategoryToForm(){
+  const title = document.getElementById("itemTitle").value.trim();
+  const baseGroup = normalizeBaseGroup(title, document.getElementById("baseGroup").value.trim());
+  const detected = detectSmartCategory(title, baseGroup);
+  if(detected){
+    document.getElementById("category").value = detected;
+  }
 }
 function normalizeCompareText(value){
   return String(value || "")
@@ -619,7 +694,7 @@ function collectFormData(){
     baseGroup,
     date: document.getElementById("neededDate").value,
     purchaseKind: document.getElementById("purchaseKind").value,
-    category: document.getElementById("category").value,
+    category: detectSmartCategory(title, baseGroup) || document.getElementById("category").value,
     priority: document.getElementById("priority").value,
     origin: document.getElementById("origin").value,
     status: document.getElementById("entryStatus").value,
@@ -674,6 +749,7 @@ function saveSingleItem(){
   const entries = loadEntries();
   entries.unshift(form);
   saveEntries(entries);
+  rememberCategoryForEntry(form);
   resetForm();
   renderAll();
 }
@@ -734,8 +810,10 @@ function saveBulkItems(){
       quantity: line.quantity ?? form.quantity,
       unit: line.unit || form.unit,
       store: bulkStore || form.store,
-      buyer: bulkBuyer || form.buyer
+      buyer: bulkBuyer || form.buyer,
+      category: detectSmartCategory(line.title, line.baseGroup) || form.category
     });
+    rememberCategoryForEntry({ title: line.title, baseGroup: line.baseGroup, category: detectSmartCategory(line.title, line.baseGroup) || form.category });
   });
   saveEntries(entries);
   document.getElementById("bulkItems").value = "";
@@ -986,7 +1064,9 @@ function bindUi(){
       document.getElementById("baseGroup").value = normalized;
     }
     document.getElementById("baseGroupHelper").value = normalized || "";
+    applySmartCategoryToForm();
   });
+  document.getElementById("baseGroup").addEventListener("blur", applySmartCategoryToForm);
 }
 document.getElementById("neededDate").value = getTodayDate();
 bindUi();
