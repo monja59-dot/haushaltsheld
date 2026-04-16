@@ -3,1191 +3,817 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Haushaltsheld – Essensplan & Essverhalten</title>
+  <title>Haushaltsheld – Essensplan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-
-:root{
-  --bg:#f7f2e9;
-  --bg-2:#fdf9f3;
-  --card:#ffffff;
-  --soft:#f6efe4;
-  --soft2:#efe3d2;
-  --line:#dfd1bc;
-  --text:#2d342f;
-  --text2:#556159;
-  --muted:#7d8a82;
-  --accent:#4CAF50;
-  --accent-dark:#3E8E41;
-  --accent-soft:#e7f5e8;
-  --beige:#f2e6d7;
-  --sand:#e8d7c2;
-  --blue:#6b96d9;
-  --blue-soft:#e9f1ff;
-  --red:#cc6666;
-  --red-soft:#fdeaea;
-  --yellow:#b5882f;
-  --yellow-soft:#fbf4df;
-  --green:#5ca66f;
-  --green-soft:#e7f4ea;
-  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
-  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
-  --shadow:0 12px 34px rgba(54,45,28,.10);
-  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
-  --r-xs:12px;
-  --r-sm:16px;
-  --r:22px;
-  --r-lg:28px;
-  --r-xl:34px;
-  --sidebar-w:258px;
-  --font-main:"Outfit", sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;overflow-x:hidden}
-body{
-  font-family:var(--font-main);
-  background:
-    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
-    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-  color:var(--text);
-  min-height:100vh;
-  font-size:16px;
-  line-height:1.6;
-  letter-spacing:-0.01em;
-}
-h1,h2,h3,h4,h5,h6{font-family:var(--font-main)!important;letter-spacing:-0.03em;line-height:1.15}
-button,input,select,textarea{font:inherit}
-.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
-.sidebar{
-  background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
-  border-right:1px solid rgba(223,209,188,.85);
-  padding:28px 18px 24px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
-  z-index:10;
-  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
-}
-.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
-.logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}
-.logo-name{font-weight:800;font-size:1.25rem!important;color:var(--text)}
-.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
-.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
-.nav{display:flex;flex-direction:column;gap:4px}
-.nav a{
-  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;
-  color:var(--text2);font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;border:1px solid transparent;position:relative
-}
-.nav a:hover{
-  background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);
-  box-shadow:var(--shadow-xs);color:var(--text)
-}
-.nav a.active{
-  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
-  color:#fff;border-color:rgba(62,142,65,.28);
-  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)
-}
-.nav-icon{
-  width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)
-}
-.nav-icon svg,.nav-icon i{width:18px;height:18px;stroke:currentColor}
-.nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
-.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px}
-.user-info{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.7);border-radius:16px;padding:12px 14px;font-size:.8rem;margin-bottom:8px}
-.user-info strong{display:block;font-weight:800;color:var(--text);margin-bottom:4px}
-.user-info span{display:block;color:var(--muted);font-size:.75rem}
-.logout-btn{
-  width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;
-  padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;
-  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72)
-}
-.logout-btn:hover{transform:translateY(-2px);box-shadow:0 5px 0 #cdb394, 0 12px 22px rgba(110,82,40,.14), inset 0 1px 0 rgba(255,255,255,.72)}
-.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}
-.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease}
-.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
-.chat-badge{
-  position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;
-  font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28)
-}
-.main{width:100%;max-width:1580px;padding:32px;overflow-x:hidden}
-.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px;flex-wrap:wrap}
-.page-header h1{font-size:2.35rem!important;font-weight:800!important;margin-bottom:8px;display:flex;align-items:center;gap:12px}
-.page-header p{color:var(--muted);font-size:.98rem;max-width:760px}
-.mode-badge{
-  display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);
-  border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)
-}
-.mode-badge svg,.mode-badge i{width:16px;height:16px;stroke-width:2.2}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;box-shadow:var(--shadow-sm)}
-.btn,.btn-soft{
-  border:none;padding:13px 22px;border-radius:16px!important;font-size:.95rem!important;font-weight:800!important;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .15s ease, box-shadow .15s ease
-}
-.btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff!important;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20)}
-.btn-soft{background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%)!important;color:#665646!important;border:1.5px solid #ddcbb4!important;box-shadow:0 3px 0 #cdb394,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.72)!important}
-.mini-btn{
-  border:1.5px solid #ddcbb4 !important;background:linear-gradient(135deg,#fffdf9 0%, #f4e8da 100%) !important;color:#655846 !important;
-  padding:8px 12px !important;border-radius:999px !important;font-size:.78rem !important;font-weight:800 !important;cursor:pointer
-}
-.mini-btn[disabled]{opacity:.62;cursor:not-allowed;filter:saturate(.75)}
-@media(max-width:960px){
-  .app{grid-template-columns:1fr}
-  .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}
-  .logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}
-  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
-  .nav a{flex:0 1 auto;padding:10px 12px}
-  .nav-label,.sidebar-footer{display:none}
-}
-@media(max-width:600px){
-  .main{padding:16px}
-  .page-header h1{font-size:1.95rem !important}
-}
-
-
-.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:22px}
-h1{margin:0 0 8px 0;font-size:31px;line-height:1.1}
-.subtitle{margin:0;color:var(--text2);line-height:1.55;max-width:980px}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-.page-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:22px}
-.stack{display:grid;gap:22px}
-.card h2{margin:0 0 10px 0;font-size:22px}
-.card-sub{margin:0 0 18px 0;color:var(--text2);line-height:1.5}
-.info-box{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.55;color:var(--text2)}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.field{display:flex;flex-direction:column;gap:6px}
-.field.full{grid-column:1 / -1}
-label{font-size:13px;font-weight:700;color:var(--text2)}
-input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--text);background:#fff}
-textarea{min-height:92px;resize:vertical}
-.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.stat{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:16px}
-.stat strong{display:block;font-size:24px;margin-bottom:4px}
-.stat span{color:var(--text2);font-size:14px}
-.print-title{display:none}
-@media(max-width:1100px){.page-grid{grid-template-columns:1fr}}
-@media(max-width:820px){.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.stats{grid-template-columns:1fr}}
-@media print{
-  body{background:#fff}
-  .sidebar,.actions,.toolbar .mini-actions,.filters,.btn,.btn-soft,form,.inline-note,.print-hide{display:none!important}
-  .app,.main,.page-grid,.stack,.card{display:block!important;width:100%!important;box-shadow:none!important;border:none!important;padding:0!important;margin:0!important;background:#fff!important}
-  .print-title{display:block;margin-bottom:18px}
-  .card + .card{margin-top:24px!important}
-}
-
-
-.toolbar .mini-actions{display:flex;gap:8px;flex-wrap:wrap}
-.entry-list{display:grid;gap:12px;margin-top:10px}
-.entry{border:1px solid var(--line);border-radius:18px;padding:16px;background:#fff}
-.entry-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-.entry-title{font-size:18px;font-weight:700;margin:0 0 4px 0}
-.entry-meta{color:var(--text2);font-size:14px;line-height:1.5}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-.badge{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--soft)}
-.badge.green{background:var(--accent-soft);border-color:#b7ddbc;color:var(--accent-dark)}
-.badge.yellow{background:#fff5d6;border-color:#eedfa3;color:#776000}
-.entry-notes{margin-top:8px;color:var(--text2);font-size:14px;line-height:1.5}
-.inline-note{font-size:13px;color:var(--muted);line-height:1.5;margin-top:10px}
-.empty{background:var(--soft);border:1px dashed var(--line);border-radius:18px;padding:18px;color:var(--text2);line-height:1.5}
-.top-list{display:grid;gap:10px;margin-top:8px}
-.top-item{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:11px 13px;background:#fff;font-size:14px}
-.filters{display:flex;gap:8px;flex-wrap:wrap}
-.filters select{width:auto;min-width:170px}
-
-  
-
-/* KI */
-.ki-fab{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  width:74px;
-  height:74px;
-  border:none;
-  border-radius:24px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  z-index:9998;
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.ki-fab:hover{
-  transform:translateY(-3px);
-  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
-}
-.ki-fab img{width:40px;height:40px;object-fit:contain}
-.ki-fab-label{
-  position:absolute;
-  bottom:8px;
-  right:10px;
-  color:#fff;
-  font-size:.78rem;
-  font-weight:800;
-  line-height:1;
-}
-.ki-panel{
-  position:fixed;
-  right:22px;
-  bottom:108px;
-  width:min(390px,calc(100vw - 24px));
-  max-height:min(78vh,720px);
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:28px;
-  overflow:hidden;
-  box-shadow:0 24px 50px rgba(34,48,38,.18);
-  z-index:9999;
-  display:none;
-}
-.ki-panel.open{display:flex;flex-direction:column}
-.ki-head{
-  padding:20px 20px 16px;
-  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
-}
-.ki-head-left{display:flex;gap:12px;align-items:flex-start}
-.ki-head-avatar{
-  width:48px;height:48px;border-radius:16px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.ki-head-avatar img{width:28px;height:28px;object-fit:contain}
-.ki-head h3{font-size:1.2rem !important;font-weight:800 !important;margin:0 0 4px}
-.ki-head p{font-size:.95rem !important;color:var(--text2);margin:0}
-.ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
-.ki-chat-link:hover{text-decoration:underline}
-.ki-close{
-  width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;
-  flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1;
-}
-.ki-suggestions{padding:16px 20px 14px;display:flex;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);background:#fff}
-.ki-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:.95rem;font-weight:700;color:var(--text2);cursor:pointer}
-.ki-chat{padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px}
-.ki-msg{max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap}
-.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
-.ki-msg.user{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;align-self:flex-end}
-.ki-form{padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}
-.ki-input{border:1.5px solid var(--line);background:var(--bg-2);border-radius:18px;padding:14px 16px;font-size:.97rem;color:var(--text);outline:none;font-family:inherit}
-.ki-send{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20)}
-.ki-typing{opacity:.8;font-style:italic}
-@media(max-width:700px){
-  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
-  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
-}
-
-</style>
+    :root{
+      --bg:#f7f2e9;
+      --bg-2:#fdf9f3;
+      --card:#ffffff;
+      --soft:#f6efe4;
+      --line:#dfd1bc;
+      --text:#2d342f;
+      --text2:#556159;
+      --muted:#7d8a82;
+      --accent:#4CAF50;
+      --accent-dark:#3E8E41;
+      --accent-soft:#e7f5e8;
+      --red:#cc6666;
+      --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+      --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+      --shadow:0 12px 34px rgba(54,45,28,.10);
+      --sidebar-w:258px;
+      --font-main:"Outfit", sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{width:100%;overflow-x:hidden}
+    body{
+      font-family:var(--font-main);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
+        linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+      color:var(--text);
+      min-height:100vh;
+      font-size:16px;
+      line-height:1.6;
+      letter-spacing:-0.01em;
+    }
+    h1,h2,h3,h4,h5,h6{font-family:var(--font-main)!important;letter-spacing:-0.03em;line-height:1.15}
+    button,input,select,textarea{font:inherit}
+    textarea{resize:vertical}
+    .app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
+    .sidebar{
+      background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
+      border-right:1px solid rgba(223,209,188,.85);
+      padding:28px 18px 24px;
+      display:flex;flex-direction:column;gap:8px;
+      position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10;
+      box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+    }
+    .logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px;text-decoration:none}
+    .logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}
+    .logo-name{font-weight:800;font-size:1.25rem!important;color:var(--text)}
+    .logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+    .nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
+    .nav{display:flex;flex-direction:column;gap:4px}
+    .nav a{
+      display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;
+      color:var(--text2);font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;border:1px solid transparent;position:relative
+    }
+    .nav a:hover{
+      background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);
+      box-shadow:var(--shadow-xs);color:var(--text)
+    }
+    .nav a.active{
+      background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+      color:#fff;border-color:rgba(62,142,65,.28);
+      box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)
+    }
+    .nav-icon{
+      width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);
+      border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)
+    }
+    .nav-icon svg,.nav-icon i{width:18px;height:18px;stroke:currentColor}
+    .nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
+    .chat-badge{
+      position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;
+      font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28)
+    }
+    .sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px}
+    .user-info{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.7);border-radius:16px;padding:12px 14px;font-size:.8rem;margin-bottom:8px}
+    .user-info strong{display:block;font-weight:800;color:var(--text);margin-bottom:4px}
+    .user-info span{display:block;color:var(--muted);font-size:.75rem}
+    .logout-btn{
+      width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;
+      padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;
+      box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72)
+    }
+    .mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}
+    .mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease}
+    .mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
+    .main{width:100%;max-width:1600px;padding:32px;overflow-x:hidden}
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+    h1{margin:0 0 8px 0;font-size:2.35rem;line-height:1.1;font-weight:800}
+    .subtitle{margin:0;color:var(--text2);line-height:1.55;max-width:920px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;box-shadow:var(--shadow-sm)}
+    .btn,.btn-soft,.mini-btn{
+      border:none;padding:13px 22px;border-radius:16px!important;font-size:.95rem!important;font-weight:800!important;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .15s ease, box-shadow .15s ease
+    }
+    .btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff!important;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20)}
+    .btn-soft,.mini-btn{background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%)!important;color:#665646!important;border:1.5px solid #ddcbb4!important;box-shadow:0 3px 0 #cdb394,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.72)!important}
+    .mini-btn{padding:8px 12px!important;border-radius:999px!important;font-size:.8rem!important}
+    .layout{display:grid;grid-template-columns:1.05fr .95fr;gap:22px}
+    .stack{display:grid;gap:22px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:13px;font-weight:700;color:var(--text2)}
+    .field input,.field textarea{
+      width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--text);background:#fff
+    }
+    .field textarea{min-height:84px}
+    .week-top{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .info-box{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:14px 16px;font-size:14px;line-height:1.55;color:var(--text2)}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .stat{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:16px}
+    .stat strong{display:block;font-size:24px;margin-bottom:4px}
+    .stat span{color:var(--text2);font-size:14px}
+    .favorite-wrap{display:grid;gap:14px}
+    .favorite-input-row{display:grid;grid-template-columns:1fr auto;gap:10px}
+    .favorite-list,.pill-list{display:flex;flex-wrap:wrap;gap:8px}
+    .favorite-tag,.pill{
+      display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-size:.82rem;font-weight:800;color:var(--text2)
+    }
+    .favorite-tag button{
+      border:none;background:transparent;color:var(--red);cursor:pointer;font-size:1rem;font-weight:900;line-height:1
+    }
+    .planner-wrap{display:grid;gap:18px}
+    .day-card{border:1px solid rgba(223,209,188,.95);border-radius:24px;padding:18px;background:linear-gradient(180deg,#fff 0%, #fffdfa 100%);box-shadow:var(--shadow-xs)}
+    .day-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+    .day-title{display:flex;flex-direction:column;gap:4px}
+    .day-title h3{font-size:1.15rem!important;font-weight:800!important;margin:0}
+    .day-title span{color:var(--muted);font-size:.88rem;font-weight:600}
+    .day-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .meal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .meal-box{background:var(--bg-2);border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:10px}
+    .meal-box > label{font-size:13px;font-weight:800;color:var(--text2)}
+    .meal-box input{width:100%;border:1px solid var(--line);border-radius:14px;padding:11px 13px;background:#fff}
+    .sub-label{font-size:.78rem;font-weight:800;color:var(--muted);margin-top:2px}
+    .day-note{margin-top:12px}
+    .helper-text{font-size:.85rem;color:var(--muted)}
+    .empty{background:var(--soft);border:1px dashed var(--line);border-radius:18px;padding:16px;color:var(--text2)}
+    .pill{
+      cursor:pointer;
+      transition:all .15s ease;
+    }
+    .pill:hover{transform:translateY(-1px);border-color:#b7ddbc;background:var(--accent-soft);color:var(--accent-dark)}
+    .ki-fab{
+      position:fixed;right:22px;bottom:22px;width:74px;height:74px;border:none;border-radius:24px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+      box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9998;transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .ki-fab img{width:40px;height:40px;object-fit:contain}
+    .ki-fab-label{position:absolute;bottom:8px;right:10px;color:#fff;font-size:.78rem;font-weight:800;line-height:1}
+    .ki-panel{
+      position:fixed;right:22px;bottom:108px;width:min(390px,calc(100vw - 24px));max-height:min(78vh,720px);background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 24px 50px rgba(34,48,38,.18);z-index:9999;display:none;
+    }
+    .ki-panel.open{display:flex;flex-direction:column}
+    .ki-head{padding:20px 20px 16px;background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+    .ki-head-left{display:flex;gap:12px;align-items:flex-start}
+    .ki-head-avatar{
+      width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+      box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    }
+    .ki-head-avatar img{width:28px;height:28px;object-fit:contain}
+    .ki-head h3{font-size:1.2rem !important;font-weight:800 !important;margin:0 0 4px}
+    .ki-head p{font-size:.95rem !important;color:var(--text2);margin:0}
+    .ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
+    .ki-close{width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1}
+    .ki-suggestions{padding:16px 20px 14px;display:flex;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);background:#fff}
+    .ki-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:.95rem;font-weight:700;color:var(--text2);cursor:pointer}
+    .ki-chat{padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px}
+    .ki-msg{max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap}
+    .ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
+    .ki-msg.user{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;align-self:flex-end}
+    .ki-form{padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}
+    .ki-input{border:1.5px solid var(--line);background:var(--bg-2);border-radius:18px;padding:14px 16px;font-size:.97rem;color:var(--text);outline:none;font-family:inherit}
+    .ki-send{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20)}
+    @media(max-width:1180px){.layout{grid-template-columns:1fr}}
+    @media(max-width:960px){
+      .app{grid-template-columns:1fr}
+      .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}
+      .logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}
+      .nav{flex-direction:row;flex-wrap:wrap;flex:1}
+      .nav a{flex:0 1 auto;padding:10px 12px}
+      .nav-label,.sidebar-footer{display:none}
+      .main{padding:20px}
+    }
+    @media(max-width:820px){
+      .week-top,.stats,.meal-grid{grid-template-columns:1fr}
+      .favorite-input-row{grid-template-columns:1fr}
+    }
+    @media(max-width:700px){
+      .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+      .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+    }
+    @media(max-width:600px){
+      .main{padding:16px}
+      h1{font-size:1.95rem}
+    }
+  </style>
 </head>
 <body data-page="essensplan">
   <div class="app">
+    <aside class="sidebar">
+      <a href="index.html" class="logo-wrap">
+        <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+        <div>
+          <div class="logo-name">Haushaltsheld</div>
+          <div class="logo-sub">Dein Familien-Assistent</div>
+        </div>
+      </a>
 
-<aside class="sidebar">
-  <div class="logo-wrap">
-    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-    <div>
-      <div class="logo-name">Haushaltsheld</div>
-      <div class="logo-sub">Dein Familien-Assistent</div>
-    </div>
-  </div>
+      <div class="nav-label">Hauptmenü</div>
+      <nav class="nav">
+        <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+        <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+        <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+        <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+        <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+        <a href="essensplan.html" class="active"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+        <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+        <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+        <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
+      </nav>
 
-  <div class="nav-label">Hauptmenü</div>
-  <nav class="nav">
-    <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
-    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
-    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
-    <a href="essensplan.html" class="active"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
-    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
-    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
-    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
-  </nav>
+      <div class="nav-label">Extras</div>
+      <nav class="nav">
+        <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+        <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+        <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+        <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+        <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+      </nav>
 
-  <div class="nav-label">Extras</div>
-  <nav class="nav">
-    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
-    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
-    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
-    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
-    <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
-  </nav>
-
-  <div class="sidebar-footer">
-    <div class="user-info">
-      <strong id="userName">👋 Willkommen</strong>
-      <span id="userRole">Eltern-Modus</span>
-    </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
-      <button class="mode-btn" id="childBtn" type="button">Kind</button>
-    </div>
-    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
-  </div>
-</aside>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <strong id="userName">👋 Willkommen</strong>
+          <span id="userRole">Eltern-Modus</span>
+        </div>
+        <div class="mode-switch">
+          <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+          <button class="mode-btn" id="childBtn" type="button">Kind</button>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+      </div>
+    </aside>
 
     <main class="main">
-
       <div class="topbar">
         <div>
-          <h1>Essensplan & Essverhalten</h1>
+          <h1>Essensplan</h1>
           <p class="subtitle">
-            Diese Seite speichert zuhause gekochte Mahlzeiten, Restaurant-, Imbiss- und Bestellverhalten
-            in einer gemeinsamen Struktur. Dadurch sind später Auswertungen, KI-Vorschläge und Monatsanalysen möglich.
+            Plane eure Woche alltagstauglich. Frühstück hat jetzt Favoriten, damit du nicht überlegen musst, ob du „Eier, Quark oder Marmelade“ einträgst, sondern direkt echte Frühstücks-Ideen auswählen kannst.
           </p>
         </div>
-
         <div class="actions">
-          <button class="btn btn-secondary" onclick="window.print()">Drucken</button>
-          <button class="btn btn-secondary" id="exportJsonBtn">JSON exportieren</button>
-          <button class="btn btn-danger" id="clearAllBtn">Alle Einträge löschen</button>
+          <button class="btn-soft" type="button" onclick="window.print()">Drucken</button>
+          <button class="btn-soft" type="button" id="shoppingTransferBtn">Zur Einkaufsliste</button>
+          <button class="btn" type="button" id="savePlanBtn">Plan speichern</button>
         </div>
       </div>
 
-      <div class="print-title">
-        <h1>Haushaltsheld – Essensplan & Essverhalten</h1>
-        <p>Monatsübersicht und gespeicherte Einträge</p>
-      </div>
-
-      <div class="page-grid">
+      <div class="layout">
         <div class="stack">
           <section class="card">
-            <h2>Eintrag anlegen</h2>
-            <p class="card-sub">
-              Jeder Eintrag ist ein Essensereignis. So kannst du zuhause gekocht, bestellt,
-              Restaurant oder Imbiss gemeinsam auswerten.
-            </p>
-
-            <div class="info-box">
-              Pflichtfelder für einen starken Start: <strong>Datum, Mahlzeit, Typ, Status, Gericht, Kategorie, vorgeschlagen von</strong>.
-              Kosten, Teilnehmer, Anbieter und Notizen machen die Analyse später noch besser.<br><br>
-              <strong>Neu:</strong> Rezepte können direkt aus der Rezeptseite als Vorschlag in den Essensplan übernommen werden.
+            <h2 style="margin-bottom:14px;">Wochenkopf</h2>
+            <div class="week-top">
+              <div class="field">
+                <label for="weekStart">Wochenstart</label>
+                <input type="date" id="weekStart">
+              </div>
+              <div class="field">
+                <label for="weekTitle">Wochenmotto</label>
+                <input type="text" id="weekTitle" placeholder="z. B. schnell & familienfreundlich">
+              </div>
+              <div class="field">
+                <label for="weekFocus">Fokus</label>
+                <input type="text" id="weekFocus" placeholder="z. B. wenig bestellen, mehr Gemüse">
+              </div>
             </div>
-
-            <form id="mealForm">
-              <div class="form-grid">
-                <div class="field">
-                  <label for="datum">Datum</label>
-                  <input type="date" id="datum" required />
-                </div>
-
-                <div class="field">
-                  <label for="mahlzeit">Mahlzeit</label>
-                  <select id="mahlzeit" required>
-                    <option value="">Bitte wählen</option>
-                    <option>Frühstück</option>
-                    <option>Mittagessen</option>
-                    <option>Abendessen</option>
-                    <option>Snack</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="typ">Typ</label>
-                  <select id="typ" required>
-                    <option value="">Bitte wählen</option>
-                    <option value="zuhause">Zuhause</option>
-                    <option value="restaurant">Restaurant</option>
-                    <option value="imbiss">Imbiss</option>
-                    <option value="bestellt">Bestellt</option>
-                    <option value="unterwegs">Unterwegs</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="status">Status</label>
-                  <select id="status" required>
-                    <option value="">Bitte wählen</option>
-                    <option value="vorschlag">Vorschlag</option>
-                    <option value="bestaetigt">Bestätigt</option>
-                    <option value="erledigt">Erledigt</option>
-                    <option value="storniert">Storniert</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="gericht">Gericht / Anlass</label>
-                  <input type="text" id="gericht" placeholder="z. B. Spaghetti Bolognese" required />
-                </div>
-
-                <div class="field">
-                  <label for="kategorie">Kategorie</label>
-                  <input type="text" id="kategorie" placeholder="z. B. Pasta, Fast Food, Grillen" required />
-                </div>
-
-                <div class="field">
-                  <label for="rolle">Vorgeschlagen von – Rolle</label>
-                  <select id="rolle" required>
-                    <option value="">Bitte wählen</option>
-                    <option value="eltern">Eltern</option>
-                    <option value="kind">Kind</option>
-                    <option value="familie">Familie</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="name">Vorgeschlagen von – Name</label>
-                  <input type="text" id="name" placeholder="z. B. Mama oder Leo" required />
-                </div>
-
-                <div class="field full">
-                  <label for="teilnehmer">Teilnehmer</label>
-                  <input type="text" id="teilnehmer" placeholder="z. B. Mama, Leo, Philipp" />
-                </div>
-
-                <div class="field">
-                  <label for="kosten">Kosten in €</label>
-                  <input type="number" step="0.01" min="0" id="kosten" placeholder="z. B. 12.50" />
-                </div>
-
-                <div class="field">
-                  <label for="anbieter">Ort / Anbieter</label>
-                  <input type="text" id="anbieter" placeholder="z. B. Zuhause, Pizzeria Napoli, City Döner" />
-                </div>
-
-                <div class="field full">
-                  <label for="tags">Tags</label>
-                  <input type="text" id="tags" placeholder="z. B. familie, schnell, wochenende" />
-                </div>
-
-                <div class="field full">
-                  <label for="notizen">Notizen</label>
-                  <textarea id="notizen" placeholder="z. B. Mit Salat, Filmabend, nach dem Termin gegessen"></textarea>
-                </div>
-              </div>
-
-              <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
-                <button type="submit" class="btn btn-primary">Eintrag speichern</button>
-                <button type="button" class="btn btn-secondary" id="fillDemoBtn">Beispieldaten einsetzen</button>
-              </div>
-            </form>
-
-            <p class="inline-note">
-              Speicherort: <strong>localStorage → haushaltsheld_food_data</strong>
-            </p>
+            <div class="info-box" style="margin-top:16px;">
+              <strong>Tipp:</strong> Frühstück ist hier bewusst einfacher gedacht. Trage lieber <strong>Brötchen</strong>, <strong>Müsli</strong>, <strong>Joghurt mit Obst</strong> oder <strong>Toast</strong> ein statt einzelne Zutaten.
+            </div>
           </section>
 
-          <section class="card" id="entrySection">
-            <div class="toolbar">
-              <div>
-                <h2 style="margin-bottom:6px;">Gespeicherte Einträge</h2>
-                <p class="card-sub" style="margin-bottom:0;">Hier siehst du alle Mahlzeiten und Essensereignisse.</p>
-                <p class="inline-note" style="margin-top:6px;">Für <strong>Zuhause</strong>-Einträge kannst du Zutaten direkt zur Einkaufsliste übernehmen.</p>
+          <section class="card">
+            <h2 style="margin-bottom:14px;">Frühstücks-Favoriten</h2>
+            <div class="favorite-wrap">
+              <div class="favorite-input-row">
+                <input id="newFavoriteInput" type="text" placeholder="Neuer Favorit, z. B. Brötchen, Müsli oder Pancakes">
+                <button class="btn-soft" type="button" id="addFavoriteBtn">Favorit speichern</button>
               </div>
-
-              <div class="filters">
-                <select id="monthFilter"></select>
-                <select id="typeFilter">
-                  <option value="alle">Alle Typen</option>
-                  <option value="zuhause">Zuhause</option>
-                  <option value="restaurant">Restaurant</option>
-                  <option value="imbiss">Imbiss</option>
-                  <option value="bestellt">Bestellt</option>
-                  <option value="unterwegs">Unterwegs</option>
-                </select>
-              </div>
+              <div class="helper-text">Diese Favoriten kannst du unten an jedem Tag direkt antippen.</div>
+              <div id="favoriteList" class="favorite-list"></div>
             </div>
+          </section>
 
-            <div id="entryList" class="entry-list"></div>
+          <section class="card">
+            <h2 style="margin-bottom:14px;">Wochenplan</h2>
+            <div id="plannerWrap" class="planner-wrap"></div>
           </section>
         </div>
 
         <div class="stack">
           <section class="card">
-            <h2>Monatsübersicht</h2>
-            <p class="card-sub">
-              Diese Werte helfen dir später dabei zu sehen, wie oft zuhause gekocht,
-              bestellt oder im Restaurant / Imbiss gegessen wurde.
-            </p>
-
+            <h2 style="margin-bottom:14px;">Überblick</h2>
             <div class="stats">
-              <div class="stat"><strong id="statTotal">0</strong><span>Einträge im gewählten Monat</span></div>
-              <div class="stat"><strong id="statHome">0</strong><span>Zuhause</span></div>
-              <div class="stat"><strong id="statOrder">0</strong><span>Bestellt</span></div>
-              <div class="stat"><strong id="statOut">0</strong><span>Restaurant + Imbiss</span></div>
+              <div class="stat"><strong id="filledCount">0</strong><span>gefüllte Felder</span></div>
+              <div class="stat"><strong id="favoriteCount">0</strong><span>Frühstücks-Favoriten</span></div>
+              <div class="stat"><strong id="plannedDays">0</strong><span>Tage mit Planung</span></div>
             </div>
           </section>
 
           <section class="card">
-            <h2>Verhalten & Muster</h2>
-            <p class="card-sub">
-              Das ist die Basis für spätere KI-Hinweise wie: „Freitag wird oft bestellt“
-              oder „diesen Monat gab es viele Nudelgerichte“.
-            </p>
-
-            <div class="top-list" id="insightList"></div>
+            <h2 style="margin-bottom:14px;">Warum das hier besser passt</h2>
+            <div class="info-box">
+              Du planst jetzt mit echten Mahlzeiten statt mit losen Zutaten. Genau so ist es im Alltag viel natürlicher:
+              <br><br>
+              <strong>Gut:</strong> Brötchen, Müsli, Toast, Joghurt mit Obst
+              <br>
+              <strong>Ungünstig:</strong> Eier, Quark, Marmelade einzeln
+            </div>
           </section>
 
           <section class="card">
-            <h2>Top-Gerichte im Monat</h2>
-            <p class="card-sub">
-              So erkennst du schnell, was oft gegessen wird und was vielleicht zu selten vorkommt.
-            </p>
-
-            <div class="top-list" id="topMealsList"></div>
+            <h2 style="margin-bottom:14px;">Einkaufshilfe</h2>
+            <div class="info-box">
+              Mit <strong>„Zur Einkaufsliste“</strong> werden alle eingetragenen Mahlzeiten als Grundlage an deine Einkaufsliste übergeben. Mengen und Läden kannst du später dort ergänzen.
+            </div>
           </section>
         </div>
       </div>
-
     </main>
   </div>
 
-<script>
-function handleLogout(){
-  try{
-    localStorage.removeItem("haushaltsheld_user");
-    localStorage.removeItem("haushaltsheld_current_user");
-  }catch(e){}
-  window.location.href = "login.html";
-}
+  <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+    <span class="ki-fab-label">KI</span>
+  </button>
 
-function hydrateSidebarUser(){
-  const nameEl = document.getElementById("userName");
-  const roleEl = document.getElementById("userRole");
-  try{
-    const raw = localStorage.getItem("haushaltsheld_user") || localStorage.getItem("haushaltsheld_current_user");
-    if(!raw) return;
-    const user = JSON.parse(raw);
-    const name = user?.name || user?.username || "Willkommen";
-    const role = user?.role || user?.modus || "Eltern-Modus";
-    if(nameEl) nameEl.textContent = "👋 " + name;
-    if(roleEl) roleEl.textContent = String(role);
-  }catch(e){}
-}
+  <section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+    <div class="ki-head">
+      <div class="ki-head-left">
+        <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
+        <div>
+          <h3>Haushaltsheld KI</h3>
+          <p id="kiContextText"></p>
+          <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
+        </div>
+      </div>
+      <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+    </div>
+    <div class="ki-suggestions" id="kiSuggestions"></div>
+    <div class="ki-chat" id="kiChat">
+      <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+    </div>
+    <form class="ki-form" id="kiForm">
+      <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
+      <button class="ki-send" type="submit">Senden</button>
+    </form>
+  </section>
 
-document.addEventListener("DOMContentLoaded", function(){
-  hydrateSidebarUser();
-  if (window.lucide && lucide.createIcons) lucide.createIcons();
-});
-</script>
-
-<script>
-    const STORAGE_KEY = "haushaltsheld_food_data";
-
-    const DEFAULT_DATA = {
-      essensEintraege: []
-    };
-
-    function loadData() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return structuredClone(DEFAULT_DATA);
-        const parsed = JSON.parse(raw);
-        if (!parsed || !Array.isArray(parsed.essensEintraege)) return structuredClone(DEFAULT_DATA);
-        return parsed;
-      } catch (err) {
-        console.error("Fehler beim Laden:", err);
-        return structuredClone(DEFAULT_DATA);
-      }
+  <script>
+    function handleLogout(){
+      try{
+        localStorage.removeItem("haushaltsheld_user");
+        localStorage.removeItem("haushaltsheld_current_user");
+      }catch(e){}
+      window.location.href = "login.html";
     }
 
-    function saveData(data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    function hydrateSidebarUser(){
+      const nameEl = document.getElementById("userName");
+      const roleEl = document.getElementById("userRole");
+      try{
+        const raw = localStorage.getItem("haushaltsheld_user") || localStorage.getItem("haushaltsheld_current_user");
+        if(!raw) return;
+        const user = JSON.parse(raw);
+        const name = user?.name || user?.username || "Willkommen";
+        const role = user?.role || user?.modus || "Eltern-Modus";
+        if(nameEl) nameEl.textContent = "👋 " + name;
+        if(roleEl) roleEl.textContent = String(role);
+      }catch(e){}
     }
 
-    function formatEuro(value) {
-      if (value === null || value === undefined || value === "") return "—";
-      const num = Number(value);
-      if (Number.isNaN(num)) return "—";
-      return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(num);
+    const PLAN_KEY = "haushaltsheld_essensplan_v2";
+    const SHOPPING_KEY = "haushaltsheld_einkaufsliste_stabil_v1";
+    const DEFAULT_FAVORITES = ["Brötchen", "Müsli", "Toast", "Joghurt mit Obst"];
+    const DAYS = [
+      { key:"montag", label:"Montag" },
+      { key:"dienstag", label:"Dienstag" },
+      { key:"mittwoch", label:"Mittwoch" },
+      { key:"donnerstag", label:"Donnerstag" },
+      { key:"freitag", label:"Freitag" },
+      { key:"samstag", label:"Samstag" },
+      { key:"sonntag", label:"Sonntag" }
+    ];
+
+    function getMonday(date = new Date()){
+      const d = new Date(date);
+      const day = d.getDay();
+      const diff = day === 0 ? -6 : 1 - day;
+      d.setDate(d.getDate() + diff);
+      return d.toISOString().slice(0,10);
     }
 
-    function formatDate(value) {
-      if (!value) return "—";
-      const [y, m, d] = value.split("-");
+    function addDays(dateString, days){
+      const d = new Date(dateString + "T12:00:00");
+      d.setDate(d.getDate() + days);
+      return d.toISOString().slice(0,10);
+    }
+
+    function formatDate(dateString){
+      if(!dateString) return "—";
+      const [y,m,d] = dateString.split("-");
       return `${d}.${m}.${y}`;
     }
 
-    function getWeekday(dateStr) {
-      const date = new Date(dateStr + "T12:00:00");
-      return new Intl.DateTimeFormat("de-DE", { weekday: "long" }).format(date);
+    function escapeHtml(value){
+      return String(value ?? "")
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#039;');
     }
 
-    function normalizeText(text) {
-      return (text || "").trim();
-    }
-
-    function splitList(text) {
-      return normalizeText(text)
-        .split(",")
-        .map(item => item.trim())
-        .filter(Boolean);
-    }
-
-    function createId() {
-      return "meal_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7);
-    }
-
-    function getMonthKey(dateStr) {
-      return (dateStr || "").slice(0, 7);
-    }
-
-    function monthLabel(monthKey) {
-      if (!monthKey) return "Alle Monate";
-      const [year, month] = monthKey.split("-");
-      const date = new Date(Number(year), Number(month) - 1, 1);
-      return new Intl.DateTimeFormat("de-DE", { month: "long", year: "numeric" }).format(date);
-    }
-
-    function getStatusBadgeClass(status) {
-      if (status === "erledigt" || status === "bestaetigt") return "badge green";
-      if (status === "vorschlag") return "badge yellow";
-      return "badge";
-    }
-
-    function typeLabel(type) {
-      const map = {
-        zuhause: "Zuhause",
-        restaurant: "Restaurant",
-        imbiss: "Imbiss",
-        bestellt: "Bestellt",
-        unterwegs: "Unterwegs"
-      };
-      return map[type] || type || "—";
-    }
-
-    function statusLabel(status) {
-      const map = {
-        vorschlag: "Vorschlag",
-        bestaetigt: "Bestätigt",
-        erledigt: "Erledigt",
-        storniert: "Storniert"
-      };
-      return map[status] || status || "—";
-    }
-
-    function collectMonths(entries) {
-      const keys = [...new Set(entries.map(e => getMonthKey(e.datum)).filter(Boolean))].sort().reverse();
-      return keys;
-    }
-
-    function buildMonthFilter(entries) {
-      const select = document.getElementById("monthFilter");
-      const current = select.value;
-      const months = collectMonths(entries);
-
-      select.innerHTML = "";
-      const allOpt = document.createElement("option");
-      allOpt.value = "alle";
-      allOpt.textContent = "Alle Monate";
-      select.appendChild(allOpt);
-
-      months.forEach(key => {
-        const opt = document.createElement("option");
-        opt.value = key;
-        opt.textContent = monthLabel(key);
-        select.appendChild(opt);
+    function createDefaultData(){
+      const weekStart = getMonday();
+      const days = {};
+      DAYS.forEach((day, index) => {
+        days[day.key] = {
+          date: addDays(weekStart, index),
+          fruehstueck: "",
+          mittag: "",
+          abend: "",
+          snack: "",
+          note: ""
+        };
       });
+      return {
+        weekStart,
+        weekTitle: "",
+        weekFocus: "",
+        favorites: [...DEFAULT_FAVORITES],
+        days
+      };
+    }
 
-      const thisMonth = new Date().toISOString().slice(0, 7);
-      if (months.includes(current)) {
-        select.value = current;
-      } else if (months.includes(thisMonth)) {
-        select.value = thisMonth;
-      } else {
-        select.value = "alle";
+    function loadData(){
+      try{
+        const raw = localStorage.getItem(PLAN_KEY);
+        if(!raw) return createDefaultData();
+        const parsed = JSON.parse(raw);
+        if(!parsed || !parsed.days) return createDefaultData();
+        if(!Array.isArray(parsed.favorites)) parsed.favorites = [...DEFAULT_FAVORITES];
+        return parsed;
+      }catch(e){
+        return createDefaultData();
       }
     }
 
-    function getFilteredEntries(entries) {
-      const monthValue = document.getElementById("monthFilter").value;
-      const typeValue = document.getElementById("typeFilter").value;
-
-      return entries.filter(entry => {
-        const monthOk = monthValue === "alle" ? true : getMonthKey(entry.datum) === monthValue;
-        const typeOk = typeValue === "alle" ? true : entry.typ === typeValue;
-        return monthOk && typeOk;
-      }).sort((a, b) => (a.datum < b.datum ? 1 : -1));
+    function saveData(data){
+      localStorage.setItem(PLAN_KEY, JSON.stringify(data));
     }
 
-    function renderEntries(entries) {
-      const list = document.getElementById("entryList");
+    function normalizeDates(data){
+      const weekStart = data.weekStart || getMonday();
+      DAYS.forEach((day, index) => {
+        if(!data.days[day.key]){
+          data.days[day.key] = { date:addDays(weekStart, index), fruehstueck:"", mittag:"", abend:"", snack:"", note:"" };
+        }else{
+          data.days[day.key].date = addDays(weekStart, index);
+        }
+      });
+    }
 
-      if (!entries.length) {
-        list.innerHTML = '<div class="empty">Noch keine Einträge vorhanden. Lege zuerst eine Mahlzeit oder ein Essensereignis an.</div>';
-        return;
+    function renderFavorites(){
+      const data = loadData();
+      const wrap = document.getElementById("favoriteList");
+      if(!data.favorites.length){
+        wrap.innerHTML = '<div class="empty">Noch keine Frühstücks-Favoriten gespeichert.</div>';
+      }else{
+        wrap.innerHTML = data.favorites.map((fav, index) => `
+          <span class="favorite-tag">
+            ${escapeHtml(fav)}
+            <button type="button" onclick="removeFavorite(${index})">×</button>
+          </span>
+        `).join("");
       }
+      document.getElementById("favoriteCount").textContent = data.favorites.length;
+    }
 
-      list.innerHTML = entries.map(entry => {
-        const participants = (entry.teilnehmer || []).length ? entry.teilnehmer.join(", ") : "—";
-        const tags = (entry.tags || []).length ? entry.tags.join(", ") : "—";
-        const canAddToShopping = entry.typ === "zuhause";
-        const alreadyAdded = Boolean(entry.einkauf?.erstellt);
+    function renderPlanner(){
+      const data = loadData();
+      normalizeDates(data);
+      saveData(data);
+
+      document.getElementById("weekStart").value = data.weekStart || "";
+      document.getElementById("weekTitle").value = data.weekTitle || "";
+      document.getElementById("weekFocus").value = data.weekFocus || "";
+
+      const planner = document.getElementById("plannerWrap");
+      planner.innerHTML = DAYS.map(day => {
+        const item = data.days[day.key];
+        const pills = data.favorites.map(fav => `
+          <button type="button" class="pill" onclick="applyFavorite('${day.key}', '${escapeHtml(fav).replace(/'/g, '&#039;')}')">${escapeHtml(fav)}</button>
+        `).join("");
+
         return `
-          <article class="entry">
-            <div class="entry-head">
-              <div>
-                <p class="entry-title">${escapeHtml(entry.gericht || "Ohne Titel")}</p>
-                <div class="entry-meta">
-                  ${escapeHtml(formatDate(entry.datum))} · ${escapeHtml(entry.wochentag || "—")} · ${escapeHtml(entry.mahlzeit || "—")}<br>
-                  Vorgeschlagen von: ${escapeHtml(entry.vorgeschlagenVon?.name || "—")} (${escapeHtml(entry.vorgeschlagenVon?.rolle || "—")})
-                </div>
+          <article class="day-card">
+            <div class="day-head">
+              <div class="day-title">
+                <h3>${escapeHtml(day.label)}</h3>
+                <span>${escapeHtml(formatDate(item.date))}</span>
               </div>
-              <div class="mini-actions">
-                ${canAddToShopping ? `<button class="mini-btn" onclick="addMealToShoppingList('${entry.id}')" ${alreadyAdded ? 'disabled' : ''}>${alreadyAdded ? 'Schon in Einkaufsliste' : '🛒 Zur Einkaufsliste'}</button>` : ""}
-                <button class="btn btn-danger" onclick="deleteEntry('${entry.id}')">Löschen</button>
+              <div class="day-actions">
+                <button type="button" class="mini-btn" onclick="clearDay('${day.key}')">Tag leeren</button>
               </div>
             </div>
 
-            <div class="badges">
-              <span class="badge">${escapeHtml(typeLabel(entry.typ))}</span>
-              <span class="${getStatusBadgeClass(entry.status)}">${escapeHtml(statusLabel(entry.status))}</span>
-              <span class="badge">${escapeHtml(entry.kategorie || "—")}</span>
-              ${alreadyAdded ? '<span class="badge green">Einkaufsliste erstellt</span>' : ''}
+            <div class="meal-grid">
+              <div class="meal-box">
+                <label for="${day.key}_fruehstueck">Frühstück</label>
+                <div class="sub-label">Favorit antippen oder eigenes Frühstück eintragen</div>
+                <div class="pill-list">${pills || '<span class="helper-text">Noch keine Favoriten vorhanden.</span>'}</div>
+                <input id="${day.key}_fruehstueck" data-day="${day.key}" data-field="fruehstueck" type="text" value="${escapeHtml(item.fruehstueck || "")}" placeholder="z. B. Brötchen oder Müsli">
+              </div>
+
+              <div class="meal-box">
+                <label for="${day.key}_mittag">Mittagessen</label>
+                <input id="${day.key}_mittag" data-day="${day.key}" data-field="mittag" type="text" value="${escapeHtml(item.mittag || "")}" placeholder="z. B. Nudeln mit Gemüse">
+              </div>
+
+              <div class="meal-box">
+                <label for="${day.key}_abend">Abendessen</label>
+                <input id="${day.key}_abend" data-day="${day.key}" data-field="abend" type="text" value="${escapeHtml(item.abend || "")}" placeholder="z. B. Wraps oder Brotzeit">
+              </div>
+
+              <div class="meal-box">
+                <label for="${day.key}_snack">Snack / Extras</label>
+                <input id="${day.key}_snack" data-day="${day.key}" data-field="snack" type="text" value="${escapeHtml(item.snack || "")}" placeholder="optional">
+              </div>
             </div>
 
-            <div class="entry-meta">
-              Teilnehmer: ${escapeHtml(participants)}<br>
-              Ort / Anbieter: ${escapeHtml(entry.ort?.name || "—")}<br>
-              Kosten: ${escapeHtml(formatEuro(entry.kosten?.betrag))}<br>
-              Tags: ${escapeHtml(tags)}
+            <div class="day-note field">
+              <label for="${day.key}_note">Notiz</label>
+              <textarea id="${day.key}_note" data-day="${day.key}" data-field="note" placeholder="z. B. schnell kochen, Reste einplanen, Oma kommt">${escapeHtml(item.note || "")}</textarea>
             </div>
-
-            ${entry.notizen ? `<div class="entry-notes"><strong>Notiz:</strong> ${escapeHtml(entry.notizen)}</div>` : ""}
-            ${alreadyAdded ? `<div class="inline-note">Dieser Eintrag wurde bereits an die Einkaufsliste übergeben.</div>` : ""}
           </article>
         `;
       }).join("");
+
+      bindInputs();
+      renderStats();
     }
 
-    function createShoppingEntryFromMeal(entry) {
-      const shoppingId = "shop_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7);
-      const mealLabel = [entry.mahlzeit, entry.datum ? formatDate(entry.datum) : ""].filter(Boolean).join(" · ");
-      return {
-        id: shoppingId,
-        title: `Zutaten für: ${entry.gericht}`,
-        baseGroup: entry.kategorie || entry.gericht,
-        date: entry.datum || new Date().toISOString().slice(0, 10),
-        purchaseKind: "Alltag",
-        category: "Lebensmittel",
-        priority: "Pflicht",
-        origin: "Kochrezept",
-        status: "offen",
-        quantity: null,
-        unit: "",
-        store: "",
-        price: null,
-        buyer: entry.vorgeschlagenVon?.name || "",
-        note: mealLabel ? `Aus Essensplan übernommen (${mealLabel})` : "Aus Essensplan übernommen"
-      };
+    function bindInputs(){
+      document.querySelectorAll("[data-day][data-field]").forEach(el => {
+        el.addEventListener("input", function(){
+          const data = loadData();
+          const day = this.dataset.day;
+          const field = this.dataset.field;
+          data.days[day][field] = this.value;
+          saveData(data);
+          renderStats();
+        });
+      });
     }
 
-    function loadShoppingEntries() {
-      try {
-        return JSON.parse(localStorage.getItem("haushaltsheld_einkaufsliste_stabil_v1") || "[]");
-      } catch (error) {
+    function renderStats(){
+      const data = loadData();
+      let filled = 0;
+      let plannedDays = 0;
+      DAYS.forEach(day => {
+        const item = data.days[day.key] || {};
+        const fields = ["fruehstueck","mittag","abend","snack"];
+        const filledToday = fields.filter(f => (item[f] || "").trim()).length;
+        filled += filledToday;
+        if(filledToday > 0 || (item.note || "").trim()) plannedDays++;
+      });
+      document.getElementById("filledCount").textContent = filled;
+      document.getElementById("plannedDays").textContent = plannedDays;
+      document.getElementById("favoriteCount").textContent = (data.favorites || []).length;
+    }
+
+    function addFavorite(){
+      const input = document.getElementById("newFavoriteInput");
+      const value = (input.value || "").trim();
+      if(!value) return;
+      const data = loadData();
+      if(!data.favorites.includes(value)){
+        data.favorites.unshift(value);
+      }
+      saveData(data);
+      input.value = "";
+      renderFavorites();
+      renderPlanner();
+    }
+
+    function removeFavorite(index){
+      const data = loadData();
+      data.favorites.splice(index, 1);
+      saveData(data);
+      renderFavorites();
+      renderPlanner();
+    }
+    window.removeFavorite = removeFavorite;
+
+    function applyFavorite(dayKey, value){
+      const decoded = value
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
+      const data = loadData();
+      data.days[dayKey].fruehstueck = decoded;
+      saveData(data);
+      renderPlanner();
+    }
+    window.applyFavorite = applyFavorite;
+
+    function clearDay(dayKey){
+      const ok = window.confirm("Diesen Tag wirklich leeren?");
+      if(!ok) return;
+      const data = loadData();
+      const date = data.days[dayKey].date;
+      data.days[dayKey] = { date, fruehstueck:"", mittag:"", abend:"", snack:"", note:"" };
+      saveData(data);
+      renderPlanner();
+    }
+    window.clearDay = clearDay;
+
+    function saveHeader(){
+      const data = loadData();
+      data.weekStart = document.getElementById("weekStart").value || getMonday();
+      data.weekTitle = document.getElementById("weekTitle").value || "";
+      data.weekFocus = document.getElementById("weekFocus").value || "";
+      normalizeDates(data);
+      saveData(data);
+      renderPlanner();
+    }
+
+    function loadShoppingEntries(){
+      try{
+        return JSON.parse(localStorage.getItem(SHOPPING_KEY) || "[]");
+      }catch(e){
         return [];
       }
     }
 
-    function saveShoppingEntries(entries) {
-      localStorage.setItem("haushaltsheld_einkaufsliste_stabil_v1", JSON.stringify(entries));
+    function saveShoppingEntries(entries){
+      localStorage.setItem(SHOPPING_KEY, JSON.stringify(entries));
     }
 
-    function addMealToShoppingList(id) {
+    function transferToShoppingList(){
       const data = loadData();
-      const entry = data.essensEintraege.find(item => item.id === id);
-
-      if (!entry) {
-        alert("Der Essensplan-Eintrag wurde nicht gefunden.");
-        return;
-      }
-
-      if (entry.typ !== "zuhause") {
-        alert("Nur Zuhause-Einträge können direkt an die Einkaufsliste übergeben werden.");
-        return;
-      }
-
-      if (entry.einkauf?.erstellt) {
-        alert("Dieser Eintrag wurde bereits an die Einkaufsliste übergeben.");
-        return;
-      }
-
       const shoppingEntries = loadShoppingEntries();
-      const shoppingEntry = createShoppingEntryFromMeal(entry);
-      shoppingEntries.unshift(shoppingEntry);
-      saveShoppingEntries(shoppingEntries);
-
-      entry.einkauf = {
-        relevant: true,
-        erstellt: true,
-        eintragsIds: [shoppingEntry.id]
-      };
-      entry.aktualisiertAm = new Date().toISOString();
-      saveData(data);
-      renderAll();
-
-      const openShopping = window.confirm("Zur Einkaufsliste hinzugefügt. Möchtest du die Einkaufsliste jetzt öffnen?");
-      if (openShopping) {
-        window.location.href = "einkaufsliste.html";
-      }
-    }
-    window.addMealToShoppingList = addMealToShoppingList;
-
-    function getStats(entries) {
-      const home = entries.filter(e => e.typ === "zuhause").length;
-      const ordered = entries.filter(e => e.typ === "bestellt").length;
-      const out = entries.filter(e => e.typ === "restaurant" || e.typ === "imbiss").length;
-      return { total: entries.length, home, ordered, out };
-    }
-
-    function renderStats(entries) {
-      const stats = getStats(entries);
-      document.getElementById("statTotal").textContent = stats.total;
-      document.getElementById("statHome").textContent = stats.home;
-      document.getElementById("statOrder").textContent = stats.ordered;
-      document.getElementById("statOut").textContent = stats.out;
-    }
-
-    function countBy(entries, keyGetter) {
-      const map = {};
-      entries.forEach(item => {
-        const key = keyGetter(item);
-        if (!key) return;
-        map[key] = (map[key] || 0) + 1;
+      const newItems = [];
+      DAYS.forEach(day => {
+        const item = data.days[day.key];
+        [
+          ["Frühstück", item.fruehstueck],
+          ["Mittag", item.mittag],
+          ["Abend", item.abend],
+          ["Snack", item.snack]
+        ].forEach(([label, value]) => {
+          const clean = (value || "").trim();
+          if(!clean) return;
+          newItems.push({
+            id: "shop_" + Date.now() + "_" + Math.random().toString(36).slice(2,7),
+            title: `Zutaten für: ${clean}`,
+            baseGroup: clean,
+            date: item.date || new Date().toISOString().slice(0,10),
+            purchaseKind: "Essensplan",
+            category: "Lebensmittel",
+            priority: "Pflicht",
+            origin: "Wochenplan",
+            status: "offen",
+            quantity: null,
+            unit: "",
+            store: "",
+            price: null,
+            buyer: "",
+            note: `${day.label} · ${label} · aus Essensplan übernommen`
+          });
+        });
       });
-      return map;
-    }
-
-    function topEntries(counter, limit = 5) {
-      return Object.entries(counter).sort((a,b) => b[1] - a[1]).slice(0, limit);
-    }
-
-    function renderTopMeals(entries) {
-      const target = document.getElementById("topMealsList");
-      const mealCounter = countBy(entries, e => normalizeText(e.gericht));
-
-      const tops = topEntries(mealCounter, 6);
-      if (!tops.length) {
-        target.innerHTML = '<div class="empty">Noch keine Monatsdaten für Top-Gerichte vorhanden.</div>';
+      if(!newItems.length){
+        alert("Es sind noch keine Mahlzeiten eingetragen.");
         return;
       }
-
-      target.innerHTML = tops.map(([meal, count]) => `
-        <div class="top-item">
-          <span>${escapeHtml(meal)}</span>
-          <strong>${count}x</strong>
-        </div>
-      `).join("");
+      saveShoppingEntries([...newItems, ...shoppingEntries]);
+      const open = window.confirm("An die Einkaufsliste übergeben. Möchtest du die Einkaufsliste jetzt öffnen?");
+      if(open) window.location.href = "einkaufsliste.html";
     }
 
-    function buildInsights(entries) {
-      if (!entries.length) return ["Noch keine Daten vorhanden."];
-
-      const insights = [];
-      const typeCounter = countBy(entries, e => typeLabel(e.typ));
-      const catCounter = countBy(entries, e => normalizeText(e.kategorie));
-      const proposerCounter = countBy(entries, e => normalizeText(e.vorgeschlagenVon?.name));
-      const weekdayCounter = countBy(entries, e => normalizeText(e.wochentag));
-
-      const topType = topEntries(typeCounter, 1)[0];
-      const topCat = topEntries(catCounter, 1)[0];
-      const topProposer = topEntries(proposerCounter, 1)[0];
-      const topWeekday = topEntries(weekdayCounter, 1)[0];
-
-      if (topType) insights.push(`Am häufigsten erfasst: ${topType[0]} (${topType[1]}x).`);
-      if (topCat) insights.push(`Am häufigsten gegessen: Kategorie ${topCat[0]} (${topCat[1]}x).`);
-      if (topProposer) insights.push(`Die meisten Vorschläge kamen von ${topProposer[0]} (${topProposer[1]}x).`);
-      if (topWeekday) insights.push(`Besonders oft eingetragen am ${topWeekday[0]}.`);
-
-      const outsideCount = entries.filter(e => ["restaurant", "imbiss", "bestellt"].includes(e.typ)).length;
-      const homeCount = entries.filter(e => e.typ === "zuhause").length;
-      if (outsideCount > homeCount) {
-        insights.push("Es wurde häufiger außer Haus / bestellt erfasst als zuhause gekocht.");
-      } else if (homeCount > 0) {
-        insights.push("Zuhause kochen liegt im gewählten Zeitraum vorn.");
+    document.getElementById("addFavoriteBtn").addEventListener("click", addFavorite);
+    document.getElementById("newFavoriteInput").addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        addFavorite();
       }
-
-      const totalCosts = entries.reduce((sum, e) => sum + (Number(e.kosten?.betrag) || 0), 0);
-      insights.push(`Erfasste Gesamtkosten im Zeitraum: ${formatEuro(totalCosts)}.`);
-
-      return insights;
-    }
-
-    function renderInsights(entries) {
-      const target = document.getElementById("insightList");
-      const insights = buildInsights(entries);
-      target.innerHTML = insights.map(text => `<div class="top-item"><span>${escapeHtml(text)}</span></div>`).join("");
-    }
-
-    function escapeHtml(text) {
-      return String(text ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function resetForm() {
-      document.getElementById("mealForm").reset();
-      document.getElementById("datum").value = new Date().toISOString().slice(0, 10);
-    }
-
-    function renderAll() {
-      const data = loadData();
-      buildMonthFilter(data.essensEintraege);
-      const filtered = getFilteredEntries(data.essensEintraege);
-      renderEntries(filtered);
-      renderStats(filtered);
-      renderTopMeals(filtered);
-      renderInsights(filtered);
-    }
-
-    function deleteEntry(id) {
-      const ok = window.confirm("Diesen Eintrag wirklich löschen?");
-      if (!ok) return;
-      const data = loadData();
-      data.essensEintraege = data.essensEintraege.filter(entry => entry.id !== id);
-      saveData(data);
-      renderAll();
-    }
-    window.deleteEntry = deleteEntry;
-
-    document.getElementById("mealForm").addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      const datum = document.getElementById("datum").value;
-      const mahlzeit = document.getElementById("mahlzeit").value;
-      const typ = document.getElementById("typ").value;
-      const status = document.getElementById("status").value;
-      const gericht = normalizeText(document.getElementById("gericht").value);
-      const kategorie = normalizeText(document.getElementById("kategorie").value);
-      const rolle = document.getElementById("rolle").value;
-      const name = normalizeText(document.getElementById("name").value);
-      const teilnehmer = splitList(document.getElementById("teilnehmer").value);
-      const kosten = document.getElementById("kosten").value;
-      const anbieter = normalizeText(document.getElementById("anbieter").value);
-      const tags = splitList(document.getElementById("tags").value);
-      const notizen = normalizeText(document.getElementById("notizen").value);
-
-      const entry = {
-        id: createId(),
-        datum,
-        wochentag: getWeekday(datum),
-        mahlzeit,
-        typ,
-        status,
-        gericht,
-        kategorie,
-        tags,
-        vorgeschlagenVon: {
-          rolle,
-          name
-        },
-        teilnehmer,
-        kosten: {
-          betrag: kosten ? Number(kosten) : null,
-          waehrung: "EUR",
-          proPerson: null
-        },
-        ort: {
-          name: anbieter || (typ === "zuhause" ? "Zuhause" : ""),
-          anbieter: anbieter || "",
-          adresse: ""
-        },
-        einkauf: {
-          relevant: typ === "zuhause",
-          erstellt: false,
-          eintragsIds: []
-        },
-        notizen,
-        bewertung: null,
-        erstelltAm: new Date().toISOString(),
-        aktualisiertAm: new Date().toISOString()
-      };
-
-      const data = loadData();
-      data.essensEintraege.push(entry);
-      saveData(data);
-      resetForm();
-      renderAll();
     });
-
-    document.getElementById("fillDemoBtn").addEventListener("click", function () {
-      document.getElementById("datum").value = new Date().toISOString().slice(0, 10);
-      document.getElementById("mahlzeit").value = "Abendessen";
-      document.getElementById("typ").value = "zuhause";
-      document.getElementById("status").value = "erledigt";
-      document.getElementById("gericht").value = "Wraps mit Gemüse";
-      document.getElementById("kategorie").value = "Wraps";
-      document.getElementById("rolle").value = "kind";
-      document.getElementById("name").value = "Leo";
-      document.getElementById("teilnehmer").value = "Mama, Leo, Philipp";
-      document.getElementById("kosten").value = "9.80";
-      document.getElementById("anbieter").value = "Zuhause";
-      document.getElementById("tags").value = "familie, schnell, abend";
-      document.getElementById("notizen").value = "Kam gut an.";
+    document.getElementById("weekStart").addEventListener("change", saveHeader);
+    document.getElementById("weekTitle").addEventListener("input", saveHeader);
+    document.getElementById("weekFocus").addEventListener("input", saveHeader);
+    document.getElementById("savePlanBtn").addEventListener("click", function(){
+      saveHeader();
+      alert("Essensplan gespeichert.");
     });
+    document.getElementById("shoppingTransferBtn").addEventListener("click", transferToShoppingList);
 
-    document.getElementById("clearAllBtn").addEventListener("click", function () {
-      const ok = window.confirm("Wirklich alle Essens-Einträge löschen?");
-      if (!ok) return;
-      saveData(structuredClone(DEFAULT_DATA));
-      renderAll();
+    document.addEventListener("DOMContentLoaded", function(){
+      hydrateSidebarUser();
+      renderFavorites();
+      renderPlanner();
+      if(window.lucide && lucide.createIcons) lucide.createIcons();
     });
-
-    document.getElementById("exportJsonBtn").addEventListener("click", function () {
-      const data = loadData();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "haushaltsheld_food_data.json";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    });
-
-    document.getElementById("monthFilter").addEventListener("change", renderAll);
-    document.getElementById("typeFilter").addEventListener("change", renderAll);
-
-    resetForm();
-    renderAll();
   </script>
 
-<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-  <span class="ki-fab-label">KI</span>
-</button>
+  <script>
+    (function(){
+      const page = "essensplan";
+      const fab = document.getElementById("kiFab");
+      const panel = document.getElementById("kiPanel");
+      const closeBtn = document.getElementById("kiClose");
+      const form = document.getElementById("kiForm");
+      const input = document.getElementById("kiInput");
+      const chat = document.getElementById("kiChat");
+      const suggestions = document.getElementById("kiSuggestions");
+      const contextText = document.getElementById("kiContextText");
+      const welcome = document.getElementById("kiWelcomeMsg");
 
-<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
-  <div class="ki-head">
-    <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
-      <div>
-        <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText"></p>
-        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
-      </div>
-    </div>
-    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
-  </div>
+      if(!fab || !panel || !closeBtn || !form || !input || !chat || !suggestions || !contextText || !welcome) return;
 
-  <div class="ki-suggestions" id="kiSuggestions"></div>
+      const pageSettings = {
+        context: "Ich helfe dir beim Essensplan, bei Frühstücksideen und bei einer alltagstauglichen Wochenstruktur.",
+        suggestions: [
+          "Mach mir einen einfachen Essensplan für 5 Tage.",
+          "Welche Frühstücke eignen sich gut für Kinder?",
+          "Hilf mir mit günstigen Ideen für die Woche."
+        ],
+        welcome: "Hallo 👋 Ich helfe dir beim Planen eurer Woche und mit einfachen Frühstücks-Ideen."
+      };
 
-  <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
-  </div>
+      function escapeHtml(value){
+        return String(value ?? "")
+          .replace(/&/g,'&amp;')
+          .replace(/</g,'&lt;')
+          .replace(/>/g,'&gt;')
+          .replace(/"/g,'&quot;')
+          .replace(/'/g,'&#039;');
+      }
 
-  <form class="ki-form" id="kiForm">
-    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
-    <button class="ki-send" type="submit">Senden</button>
-  </form>
-</section>
+      contextText.textContent = pageSettings.context;
+      welcome.textContent = pageSettings.welcome;
 
+      suggestions.innerHTML = pageSettings.suggestions.map(text =>
+        '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
+      ).join('');
 
-<script>
-(function(){
-  const page = "essensplan";
-  const fab = document.getElementById("kiFab");
-  const panel = document.getElementById("kiPanel");
-  const closeBtn = document.getElementById("kiClose");
-  const form = document.getElementById("kiForm");
-  const input = document.getElementById("kiInput");
-  const chat = document.getElementById("kiChat");
-  const suggestions = document.getElementById("kiSuggestions");
-  const contextText = document.getElementById("kiContextText");
-  const welcome = document.getElementById("kiWelcomeMsg");
-
-  if(!fab || !panel || !closeBtn || !form || !input || !chat || !suggestions || !contextText || !welcome) return;
-
-  const pageSettings = {
-    context: "Ich helfe dir beim Essensplan, bei Ideen für Mahlzeiten und bei der Struktur deiner Woche.",
-    suggestions: ["Mach mir einen einfachen Essensplan für 5 Tage.", "Welche Gerichte eignen sich gut für Kinder?", "Hilf mir mit einer schnellen Wochenstruktur fürs Kochen."],
-    welcome: "Hallo 👋 Ich bin deine Haushaltsheld KI. Ich helfe dir beim Essensplan und bei Ideen für die Woche."
-  };
-
-  function escapeHtml(value){
-    return String(value ?? "")
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;')
-      .replace(/'/g,'&#039;');
-  }
-
-  contextText.textContent = pageSettings.context;
-  welcome.textContent = pageSettings.welcome;
-
-  suggestions.innerHTML = pageSettings.suggestions.map(text =>
-    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
-  ).join('');
-
-  suggestions.querySelectorAll('.ki-chip').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      input.value = btn.textContent.trim();
-      input.focus();
-    });
-  });
-
-  function addMsg(role, text){
-    const div = document.createElement('div');
-    div.className = 'ki-msg ' + role;
-    div.textContent = text;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-    return div;
-  }
-
-  async function sendMessage(message){
-    addMsg('user', message);
-    const loading = addMsg('bot', 'Ich denke kurz nach …');
-    loading.classList.add('ki-typing');
-
-    try{
-      const response = await fetch('/.netlify/functions/chat', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({message, page, mode: 'parent'})
+      suggestions.querySelectorAll('.ki-chip').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          input.value = btn.textContent.trim();
+          input.focus();
+        });
       });
-      const data = await response.json();
-      loading.remove();
-      addMsg('bot', data.reply || 'Ich konnte gerade nichts Sinnvolles antworten.');
-    }catch(err){
-      loading.remove();
-      addMsg('bot', 'Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.');
-    }
-  }
 
-  fab.addEventListener('click',()=>{
-    panel.classList.add('open');
-    input.focus();
-  });
-  closeBtn.addEventListener('click',()=>{
-    panel.classList.remove('open');
-  });
-  document.addEventListener('keydown',(e)=>{
-    if(e.key === 'Escape') panel.classList.remove('open');
-  });
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const message = input.value.trim();
-    if(!message) return;
-    input.value = '';
-    await sendMessage(message);
-  });
+      function addMsg(role, text){
+        const div = document.createElement('div');
+        div.className = 'ki-msg ' + role;
+        div.textContent = text;
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+        return div;
+      }
 
-  if(window.lucide && window.lucide.createIcons){
-    try{ window.lucide.createIcons(); }catch(e){}
-  }
-})();
-</script>
+      async function sendMessage(message){
+        addMsg('user', message);
+        const loading = addMsg('bot', 'Ich denke kurz nach …');
+        try{
+          const response = await fetch('/.netlify/functions/chat', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({message, page, mode: 'parent'})
+          });
+          const data = await response.json();
+          loading.remove();
+          addMsg('bot', data.reply || 'Ich konnte gerade nichts Sinnvolles antworten.');
+        }catch(err){
+          loading.remove();
+          addMsg('bot', 'Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.');
+        }
+      }
 
+      fab.addEventListener('click',()=>{ panel.classList.add('open'); input.focus(); });
+      closeBtn.addEventListener('click',()=>{ panel.classList.remove('open'); });
+      document.addEventListener('keydown',(e)=>{ if(e.key === 'Escape') panel.classList.remove('open'); });
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const message = input.value.trim();
+        if(!message) return;
+        input.value = '';
+        await sendMessage(message);
+      });
+
+      if(window.lucide && window.lucide.createIcons){
+        try{ window.lucide.createIcons(); }catch(e){}
+      }
+    })();
+  </script>
 </body>
 </html>
