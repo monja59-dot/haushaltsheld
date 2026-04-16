@@ -60,96 +60,106 @@ button,input,select,textarea{font:inherit}
 .mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer}
 .mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
 .logout-btn{width:100%;margin-top:10px;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72)}
-.main{padding:30px 28px 38px;max-width:1600px}
-.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:18px}
+
+.main{padding:34px 34px 42px;max-width:1740px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
 .page-header h1{font-size:2.2rem;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:12px}
-.page-header p{color:var(--muted);max-width:920px}
+.page-header p{color:var(--muted);max-width:980px}
 .page-icon,.icon-chip{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0}
 .page-icon svg,.icon-chip svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .mode-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)}
-.info-bubble{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:flex-start;background:linear-gradient(180deg,#fffaf4 0%, #f6efe4 100%);border:1px solid var(--line);border-radius:26px;padding:18px 20px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+
+.info-bubble{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:flex-start;background:linear-gradient(180deg,#fffaf4 0%, #f6efe4 100%);border:1px solid var(--line);border-radius:26px;padding:20px 22px;margin-bottom:22px;box-shadow:var(--shadow-sm)}
 .info-bubble .bubble-icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-xs);font-size:1.7rem}
 .info-bubble h2{font-size:1.08rem;margin-bottom:6px}
 .info-bubble p{color:var(--text2);font-size:.94rem}
 .bubble-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.btn,.btn-soft,.chip-btn{border:none;border-radius:16px;padding:12px 18px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20);background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;transition:transform .16s ease, box-shadow .16s ease, filter .16s ease, border-color .16s ease}
+
+.btn,.btn-soft,.chip-btn,.danger-btn{border:none;border-radius:18px;padding:13px 19px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20);background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;transition:transform .16s ease, box-shadow .16s ease, filter .16s ease, border-color .16s ease}
 .btn-soft,.chip-btn{background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);color:#4d3c2c;box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.65)}
-.btn:hover,.btn-soft:hover,.chip-btn:hover{transform:translateY(-2px);filter:brightness(1.02)}
-.btn:active,.btn-soft:active,.chip-btn:active{transform:translateY(0)}
-.top-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.85fr);gap:18px;align-items:start}
-.left-stack,.right-stack{display:grid;gap:18px}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:22px;box-shadow:var(--shadow-sm);transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
-.card h3{font-size:1.08rem;margin-bottom:6px;display:flex;align-items:center;gap:10px}
-.card-sub{color:var(--muted);font-size:.9rem;margin-bottom:14px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.stat{border:1px solid rgba(223,209,188,.9);border-radius:22px;padding:16px;background:#fffdf9}
-.stat span{display:block;font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
-.stat strong{display:block;font-size:1.45rem;line-height:1.1}
-.stat small{display:block;color:var(--text2);margin-top:6px}
-.filters-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.danger-btn{background:linear-gradient(135deg,#d97878 0%, #b95a5a 100%);box-shadow:0 4px 0 #8a4444,0 10px 22px rgba(185,90,90,.22),inset 0 1px 0 rgba(255,255,255,.20)}
+.btn:hover,.btn-soft:hover,.chip-btn:hover,.danger-btn:hover{transform:translateY(-2px);filter:brightness(1.02)}
+.btn:active,.btn-soft:active,.chip-btn:active,.danger-btn:active{transform:translateY(0)}
+
+.top-grid{
+  display:grid;
+  grid-template-columns: 1fr 360px;
+  gap:24px;
+  align-items:start;
+}
+
+.left-stack{
+  min-width:0;
+}
+
+.right-stack{
+  width:360px;
+}
+.left-stack,.right-stack{display:grid;gap:22px}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:28px 30px;box-shadow:var(--shadow-sm);transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
+.card h3{font-size:1.08rem;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.card-sub{color:var(--muted);font-size:.93rem;margin-bottom:18px;line-height:1.65}
+
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.stat{border:1px solid rgba(223,209,188,.9);border-radius:22px;padding:18px;background:#fffdf9}
+.stat span{display:block;font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.stat strong{display:block;font-size:1.55rem;line-height:1.1}
+.stat small{display:block;color:var(--text2);margin-top:8px}
+
+.filters-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px 16px}
 .field{display:grid;gap:8px}
 .field label{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-radius:16px;padding:12px 14px;color:var(--text);outline:none;min-height:46px}
-.field textarea{min-height:88px;resize:vertical}
+.field input,.field select,.field textarea{
+  width:100%;border:1.5px solid var(--line);background:#fffdf9;border-radius:18px;padding:15px 16px;color:var(--text);outline:none;min-height:54px
+}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(76,175,80,.7);box-shadow:0 0 0 4px rgba(76,175,80,.10);background:#fff}
-.filter-actions,.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.quick-add{display:flex;gap:10px;flex-wrap:wrap}
-.quick-pill{padding:10px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:800;color:var(--text2);cursor:pointer;transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease}
-.quick-pill:hover{transform:translateY(-2px);box-shadow:var(--shadow-xs);border-color:rgba(76,175,80,.38);background:#fffdfa}
-.quick-pill:active{transform:translateY(0)}
-.accordion{display:grid;gap:12px}
-.acc-item{border:1px solid rgba(223,209,188,.95);border-radius:24px;background:#fffdf9;overflow:hidden;box-shadow:var(--shadow-xs)}
-.acc-head{width:100%;border:none;background:transparent;padding:18px 18px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer}
-.acc-title strong{display:block;font-size:1rem}
-.acc-title span{display:block;color:var(--muted);font-size:.86rem;margin-top:2px}
-.acc-arrow{margin-left:auto;color:var(--muted);font-weight:900;transition:transform .18s ease}
-.acc-item.open .acc-arrow{transform:rotate(180deg)}
-.acc-body{display:none;padding:0 18px 18px}
-.acc-item.open .acc-body{display:block}
-.sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px}
-.accent-green{background:var(--accent-soft)} .accent-blue{background:var(--blue-soft)} .accent-yellow{background:var(--yellow-soft)} .accent-red{background:var(--danger-soft)} .accent-purple{background:var(--purple-soft)} .accent-teal{background:var(--teal-soft)}
-.list{display:grid;gap:10px}
-.entry{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px 16px;border:1px solid rgba(223,209,188,.95);border-radius:20px;background:#fff}
-.entry h4{font-size:.98rem}
-.entry p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.filter-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+
+.entry-group{display:grid;gap:16px}
+.month-block{display:grid;gap:12px}
+.month-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:18px;background:var(--soft);border:1px solid var(--line)}
+.month-head strong{font-size:1rem}
+.month-head span{font-size:.85rem;color:var(--text2);font-weight:800}
+.list{display:grid;gap:14px}
+.entry{display:grid;grid-template-columns:1fr auto;gap:16px;padding:18px 20px;border:1px solid rgba(223,209,188,.95);border-radius:22px;background:#fff}
+.entry h4{font-size:1rem}
+.entry p{color:var(--muted);font-size:.88rem;margin-top:5px;line-height:1.6}
 .entry strong{font-size:1rem;white-space:nowrap}
-.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .meta{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#faf5ee;border:1px solid var(--line);font-size:.75rem;font-weight:700;color:var(--text2)}
-.small-card{padding:18px;border-radius:24px}
+
 .side-card-list{display:grid;gap:10px}
-.side-line{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(223,209,188,.9)}
+.side-line{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed rgba(223,209,188,.9)}
 .side-line:last-child{border-bottom:none;padding-bottom:0}
 .side-line span{color:var(--text2)}
-.empty{padding:20px;border:1px dashed var(--line);border-radius:20px;background:#fffdf9;color:var(--muted);text-align:center}
-.print-note{font-size:.82rem;color:var(--muted);margin-top:10px}
+.empty{padding:24px;border:1px dashed var(--line);border-radius:20px;background:#fffdf9;color:var(--muted);text-align:center}
+.print-note{font-size:.82rem;color:var(--muted);margin-top:12px}
 .hidden{display:none!important}
-@media (max-width:1320px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .filters-grid{grid-template-columns:repeat(3,1fr)}
-  .sub-grid{grid-template-columns:repeat(2,1fr)}
+.badge-pill{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:.82rem;font-weight:800;color:var(--text2)}
+
+@media (max-width:1460px){
+  .filters-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:1180px){
+  .filters-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:1020px){
   .app{grid-template-columns:1fr}
   .sidebar{height:auto;position:relative}
   .top-grid{grid-template-columns:1fr}
-  .main{padding:18px}
+  .main{padding:20px}
 }
 @media (max-width:760px){
-  .filters-grid,.sub-grid,.stats{grid-template-columns:1fr}
+  .filters-grid,.stats{grid-template-columns:1fr}
   .page-header h1{font-size:1.8rem}
   .entry{grid-template-columns:1fr}
   .info-bubble{grid-template-columns:1fr}
+  .card{padding:22px}
 }
-.left-stack .card:hover,.right-stack .card:hover,.acc-item:hover{
+.left-stack .card:hover,.right-stack .card:hover{
   transform:translateY(-3px);
   box-shadow:var(--shadow);
   border-color:rgba(76,175,80,.22);
-}
-.acc-head:hover .icon-chip{
-  transform:translateY(-1px);
-}
-.acc-head .icon-chip{
-  transition:transform .16s ease, box-shadow .16s ease;
 }
 
 .ki-fab{
@@ -157,9 +167,7 @@ button,input,select,textarea{font:inherit}
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
   box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
   display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:9998;
-  transition:transform .18s ease, box-shadow .18s ease;
 }
-.ki-fab:hover{ transform:translateY(-3px); box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28); }
 .ki-fab img{width:40px;height:40px;object-fit:contain}
 .ki-fab-label{ position:absolute; bottom:8px; right:10px; color:#fff; font-size:.78rem; font-weight:800; line-height:1; }
 .ki-panel{
@@ -186,31 +194,29 @@ button,input,select,textarea{font:inherit}
 .ki-form{ padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px; }
 .ki-input{ border:1.5px solid var(--line);background:var(--bg2);border-radius:18px;padding:14px 16px;font-size:.97rem;color:var(--text);outline:none;font-family:inherit; }
 .ki-send{ border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%); color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer; box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20); }
-.quick-manage{display:grid;grid-template-columns:1.1fr .9fr auto;gap:10px;margin-top:14px}
-.quick-manage .field{gap:6px}
-.quick-custom-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-.quick-custom-item{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--text2);font-weight:700}
-.quick-remove{border:none;background:transparent;color:var(--danger);font-weight:900;cursor:pointer;font-size:1rem;line-height:1}
-@media(max-width:700px){ .ki-fab{right:14px;bottom:14px;width:68px;height:68px} .ki-panel{right:10px;left:10px;bottom:94px;width:auto} .quick-manage{grid-template-columns:1fr} }
-
-.bank-config-grid{display:grid;grid-template-columns:1.1fr .9fr .9fr auto;gap:10px;margin-top:14px}
-.bank-config-grid .field{gap:6px}
-.bank-config-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
-.bank-chip-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-.bank-chip{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--text2);font-weight:700;cursor:pointer;transition:transform .16s ease, box-shadow .16s ease,border-color .16s ease}
-.bank-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow-xs);border-color:rgba(76,175,80,.35)}
-.bank-summary-link{cursor:pointer;transition:transform .16s ease, background .16s ease}
-.bank-summary-link:hover{transform:translateX(2px);background:#fffdfa}
-.bank-active-note{font-size:.8rem;color:var(--muted);margin-top:8px}
-.bank-chip small{color:var(--muted);font-weight:700}
-.bank-remove{border:none;background:transparent;color:var(--danger);font-weight:900;cursor:pointer;font-size:1rem;line-height:1}
-.bank-note{font-size:.84rem;color:var(--muted);margin-top:10px;line-height:1.6}
-@media(max-width:700px){ .bank-config-grid,.bank-config-meta{grid-template-columns:1fr} }
-
-
+@media(max-width:700px){ .ki-fab{right:14px;bottom:14px;width:68px;height:68px} .ki-panel{right:10px;left:10px;bottom:94px;width:auto} }
 @media print{
-  .sidebar,.bubble-actions,.filter-actions,.form-actions,.quick-add,.mode-badge,.btn,.btn-soft,.chip-btn,.nav-drop-head,.logout-btn,.mode-switch,.ki-fab,.ki-panel{display:none!important}
-  .app{display:block}.main{padding:0}.card,.acc-item,.stat,.entry{box-shadow:none!important;border-color:#ccc!important}.top-grid{display:block}
+  .sidebar,.bubble-actions,.filter-actions,.mode-badge,.btn,.btn-soft,.chip-btn,.danger-btn,.nav-drop-head,.logout-btn,.mode-switch,.ki-fab,.ki-panel{display:none!important}
+  .app{display:block}.main{padding:0}.card,.stat,.entry,.month-head{box-shadow:none!important;border-color:#ccc!important}.top-grid{display:block}
+}
+/* ===== PREMIUM FEEL ===== */
+
+.card{
+  transition:all .2s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 50px rgba(54,45,28,.15);
+}
+
+.entry{
+  transition:all .15s ease;
+}
+
+.entry:hover{
+  transform:translateX(4px);
+  background:#fffdf9;
 }
 </style>
 </head>
@@ -227,7 +233,7 @@ button,input,select,textarea{font:inherit}
 
     <div class="nav-label">Hauptmenü</div>
     <nav class="nav">
-      <a href="index.html"> <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path></svg></span><span>Dashboard</span></a>
+      <a href="index.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path></svg></span><span>Dashboard</span></a>
       <a href="finanzen.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z"></path><path d="M17 12h.01"></path><path d="M3 9h18"></path></svg></span><span>Finanzen</span></a>
       <a href="einkaufsliste.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle><path d="M5 5h2l2.4 9.5a1 1 0 0 0 1 .8H18a1 1 0 0 0 1-.8L21 8H7"></path></svg></span><span>Einkäufe</span></a>
       <a href="aufgaben.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span>Aufgaben</span></a>
@@ -267,142 +273,110 @@ button,input,select,textarea{font:inherit}
   </aside>
 
   <main class="main">
-
-    <style>
-      .history-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:18px;align-items:start}
-      .history-left,.history-right{display:grid;gap:18px}
-      .history-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-      .history-status{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-      .history-stat{min-height:100%}
-      .timeline{display:grid;gap:16px}
-      .month-block{display:grid;gap:12px}
-      .month-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 2px 0}
-      .month-head h3{margin:0;font-size:1.05rem}
-      .month-meta{color:var(--muted);font-size:.84rem;font-weight:700}
-      .entry-row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:flex-start;padding:16px 18px;border:1px solid rgba(223,209,188,.95);border-radius:22px;background:#fff;box-shadow:var(--shadow-xs)}
-      .entry-row.is-income{border-color:rgba(76,175,80,.24);background:linear-gradient(180deg,#fcfffc 0%, #f6fbf6 100%)}
-      .entry-row.is-expense{border-color:rgba(204,102,102,.18);background:linear-gradient(180deg,#fffefe 0%, #fff8f7 100%)}
-      .entry-row.is-saving{border-color:rgba(75,156,146,.22);background:linear-gradient(180deg,#fcfffe 0%, #f4fbfa 100%)}
-      .entry-topline{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:4px}
-      .entry-title{font-size:1rem;font-weight:800}
-      .entry-sub{color:var(--muted);font-size:.86rem}
-      .entry-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:10px}
-      .amount-pill{display:inline-flex;align-items:center;justify-content:center;min-width:108px;padding:10px 14px;border-radius:16px;border:1px solid var(--line);background:#fffdf9;font-weight:900;font-size:1rem}
-      .amount-pill.pos{color:var(--accent-dark);border-color:rgba(76,175,80,.28);background:#f5fcf6}
-      .amount-pill.neg{color:#b25858;border-color:rgba(204,102,102,.24);background:#fff7f7}
-      .amount-pill.save{color:var(--teal);border-color:rgba(75,156,146,.24);background:#f4fbfa}
-      .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-      .summary-list{display:grid;gap:10px}
-      .summary-line{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed rgba(223,209,188,.9)}
-      .summary-line:last-child{border-bottom:none;padding-bottom:0}
-      .summary-line span{color:var(--text2)}
-      .data-source-note{font-size:.82rem;color:var(--muted);margin-top:8px;line-height:1.55}
-      .empty-large{padding:28px;border:1px dashed var(--line);border-radius:22px;background:#fffdf9;text-align:center;color:var(--muted)}
-      .receipt-link{text-decoration:underline;text-underline-offset:2px}
-      .filter-card .filters-grid{grid-template-columns:repeat(5,1fr)}
-      @media (max-width:1320px){.history-grid{grid-template-columns:1fr}.filter-card .filters-grid{grid-template-columns:repeat(3,1fr)}}
-      @media (max-width:760px){.filter-card .filters-grid,.mini-grid{grid-template-columns:1fr}.entry-row{grid-template-columns:1fr}.month-head{flex-direction:column;align-items:flex-start}.amount-pill{min-width:0;width:100%}}
-    </style>
-
     <div class="page-header">
       <div>
         <h1><span class="page-icon"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path><path d="M12 7v5l3 3"></path></svg></span>Finanz-Historie</h1>
-        <p>Hier siehst du alle vorhandenen Finanz-Einträge gesammelt an einem Ort. Die Seite bleibt optisch an deine Finanzseite angelehnt, ist aber als eigener Verlauf deutlich aufgeräumter aufgebaut.</p>
+        <p>Hier siehst du alle gespeicherten Finanz-Einträge als gefilterten Verlauf. Die Filter entsprechen deiner Finanzseite, damit du Änderungen und Vergleiche genauso steuern kannst.</p>
       </div>
-      <span class="mode-badge">Elternmodus aktiv</span>
+      <div><span class="mode-badge">Elternmodus aktiv</span></div>
     </div>
 
     <section class="info-bubble" id="historyBubble">
-      <div class="bubble-icon">🐌</div>
+      <div class="bubble-icon">🧾</div>
       <div>
-        <h2>Was du hier machen kannst</h2>
-        <p>Du kannst den gesamten Finanz-Verlauf nach Datum, Hauptkategorie, Unterkategorie, Person, Typ, Konto oder Karte und Erfassungsart filtern. Einträge werden monatsweise gruppiert angezeigt, Zusammenfassungen aktualisieren sich passend zum Filter und vorhandene Einträge lassen sich direkt wieder löschen.</p>
+        <h2>Gefilterter Verlauf mit denselben Steuerungen wie in Finanzen</h2>
+        <p>Du kannst hier nach Hauptkategorie, Unterkategorie, Zuordnung, Typ, Wiederkehrend, Konto / Karte, Erfassungsquelle, Suche sowie Vorgangs- und Eingetragen-am-Datum filtern. Gelöscht wird direkt aus derselben Datenbasis.</p>
         <div class="bubble-actions">
-          <button class="chip-btn" type="button" id="historyBubbleLater">Später erinnern</button>
-          <button class="chip-btn" type="button" id="historyBubbleHide">Nicht mehr anzeigen</button>
+          <button class="btn-soft" type="button" id="bubbleLater">Später erinnern</button>
+          <button class="btn-soft" type="button" id="bubbleHide">Nicht mehr anzeigen</button>
         </div>
       </div>
     </section>
 
-    <div class="history-grid">
-      <section class="history-left">
-        <div class="card filter-card">
-          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg></span>Filter & Verlauf</h3>
-          <p class="card-sub">Gefiltert wird über alle verfügbaren Einträge. Die Historie nutzt vorhandene Finanzdaten und stellt sie in einer klaren Monatsansicht dar.</p>
+    <div class="top-grid">
+      <section class="left-stack">
+        <div class="card">
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg></span>Filter & Druck</h3>
+          <p class="card-sub">Die Filter gelten für die komplette Historie. Gedruckt wird immer die aktuell gefilterte Ansicht.</p>
           <div class="filters-grid">
-            <div class="field"><label for="filterDateFrom">Datum von</label><input id="filterDateFrom" type="date"></div>
-            <div class="field"><label for="filterDateTo">Datum bis</label><input id="filterDateTo" type="date"></div>
-            <div class="field"><label for="filterMain">Hauptkategorie</label><select id="filterMain"><option value="">Alle</option></select></div>
-            <div class="field"><label for="filterSub">Unterkategorie</label><select id="filterSub"><option value="">Alle</option></select></div>
-            <div class="field"><label for="filterPerson">Zuordnung</label><select id="filterPerson"><option value="">Alle</option></select></div>
+            <div class="field"><label for="filterMain">Hauptkategorie</label><select id="filterMain"></select></div>
+            <div class="field"><label for="filterSub">Unterkategorie</label><select id="filterSub"></select></div>
+            <div class="field"><label for="filterPerson">Zuordnung</label><select id="filterPerson"><option value="">Alle</option><option>Mama</option><option>Papa</option><option>Kind</option></select></div>
             <div class="field"><label for="filterType">Typ</label><select id="filterType"><option value="">Alle</option><option value="income">Einnahme</option><option value="expense">Ausgabe</option><option value="saving">Sparen</option></select></div>
+            <div class="field"><label for="filterRecurring">Wiederkehrend</label><select id="filterRecurring"><option value="">Alle</option><option value="ja">Ja</option><option value="nein">Nein</option></select></div>
             <div class="field"><label for="filterAccount">Konto / Karte</label><select id="filterAccount"><option value="">Alle</option></select></div>
-            <div class="field"><label for="filterSource">Erfasst über</label><select id="filterSource"><option value="">Alle</option><option value="local">Finanzseite lokal</option><option value="supabase">Supabase</option><option value="manual">Manuell</option><option value="bank_api">Bank-API</option><option value="card_import">Kartenimport</option><option value="scanner">Scanner / Beleg</option><option value="recurring_rule">Wiederkehrende Regel</option></select></div>
-            <div class="field"><label for="filterSearch">Suche</label><input id="filterSearch" type="text" placeholder="z. B. Rewe, Miete oder Urlaub"></div>
-            <div class="field"><label for="filterCreatedFrom">Eingetragen ab</label><input id="filterCreatedFrom" type="date"></div>
+            <div class="field"><label for="filterSource">Erfasst über</label><select id="filterSource"><option value="">Alle</option><option value="manual">Manuell</option><option value="bank_api">Bank-API</option><option value="card_import">Kartenimport</option><option value="scanner">Scanner / Beleg</option><option value="recurring_rule">Wiederkehrende Regel</option></select></div>
+            <div class="field"><label for="filterSearch">Suche</label><input id="filterSearch" type="text" placeholder="z. B. Netflix, Taxi oder Visa"></div>
+            <div class="field"><label for="filterDateFrom">Vorgangsdatum von</label><input id="filterDateFrom" type="date"></div>
+            <div class="field"><label for="filterDateTo">Vorgangsdatum bis</label><input id="filterDateTo" type="date"></div>
+            <div class="field"><label for="filterCreatedFrom">Eingetragen am von</label><input id="filterCreatedFrom" type="date"></div>
+            <div class="field"><label for="filterCreatedTo">Eingetragen am bis</label><input id="filterCreatedTo" type="date"></div>
           </div>
-          <div class="history-toolbar">
-            <button class="btn" type="button" id="refreshBtn">↻ Aktualisieren</button>
+          <div class="filter-actions">
+            <button class="btn" type="button" id="printBtn">🖨️ Druckansicht</button>
             <button class="btn-soft" type="button" id="resetFilters">Filter zurücksetzen</button>
-            <button class="btn-soft" type="button" id="printBtn">🖨️ Druckansicht</button>
           </div>
-          <div class="history-status" id="historyStatus"></div>
-          <div class="data-source-note">Die Seite ist so gebaut, dass sie vorhandene lokale Einträge aus deiner hochgeladenen Finanzseite mit Supabase-Daten kombinieren kann. Dadurch bleibt sie für deinen aktuellen Stand sofort nutzbar.</div>
+          <div class="print-note">Hinweis: Im Ausdruck werden Sidebar, Buttons und die KI ausgeblendet.</div>
         </div>
 
         <div class="card">
-          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg></span>Verlauf nach Monaten</h3>
-          <p class="card-sub">Neueste Einträge stehen oben. Jeder Eintrag kann direkt aus der Historie gelöscht werden.</p>
-          <div id="historyTimeline" class="timeline"></div>
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg></span>Gefilterter Verlauf</h3>
+          <p class="card-sub">Die Einträge werden nach Monaten gruppiert. Jede Buchung kann hier direkt gelöscht werden.</p>
+          <div id="historyList" class="entry-group"></div>
         </div>
       </section>
 
-      <aside class="history-right">
-        <div class="card small-card">
-          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M8 14v3"></path><path d="M12 10v7"></path><path d="M16 6v11"></path></svg></span>Überblick</h3>
-          <div class="stats mini-grid">
-            <div class="stat history-stat"><span>Einnahmen</span><strong id="sumIncome">0,00 €</strong><small>aktueller Filter</small></div>
-            <div class="stat history-stat"><span>Ausgaben</span><strong id="sumExpense">0,00 €</strong><small>aktueller Filter</small></div>
-            <div class="stat history-stat"><span>Sparen</span><strong id="sumSaving">0,00 €</strong><small>aktueller Filter</small></div>
-            <div class="stat history-stat"><span>Differenz</span><strong id="sumDiff">0,00 €</strong><small>Einnahmen minus Ausgaben</small></div>
+      <aside class="right-stack">
+        <div class="card">
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M8 14v3"></path><path d="M12 10v7"></path><path d="M16 6v11"></path></svg></span>Auswertung</h3>
+          <div class="stats">
+            <div class="stat"><span>Einnahmen gesamt</span><strong id="sumIncome">0,00 €</strong><small>aktueller Filter</small></div>
+            <div class="stat"><span>Ausgaben gesamt</span><strong id="sumExpense">0,00 €</strong><small>aktueller Filter</small></div>
+            <div class="stat"><span>Differenz</span><strong id="sumDiff">0,00 €</strong><small>Plus / Minus</small></div>
+            <div class="stat"><span>Einträge gesamt</span><strong id="sumCount">0</strong><small>passend zum Filter</small></div>
           </div>
         </div>
 
-        <div class="card small-card">
-          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M17 8H9.5a2.5 2.5 0 0 0 0 5H14a2.5 2.5 0 0 1 0 5H6"></path></svg></span>Stärkste Bereiche</h3>
-          <div class="summary-list" id="categorySummaryList"></div>
-        </div>
-
-        <div class="card small-card">
-          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>Zuordnung</h3>
-          <div class="summary-list" id="personSummaryList"></div>
-        </div>
-
-        <div class="card small-card">
+        <div class="card">
           <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z"></path><path d="M3 10h18"></path><path d="M17 14h.01"></path></svg></span>Konten & Karten</h3>
-          <div class="summary-list" id="accountSummaryList"></div>
+          <div class="side-card-list" id="bankSummaryList"></div>
         </div>
 
-        <div class="card small-card accent-yellow">
-          <h3><span class="icon-chip" style="background:#fff;color:var(--yellow)"><svg viewBox="0 0 24 24"><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path><circle cx="12" cy="12" r="4"></circle></svg></span>Hinweis</h3>
-          <p id="smartHint" style="color:var(--text2)">Sobald du die Filter setzt, bekommst du hier direkt ein kurzes Bild davon, wo dein Geld gerade hauptsächlich hingeht.</p>
+        <div class="card">
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M12 4h9"></path><path d="M3 20h.01"></path><path d="M3 4h.01"></path><path d="M3 12h18"></path></svg></span>Erfasst über</h3>
+          <div class="side-card-list" id="sourceSummaryList"></div>
+        </div>
+
+        <div class="card">
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"></path><circle cx="12" cy="12" r="9"></circle></svg></span>Zeiträume</h3>
+          <div class="side-card-list">
+            <div class="side-line"><span>Letzte 7 Tage</span><strong id="last7">0,00 €</strong></div>
+            <div class="side-line"><span>Letzter Monat</span><strong id="last30">0,00 €</strong></div>
+            <div class="side-line"><span>Jahresübersicht</span><strong id="yearTotal">0,00 €</strong></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M10 2h4"></path><path d="M12 14v-4"></path><circle cx="12" cy="14" r="8"></circle></svg></span>Hinweis</h3>
+          <p id="historyHint" style="color:var(--text2)">Sobald deine Supabase-Werte eingetragen sind, liest diese Seite dieselben Finanz-Einträge wie deine neue Finanzseite aus <strong>finance_entries_v2</strong>.</p>
         </div>
       </aside>
     </div>
   </main>
 </div>
-<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+
+<button class="ki-fab" id="kiFab" type="button" aria-label="HaushaltsHeld KI öffnen">
+  <img src="assets/assetsschnecke.png" alt="HaushaltsHeld">
   <span class="ki-fab-label">KI</span>
 </button>
 
-<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+<section class="ki-panel" id="kiPanel" aria-label="HaushaltsHeld KI">
   <div class="ki-head">
     <div class="ki-head-left">
       <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
-        <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText">Ich unterstütze dich direkt in deinem Finanzbereich – beim Strukturieren, Prüfen und Sparen.</p>
+        <h3>HaushaltsHeld KI</h3>
+        <p>Ich helfe dir hier direkt beim Verlauf, bei Filtern und beim Sortieren deiner Buchungen.</p>
         <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
       </div>
     </div>
@@ -410,7 +384,7 @@ button,input,select,textarea{font:inherit}
   </div>
   <div class="ki-suggestions" id="kiSuggestions"></div>
   <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot">Hallo 👋 Ich bin deine HaushaltsHeld-Schnecke. Ich helfe dir hier direkt bei Einnahmen, Ausgaben, Kategorien, Budgets und wiederkehrenden Kosten.</div>
+    <div class="ki-msg bot">Hallo 👋 Ich bin deine HaushaltsHeld-Schnecke. Ich helfe dir hier direkt beim gefilterten Verlauf und bei deinen Änderungen.</div>
   </div>
   <form class="ki-form" id="kiForm">
     <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
@@ -418,470 +392,476 @@ button,input,select,textarea{font:inherit}
   </form>
 </section>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const STORAGE_KEY = 'hh_finance_entries_v8';
+const SHADOW_STORAGE_KEY = 'hh_finance_entries_v8';
+const SHADOW_BANK_KEY = 'hh_finance_bank_sources_v1';
 const BUBBLE_KEY = 'hh_finance_history_bubble_hidden';
-const BANK_SOURCES_KEY = 'hh_finance_bank_sources_v1';
 const DEFAULT_BANK_SOURCES = [
   {id:'source_family_giro', label:'Familienkonto', type:'Gemeinschaftskonto', owner:'Familie', bankName:'Hausbank', lastDigits:'', connectionStatus:'geplant'},
   {id:'source_mama_card', label:'Mama Debitkarte', type:'Debitkarte', owner:'Mama', bankName:'Hausbank', lastDigits:'', connectionStatus:'manuell'},
   {id:'source_papa_card', label:'Papa Kreditkarte', type:'Kreditkarte', owner:'Papa', bankName:'Visa / Mastercard', lastDigits:'', connectionStatus:'geplant'}
 ];
-const SOURCE_LABELS = {
-  local:'Finanzseite lokal',
-  supabase:'Supabase',
-  manual:'Manuell',
-  bank_api:'Bank-API',
-  card_import:'Kartenimport',
-  scanner:'Scanner / Beleg',
-  recurring_rule:'Wiederkehrende Regel'
-};
+const SUPABASE_URL = 'HIER_DEINE_SUPABASE_URL_EINTRAGEN';
+const SUPABASE_ANON_KEY = 'HIER_DEINEN_SUPABASE_ANON_KEY_EINTRAGEN';
+
 let supabaseClient = null;
-let currentUser = null;
-let currentHouseholdId = null;
-let allEntries = [];
-let profileMap = new Map();
-let bankSources = [];
+const appState = {
+  entries: [],
+  bankSources: [],
+  currentUser: null,
+  currentHouseholdId: null
+};
 
-const timelineEl = document.getElementById('historyTimeline');
-const statusEl = document.getElementById('historyStatus');
-const accountSummaryList = document.getElementById('accountSummaryList');
-const personSummaryList = document.getElementById('personSummaryList');
-const categorySummaryList = document.getElementById('categorySummaryList');
-
-function uid(){ return Math.random().toString(36).slice(2)+Date.now().toString(36); }
-function today(){ return new Date().toISOString().slice(0,10); }
-function createdDateOnly(value){ return (value || '').slice(0,10); }
 function euro(v){ return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(Number(v||0)); }
-function formatDate(v){ if(!v) return '—'; const d = new Date(v); return isNaN(d) ? '—' : d.toLocaleDateString('de-DE'); }
-function formatMonth(v){ const d = new Date(v); return isNaN(d) ? 'Ohne Datum' : new Intl.DateTimeFormat('de-DE',{month:'long', year:'numeric'}).format(d); }
-function safeJsonParse(value, fallback){ try{ return JSON.parse(value); }catch{ return fallback; } }
-function escapeHtml(str){ return String(str ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-function compareDate(value, from, to){ if(!value) return false; if(from && value < from) return false; if(to && value > to) return false; return true; }
-function normalizeText(str){ return String(str || '').trim(); }
-function getBankSources(){
-  const stored = safeJsonParse(localStorage.getItem(BANK_SOURCES_KEY), []);
-  if(Array.isArray(stored) && stored.length) return stored;
-  return DEFAULT_BANK_SOURCES;
+function readJSON(key,fallback){ try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }catch(e){ return fallback; } }
+function writeJSON(key,value){ localStorage.setItem(key, JSON.stringify(value)); }
+function today(){ return new Date().toISOString().slice(0,10); }
+function createdDateOnly(s){ return String(s||'').slice(0,10); }
+function escapeHtml(value){ return String(value ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;'); }
+function compareDate(val, from, to){ if(!val) return true; if(from && val < from) return false; if(to && val > to) return false; return true; }
+function monthLabel(iso){
+  if(!iso) return 'Ohne Datum';
+  const d = new Date(iso + 'T12:00:00');
+  return new Intl.DateTimeFormat('de-DE',{month:'long', year:'numeric'}).format(d);
 }
-function getLocalEntriesRaw(){
-  const stored = safeJsonParse(localStorage.getItem(STORAGE_KEY), []);
-  return Array.isArray(stored) ? stored : [];
+function formatDate(iso){
+  if(!iso) return '—';
+  return new Date(iso + 'T12:00:00').toLocaleDateString('de-DE');
 }
-function removeLocalEntry(id){
-  const next = getLocalEntriesRaw().filter(entry => entry.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+function persistShadowCache(){
+  writeJSON(SHADOW_STORAGE_KEY, appState.entries || []);
+  writeJSON(SHADOW_BANK_KEY, appState.bankSources || []);
 }
-function getSupabaseConfig(){
+function hasSupabaseConfig(){
+  return !SUPABASE_URL.includes('HIER_DEINE_SUPABASE_URL_EINTRAGEN') && !SUPABASE_ANON_KEY.includes('HIER_DEINEN_SUPABASE_ANON_KEY_EINTRAGEN');
+}
+function ensureSupabase(){
+  if(!hasSupabaseConfig() || !window.supabase) return null;
+  if(!supabaseClient) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return supabaseClient;
+}
+function parseMetaFromNotes(rawNotes){
+  const input = String(rawNotes || '');
+  const marker = '[HH_META]';
+  const idx = input.indexOf(marker);
+  if(idx === -1) return { cleanNotes: input.trim(), meta: {} };
+  const clean = input.slice(0, idx).trim();
+  const jsonText = input.slice(idx + marker.length).trim();
+  try{ return { cleanNotes: clean, meta: JSON.parse(jsonText) || {} }; }catch(e){ return { cleanNotes: input.trim(), meta: {} }; }
+}
+function mapAccountRow(row){
   return {
-    url: window.HH_SUPABASE_URL || window.SUPABASE_URL || localStorage.getItem('hh_supabase_url') || localStorage.getItem('supabaseUrl') || '',
-    key: window.HH_SUPABASE_ANON_KEY || window.SUPABASE_ANON_KEY || localStorage.getItem('hh_supabase_anon_key') || localStorage.getItem('supabaseAnonKey') || ''
+    id: row.id,
+    label: row.label || 'Konto / Karte',
+    type: row.account_type || 'Konto',
+    owner: row.owner_label || '',
+    bankName: row.bank_name || '',
+    lastDigits: row.last_digits || '',
+    connectionStatus: row.connection_status || 'manuell'
   };
 }
-function initSupabase(){
-  const cfg = getSupabaseConfig();
-  if(!cfg.url || !cfg.key || !window.supabase?.createClient) return null;
-  try{ return window.supabase.createClient(cfg.url, cfg.key); }catch{ return null; }
-}
-function bankLabelFromId(id){
-  const hit = bankSources.find(source => source.id === id);
-  return hit ? hit.label : '';
-}
-function mapLocalEntry(entry){
+function mapEntryRow(row){
+  const parsed = parseMetaFromNotes(row.notes || '');
+  const meta = parsed.meta || {};
   return {
-    sourceKind:'local',
-    id: entry.id || uid(),
-    rawId: entry.id || uid(),
-    mainCategory: normalizeText(entry.mainCategory),
-    subCategory: normalizeText(entry.subCategory),
-    type: entry.type || 'expense',
-    title: normalizeText(entry.title) || normalizeText(entry.mainCategory) || 'Eintrag',
-    amount: Number(entry.amount || 0),
-    person: normalizeText(entry.person),
-    userId: '',
-    date: entry.date || today(),
-    createdAt: entry.createdAt || new Date().toISOString(),
-    notes: normalizeText(entry.notes),
-    accountId: normalizeText(entry.accountId),
-    accountLabel: normalizeText(entry.accountLabel) || bankLabelFromId(entry.accountId),
-    entrySource: normalizeText(entry.entrySource) || 'local',
-    paymentMethod: normalizeText(entry.paymentMethod),
-    receiptUrl: normalizeText(entry.receiptUrl || entry.receipt_url),
-    externalReference: normalizeText(entry.externalReference),
-    sourceBadge: 'Finanzseite',
-    deletable: true
+    id: row.id,
+    mainCategory: row.main_category || '',
+    subCategory: row.sub_category || '',
+    type: row.entry_type || '',
+    title: row.title || '',
+    amount: Number(row.amount || 0),
+    person: row.person_label || '',
+    paymentMethod: row.payment_method || '',
+    accountId: row.account_id || '',
+    entrySource: row.entry_source || 'manual',
+    externalReference: row.external_reference || '',
+    recurring: row.recurring || 'nein',
+    interval: row.interval_label || '',
+    date: row.entry_date || '',
+    dueDate: meta.dueDate || '',
+    goalDate: meta.goalDate || '',
+    nextAppointment: meta.nextAppointment || '',
+    kilometers: row.kilometers || '',
+    liters: row.liters || '',
+    pricePerLiter: row.price_per_liter || '',
+    consumption: row.consumption || '',
+    vet: row.vet || '',
+    treatment: row.treatment || '',
+    occasion: row.occasion || '',
+    notes: parsed.cleanNotes || '',
+    createdAt: row.created_at || '',
+    accountLabel: row.account_label || '',
+    bankName: row.bank_name || '',
+    cardName: row.card_name || '',
+    importKey: row.import_key || '',
+    sourceKey: row.source_key || ''
   };
 }
-function mapDbEntry(entry){
-  const personName = profileMap.get(entry.user_id) || '';
-  const category = normalizeText(entry.category);
-  return {
-    sourceKind:'supabase',
-    id: `db_${entry.id}`,
-    rawId: entry.id,
-    mainCategory: category || 'Unsortiert',
-    subCategory: '',
-    type: entry.type || inferTypeFromCategory(category),
-    title: normalizeText(entry.note) || category || 'Finanzeintrag',
-    amount: Number(entry.amount || 0),
-    person: personName,
-    userId: entry.user_id || '',
-    date: entry.entry_date || today(),
-    createdAt: entry.created_at || new Date().toISOString(),
-    notes: normalizeText(entry.note),
-    accountId: '',
-    accountLabel: '',
-    entrySource: 'supabase',
-    paymentMethod: '',
-    receiptUrl: normalizeText(entry.receipt_url),
-    externalReference: '',
-    sourceBadge: 'Supabase',
-    deletable: true
-  };
-}
-function inferTypeFromCategory(category){
-  const val = String(category || '').toLowerCase();
-  if(val.includes('einnah')) return 'income';
-  if(val.includes('spar')) return 'saving';
-  return 'expense';
-}
-async function loadSupabaseEntries(){
-  if(!supabaseClient) return [];
+async function resolveCurrentHouseholdId(client, currentUser){
+  const localUser = readJSON('haushaltsheld_user', null) || readJSON('haushaltsheld_current_user', null) || {};
+  const candidates = [
+    currentUser?.user_metadata?.household_id,
+    currentUser?.app_metadata?.household_id,
+    localUser?.household_id,
+    localUser?.householdId
+  ].filter(Boolean);
+  if(candidates.length) return candidates[0];
   try{
-    const userResp = await supabaseClient.auth.getUser();
-    currentUser = userResp?.data?.user || null;
-  } catch {
-    currentUser = null;
-  }
-
-  let entriesQuery = supabaseClient.from('finance_entries').select('*').order('entry_date', { ascending:false }).order('created_at', { ascending:false });
-
-  if(currentUser){
-    const profileResp = await supabaseClient.from('profiles').select('*').eq('id', currentUser.id).maybeSingle();
-    const profile = profileResp?.data || null;
-    const savedHousehold = localStorage.getItem('hh_current_household_id') || localStorage.getItem('household_id') || '';
-    currentHouseholdId = savedHousehold || profile?.household_id || currentHouseholdId || '';
-    if(currentHouseholdId){
-      entriesQuery = entriesQuery.eq('household_id', currentHouseholdId);
-    }else{
-      entriesQuery = entriesQuery.eq('user_id', currentUser.id);
-    }
-  }
-
-  const entriesResp = await entriesQuery;
-  const dbEntries = entriesResp?.data || [];
-  const userIds = [...new Set(dbEntries.map(entry => entry.user_id).filter(Boolean))];
-  if(userIds.length){
-    const profilesResp = await supabaseClient.from('profiles').select('id,name').in('id', userIds);
-    (profilesResp?.data || []).forEach(profile => profileMap.set(profile.id, profile.name || 'Nutzer'));
-  }
-  return dbEntries.map(mapDbEntry);
+    const profileQuery = await client.from('profiles').select('*').eq('id', currentUser?.id || '').maybeSingle();
+    const profile = profileQuery.data || {};
+    if(profile.household_id) return profile.household_id;
+  }catch(e){}
+  try{
+    const householdQuery = await client.from('households').select('id').limit(1);
+    const householdId = householdQuery?.data?.[0]?.id;
+    if(householdId) return householdId;
+  }catch(e){}
+  return null;
 }
-function filteredEntries(){
-  const dateFrom = document.getElementById('filterDateFrom').value;
-  const dateTo = document.getElementById('filterDateTo').value;
-  const createdFrom = document.getElementById('filterCreatedFrom').value;
+async function loadSupabaseState(){
+  const client = ensureSupabase();
+  if(!client){
+    appState.entries = readJSON(SHADOW_STORAGE_KEY, []);
+    appState.bankSources = readJSON(SHADOW_BANK_KEY, DEFAULT_BANK_SOURCES);
+    return;
+  }
+  const userResult = await client.auth.getUser().catch(() => ({ data:{ user:null } }));
+  appState.currentUser = userResult?.data?.user || null;
+  appState.currentHouseholdId = await resolveCurrentHouseholdId(client, appState.currentUser);
+
+  if(!appState.currentHouseholdId){
+    appState.entries = [];
+    appState.bankSources = DEFAULT_BANK_SOURCES;
+    persistShadowCache();
+    return;
+  }
+
+  const bankResult = await client.from('finance_accounts').select('*').eq('household_id', appState.currentHouseholdId).order('created_at', { ascending:true });
+  appState.bankSources = bankResult.error ? DEFAULT_BANK_SOURCES : ((bankResult.data || []).map(mapAccountRow));
+  if(!appState.bankSources.length) appState.bankSources = DEFAULT_BANK_SOURCES;
+
+  const entriesResult = await client.from('finance_entries_v2').select('*').eq('household_id', appState.currentHouseholdId).order('entry_date', { ascending:false }).order('created_at', { ascending:false });
+  appState.entries = entriesResult.error ? [] : ((entriesResult.data || []).map(mapEntryRow));
+  persistShadowCache();
+}
+function getBankSources(){ return Array.isArray(appState.bankSources) && appState.bankSources.length ? appState.bankSources : DEFAULT_BANK_SOURCES; }
+function getBankLabel(id){
+  const bank = getBankSources().find(item => item.id === id);
+  return bank ? bank.label : '';
+}
+function buildFilterOptions(){
+  const entries = appState.entries || [];
+  const mains = [...new Set(entries.map(e => e.mainCategory).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'de'));
+  const selectedMain = document.getElementById('filterMain').value;
+  document.getElementById('filterMain').innerHTML = '<option value="">Alle</option>' + mains.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+  document.getElementById('filterMain').value = mains.includes(selectedMain) ? selectedMain : '';
+
+  const accountOptions = '<option value="">Alle</option>' + getBankSources().map(opt => `<option value="${escapeHtml(opt.id)}">${escapeHtml(opt.label)} · ${escapeHtml(opt.type)}${opt.owner ? ' · ' + escapeHtml(opt.owner) : ''}</option>`).join('');
+  const accountSelect = document.getElementById('filterAccount');
+  const currentAccount = accountSelect.value;
+  accountSelect.innerHTML = accountOptions;
+  accountSelect.value = currentAccount;
+
+  updateSubFilter();
+}
+function updateSubFilter(){
+  const entries = appState.entries || [];
+  const selectedMain = document.getElementById('filterMain').value;
+  const subs = [...new Set(entries.filter(e => !selectedMain || e.mainCategory === selectedMain).map(e => e.subCategory).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'de'));
+  const subSelect = document.getElementById('filterSub');
+  const current = subSelect.value;
+  subSelect.innerHTML = '<option value="">Alle</option>' + subs.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+  subSelect.value = subs.includes(current) ? current : '';
+}
+function getFilteredEntries(){
+  const search = String(document.getElementById('filterSearch').value || '').trim().toLowerCase();
   const main = document.getElementById('filterMain').value;
   const sub = document.getElementById('filterSub').value;
   const person = document.getElementById('filterPerson').value;
   const type = document.getElementById('filterType').value;
+  const recurring = document.getElementById('filterRecurring').value;
   const account = document.getElementById('filterAccount').value;
   const source = document.getElementById('filterSource').value;
-  const search = document.getElementById('filterSearch').value.trim().toLowerCase();
+  const dateFrom = document.getElementById('filterDateFrom').value;
+  const dateTo = document.getElementById('filterDateTo').value;
+  const createdFrom = document.getElementById('filterCreatedFrom').value;
+  const createdTo = document.getElementById('filterCreatedTo').value;
 
-  return allEntries.filter(entry => {
+  return (appState.entries || []).filter(entry => {
     if(main && entry.mainCategory !== main) return false;
     if(sub && entry.subCategory !== sub) return false;
     if(person && entry.person !== person) return false;
     if(type && entry.type !== type) return false;
+    if(recurring && String(entry.recurring || '').toLowerCase() !== recurring.toLowerCase()) return false;
     if(account && entry.accountId !== account) return false;
-    if(source){
-      if(source === 'local' && entry.sourceKind !== 'local') return false;
-      else if(source === 'supabase' && entry.sourceKind !== 'supabase') return false;
-      else if(source !== 'local' && source !== 'supabase' && entry.entrySource !== source) return false;
-    }
-    if(dateFrom || dateTo){ if(!compareDate(entry.date, dateFrom, dateTo)) return false; }
-    if(createdFrom && (!createdDateOnly(entry.createdAt) || createdDateOnly(entry.createdAt) < createdFrom)) return false;
+    if(source && entry.entrySource !== source) return false;
+    if(!compareDate(entry.date, dateFrom, dateTo)) return false;
+    if(!compareDate(createdDateOnly(entry.createdAt), createdFrom, createdTo)) return false;
+
     if(search){
-      const hay = `${entry.title} ${entry.notes} ${entry.mainCategory} ${entry.subCategory} ${entry.person} ${entry.accountLabel} ${entry.externalReference}`.toLowerCase();
-      if(!hay.includes(search)) return false;
+      const haystack = [
+        entry.title, entry.notes, entry.mainCategory, entry.subCategory, entry.person,
+        entry.paymentMethod, entry.entrySource, entry.externalReference, entry.bankName,
+        entry.cardName, entry.accountLabel, entry.occasion, entry.vet, entry.treatment,
+        getBankLabel(entry.accountId)
+      ].join(' ').toLowerCase();
+      if(!haystack.includes(search)) return false;
     }
     return true;
-  }).sort((a,b) => `${b.date} ${b.createdAt}`.localeCompare(`${a.date} ${a.createdAt}`));
+  }).sort((a,b) => {
+    const dateCmp = String(b.date || '').localeCompare(String(a.date || ''));
+    if(dateCmp !== 0) return dateCmp;
+    return String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+  });
 }
-function updateSubcategoryOptions(){
-  const main = document.getElementById('filterMain').value;
-  const current = document.getElementById('filterSub').value;
-  const subSelect = document.getElementById('filterSub');
-  const subs = [...new Set(allEntries.filter(entry => !main || entry.mainCategory === main).map(entry => entry.subCategory).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'de'));
-  subSelect.innerHTML = `<option value="">Alle</option>${subs.map(sub => `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`).join('')}`;
-  if(subs.includes(current)) subSelect.value = current;
+function sourceLabel(value){
+  const map = {
+    manual:'Manuell',
+    bank_api:'Bank-API',
+    card_import:'Kartenimport',
+    scanner:'Scanner / Beleg',
+    recurring_rule:'Wiederkehrende Regel'
+  };
+  return map[value] || (value || '—');
 }
-function populateFilters(){
-  const mains = [...new Set(allEntries.map(entry => entry.mainCategory).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'de'));
-  const persons = [...new Set(allEntries.map(entry => entry.person).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'de'));
-  const mainSelect = document.getElementById('filterMain');
-  const personSelect = document.getElementById('filterPerson');
-  const accountSelect = document.getElementById('filterAccount');
-  const prevMain = mainSelect.value;
-  const prevPerson = personSelect.value;
-  const prevAccount = accountSelect.value;
-  mainSelect.innerHTML = `<option value="">Alle</option>${mains.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('')}`;
-  personSelect.innerHTML = `<option value="">Alle</option>${persons.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('')}`;
-  accountSelect.innerHTML = `<option value="">Alle</option>${bankSources.map(source => `<option value="${escapeHtml(source.id)}">${escapeHtml(source.label)}</option>`).join('')}`;
-  if(mains.includes(prevMain)) mainSelect.value = prevMain;
-  if(persons.includes(prevPerson)) personSelect.value = prevPerson;
-  if(bankSources.some(source => source.id === prevAccount)) accountSelect.value = prevAccount;
-  updateSubcategoryOptions();
+function typeLabel(value){
+  const map = { income:'Einnahme', expense:'Ausgabe', saving:'Sparen' };
+  return map[value] || value || '—';
 }
-function renderStatus(){
-  const dbCount = allEntries.filter(entry => entry.sourceKind === 'supabase').length;
-  const localCount = allEntries.filter(entry => entry.sourceKind === 'local').length;
-  const pills = [];
-  if(dbCount) pills.push(`<span class="meta">Supabase: ${dbCount}</span>`);
-  if(localCount) pills.push(`<span class="meta">Finanzseite lokal: ${localCount}</span>`);
-  if(!dbCount && !localCount) pills.push(`<span class="meta">Noch keine Daten gefunden</span>`);
-  statusEl.innerHTML = pills.join('');
+function buildMeta(entry){
+  const parts = [];
+  if(entry.mainCategory) parts.push(entry.mainCategory);
+  if(entry.subCategory) parts.push(entry.subCategory);
+  if(entry.person) parts.push(entry.person);
+  if(entry.paymentMethod) parts.push(entry.paymentMethod);
+  if(entry.accountId || entry.accountLabel) parts.push(entry.accountLabel || getBankLabel(entry.accountId));
+  if(entry.entrySource) parts.push(sourceLabel(entry.entrySource));
+  return parts.filter(Boolean);
 }
-function renderTimeline(){
-  const entries = filteredEntries();
+async function deleteEntry(id){
+  if(!confirm('Eintrag wirklich löschen?')) return;
+  const client = ensureSupabase();
+  try{
+    if(client && appState.currentHouseholdId){
+      const { error } = await client.from('finance_entries_v2').delete().eq('id', id).eq('household_id', appState.currentHouseholdId);
+      if(error) throw error;
+      appState.entries = (appState.entries || []).filter(entry => entry.id !== id);
+      persistShadowCache();
+    }else{
+      const next = (readJSON(SHADOW_STORAGE_KEY, []) || []).filter(entry => entry.id !== id);
+      appState.entries = next;
+      writeJSON(SHADOW_STORAGE_KEY, next);
+    }
+    buildFilterOptions();
+    renderAll();
+  }catch(error){
+    console.error(error);
+    alert('Der Eintrag konnte nicht gelöscht werden.');
+  }
+}
+function renderHistory(entries){
+  const list = document.getElementById('historyList');
   if(!entries.length){
-    timelineEl.innerHTML = '<div class="empty-large">Noch keine passenden Einträge gefunden. Passe die Filter an oder lege auf der Finanzseite neue Einträge an.</div>';
+    list.innerHTML = '<div class="empty">Noch keine passenden Einträge gefunden.</div>';
     return;
   }
+
   const groups = new Map();
   entries.forEach(entry => {
-    const key = (entry.date || '9999-99-99').slice(0,7);
-    if(!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(entry);
+    const label = monthLabel(entry.date);
+    if(!groups.has(label)) groups.set(label, []);
+    groups.get(label).push(entry);
   });
-  timelineEl.innerHTML = [...groups.entries()].map(([key, items]) => {
-    const total = items.reduce((sum, entry) => sum + (entry.type === 'income' ? Number(entry.amount || 0) : entry.type === 'expense' ? -Number(entry.amount || 0) : 0), 0);
+
+  list.innerHTML = [...groups.entries()].map(([label, items]) => {
+    const monthIncome = items.filter(i => i.type === 'income').reduce((sum, i) => sum + Number(i.amount || 0), 0);
+    const monthExpense = items.filter(i => i.type !== 'income').reduce((sum, i) => sum + Number(i.amount || 0), 0);
     return `
-      <section class="month-block">
+      <div class="month-block">
         <div class="month-head">
-          <h3>${escapeHtml(formatMonth(`${key}-01`))}</h3>
-          <span class="month-meta">${items.length} Eintrag${items.length===1?'':'e'} · ${total >= 0 ? '+' : ''}${euro(total).replace('€',' €')}</span>
+          <strong>${escapeHtml(label)}</strong>
+          <span>${items.length} Eintrag${items.length===1?'':'e'} · + ${euro(monthIncome)} · - ${euro(monthExpense)}</span>
         </div>
         <div class="list">
-          ${items.map(renderEntryCard).join('')}
+          ${items.map(entry => `
+            <div class="entry">
+              <div>
+                <h4>${escapeHtml(entry.title || 'Eintrag')}</h4>
+                <p>Vorgangsdatum: ${escapeHtml(formatDate(entry.date))} · Eingetragen: ${escapeHtml(entry.createdAt ? new Date(entry.createdAt).toLocaleString('de-DE') : '—')}</p>
+                ${entry.notes ? `<p>${escapeHtml(entry.notes)}</p>` : ''}
+                <div class="meta-row">
+                  ${buildMeta(entry).map(meta => `<span class="meta">${escapeHtml(meta)}</span>`).join('')}
+                  ${entry.recurring === 'ja' ? `<span class="meta">Wiederkehrend${entry.interval ? ' · ' + escapeHtml(entry.interval) : ''}</span>` : ''}
+                </div>
+              </div>
+              <div style="text-align:right;display:grid;gap:10px;align-content:start;justify-items:end;">
+                <strong style="color:${entry.type === 'income' ? 'var(--accent-dark)' : 'var(--danger)'}">${entry.type === 'income' ? '+' : '-'} ${euro(entry.amount)}</strong>
+                <span class="badge-pill">${escapeHtml(typeLabel(entry.type))}</span>
+                <button class="danger-btn" type="button" data-delete-entry="${escapeHtml(entry.id)}">Löschen</button>
+              </div>
+            </div>
+          `).join('')}
         </div>
-      </section>
+      </div>
     `;
   }).join('');
+
+  list.querySelectorAll('[data-delete-entry]').forEach(btn => {
+    btn.addEventListener('click', () => deleteEntry(btn.getAttribute('data-delete-entry')));
+  });
 }
-function renderEntryCard(entry){
-  const amountClass = entry.type === 'income' ? 'pos' : entry.type === 'saving' ? 'save' : 'neg';
-  const rowClass = entry.type === 'income' ? 'is-income' : entry.type === 'saving' ? 'is-saving' : 'is-expense';
-  const meta = [
-    `📅 ${formatDate(entry.date)}`,
-    entry.mainCategory ? `📁 ${escapeHtml(entry.mainCategory)}` : '',
-    entry.subCategory ? `🏷️ ${escapeHtml(entry.subCategory)}` : '',
-    entry.person ? `👤 ${escapeHtml(entry.person)}` : '',
-    entry.accountLabel ? `🏦 ${escapeHtml(entry.accountLabel)}` : '',
-    entry.entrySource ? `🔗 ${escapeHtml(SOURCE_LABELS[entry.entrySource] || entry.entrySource)}` : '',
-    entry.createdAt ? `🕒 ${formatDate(createdDateOnly(entry.createdAt))}` : ''
-  ].filter(Boolean).map(text => `<span class="meta">${text}</span>`).join('');
-  return `
-    <article class="entry-row ${rowClass}">
-      <div>
-        <div class="entry-topline">
-          <div>
-            <div class="entry-title">${escapeHtml(entry.title)}</div>
-            <div class="entry-sub">${escapeHtml(entry.sourceBadge)}${entry.externalReference ? ' · Ref: ' + escapeHtml(entry.externalReference) : ''}</div>
-          </div>
-        </div>
-        <div class="meta-row">${meta}</div>
-        ${entry.notes ? `<p style="margin-top:10px;color:var(--text2)">${escapeHtml(entry.notes)}</p>` : ''}
-        <div class="entry-actions">
-          ${entry.receiptUrl ? `<a class="chip-btn receipt-link" href="${escapeHtml(entry.receiptUrl)}" target="_blank" rel="noopener noreferrer">Beleg öffnen</a>` : ''}
-          ${entry.deletable ? `<button class="chip-btn" type="button" data-delete-entry="${escapeHtml(entry.id)}">Löschen</button>` : ''}
-        </div>
-      </div>
-      <div>
-        <div class="amount-pill ${amountClass}">${entry.type === 'income' ? '+' : entry.type === 'expense' ? '-' : ''}${euro(Math.abs(Number(entry.amount || 0))).replace('€',' €')}</div>
-      </div>
-    </article>
-  `;
-}
-function renderSummary(){
-  const entries = filteredEntries();
-  const income = entries.filter(entry => entry.type === 'income').reduce((sum, entry) => sum + Number(entry.amount || 0), 0);
-  const expense = entries.filter(entry => entry.type === 'expense').reduce((sum, entry) => sum + Number(entry.amount || 0), 0);
-  const saving = entries.filter(entry => entry.type === 'saving').reduce((sum, entry) => sum + Number(entry.amount || 0), 0);
+function renderSummary(entries){
+  const income = entries.filter(e => e.type === 'income').reduce((sum,e) => sum + Number(e.amount || 0), 0);
+  const expense = entries.filter(e => e.type !== 'income').reduce((sum,e) => sum + Number(e.amount || 0), 0);
   document.getElementById('sumIncome').textContent = euro(income);
   document.getElementById('sumExpense').textContent = euro(expense);
-  document.getElementById('sumSaving').textContent = euro(saving);
   document.getElementById('sumDiff').textContent = euro(income - expense);
-
-  const categoryTotals = new Map();
-  entries.forEach(entry => {
-    const key = entry.mainCategory || 'Unsortiert';
-    categoryTotals.set(key, (categoryTotals.get(key) || 0) + Number(entry.amount || 0));
-  });
-  const topCategories = [...categoryTotals.entries()].sort((a,b) => b[1] - a[1]).slice(0,6);
-  categorySummaryList.innerHTML = topCategories.length
-    ? topCategories.map(([name, value]) => `<div class="summary-line"><span>${escapeHtml(name)}</span><strong>${euro(value)}</strong></div>`).join('')
-    : '<div class="empty">Noch keine Werte vorhanden.</div>';
-
-  const personTotals = new Map();
-  entries.forEach(entry => {
-    const key = entry.person || 'Ohne Zuordnung';
-    personTotals.set(key, (personTotals.get(key) || 0) + 1);
-  });
-  const topPersons = [...personTotals.entries()].sort((a,b) => b[1] - a[1]);
-  personSummaryList.innerHTML = topPersons.length
-    ? topPersons.map(([name, count]) => `<div class="summary-line"><span>${escapeHtml(name)}</span><strong>${count} Eintrag${count===1?'':'e'}</strong></div>`).join('')
-    : '<div class="empty">Noch keine Zuordnungen vorhanden.</div>';
-
-  const accountTotals = new Map();
-  entries.forEach(entry => {
-    if(!entry.accountLabel) return;
-    accountTotals.set(entry.accountLabel, (accountTotals.get(entry.accountLabel) || 0) + 1);
-  });
-  const topAccounts = [...accountTotals.entries()].sort((a,b) => b[1] - a[1]);
-  accountSummaryList.innerHTML = topAccounts.length
-    ? topAccounts.map(([name, count]) => `<div class="summary-line"><span>${escapeHtml(name)}</span><strong>${count} Buchung${count===1?'':'en'}</strong></div>`).join('')
-    : '<div class="empty">Keine Konten oder Karten im aktuellen Filter.</div>';
-
-  const hintEl = document.getElementById('smartHint');
-  const dominant = topCategories[0];
-  if(!entries.length){
-    hintEl.textContent = 'Sobald passende Einträge vorhanden sind, bekommst du hier ein kurzes Bild davon, wo dein Geld gerade hauptsächlich hingeht.';
-  } else if(dominant){
-    hintEl.textContent = `Der stärkste Bereich im aktuellen Filter ist ${dominant[0]}. Dort liegt im Moment der größte Betrag.`;
+  document.getElementById('sumCount').textContent = String(entries.length);
+}
+function renderBankSummary(entries){
+  const list = document.getElementById('bankSummaryList');
+  const banks = getBankSources();
+  if(!banks.length){
+    list.innerHTML = '<div class="empty">Noch keine Konten oder Karten vorhanden.</div>';
+    return;
   }
+  list.innerHTML = banks.map(bank => {
+    const count = entries.filter(entry => entry.accountId === bank.id).length;
+    return `<div class="side-line"><span>${escapeHtml(bank.label)}</span><strong>${count}</strong></div>`;
+  }).join('');
+}
+function renderSourceSummary(entries){
+  const list = document.getElementById('sourceSummaryList');
+  const order = ['manual','bank_api','card_import','scanner','recurring_rule'];
+  const counts = Object.fromEntries(order.map(key => [key, entries.filter(entry => entry.entrySource === key).length]));
+  list.innerHTML = order.map(key => `<div class="side-line"><span>${escapeHtml(sourceLabel(key))}</span><strong>${counts[key] || 0}</strong></div>`).join('');
+}
+function renderTimeStats(entries){
+  const now = new Date();
+  const last7 = entries.filter(entry => entry.date && ((now - new Date(entry.date + 'T12:00:00')) / 86400000) <= 7);
+  const last30 = entries.filter(entry => entry.date && ((now - new Date(entry.date + 'T12:00:00')) / 86400000) <= 30);
+  const currentYear = String(now.getFullYear());
+  const year = entries.filter(entry => String(entry.date || '').startsWith(currentYear));
+  const sumFor = arr => arr.reduce((sum, entry) => sum + (entry.type === 'income' ? Number(entry.amount || 0) : -Number(entry.amount || 0)), 0);
+  document.getElementById('last7').textContent = euro(sumFor(last7));
+  document.getElementById('last30').textContent = euro(sumFor(last30));
+  document.getElementById('yearTotal').textContent = euro(sumFor(year));
 }
 function renderAll(){
-  populateFilters();
-  renderStatus();
-  renderTimeline();
-  renderSummary();
-  bindDeleteButtons();
-}
-function bindDeleteButtons(){
-  document.querySelectorAll('[data-delete-entry]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const id = btn.getAttribute('data-delete-entry');
-      const entry = allEntries.find(item => item.id === id);
-      if(!entry) return;
-      const ok = confirm('Eintrag wirklich löschen?');
-      if(!ok) return;
-      try{
-        if(entry.sourceKind === 'local'){
-          removeLocalEntry(entry.rawId);
-        } else if(entry.sourceKind === 'supabase' && supabaseClient){
-          const resp = await supabaseClient.from('finance_entries').delete().eq('id', entry.rawId);
-          if(resp.error) throw resp.error;
-        }
-        await loadEverything();
-      }catch(err){
-        console.error(err);
-        alert('Der Eintrag konnte nicht gelöscht werden.');
-      }
-    });
-  });
-}
-async function loadEverything(){
-  bankSources = getBankSources();
-  profileMap = new Map();
-  const localEntries = getLocalEntriesRaw().map(mapLocalEntry);
-  let dbEntries = [];
-  if(supabaseClient){
-    try{ dbEntries = await loadSupabaseEntries(); } catch(err){ console.error(err); }
-  }
-  const merged = [...dbEntries, ...localEntries];
-  const dedupe = new Map();
-  merged.forEach(entry => dedupe.set(entry.id, entry));
-  allEntries = [...dedupe.values()].sort((a,b) => `${b.date} ${b.createdAt}`.localeCompare(`${a.date} ${a.createdAt}`));
-  renderAll();
-}
-function setupFilters(){
-  ['filterDateFrom','filterDateTo','filterMain','filterSub','filterPerson','filterType','filterAccount','filterSource','filterSearch','filterCreatedFrom'].forEach(id => {
-    document.getElementById(id).addEventListener(id === 'filterSearch' ? 'input' : 'change', () => {
-      if(id === 'filterMain') updateSubcategoryOptions();
-      renderTimeline();
-      renderSummary();
-      bindDeleteButtons();
-    });
-  });
-  document.getElementById('resetFilters').addEventListener('click', () => {
-    ['filterDateFrom','filterDateTo','filterMain','filterSub','filterPerson','filterType','filterAccount','filterSource','filterSearch','filterCreatedFrom'].forEach(id => document.getElementById(id).value = '');
-    updateSubcategoryOptions();
-    renderTimeline();
-    renderSummary();
-    bindDeleteButtons();
-  });
-  document.getElementById('refreshBtn').addEventListener('click', loadEverything);
-  document.getElementById('printBtn').addEventListener('click', () => window.print());
-}
-function setupExtrasDrop(){
-  const extrasDrop = document.getElementById('extrasDrop');
-  const head = extrasDrop?.querySelector('.nav-drop-head');
-  if(!extrasDrop || !head) return;
-  extrasDrop.classList.add('open');
-  head.addEventListener('click', () => extrasDrop.classList.toggle('open'));
-}
-function setupBubble(){
-  const bubble = document.getElementById('historyBubble');
-  if(localStorage.getItem(BUBBLE_KEY) === 'hidden'){ bubble?.classList.add('hidden'); }
-  document.getElementById('historyBubbleHide').addEventListener('click', () => { localStorage.setItem(BUBBLE_KEY, 'hidden'); bubble?.classList.add('hidden'); });
-  document.getElementById('historyBubbleLater').addEventListener('click', () => bubble?.classList.add('hidden'));
+  const entries = getFilteredEntries();
+  renderHistory(entries);
+  renderSummary(entries);
+  renderBankSummary(entries);
+  renderSourceSummary(entries);
+  renderTimeStats(entries);
 }
 function setupKi(){
-  const kiFab = document.getElementById('kiFab');
-  const kiPanel = document.getElementById('kiPanel');
-  const kiClose = document.getElementById('kiClose');
-  const kiForm = document.getElementById('kiForm');
-  const kiInput = document.getElementById('kiInput');
-  const kiChat = document.getElementById('kiChat');
-  const suggestions = ['Zeig mir viele Ausgaben','Welche Kategorie ist am stärksten?','Wie viele Einträge habe ich?'];
-  document.getElementById('kiSuggestions').innerHTML = suggestions.map(text => `<button class="ki-chip" type="button">${text}</button>`).join('');
-  kiFab?.addEventListener('click', () => kiPanel?.classList.toggle('open'));
-  kiClose?.addEventListener('click', () => kiPanel?.classList.remove('open'));
-  document.querySelectorAll('.ki-chip').forEach(btn => btn.addEventListener('click', () => handleKi(btn.textContent.trim())));
-  kiForm?.addEventListener('submit', e => { e.preventDefault(); handleKi(kiInput.value.trim()); kiInput.value=''; });
-  function addMsg(text, cls){ const div=document.createElement('div'); div.className=`ki-msg ${cls}`; div.textContent=text; kiChat.appendChild(div); kiChat.scrollTop=kiChat.scrollHeight; }
-  function handleKi(text){
-    if(!text) return;
-    addMsg(text, 'user');
-    const entries = filteredEntries();
-    const expenses = entries.filter(entry => entry.type === 'expense').length;
-    const income = entries.filter(entry => entry.type === 'income').length;
-    const dominant = (() => {
-      const sums = new Map();
-      entries.forEach(entry => sums.set(entry.mainCategory || 'Unsortiert', (sums.get(entry.mainCategory || 'Unsortiert') || 0) + Number(entry.amount || 0)));
-      return [...sums.entries()].sort((a,b)=>b[1]-a[1])[0];
-    })();
-    let answer = `Im aktuellen Filter sehe ich ${entries.length} Einträge.`;
-    if(/ausgaben/i.test(text)) answer = `Im aktuellen Filter finde ich ${expenses} Ausgaben-Einträge.`;
-    else if(/einnah/i.test(text)) answer = `Im aktuellen Filter finde ich ${income} Einnahmen-Einträge.`;
-    else if(/kategorie|stärk/i.test(text) && dominant) answer = `Der stärkste Bereich ist gerade ${dominant[0]} mit ${euro(dominant[1])}.`;
-    else if(/wie viele|anzahl/i.test(text)) answer = `Im aktuellen Filter sind ${entries.length} Einträge sichtbar.`;
-    addMsg(answer, 'bot');
+  const fab = document.getElementById('kiFab');
+  const panel = document.getElementById('kiPanel');
+  const close = document.getElementById('kiClose');
+  const form = document.getElementById('kiForm');
+  const input = document.getElementById('kiInput');
+  const chat = document.getElementById('kiChat');
+  const sug = document.getElementById('kiSuggestions');
+  const suggestions = [
+    'Wie filtere ich nach Konto oder Karte?',
+    'Woran sehe ich wiederkehrende Einträge?',
+    'Hilf mir beim Verlauf dieser Ausgaben'
+  ];
+  sug.innerHTML = suggestions.map(text => `<button class="ki-chip" type="button">${escapeHtml(text)}</button>`).join('');
+  sug.querySelectorAll('.ki-chip').forEach(btn => btn.addEventListener('click', ()=> { input.value = btn.textContent.trim(); input.focus(); }));
+  fab.addEventListener('click', ()=> panel.classList.toggle('open'));
+  close.addEventListener('click', ()=> panel.classList.remove('open'));
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const message = input.value.trim();
+    if(!message) return;
+    chat.insertAdjacentHTML('beforeend', `<div class="ki-msg user">${escapeHtml(message)}</div>`);
+    input.value = '';
+    const typing = document.createElement('div');
+    typing.className = 'ki-msg bot';
+    typing.textContent = 'Ich denke kurz nach …';
+    chat.appendChild(typing);
+    chat.scrollTop = chat.scrollHeight;
+    try{
+      const response = await fetch('/.netlify/functions/chat', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({message, page:'finanz_historie', mode:'parent'})
+      });
+      const data = response.ok ? await response.json().catch(() => ({})) : {};
+      typing.textContent = data.reply || data.message || 'Ich bin da und helfe dir gern beim Verlauf, bei Filtern und beim Vergleichen deiner Einträge.';
+    }catch(err){
+      typing.textContent = 'Die Verbindung zur KI war gerade nicht erreichbar. Du kannst es gleich noch einmal probieren oder direkt in den Familien-Chat wechseln.';
+    }
+    chat.scrollTop = chat.scrollHeight;
+  });
+}
+async function initUI(){
+  await loadSupabaseState();
+  buildFilterOptions();
+  renderAll();
+
+  document.getElementById('filterMain').addEventListener('change', ()=>{ updateSubFilter(); renderAll(); });
+  ['filterSub','filterPerson','filterType','filterRecurring','filterAccount','filterSource'].forEach(id => document.getElementById(id).addEventListener('change', renderAll));
+  ['filterSearch','filterDateFrom','filterDateTo','filterCreatedFrom','filterCreatedTo'].forEach(id => document.getElementById(id).addEventListener('input', renderAll));
+  document.getElementById('resetFilters').addEventListener('click', () => {
+    document.querySelectorAll('#filterMain,#filterSub,#filterPerson,#filterType,#filterRecurring,#filterAccount,#filterSource,#filterSearch,#filterDateFrom,#filterDateTo,#filterCreatedFrom,#filterCreatedTo').forEach(el => el.value = '');
+    buildFilterOptions();
+    renderAll();
+  });
+  document.getElementById('printBtn').addEventListener('click', () => window.print());
+  document.querySelector('#extrasDrop .nav-drop-head').addEventListener('click', ()=> document.getElementById('extrasDrop').classList.toggle('open'));
+  document.getElementById('childBtn').addEventListener('click', ()=> window.location.href = 'kindermodus.html');
+
+  if(localStorage.getItem(BUBBLE_KEY) === '1') document.getElementById('historyBubble').classList.add('hidden');
+  document.getElementById('bubbleHide').addEventListener('click', ()=> { localStorage.setItem(BUBBLE_KEY,'1'); document.getElementById('historyBubble').classList.add('hidden'); });
+  document.getElementById('bubbleLater').addEventListener('click', ()=> document.getElementById('historyBubble').classList.add('hidden'));
+
+  const raw = localStorage.getItem('haushaltsheld_user') || localStorage.getItem('haushaltsheld_current_user');
+  try{
+    if(raw){
+      const u = JSON.parse(raw);
+      document.getElementById('userName').textContent = '👋 ' + (u.name || u.username || 'Willkommen');
+      document.getElementById('userRole').textContent = String(u.role || u.modus || 'Eltern-Modus');
+    }
+  }catch(e){}
+  updateChatBadge();
+  setupKi();
+
+  if(!hasSupabaseConfig()){
+    document.getElementById('historyHint').innerHTML = 'Aktuell sind noch Platzhalter für Supabase eingetragen. Die Seite ist fertig vorbereitet. Trage später nur noch <strong>SUPABASE_URL</strong> und <strong>SUPABASE_ANON_KEY</strong> ein.';
   }
 }
-function updateUserBox(){
-  const savedName = localStorage.getItem('hh_active_user_name') || currentUser?.email || '👋 Willkommen';
-  document.getElementById('userName').textContent = savedName.startsWith('👋') ? savedName : `👋 ${savedName}`;
-  document.getElementById('userRole').textContent = 'Eltern-Modus';
-}
-function handleLogout(){
-  localStorage.removeItem('haushaltsheld_logged_in');
+async function handleLogout(){
+  try{
+    const client = ensureSupabase();
+    if(client) await client.auth.signOut().catch(()=>{});
+    localStorage.removeItem('haushaltsheld_user');
+    localStorage.removeItem('haushaltsheld_current_user');
+  }catch(e){}
   window.location.href = 'login.html';
 }
-window.handleLogout = handleLogout;
-document.getElementById('childBtn')?.addEventListener('click', () => { window.location.href = 'kindermodus.html'; });
-
-document.addEventListener('DOMContentLoaded', async () => {
-  supabaseClient = initSupabase();
-  setupExtrasDrop();
-  setupFilters();
-  setupBubble();
-  setupKi();
-  updateUserBox();
-  await loadEverything();
-});
+function updateChatBadge(){
+  const AUTH_KEYS=['haushaltsheld_user','haushaltsheld_current_user']; const FAMILY_ROOM_KEY='hh_family_chat_room'; const FAMILY_SEEN_KEY='hh_family_chat_seen_parent'; const DIRECT_CHATS_KEY='hh_direct_chats_v2'; const DIRECT_SEEN_PREFIX='hh_direct_seen_';
+  const read = (key, fallback)=>{ try{ const raw=localStorage.getItem(key); return raw?JSON.parse(raw):fallback; }catch(e){ return fallback; } };
+  const slug = value => String(value||'').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9äöüß_-]/gi,'');
+  const getUserId = user => user?.id||user?.userId||user?.username||slug(user?.name||user?.displayName||'user');
+  let authUser = null; for(const key of AUTH_KEYS){ authUser = read(key,null); if(authUser) break; }
+  const currentUserId = getUserId(authUser||{}); if(!currentUserId) return;
+  const familyRoom = read(FAMILY_ROOM_KEY,{messages:[]}); const familyMessages = Array.isArray(familyRoom?.messages)?familyRoom.messages:[];
+  const seenFamily = read(FAMILY_SEEN_KEY,{}); const lastFamilySeen = seenFamily?.[currentUserId] || '';
+  let unread = familyMessages.filter(m => (m.senderId||slug(m.senderName||'')) !== currentUserId && String(m.timestamp||'') > String(lastFamilySeen)).length;
+  const directStore = read(DIRECT_CHATS_KEY,{});
+  Object.keys(directStore||{}).forEach(convId => {
+    const seen = read(DIRECT_SEEN_PREFIX+convId,{}); const lastSeen = seen?.[currentUserId] || '';
+    unread += (Array.isArray(directStore[convId])?directStore[convId]:[]).filter(m => (m.senderId||slug(m.senderName||'')) !== currentUserId && String(m.timestamp||'') > String(lastSeen)).length;
+  });
+  const badge = document.getElementById('chatBadge');
+  if(!badge) return;
+  if(unread > 0){ badge.textContent = unread > 99 ? '99+' : String(unread); badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
+}
+document.addEventListener('DOMContentLoaded', initUI);
 </script>
+</body>
+</html>

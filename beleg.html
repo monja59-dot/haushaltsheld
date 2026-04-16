@@ -753,7 +753,7 @@ a.btn-soft:hover{
         </span>
         <span>Beleg importieren</span>
       </h1>
-      <p>Foto, Screenshot, PDF oder digitaler Kassenbon – mit Scanner-Vorbereitung, Vorschlagsprüfung und sauberer Verknüpfung zur Datenzentrale.</p>
+      <p>Foto, Screenshot, PDF oder digitaler Kassenbon – mit Scanner-Vorbereitung, direkter Speicherung in Finanzen und optional zusätzlicher Übergabe an die Einkaufsliste.</p>
     </div>
 
     <div class="header-actions">
@@ -777,7 +777,7 @@ a.btn-soft:hover{
           </span>
           <span>Scanner & Schnell-Erfassung</span>
         </h2>
-        <p class="card-sub">Beleg fotografieren, hochladen oder QR-/Barcode-Workflow vorbereiten. Der Scan füllt nur das Formular vor und speichert noch nichts doppelt.</p>
+        <p class="card-sub">Beleg fotografieren, hochladen oder QR-/Barcode-Workflow vorbereiten. Der Scan füllt das Formular vor und speichert danach automatisch – ohne Doppelerfassung.</p>
 
         <div class="scanner-box">
           <div class="scanner-actions">
@@ -1050,7 +1050,7 @@ a.btn-soft:hover{
 
         <div class="field">
           <label for="receiptItems">Erkannte Artikel / Inhalt</label>
-          <textarea id="receiptItems" placeholder="z. B. Milch, Brot, Kerzen, Servietten"></textarea>
+          <textarea id="receiptItems" placeholder="z. B. Milch, Brot, Kerzen, Servietten oder je Zeile ein Artikel"></textarea>
         </div>
 
         <div class="field">
@@ -1061,11 +1061,11 @@ a.btn-soft:hover{
         <div style="display:flex;gap:12px;flex-wrap:wrap;">
           <button class="btn" id="exampleBtn" type="button">Feier-Beispiel</button>
           <button class="btn btn-soft" id="clearBtn" type="button"><span>Zurücksetzen</span></button>
-          <button class="btn" id="saveBtn" type="button">Vorschlag übernehmen</button>
+          <button class="btn" id="saveBtn" type="button">Automatisch speichern</button>
         </div>
 
         <div class="helper">
-          Scanner und Formular erzeugen hier nur einen Übergabe-Vorschlag für die Datenzentrale. Nach dem Übernehmen wirst du automatisch zur Datenzentrale weitergeleitet und entscheidest dort manuell: Finanzen oder Einkauf.
+          Scanner und Formular speichern jetzt automatisch in <strong>Finanzen</strong> und – wenn ausgewählt – zusätzlich in <strong>Einkauf</strong>. Die Doppelerfassung bleibt dabei geschützt.
         </div>
       </section>
     </div>
@@ -1085,8 +1085,8 @@ a.btn-soft:hover{
 
         <div class="item">
           <div>
-            <strong>Scanner-Workflow</strong>
-            <p>Beleg wird zuerst geprüft und erst danach als Vorschlag an die Datenzentrale übergeben.</p>
+            <strong>Direkt-Speicherung</strong>
+            <p>Beleg wird nach der Prüfung direkt in Finanzen gespeichert und auf Wunsch zusätzlich in einzelne Einkaufsartikel umgewandelt.</p>
           </div>
           <div class="badge">aktiv</div>
         </div>
@@ -1101,8 +1101,8 @@ a.btn-soft:hover{
 
         <div class="item">
           <div>
-            <strong>Variante A</strong>
-            <p>Keine automatische Speicherung in Finanzen oder Einkauf.</p>
+            <strong>Automatik aktiv</strong>
+            <p>Finanzen werden direkt gefüllt. Einkauf wird zusätzlich als einzelne Artikel übernommen, wenn oben „Ja“ gewählt ist.</p>
           </div>
           <div class="badge">bereit</div>
         </div>
@@ -1189,8 +1189,44 @@ function escapeHtml(value){
 function getFinanceEntries(){
   return JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "[]");
 }
+function normalizeShoppingEntry(entry){
+  if(!entry || typeof entry !== "object") return null;
+  return {
+    id: entry.id || uid(),
+    title: entry.title || entry.source || "Einkauf",
+    baseGroup: entry.baseGroup || entry.title || entry.source || "Einkauf",
+    date: entry.date || getTodayDate(),
+    purchaseKind: entry.purchaseKind || "Alltag",
+    category: entry.category || "Lebensmittel",
+    priority: entry.priority || "Pflicht",
+    origin: entry.origin || "Beleg-Import",
+    status: entry.status || "offen",
+    quantity: entry.quantity ?? null,
+    unit: entry.unit || "",
+    store: entry.store || entry.source || "",
+    price: entry.price ?? entry.amount ?? null,
+    buyer: entry.buyer || entry.person || "Allgemein",
+    note: entry.note || entry.text || "Aus Beleg-Import übernommen",
+    payment: entry.payment || "",
+    amount: entry.amount ?? entry.price ?? null,
+    person: entry.person || entry.buyer || "Allgemein",
+    occasion: entry.occasion || "",
+    type: entry.type || "Ausgabe",
+    importKey: entry.importKey || "",
+    sourceKey: entry.sourceKey || ""
+  };
+}
 function getShoppingEntries(){
-  return JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "[]");
+  let entries = [];
+  try{
+    entries = JSON.parse(localStorage.getItem("haushaltsheld_einkaufsliste_stabil_v1") || "[]");
+  }catch{
+    entries = [];
+  }
+  return entries.map(normalizeShoppingEntry).filter(Boolean);
+}
+function saveShoppingEntries(entries){
+  localStorage.setItem("haushaltsheld_einkaufsliste_stabil_v1", JSON.stringify(entries));
 }
 function getImports(){
   return JSON.parse(localStorage.getItem("haushaltsheld_recent_receipts") || "[]");
@@ -1464,8 +1500,48 @@ function existsInRecentImports(importKey, sourceKey){
 }
 
 function goToDatazentrale(){
-  window.location.href = "datenzentrale.html";
+  return;
 }
+
+function parseReceiptItemLine(line){
+  const cleanedLine = String(line || "").trim();
+  if(!cleanedLine) return null;
+
+  let quantity = null;
+  let unit = "";
+  let title = cleanedLine;
+
+  let match = cleanedLine.match(/^([0-9]+(?:[\.,][0-9]+)?)\s+(Gramm|Kilogramm|Milliliter|Liter|Meter|Stück|Packung|Rolle|Flasche|Dose)\s+(.+)$/i);
+  if(match){
+    quantity = parseFloat(String(match[1]).replace(",", "."));
+    unit = match[2];
+    title = match[3].trim();
+    return { title, quantity, unit };
+  }
+
+  match = cleanedLine.match(/^([0-9]+(?:[\.,][0-9]+)?)\s+(.+)$/i);
+  if(match){
+    quantity = parseFloat(String(match[1]).replace(",", "."));
+    title = match[2].trim();
+    return { title, quantity, unit: "" };
+  }
+
+  return { title, quantity: null, unit: "" };
+}
+function parseReceiptItems(items){
+  const raw = String(items || "").trim();
+  if(!raw) return [];
+  const normalized = raw.replace(/\r/g, "");
+  const hasLineBreaks = normalized.includes("\n");
+  const parts = hasLineBreaks
+    ? normalized.split(/\n+/)
+    : normalized.split(/,(?![^()]*\))/);
+
+  return parts
+    .map(part => parseReceiptItemLine(part))
+    .filter(Boolean);
+}
+
 
 function saveImport(){
   const source = document.getElementById("receiptSource").value.trim();
@@ -1487,69 +1563,132 @@ function saveImport(){
 
   const scanFingerprint = lastScanFingerprint || buildFallbackScanFingerprint(source, date, total, payment, items, note);
   const importKey = makeImportKey(source, date, total, payment, items || note);
-  const sourceKey = buildSourceKey("scanner", scanFingerprint, importKey);
+  const financeSourceKey = buildSourceKey("finance-auto", scanFingerprint, importKey);
+  const shoppingSourceKey = buildSourceKey("shopping-auto", scanFingerprint, importKey);
   const existingKeys = getImportKeys();
-  const existingTransfer = getScannerTransfer();
 
   if(existingKeys.includes(importKey) || existsInFinalTargets(importKey)){
     alert("Dieser Beleg wurde bereits übernommen und würde sonst doppelt gezählt werden.");
     return;
   }
 
-  if(existsInRecentImports(importKey, sourceKey)){
-    alert("Dieser Scanner-Vorschlag wurde bereits vorbereitet.");
-    return;
+  const financeEntries = getFinanceEntries();
+  financeEntries.push({
+    id:uid(),
+    date,
+    category,
+    mainCategory,
+    title:source,
+    text:items || note || "Aus Beleg-Import übernommen",
+    occasion,
+    payment,
+    amount:total,
+    type:"Ausgabe",
+    person,
+    recurring:false,
+    importKey,
+    sourceKey:financeSourceKey
+  });
+  localStorage.setItem("haushaltsheld_finance_entries_v2", JSON.stringify(financeEntries));
+
+  let createdShoppingCount = 0;
+  if(toShopping){
+    const parsedItems = parseReceiptItems(items);
+    const shoppingEntries = getShoppingEntries();
+
+    if(parsedItems.length){
+      parsedItems.forEach((parsedItem, index) => {
+        shoppingEntries.push({
+          id:uid(),
+          title: parsedItem.title,
+          baseGroup: parsedItem.title,
+          date,
+          purchaseKind: "Alltag",
+          category: category || "Lebensmittel",
+          priority: "Pflicht",
+          origin: "Beleg-Import",
+          status: "offen",
+          quantity: parsedItem.quantity,
+          unit: parsedItem.unit,
+          store: source,
+          price: null,
+          buyer: person,
+          note: note || `Aus Beleg-Import übernommen (${source})`,
+          payment,
+          amount: null,
+          person,
+          occasion,
+          type:"Ausgabe",
+          importKey,
+          sourceKey: shoppingSourceKey + "|item|" + index
+        });
+      });
+      createdShoppingCount = parsedItems.length;
+    } else {
+      shoppingEntries.push({
+        id:uid(),
+        title: items || source,
+        baseGroup: items || source,
+        date,
+        purchaseKind: "Alltag",
+        category: category || "Lebensmittel",
+        priority: "Pflicht",
+        origin: "Beleg-Import",
+        status: "offen",
+        quantity: null,
+        unit: "",
+        store: source,
+        price: total,
+        buyer: person,
+        note: note || items || "Aus Beleg-Import übernommen",
+        payment,
+        amount: total,
+        person,
+        occasion,
+        type:"Ausgabe",
+        importKey,
+        sourceKey:shoppingSourceKey
+      });
+      createdShoppingCount = 1;
+    }
+
+    saveShoppingEntries(shoppingEntries);
   }
 
-  if(existingTransfer && (existingTransfer.importKey === importKey || existingTransfer.sourceKey === sourceKey)){
-    alert("Dieser Scanner-Vorschlag liegt bereits zur Übernahme in der Datenzentrale bereit.");
-    return;
-  }
+  existingKeys.push(importKey);
+  localStorage.setItem("haushaltsheld_import_keys_v1", JSON.stringify(existingKeys));
 
-  const transferPayload = {
+  const imports = getImports();
+  imports.unshift({
     id:uid(),
     source,
     date,
     total,
-    amount:total,
-    mainCategory,
-    category,
-    payment,
-    person,
-    toShopping,
-    occasion,
-    items,
-    note,
-    importType:currentImportType,
-    importKey,
-    sourceKey,
-    scanFingerprint,
-    status:"prepared",
-    createdAt:new Date().toISOString()
-  };
-
-  saveScannerTransfer(transferPayload);
-
-  const imports = getImports();
-  imports.unshift({
-    id:transferPayload.id,
-    source,
-    date,
-    total,
     mainCategory,
     category,
     occasion,
     items,
     importType:currentImportType,
     importKey,
-    sourceKey,
-    status:"prepared"
+    sourceKey:financeSourceKey,
+    status: toShopping ? "saved-both" : "saved-finance"
   });
   saveImports(imports.slice(0,12));
 
+  try{
+    localStorage.removeItem("haushaltsheld_scanner_transfer_v1");
+  }catch(e){}
+
   renderImports();
   clearAll();
-  goToDatazentrale();
+
+  let successText = "Beleg wurde automatisch in Finanzen gespeichert.";
+  if(toShopping){
+    successText = createdShoppingCount > 1
+      ? `Beleg wurde in Finanzen gespeichert und ${createdShoppingCount} Artikel wurden zur Einkaufsliste hinzugefügt.`
+      : "Beleg wurde in Finanzen gespeichert und zusätzlich zur Einkaufsliste hinzugefügt.";
+  }
+  alert(successText);
 }
 function renderImports(){
   const imports = getImports();
@@ -1565,7 +1704,7 @@ function renderImports(){
       <div class="item">
         <div>
           <strong>${escapeHtml(entry.source)}</strong>
-          <p>${new Date(entry.date + "T12:00:00").toLocaleDateString("de-DE")} · ${escapeHtml(labels[entry.importType] || "Import")} · ${escapeHtml(entry.mainCategory)} / ${escapeHtml(entry.category)}${entry.occasion ? " · " + escapeHtml(entry.occasion) : ""}${entry.items ? " · " + escapeHtml(entry.items) : ""}${entry.status === "prepared" ? " · bereit für Datenzentrale" : ""}</p>
+          <p>${new Date(entry.date + "T12:00:00").toLocaleDateString("de-DE")} · ${escapeHtml(labels[entry.importType] || "Import")} · ${escapeHtml(entry.mainCategory)} / ${escapeHtml(entry.category)}${entry.occasion ? " · " + escapeHtml(entry.occasion) : ""}${entry.items ? " · " + escapeHtml(entry.items) : ""}${entry.status === "prepared" ? " · bereit für Datenzentrale" : entry.status === "saved-both" ? " · automatisch in Finanzen + Einkauf gespeichert" : entry.status === "saved-finance" ? " · automatisch in Finanzen gespeichert" : ""}</p>
         </div>
         <div class="amount">${formatEuro(entry.total)}</div>
       </div>

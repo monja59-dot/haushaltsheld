@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Haushaltsheld – Einkaufsliste</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haushaltsheld – Essensplan & Essverhalten</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+
 :root{
   --bg:#f7f2e9;
   --bg-2:#fdf9f3;
@@ -23,6 +23,8 @@
   --accent:#4CAF50;
   --accent-dark:#3E8E41;
   --accent-soft:#e7f5e8;
+  --beige:#f2e6d7;
+  --sand:#e8d7c2;
   --blue:#6b96d9;
   --blue-soft:#e9f1ff;
   --red:#cc6666;
@@ -31,18 +33,22 @@
   --yellow-soft:#fbf4df;
   --green:#5ca66f;
   --green-soft:#e7f4ea;
-  --brown:#4d3c2c;
-  --brown-dark:#433324;
   --shadow-xs:0 2px 8px rgba(54,45,28,.05);
   --shadow-sm:0 6px 18px rgba(54,45,28,.08);
   --shadow:0 12px 34px rgba(54,45,28,.10);
   --shadow-lg:0 18px 48px rgba(54,45,28,.12);
+  --r-xs:12px;
+  --r-sm:16px;
+  --r:22px;
+  --r-lg:28px;
+  --r-xl:34px;
   --sidebar-w:258px;
+  --font-main:"Outfit", sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;overflow-x:hidden}
 body{
-  font-family:"Outfit",sans-serif;
+  font-family:var(--font-main);
   background:
     radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
     linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
@@ -52,994 +58,1043 @@ body{
   line-height:1.6;
   letter-spacing:-0.01em;
 }
-h1,h2,h3,h4,h5,h6{font-family:"Outfit",sans-serif;letter-spacing:-0.03em;line-height:1.15}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-main)!important;letter-spacing:-0.03em;line-height:1.15}
 button,input,select,textarea{font:inherit}
 .app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
 .sidebar{
   background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
   border-right:1px solid rgba(223,209,188,.85);
   padding:28px 18px 24px;
-  display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  z-index:10;
   box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
 }
-.logo-wrap{padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
-.logo-link{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
 .logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}
-.logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
+.logo-name{font-weight:800;font-size:1.25rem!important;color:var(--text)}
 .logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
 .nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
 .nav{display:flex;flex-direction:column;gap:4px}
-.nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);font-weight:700;font-size:.98rem;transition:all .18s ease;border:1px solid transparent;position:relative}
-.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}
-.nav a.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-color:rgba(62,142,65,.28);box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)}
+.nav a{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;
+  color:var(--text2);font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;border:1px solid transparent;position:relative
+}
+.nav a:hover{
+  background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);
+  box-shadow:var(--shadow-xs);color:var(--text)
+}
+.nav a.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff;border-color:rgba(62,142,65,.28);
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)
+}
+.nav-icon{
+  width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)
+}
+.nav-icon svg,.nav-icon i{width:18px;height:18px;stroke:currentColor}
 .nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
-.nav-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)}
-.nav-icon svg{width:18px;height:18px;stroke:currentColor}
-.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px}
+.user-info{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.7);border-radius:16px;padding:12px 14px;font-size:.8rem;margin-bottom:8px}
+.user-info strong{display:block;font-weight:800;color:var(--text);margin-bottom:4px}
+.user-info span{display:block;color:var(--muted);font-size:.75rem}
+.logout-btn{
+  width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;
+  padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;
+  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72)
+}
+.logout-btn:hover{transform:translateY(-2px);box-shadow:0 5px 0 #cdb394, 0 12px 22px rgba(110,82,40,.14), inset 0 1px 0 rgba(255,255,255,.72)}
 .mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}
 .mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease}
 .mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}
-.main{width:100%;max-width:1600px;padding:32px}
-.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
-.page-header h1{font-size:2.35rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:12px}
-.page-header p{color:var(--muted);font-size:.98rem;max-width:900px}
-.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.mode-badge,.status-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)}
-.status-pill.ok{background:var(--accent-soft);border-color:#b7ddbc;color:var(--accent-dark)}
-.status-pill.warn{background:var(--yellow-soft);border-color:#ead9a2;color:#8b6b21}
-.status-pill.err{background:var(--red-soft);border-color:#e6b1b1;color:#9c4747}
-.page-title-icon,.section-icon{width:34px;height:34px;border-radius:12px;display:inline-grid;place-items:center;background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0}
-.page-title-icon svg,.section-icon svg{width:18px;height:18px;stroke:currentColor}
-.hero{background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);border:1px solid rgba(76,175,80,.18);border-radius:30px;padding:28px 30px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:stretch;margin-bottom:24px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(76,175,80,.07);pointer-events:none}
-.hero h2{font-size:1.55rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:10px}
-.hero p{color:var(--text2);line-height:1.65;margin-bottom:16px}
-.hero-tags{display:flex;gap:10px;flex-wrap:wrap}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.95);padding:9px 14px;border-radius:999px;font-size:.88rem;font-weight:800;color:var(--text2);box-shadow:0 1px 4px rgba(54,45,28,.04)}
-.hero-tag.accent{background:#f8ebda;border-color:#ecd1ad}
-.hero-side{display:grid;gap:12px}
-.mini{background:rgba(255,255,255,.78);border-radius:20px;padding:16px;border:1px solid rgba(223,209,188,.85);box-shadow:var(--shadow-xs)}
-.mini strong{display:block;margin-bottom:6px;font-size:.96rem;font-weight:800}
-.mini span{color:var(--muted);font-size:.88rem;line-height:1.55}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-.stat{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:26px;padding:20px;box-shadow:var(--shadow-sm)}
-.stat h3{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px}
-.stat .value{font-size:2rem;font-weight:800;margin-bottom:4px;letter-spacing:-0.04em}
-.stat p{font-size:.84rem;color:var(--muted);line-height:1.5}
-.grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
-.card h2{font-size:1.16rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:10px}
-.card-sub{color:var(--muted);line-height:1.6;margin-bottom:16px;font-size:.9rem}
-.form-grid,.form-grid-3{display:grid;gap:14px;margin-bottom:14px}
-.form-grid{grid-template-columns:repeat(2,1fr)}
-.form-grid-3{grid-template-columns:repeat(3,1fr)}
-.field label{display:block;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-radius:16px;padding:13px 14px;font-size:.94rem;color:var(--text);outline:none;transition:.18s ease;min-height:48px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(76,175,80,.7);box-shadow:0 0 0 4px rgba(76,175,80,.10);background:#fff}
-.field textarea{min-height:96px;resize:vertical}
-.btn,button.btn,a.btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff!important;padding:13px 22px;border-radius:16px;font-size:.95rem!important;font-weight:800!important;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20);transition:transform .15s ease, box-shadow .15s ease, filter .15s ease}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #2f6f33,0 14px 28px rgba(62,142,65,.26),inset 0 1px 0 rgba(255,255,255,.22);filter:brightness(1.02)}
-.btn-soft{background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%)!important;color:var(--brown)!important;border:1.5px solid #d7c0a6!important;box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.65)!important}
-.btn-link{background:none;border:none;color:var(--accent-dark);font-weight:800;cursor:pointer;padding:0}
-.helper{background:linear-gradient(180deg,#eef9f0 0%, #e6f4ea 100%);color:#3f6d4c;border-radius:18px;padding:15px 16px;line-height:1.65;font-size:.9rem;margin-top:14px;border:1px solid #c6e4cf;box-shadow:var(--shadow-xs)}
-.warning{background:linear-gradient(180deg,#fff8ef 0%, #f9edd9 100%);color:#7a5a2f;border-radius:18px;padding:15px 16px;line-height:1.65;font-size:.9rem;margin-top:14px;border:1px solid #ead2a8;box-shadow:var(--shadow-xs);margin-top:12px}
-.filters{display:grid;grid-template-columns:1.2fr repeat(4,1fr);gap:12px;margin-bottom:16px}
-.list{display:grid;gap:12px}
-.item{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);border-radius:20px;padding:16px;border:1px solid transparent;transition:.18s ease}
-.item:hover{border-color:rgba(200,185,165,.9);box-shadow:var(--shadow-xs)}
-.item strong{display:block;margin-bottom:4px;font-size:1rem;font-weight:800}
-.item p{color:var(--muted);font-size:.9rem;line-height:1.5;margin-top:4px}
-.amount{font-weight:800;white-space:nowrap;font-size:1rem;padding-top:2px;color:var(--text2)}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.badge{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800;border:1px solid var(--line);background:#fff}
-.badge.kind{background:#f3f8ff;border-color:#d7e4fa;color:#4b6f9f}
-.badge.priority{background:#fff5d6;border-color:#eedfa3;color:#776000}
-.badge.origin{background:#f8ebda;border-color:#ecd1ad;color:#7b5a43}
-.badge.status-offen{background:var(--accent-soft);border-color:#b7ddbc;color:var(--accent-dark)}
-.badge.status-gekauft{background:#eaf0ff;border-color:#cad8ff;color:#4a66a3}
-.badge.status-verschoben{background:var(--yellow-soft);border-color:#ead9a2;color:#8b6b21}
-.badge.status-gelöscht{background:var(--red-soft);border-color:#e6b1b1;color:#9c4747}
-.item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.mini-btn{border:1.5px solid #ddcbb4!important;background:linear-gradient(135deg,#fffdf9 0%, #f4e8da 100%)!important;color:#655846!important;padding:8px 12px!important;border-radius:999px!important;font-size:.78rem!important;font-weight:800!important;cursor:pointer}
+.chat-badge{
+  position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;
+  font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28)
+}
+.main{width:100%;max-width:1580px;padding:32px;overflow-x:hidden}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px;flex-wrap:wrap}
+.page-header h1{font-size:2.35rem!important;font-weight:800!important;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.page-header p{color:var(--muted);font-size:.98rem;max-width:760px}
+.mode-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);
+  border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)
+}
+.mode-badge svg,.mode-badge i{width:16px;height:16px;stroke-width:2.2}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;box-shadow:var(--shadow-sm)}
+.btn,.btn-soft{
+  border:none;padding:13px 22px;border-radius:16px!important;font-size:.95rem!important;font-weight:800!important;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .15s ease, box-shadow .15s ease
+}
+.btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff!important;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20)}
+.btn-soft{background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%)!important;color:#665646!important;border:1.5px solid #ddcbb4!important;box-shadow:0 3px 0 #cdb394,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.72)!important}
+.mini-btn{
+  border:1.5px solid #ddcbb4 !important;background:linear-gradient(135deg,#fffdf9 0%, #f4e8da 100%) !important;color:#655846 !important;
+  padding:8px 12px !important;border-radius:999px !important;font-size:.78rem !important;font-weight:800 !important;cursor:pointer
+}
+.mini-btn[disabled]{opacity:.62;cursor:not-allowed;filter:saturate(.75)}
+@media(max-width:960px){
+  .app{grid-template-columns:1fr}
+  .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}
+  .logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1}
+  .nav a{flex:0 1 auto;padding:10px 12px}
+  .nav-label,.sidebar-footer{display:none}
+}
+@media(max-width:600px){
+  .main{padding:16px}
+  .page-header h1{font-size:1.95rem !important}
+}
+
+
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+h1{margin:0 0 8px 0;font-size:31px;line-height:1.1}
+.subtitle{margin:0;color:var(--text2);line-height:1.55;max-width:980px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.page-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:22px}
+.stack{display:grid;gap:22px}
+.card h2{margin:0 0 10px 0;font-size:22px}
+.card-sub{margin:0 0 18px 0;color:var(--text2);line-height:1.5}
+.info-box{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.55;color:var(--text2)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1 / -1}
+label{font-size:13px;font-weight:700;color:var(--text2)}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--text);background:#fff}
+textarea{min-height:92px;resize:vertical}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:16px}
+.stat strong{display:block;font-size:24px;margin-bottom:4px}
+.stat span{color:var(--text2);font-size:14px}
+.print-title{display:none}
+@media(max-width:1100px){.page-grid{grid-template-columns:1fr}}
+@media(max-width:820px){.form-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.stats{grid-template-columns:1fr}}
+@media print{
+  body{background:#fff}
+  .sidebar,.actions,.toolbar .mini-actions,.filters,.btn,.btn-soft,form,.inline-note,.print-hide{display:none!important}
+  .app,.main,.page-grid,.stack,.card{display:block!important;width:100%!important;box-shadow:none!important;border:none!important;padding:0!important;margin:0!important;background:#fff!important}
+  .print-title{display:block;margin-bottom:18px}
+  .card + .card{margin-top:24px!important}
+}
+
+
+.toolbar .mini-actions{display:flex;gap:8px;flex-wrap:wrap}
+.entry-list{display:grid;gap:12px;margin-top:10px}
+.entry{border:1px solid var(--line);border-radius:18px;padding:16px;background:#fff}
+.entry-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.entry-title{font-size:18px;font-weight:700;margin:0 0 4px 0}
+.entry-meta{color:var(--text2);font-size:14px;line-height:1.5}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.badge{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--soft)}
+.badge.green{background:var(--accent-soft);border-color:#b7ddbc;color:var(--accent-dark)}
+.badge.yellow{background:#fff5d6;border-color:#eedfa3;color:#776000}
+.entry-notes{margin-top:8px;color:var(--text2);font-size:14px;line-height:1.5}
+.inline-note{font-size:13px;color:var(--muted);line-height:1.5;margin-top:10px}
 .empty{background:var(--soft);border:1px dashed var(--line);border-radius:18px;padding:18px;color:var(--text2);line-height:1.5}
-.ai-box{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.85);border-radius:20px;padding:18px;margin-bottom:14px}
-.ai-box h3{font-size:1rem;margin-bottom:10px}
-.ai-box p{color:var(--text2);margin-bottom:10px}
-.ai-box ul{margin:0;padding-left:18px;color:var(--text2)}
-.ai-box li+li{margin-top:8px}
-.print-sheet{display:none}
-@media(max-width:1300px){.stats{grid-template-columns:repeat(2,1fr)}.grid,.hero,.form-grid,.form-grid-3,.filters{grid-template-columns:1fr}}
-@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a{flex:0 1 auto;padding:10px 12px}.nav-label,.sidebar-footer{display:none}}
-@media(max-width:760px){.main{padding:16px}.stats{grid-template-columns:1fr 1fr;gap:12px}.card,.stat{padding:18px}.page-header h1{font-size:1.95rem}}
-@media(max-width:420px){.stats{grid-template-columns:1fr}.page-header h1{font-size:1.75rem}.mode-badge{width:100%;justify-content:center}}
-@media print{body{background:#fff}.sidebar,.header-right,.hero,.filters,.item-actions,.helper,.warning,.btn,.btn-soft,.ki-fab,.ki-panel{display:none!important}.app,.main,.grid,.card{display:block!important;width:100%!important;box-shadow:none!important;border:none!important;padding:0!important;margin:0!important;background:#fff!important}.print-sheet{display:block}.card{margin-bottom:24px!important}}
+.top-list{display:grid;gap:10px;margin-top:8px}
+.top-item{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:11px 13px;background:#fff;font-size:14px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters select{width:auto;min-width:170px}
+
+  
+
 /* KI */
-.ki-fab{position:fixed;right:22px;bottom:22px;width:74px;height:74px;border:none;border-radius:24px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9998;transition:transform .18s ease, box-shadow .18s ease}
-.ki-fab:hover{transform:translateY(-3px);box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28)}
+.ki-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:74px;
+  height:74px;
+  border:none;
+  border-radius:24px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9998;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.ki-fab:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
+}
 .ki-fab img{width:40px;height:40px;object-fit:contain}
-.ki-fab-label{position:absolute;bottom:8px;right:10px;color:#fff;font-size:.78rem;font-weight:800;line-height:1}
-.ki-panel{position:fixed;right:22px;bottom:108px;width:min(390px,calc(100vw - 24px));max-height:min(78vh,720px);background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 24px 50px rgba(34,48,38,.18);z-index:9999;display:none}
+.ki-fab-label{
+  position:absolute;
+  bottom:8px;
+  right:10px;
+  color:#fff;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1;
+}
+.ki-panel{
+  position:fixed;
+  right:22px;
+  bottom:108px;
+  width:min(390px,calc(100vw - 24px));
+  max-height:min(78vh,720px);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 24px 50px rgba(34,48,38,.18);
+  z-index:9999;
+  display:none;
+}
 .ki-panel.open{display:flex;flex-direction:column}
-.ki-head{padding:20px 20px 16px;background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.ki-head{
+  padding:20px 20px 16px;
+  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
 .ki-head-left{display:flex;gap:12px;align-items:flex-start}
-.ki-head-avatar{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ki-head-avatar img{width:28px;height:28px;object-fit:contain}.ki-head h3{font-size:1.2rem!important;font-weight:800!important;margin:0 0 4px}.ki-head p{font-size:.95rem!important;color:var(--text2);margin:0}
-.ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}.ki-chat-link:hover{text-decoration:underline}
-.ki-close{width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1}
+.ki-head-avatar{
+  width:48px;height:48px;border-radius:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ki-head-avatar img{width:28px;height:28px;object-fit:contain}
+.ki-head h3{font-size:1.2rem !important;font-weight:800 !important;margin:0 0 4px}
+.ki-head p{font-size:.95rem !important;color:var(--text2);margin:0}
+.ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
+.ki-chat-link:hover{text-decoration:underline}
+.ki-close{
+  width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1;
+}
 .ki-suggestions{padding:16px 20px 14px;display:flex;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);background:#fff}
 .ki-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:.95rem;font-weight:700;color:var(--text2);cursor:pointer}
 .ki-chat{padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px}
 .ki-msg{max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap}
-.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}.ki-msg.user{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;align-self:flex-end}
+.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
+.ki-msg.user{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;align-self:flex-end}
 .ki-form{padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}
 .ki-input{border:1.5px solid var(--line);background:var(--bg-2);border-radius:18px;padding:14px 16px;font-size:.97rem;color:var(--text);outline:none;font-family:inherit}
 .ki-send{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20)}
+.ki-typing{opacity:.8;font-style:italic}
+@media(max-width:700px){
+  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+}
+
 </style>
 </head>
-<body data-page="einkaufsliste">
-<div class="app">
-  <aside class="sidebar">
-    <div class="logo-wrap">
-      <a class="logo-link" href="index.html" aria-label="HaushaltsHeld Startseite">
-        <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+<body data-page="essensplan">
+  <div class="app">
+
+<aside class="sidebar">
+  <div class="logo-wrap">
+    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+    <div>
+      <div class="logo-name">Haushaltsheld</div>
+      <div class="logo-sub">Dein Familien-Assistent</div>
+    </div>
+  </div>
+
+  <div class="nav-label">Hauptmenü</div>
+  <nav class="nav">
+    <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+    <a href="essensplan.html" class="active"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
+  </nav>
+
+  <div class="nav-label">Extras</div>
+  <nav class="nav">
+    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
+    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
+    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
+    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+    <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <strong id="userName">👋 Willkommen</strong>
+      <span id="userRole">Eltern-Modus</span>
+    </div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+      <button class="mode-btn" id="childBtn" type="button">Kind</button>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+  </div>
+</aside>
+
+    <main class="main">
+
+      <div class="topbar">
         <div>
-          <div class="logo-name">Haushaltsheld</div>
-          <div class="logo-sub">Dein Familien-Assistent</div>
+          <h1>Essensplan & Essverhalten</h1>
+          <p class="subtitle">
+            Diese Seite speichert zuhause gekochte Mahlzeiten, Restaurant-, Imbiss- und Bestellverhalten
+            in einer gemeinsamen Struktur. Dadurch sind später Auswertungen, KI-Vorschläge und Monatsanalysen möglich.
+          </p>
         </div>
-      </a>
-    </div>
-    <div class="nav-label">Hauptmenü</div>
-    <nav class="nav">
-      <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
-      <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
-      <a href="einkaufsliste.html" class="active"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkaufsliste</span></a>
-      <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
-      <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
-      <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
-      <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
-      <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
-      <a href="admin_chat.html"><span class="nav-icon"><i data-lucide="message-circle"></i></span><span>Familien-Chat</span></a>
-    </nav>
-    <div class="nav-label">Extras</div>
-    <nav class="nav">
-      <a href="datenzentrale.html"><span class="nav-icon"><i data-lucide="database"></i></span><span>Datenzentrale</span></a>
-      <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
-      <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
-      <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
-    </nav>
-    <div class="sidebar-footer">
-      <div class="mode-switch">
-        <button class="mode-btn active" id="adminViewBtn" type="button">Eltern</button>
-        <button class="mode-btn" id="childViewBtn" type="button">Kind</button>
-      </div>
-    </div>
-  </aside>
 
-  <main class="main">
-    <div class="page-header">
-      <div>
-        <h1><span class="page-title-icon"><i data-lucide="shopping-cart"></i></span><span>Einkaufsliste</span></h1>
-        <p>Für Alltag, Spontankäufe und Anschaffungen – immer mit Datum. Die KI soll später Kaufmuster erkennen, deshalb arbeitet die Liste mit Artikelname, Oberbegriff, Kaufart, Herkunft und Status.</p>
-      </div>
-      <div class="header-right">
-        <span class="status-pill" id="supabaseState">Supabase noch nicht verbunden</span>
-        <span class="status-pill" id="authState">Auth wird geprüft</span>
-        <span class="status-pill" id="householdState">Haushalt wird geprüft</span>
-        <span class="mode-badge" id="modeBadge">Elternmodus aktiv</span>
-      </div>
-    </div>
-
-    <section class="hero">
-      <div>
-        <h2><span class="section-icon"><i data-lucide="calendar-range"></i></span><span>Eine Liste für den echten Haushalt</span></h2>
-        <p>Diese Seite sammelt <strong>Alltagskäufe</strong>, <strong>Spontankäufe</strong> und <strong>Anschaffungen</strong> an einem Ort. Du kannst einzelne Artikel speichern, mehrere auf einmal einfügen und später drucken. Wochenplan- und KI-Herkunft sind schon vorbereitet.</p>
-        <div class="hero-tags">
-          <span class="hero-tag">Immer mit Datum</span>
-          <span class="hero-tag accent">Gekauft · Verschieben · Löschen</span>
-          <span class="hero-tag">Pflicht · Optional · Später · Wunsch</span>
+        <div class="actions">
+          <button class="btn btn-secondary" onclick="window.print()">Drucken</button>
+          <button class="btn btn-secondary" id="exportJsonBtn">JSON exportieren</button>
+          <button class="btn btn-danger" id="clearAllBtn">Alle Einträge löschen</button>
         </div>
       </div>
-      <div class="hero-side">
-        <div class="mini"><strong>Artikel statt Kassenzettel-Block</strong><span>Die Liste ist jetzt auf einzelne Artikel ausgelegt, damit die KI später häufiger gekaufte Lebensmittel besser erkennt.</span></div>
-        <div class="mini"><strong>Wochenplan vorbereitet</strong><span>Herkunft wie „Wochenplan“ oder „KI-Vorschlag“ ist bereits enthalten, auch wenn die automatische Übernahme später noch ausgebaut wird.</span></div>
+
+      <div class="print-title">
+        <h1>Haushaltsheld – Essensplan & Essverhalten</h1>
+        <p>Monatsübersicht und gespeicherte Einträge</p>
       </div>
-    </section>
 
-    <section class="stats">
-      <div class="stat"><h3>Gesamt</h3><div class="value" id="statTotal">0</div><p>Alle sichtbaren Einträge</p></div>
-      <div class="stat"><h3>Offen</h3><div class="value" id="statOpen">0</div><p>Noch nicht erledigt</p></div>
-      <div class="stat"><h3>Pflicht</h3><div class="value" id="statRequired">0</div><p>Wichtige Einkäufe</p></div>
-      <div class="stat"><h3>Anschaffung</h3><div class="value" id="statAcquisition">0</div><p>Größere Käufe / später</p></div>
-    </section>
+      <div class="page-grid">
+        <div class="stack">
+          <section class="card">
+            <h2>Eintrag anlegen</h2>
+            <p class="card-sub">
+              Jeder Eintrag ist ein Essensereignis. So kannst du zuhause gekocht, bestellt,
+              Restaurant oder Imbiss gemeinsam auswerten.
+            </p>
 
-    <section class="grid">
-      <div>
-        <section class="card">
-          <h2><span class="section-icon"><i data-lucide="plus-circle"></i></span><span>Artikel hinzufügen</span></h2>
-          <p class="card-sub">Ein Eintrag = ein Artikel. So bleibt die Liste später für KI, Vorräte und Wochenplan sauber auswertbar.</p>
+            <div class="info-box">
+              Pflichtfelder für einen starken Start: <strong>Datum, Mahlzeit, Typ, Status, Gericht, Kategorie, vorgeschlagen von</strong>.
+              Kosten, Teilnehmer, Anbieter und Notizen machen die Analyse später noch besser.<br><br>
+              <strong>Neu:</strong> Rezepte können direkt aus der Rezeptseite als Vorschlag in den Essensplan übernommen werden.
+            </div>
 
-          <div class="form-grid">
-            <div class="field">
-              <label for="itemTitle">Artikelname</label>
-              <input id="itemTitle" type="text" placeholder="z. B. Weidemilch 1,5 %, Bett, Toilettenpapier" />
-            </div>
-            <div class="field">
-              <label for="baseGroup">Oberbegriff</label>
-              <input id="baseGroup" type="text" placeholder="z. B. Milch, Bett, Papierwaren" />
-            </div>
-          </div>
+            <form id="mealForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="datum">Datum</label>
+                  <input type="date" id="datum" required />
+                </div>
 
-          <div class="form-grid-3">
-            <div class="field">
-              <label for="neededDate">Datum</label>
-              <input id="neededDate" type="date" />
-            </div>
-            <div class="field">
-              <label for="purchaseKind">Kaufart</label>
-              <select id="purchaseKind">
-                <option value="Alltag">Alltag</option>
-                <option value="Spontan">Spontan</option>
-                <option value="Anschaffung">Anschaffung</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="category">Bereich</label>
-              <select id="category">
-                <option value="Lebensmittel">Lebensmittel</option>
-                <option value="Getränke">Getränke</option>
-                <option value="Drogerie">Drogerie</option>
-                <option value="Haushalt">Haushalt</option>
-                <option value="Apotheke">Apotheke</option>
-                <option value="Kind/Baby">Kind/Baby</option>
-                <option value="Tier">Tier</option>
-                <option value="Wohnen">Wohnen</option>
-                <option value="Technik">Technik</option>
-                <option value="Sonstiges">Sonstiges</option>
-              </select>
-            </div>
-          </div>
+                <div class="field">
+                  <label for="mahlzeit">Mahlzeit</label>
+                  <select id="mahlzeit" required>
+                    <option value="">Bitte wählen</option>
+                    <option>Frühstück</option>
+                    <option>Mittagessen</option>
+                    <option>Abendessen</option>
+                    <option>Snack</option>
+                  </select>
+                </div>
 
-          <div class="form-grid-3">
-            <div class="field">
-              <label for="priority">Wichtigkeit</label>
-              <select id="priority">
-                <option value="Pflicht">Pflicht</option>
-                <option value="Optional">Optional</option>
-                <option value="Später">Später</option>
-                <option value="Wunsch">Wunsch</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="origin">Herkunft</label>
-              <select id="origin">
-                <option value="Manuell">Manuell</option>
-                <option value="Wochenplan">Wochenplan</option>
-                <option value="Rezept">Rezept</option>
-                <option value="KI-Vorschlag">KI-Vorschlag</option>
-                <option value="Standardartikel">Standardartikel</option>
-                <option value="Zuletzt gekauft">Zuletzt gekauft</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="entryStatus">Status</label>
-              <select id="entryStatus">
-                <option value="offen">offen</option>
-                <option value="gekauft">gekauft</option>
-                <option value="verschoben">verschoben</option>
-                <option value="gelöscht">gelöscht</option>
-              </select>
-            </div>
-          </div>
+                <div class="field">
+                  <label for="typ">Typ</label>
+                  <select id="typ" required>
+                    <option value="">Bitte wählen</option>
+                    <option value="zuhause">Zuhause</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="imbiss">Imbiss</option>
+                    <option value="bestellt">Bestellt</option>
+                    <option value="unterwegs">Unterwegs</option>
+                  </select>
+                </div>
 
-          <div class="form-grid-3">
-            <div class="field">
-              <label for="quantity">Menge</label>
-              <input id="quantity" type="number" step="0.01" min="0" placeholder="z. B. 2" />
-            </div>
-            <div class="field">
-              <label for="unit">Einheit</label>
-              <input id="unit" type="text" placeholder="z. B. Stück, Packung, kg" />
-            </div>
-            <div class="field">
-              <label for="store">Geschäft (optional)</label>
-              <input id="store" type="text" placeholder="z. B. REWE, IKEA, dm" />
-            </div>
-          </div>
+                <div class="field">
+                  <label for="status">Status</label>
+                  <select id="status" required>
+                    <option value="">Bitte wählen</option>
+                    <option value="vorschlag">Vorschlag</option>
+                    <option value="bestaetigt">Bestätigt</option>
+                    <option value="erledigt">Erledigt</option>
+                    <option value="storniert">Storniert</option>
+                  </select>
+                </div>
 
-          <div class="form-grid">
-            <div class="field">
-              <label for="price">Preis (optional)</label>
-              <input id="price" type="number" step="0.01" min="0" placeholder="0,00" />
-            </div>
-            <div class="field">
-              <label for="buyer">Person</label>
-              <input id="buyer" type="text" placeholder="z. B. Monja" />
-            </div>
-          </div>
+                <div class="field">
+                  <label for="gericht">Gericht / Anlass</label>
+                  <input type="text" id="gericht" placeholder="z. B. Spaghetti Bolognese" required />
+                </div>
 
-          <div class="field">
-            <label for="note">Notiz</label>
-            <textarea id="note" placeholder="z. B. nur wenn im Angebot, für Freitag, optional zum Auflauf"></textarea>
-          </div>
+                <div class="field">
+                  <label for="kategorie">Kategorie</label>
+                  <input type="text" id="kategorie" placeholder="z. B. Pasta, Fast Food, Grillen" required />
+                </div>
 
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <button class="btn" id="saveItemBtn" type="button">Artikel speichern</button>
-            <button class="btn btn-soft" id="clearFormBtn" type="button"><span>Formular leeren</span></button>
-            <button class="btn btn-soft" id="demoBtn" type="button"><span>Beispieldaten einsetzen</span></button>
-          </div>
+                <div class="field">
+                  <label for="rolle">Vorgeschlagen von – Rolle</label>
+                  <select id="rolle" required>
+                    <option value="">Bitte wählen</option>
+                    <option value="eltern">Eltern</option>
+                    <option value="kind">Kind</option>
+                    <option value="familie">Familie</option>
+                  </select>
+                </div>
 
-          <div class="helper">Tipp: Für Lebensmittel möglichst <strong>Artikelname + Oberbegriff</strong> pflegen. So kann die KI später trotz vieler Sorten erkennen, dass etwas grundsätzlich zu <strong>Milch</strong>, <strong>Käse</strong> oder <strong>Nudeln</strong> gehört.</div>
-        </section>
+                <div class="field">
+                  <label for="name">Vorgeschlagen von – Name</label>
+                  <input type="text" id="name" placeholder="z. B. Mama oder Leo" required />
+                </div>
 
-        <section class="card">
-          <h2><span class="section-icon"><i data-lucide="list-plus"></i></span><span>Mehrere Artikel auf einmal</span></h2>
-          <p class="card-sub">Ideal für den Wocheneinkauf. Du kannst Artikel direkt Zeile für Zeile eintragen oder sie unten bequem mit <strong>Artikelname + Anzahl-Dropdown</strong> zur Mehrfachliste hinzufügen.</p>
-          <div class="field">
-            <label for="bulkItems">Mehrfacheingabe</label>
-            <textarea id="bulkItems" placeholder="2x Milch&#10;3 Brot&#10;500 g Nudeln&#10;1,5 l Saft&#10;12 Stück Eier&#10;Parmesan"></textarea>
-          </div>
-          <div class="bulk-helper-box">
-            <div class="bulk-helper-grid">
-              <div class="field">
-                <label for="bulkQuickTitle">Artikelname</label>
-                <input id="bulkQuickTitle" type="text" placeholder="z. B. Brot" />
+                <div class="field full">
+                  <label for="teilnehmer">Teilnehmer</label>
+                  <input type="text" id="teilnehmer" placeholder="z. B. Mama, Leo, Philipp" />
+                </div>
+
+                <div class="field">
+                  <label for="kosten">Kosten in €</label>
+                  <input type="number" step="0.01" min="0" id="kosten" placeholder="z. B. 12.50" />
+                </div>
+
+                <div class="field">
+                  <label for="anbieter">Ort / Anbieter</label>
+                  <input type="text" id="anbieter" placeholder="z. B. Zuhause, Pizzeria Napoli, City Döner" />
+                </div>
+
+                <div class="field full">
+                  <label for="tags">Tags</label>
+                  <input type="text" id="tags" placeholder="z. B. familie, schnell, wochenende" />
+                </div>
+
+                <div class="field full">
+                  <label for="notizen">Notizen</label>
+                  <textarea id="notizen" placeholder="z. B. Mit Salat, Filmabend, nach dem Termin gegessen"></textarea>
+                </div>
               </div>
-              <div class="field bulk-qty-field">
-                <label for="bulkQuickQty">Anzahl</label>
-                <select id="bulkQuickQty">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="12">12</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
+
+              <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">Eintrag speichern</button>
+                <button type="button" class="btn btn-secondary" id="fillDemoBtn">Beispieldaten einsetzen</button>
+              </div>
+            </form>
+
+            <p class="inline-note">
+              Speicherort: <strong>localStorage → haushaltsheld_food_data</strong>
+            </p>
+          </section>
+
+          <section class="card" id="entrySection">
+            <div class="toolbar">
+              <div>
+                <h2 style="margin-bottom:6px;">Gespeicherte Einträge</h2>
+                <p class="card-sub" style="margin-bottom:0;">Hier siehst du alle Mahlzeiten und Essensereignisse.</p>
+                <p class="inline-note" style="margin-top:6px;">Für <strong>Zuhause</strong>-Einträge kannst du Zutaten direkt zur Einkaufsliste übernehmen.</p>
+              </div>
+
+              <div class="filters">
+                <select id="monthFilter"></select>
+                <select id="typeFilter">
+                  <option value="alle">Alle Typen</option>
+                  <option value="zuhause">Zuhause</option>
+                  <option value="restaurant">Restaurant</option>
+                  <option value="imbiss">Imbiss</option>
+                  <option value="bestellt">Bestellt</option>
+                  <option value="unterwegs">Unterwegs</option>
                 </select>
               </div>
             </div>
-            <div class="bulk-helper-actions">
-              <button class="btn" id="addBulkLineBtn" type="button">Zur Mehrfachliste hinzufügen</button>
-              <button class="btn btn-soft" id="removeLastBulkLineBtn" type="button"><span>Letzten Eintrag entfernen</span></button>
-              <button class="btn btn-soft" id="clearBulkLinesBtn" type="button"><span>Mehrfachliste leeren</span></button>
+
+            <div id="entryList" class="entry-list"></div>
+          </section>
+        </div>
+
+        <div class="stack">
+          <section class="card">
+            <h2>Monatsübersicht</h2>
+            <p class="card-sub">
+              Diese Werte helfen dir später dabei zu sehen, wie oft zuhause gekocht,
+              bestellt oder im Restaurant / Imbiss gegessen wurde.
+            </p>
+
+            <div class="stats">
+              <div class="stat"><strong id="statTotal">0</strong><span>Einträge im gewählten Monat</span></div>
+              <div class="stat"><strong id="statHome">0</strong><span>Zuhause</span></div>
+              <div class="stat"><strong id="statOrder">0</strong><span>Bestellt</span></div>
+              <div class="stat"><strong id="statOut">0</strong><span>Restaurant + Imbiss</span></div>
             </div>
-            <div class="inline-note">Beispiel: Du schreibst nur <strong>Brot</strong>, wählst oben die <strong>Anzahl</strong> und der Eintrag wird als <strong>2x Brot</strong> oder <strong>3x Brot</strong> in die Mehrfachliste gesetzt.</div>
-          </div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <button class="btn" id="saveBulkBtn" type="button">Mehrere Artikel speichern</button>
-            <button class="btn btn-soft" id="fillWeekDemoBtn" type="button"><span>Wochenplan-Beispiel</span></button>
-            <button class="btn btn-soft" id="printBtn" type="button"><span>Liste drucken / PDF</span></button>
-          </div>
-          <div class="warning">Die Mehrfacheingabe übernimmt Datum, Kaufart, Bereich, Wichtigkeit, Herkunft und Geschäft aus dem oberen Formular. So kannst du z. B. einen ganzen Wocheneinkauf in einem Rutsch anlegen.</div>
-        </section>
+          </section>
+
+          <section class="card">
+            <h2>Verhalten & Muster</h2>
+            <p class="card-sub">
+              Das ist die Basis für spätere KI-Hinweise wie: „Freitag wird oft bestellt“
+              oder „diesen Monat gab es viele Nudelgerichte“.
+            </p>
+
+            <div class="top-list" id="insightList"></div>
+          </section>
+
+          <section class="card">
+            <h2>Top-Gerichte im Monat</h2>
+            <p class="card-sub">
+              So erkennst du schnell, was oft gegessen wird und was vielleicht zu selten vorkommt.
+            </p>
+
+            <div class="top-list" id="topMealsList"></div>
+          </section>
+        </div>
       </div>
 
-      <div>
-        <section class="card">
-          <h2><span class="section-icon"><i data-lucide="filter"></i></span><span>Filter & Ansicht</span></h2>
-          <div class="filters">
-            <div class="field"><label for="searchFilter">Suche</label><input id="searchFilter" type="text" placeholder="Artikel oder Oberbegriff suchen" /></div>
-            <div class="field"><label for="statusFilter">Status</label><select id="statusFilter"><option value="all">Alle</option><option value="offen">offen</option><option value="gekauft">gekauft</option><option value="verschoben">verschoben</option><option value="gelöscht">gelöscht</option></select></div>
-            <div class="field"><label for="kindFilter">Kaufart</label><select id="kindFilter"><option value="all">Alle</option><option value="Alltag">Alltag</option><option value="Spontan">Spontan</option><option value="Anschaffung">Anschaffung</option></select></div>
-            <div class="field"><label for="categoryFilter">Bereich</label><select id="categoryFilter"><option value="all">Alle</option></select></div>
-            <div class="field"><label for="priorityFilter">Wichtigkeit</label><select id="priorityFilter"><option value="all">Alle</option><option value="Pflicht">Pflicht</option><option value="Optional">Optional</option><option value="Später">Später</option><option value="Wunsch">Wunsch</option></select></div>
-          </div>
-          <div class="helper">Druck / PDF nutzt immer die aktuell gefilterte Liste. So kannst du dir z. B. nur offene Pflichtartikel oder nur Anschaffungen ausgeben lassen.</div>
-        </section>
+    </main>
+  </div>
 
-        <section class="card">
-          <h2><span class="section-icon"><i data-lucide="sparkles"></i></span><span>KI-Hinweise</span></h2>
-          <div class="ai-box">
-            <h3>Häufige Oberbegriffe</h3>
-            <p id="aiTopGroups">Noch keine Daten vorhanden.</p>
-          </div>
-          <div class="ai-box">
-            <h3>Kurze Einschätzung</h3>
-            <p id="aiSummary">Sobald Einträge da sind, entstehen hier erste Muster.</p>
-            <ul id="aiTips"></ul>
-          </div>
-        </section>
+<script>
+function handleLogout(){
+  try{
+    localStorage.removeItem("haushaltsheld_user");
+    localStorage.removeItem("haushaltsheld_current_user");
+  }catch(e){}
+  window.location.href = "login.html";
+}
 
-        <section class="card">
-          <h2><span class="section-icon"><i data-lucide="list-checks"></i></span><span>Meine Einkaufsliste</span></h2>
-          <p class="card-sub">Hier siehst du deine aktuelle Einkaufsliste. Aktionen direkt am Eintrag: <strong>Gekauft</strong>, <strong>+7 Tage verschieben</strong> oder <strong>Löschen</strong>.</p>
-          <div class="list" id="purchaseList"></div>
-        </section>
-      </div>
-    </section>
+function hydrateSidebarUser(){
+  const nameEl = document.getElementById("userName");
+  const roleEl = document.getElementById("userRole");
+  try{
+    const raw = localStorage.getItem("haushaltsheld_user") || localStorage.getItem("haushaltsheld_current_user");
+    if(!raw) return;
+    const user = JSON.parse(raw);
+    const name = user?.name || user?.username || "Willkommen";
+    const role = user?.role || user?.modus || "Eltern-Modus";
+    if(nameEl) nameEl.textContent = "👋 " + name;
+    if(roleEl) roleEl.textContent = String(role);
+  }catch(e){}
+}
 
-    <section class="print-sheet" id="printSheet"></section>
-  </main>
-</div>
+document.addEventListener("DOMContentLoaded", function(){
+  hydrateSidebarUser();
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+});
+</script>
+
+<script>
+    const STORAGE_KEY = "haushaltsheld_food_data";
+
+    const DEFAULT_DATA = {
+      essensEintraege: []
+    };
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(DEFAULT_DATA);
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.essensEintraege)) return structuredClone(DEFAULT_DATA);
+        return parsed;
+      } catch (err) {
+        console.error("Fehler beim Laden:", err);
+        return structuredClone(DEFAULT_DATA);
+      }
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function formatEuro(value) {
+      if (value === null || value === undefined || value === "") return "—";
+      const num = Number(value);
+      if (Number.isNaN(num)) return "—";
+      return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(num);
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+      const [y, m, d] = value.split("-");
+      return `${d}.${m}.${y}`;
+    }
+
+    function getWeekday(dateStr) {
+      const date = new Date(dateStr + "T12:00:00");
+      return new Intl.DateTimeFormat("de-DE", { weekday: "long" }).format(date);
+    }
+
+    function normalizeText(text) {
+      return (text || "").trim();
+    }
+
+    function splitList(text) {
+      return normalizeText(text)
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function createId() {
+      return "meal_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7);
+    }
+
+    function getMonthKey(dateStr) {
+      return (dateStr || "").slice(0, 7);
+    }
+
+    function monthLabel(monthKey) {
+      if (!monthKey) return "Alle Monate";
+      const [year, month] = monthKey.split("-");
+      const date = new Date(Number(year), Number(month) - 1, 1);
+      return new Intl.DateTimeFormat("de-DE", { month: "long", year: "numeric" }).format(date);
+    }
+
+    function getStatusBadgeClass(status) {
+      if (status === "erledigt" || status === "bestaetigt") return "badge green";
+      if (status === "vorschlag") return "badge yellow";
+      return "badge";
+    }
+
+    function typeLabel(type) {
+      const map = {
+        zuhause: "Zuhause",
+        restaurant: "Restaurant",
+        imbiss: "Imbiss",
+        bestellt: "Bestellt",
+        unterwegs: "Unterwegs"
+      };
+      return map[type] || type || "—";
+    }
+
+    function statusLabel(status) {
+      const map = {
+        vorschlag: "Vorschlag",
+        bestaetigt: "Bestätigt",
+        erledigt: "Erledigt",
+        storniert: "Storniert"
+      };
+      return map[status] || status || "—";
+    }
+
+    function collectMonths(entries) {
+      const keys = [...new Set(entries.map(e => getMonthKey(e.datum)).filter(Boolean))].sort().reverse();
+      return keys;
+    }
+
+    function buildMonthFilter(entries) {
+      const select = document.getElementById("monthFilter");
+      const current = select.value;
+      const months = collectMonths(entries);
+
+      select.innerHTML = "";
+      const allOpt = document.createElement("option");
+      allOpt.value = "alle";
+      allOpt.textContent = "Alle Monate";
+      select.appendChild(allOpt);
+
+      months.forEach(key => {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = monthLabel(key);
+        select.appendChild(opt);
+      });
+
+      const thisMonth = new Date().toISOString().slice(0, 7);
+      if (months.includes(current)) {
+        select.value = current;
+      } else if (months.includes(thisMonth)) {
+        select.value = thisMonth;
+      } else {
+        select.value = "alle";
+      }
+    }
+
+    function getFilteredEntries(entries) {
+      const monthValue = document.getElementById("monthFilter").value;
+      const typeValue = document.getElementById("typeFilter").value;
+
+      return entries.filter(entry => {
+        const monthOk = monthValue === "alle" ? true : getMonthKey(entry.datum) === monthValue;
+        const typeOk = typeValue === "alle" ? true : entry.typ === typeValue;
+        return monthOk && typeOk;
+      }).sort((a, b) => (a.datum < b.datum ? 1 : -1));
+    }
+
+    function renderEntries(entries) {
+      const list = document.getElementById("entryList");
+
+      if (!entries.length) {
+        list.innerHTML = '<div class="empty">Noch keine Einträge vorhanden. Lege zuerst eine Mahlzeit oder ein Essensereignis an.</div>';
+        return;
+      }
+
+      list.innerHTML = entries.map(entry => {
+        const participants = (entry.teilnehmer || []).length ? entry.teilnehmer.join(", ") : "—";
+        const tags = (entry.tags || []).length ? entry.tags.join(", ") : "—";
+        const canAddToShopping = entry.typ === "zuhause";
+        const alreadyAdded = Boolean(entry.einkauf?.erstellt);
+        return `
+          <article class="entry">
+            <div class="entry-head">
+              <div>
+                <p class="entry-title">${escapeHtml(entry.gericht || "Ohne Titel")}</p>
+                <div class="entry-meta">
+                  ${escapeHtml(formatDate(entry.datum))} · ${escapeHtml(entry.wochentag || "—")} · ${escapeHtml(entry.mahlzeit || "—")}<br>
+                  Vorgeschlagen von: ${escapeHtml(entry.vorgeschlagenVon?.name || "—")} (${escapeHtml(entry.vorgeschlagenVon?.rolle || "—")})
+                </div>
+              </div>
+              <div class="mini-actions">
+                ${canAddToShopping ? `<button class="mini-btn" onclick="addMealToShoppingList('${entry.id}')" ${alreadyAdded ? 'disabled' : ''}>${alreadyAdded ? 'Schon in Einkaufsliste' : '🛒 Zur Einkaufsliste'}</button>` : ""}
+                <button class="btn btn-danger" onclick="deleteEntry('${entry.id}')">Löschen</button>
+              </div>
+            </div>
+
+            <div class="badges">
+              <span class="badge">${escapeHtml(typeLabel(entry.typ))}</span>
+              <span class="${getStatusBadgeClass(entry.status)}">${escapeHtml(statusLabel(entry.status))}</span>
+              <span class="badge">${escapeHtml(entry.kategorie || "—")}</span>
+              ${alreadyAdded ? '<span class="badge green">Einkaufsliste erstellt</span>' : ''}
+            </div>
+
+            <div class="entry-meta">
+              Teilnehmer: ${escapeHtml(participants)}<br>
+              Ort / Anbieter: ${escapeHtml(entry.ort?.name || "—")}<br>
+              Kosten: ${escapeHtml(formatEuro(entry.kosten?.betrag))}<br>
+              Tags: ${escapeHtml(tags)}
+            </div>
+
+            ${entry.notizen ? `<div class="entry-notes"><strong>Notiz:</strong> ${escapeHtml(entry.notizen)}</div>` : ""}
+            ${alreadyAdded ? `<div class="inline-note">Dieser Eintrag wurde bereits an die Einkaufsliste übergeben.</div>` : ""}
+          </article>
+        `;
+      }).join("");
+    }
+
+    function createShoppingEntryFromMeal(entry) {
+      const shoppingId = "shop_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7);
+      const mealLabel = [entry.mahlzeit, entry.datum ? formatDate(entry.datum) : ""].filter(Boolean).join(" · ");
+      return {
+        id: shoppingId,
+        title: `Zutaten für: ${entry.gericht}`,
+        baseGroup: entry.kategorie || entry.gericht,
+        date: entry.datum || new Date().toISOString().slice(0, 10),
+        purchaseKind: "Alltag",
+        category: "Lebensmittel",
+        priority: "Pflicht",
+        origin: "Kochrezept",
+        status: "offen",
+        quantity: null,
+        unit: "",
+        store: "",
+        price: null,
+        buyer: entry.vorgeschlagenVon?.name || "",
+        note: mealLabel ? `Aus Essensplan übernommen (${mealLabel})` : "Aus Essensplan übernommen"
+      };
+    }
+
+    function loadShoppingEntries() {
+      try {
+        return JSON.parse(localStorage.getItem("haushaltsheld_einkaufsliste_stabil_v1") || "[]");
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveShoppingEntries(entries) {
+      localStorage.setItem("haushaltsheld_einkaufsliste_stabil_v1", JSON.stringify(entries));
+    }
+
+    function addMealToShoppingList(id) {
+      const data = loadData();
+      const entry = data.essensEintraege.find(item => item.id === id);
+
+      if (!entry) {
+        alert("Der Essensplan-Eintrag wurde nicht gefunden.");
+        return;
+      }
+
+      if (entry.typ !== "zuhause") {
+        alert("Nur Zuhause-Einträge können direkt an die Einkaufsliste übergeben werden.");
+        return;
+      }
+
+      if (entry.einkauf?.erstellt) {
+        alert("Dieser Eintrag wurde bereits an die Einkaufsliste übergeben.");
+        return;
+      }
+
+      const shoppingEntries = loadShoppingEntries();
+      const shoppingEntry = createShoppingEntryFromMeal(entry);
+      shoppingEntries.unshift(shoppingEntry);
+      saveShoppingEntries(shoppingEntries);
+
+      entry.einkauf = {
+        relevant: true,
+        erstellt: true,
+        eintragsIds: [shoppingEntry.id]
+      };
+      entry.aktualisiertAm = new Date().toISOString();
+      saveData(data);
+      renderAll();
+
+      const openShopping = window.confirm("Zur Einkaufsliste hinzugefügt. Möchtest du die Einkaufsliste jetzt öffnen?");
+      if (openShopping) {
+        window.location.href = "einkaufsliste.html";
+      }
+    }
+    window.addMealToShoppingList = addMealToShoppingList;
+
+    function getStats(entries) {
+      const home = entries.filter(e => e.typ === "zuhause").length;
+      const ordered = entries.filter(e => e.typ === "bestellt").length;
+      const out = entries.filter(e => e.typ === "restaurant" || e.typ === "imbiss").length;
+      return { total: entries.length, home, ordered, out };
+    }
+
+    function renderStats(entries) {
+      const stats = getStats(entries);
+      document.getElementById("statTotal").textContent = stats.total;
+      document.getElementById("statHome").textContent = stats.home;
+      document.getElementById("statOrder").textContent = stats.ordered;
+      document.getElementById("statOut").textContent = stats.out;
+    }
+
+    function countBy(entries, keyGetter) {
+      const map = {};
+      entries.forEach(item => {
+        const key = keyGetter(item);
+        if (!key) return;
+        map[key] = (map[key] || 0) + 1;
+      });
+      return map;
+    }
+
+    function topEntries(counter, limit = 5) {
+      return Object.entries(counter).sort((a,b) => b[1] - a[1]).slice(0, limit);
+    }
+
+    function renderTopMeals(entries) {
+      const target = document.getElementById("topMealsList");
+      const mealCounter = countBy(entries, e => normalizeText(e.gericht));
+
+      const tops = topEntries(mealCounter, 6);
+      if (!tops.length) {
+        target.innerHTML = '<div class="empty">Noch keine Monatsdaten für Top-Gerichte vorhanden.</div>';
+        return;
+      }
+
+      target.innerHTML = tops.map(([meal, count]) => `
+        <div class="top-item">
+          <span>${escapeHtml(meal)}</span>
+          <strong>${count}x</strong>
+        </div>
+      `).join("");
+    }
+
+    function buildInsights(entries) {
+      if (!entries.length) return ["Noch keine Daten vorhanden."];
+
+      const insights = [];
+      const typeCounter = countBy(entries, e => typeLabel(e.typ));
+      const catCounter = countBy(entries, e => normalizeText(e.kategorie));
+      const proposerCounter = countBy(entries, e => normalizeText(e.vorgeschlagenVon?.name));
+      const weekdayCounter = countBy(entries, e => normalizeText(e.wochentag));
+
+      const topType = topEntries(typeCounter, 1)[0];
+      const topCat = topEntries(catCounter, 1)[0];
+      const topProposer = topEntries(proposerCounter, 1)[0];
+      const topWeekday = topEntries(weekdayCounter, 1)[0];
+
+      if (topType) insights.push(`Am häufigsten erfasst: ${topType[0]} (${topType[1]}x).`);
+      if (topCat) insights.push(`Am häufigsten gegessen: Kategorie ${topCat[0]} (${topCat[1]}x).`);
+      if (topProposer) insights.push(`Die meisten Vorschläge kamen von ${topProposer[0]} (${topProposer[1]}x).`);
+      if (topWeekday) insights.push(`Besonders oft eingetragen am ${topWeekday[0]}.`);
+
+      const outsideCount = entries.filter(e => ["restaurant", "imbiss", "bestellt"].includes(e.typ)).length;
+      const homeCount = entries.filter(e => e.typ === "zuhause").length;
+      if (outsideCount > homeCount) {
+        insights.push("Es wurde häufiger außer Haus / bestellt erfasst als zuhause gekocht.");
+      } else if (homeCount > 0) {
+        insights.push("Zuhause kochen liegt im gewählten Zeitraum vorn.");
+      }
+
+      const totalCosts = entries.reduce((sum, e) => sum + (Number(e.kosten?.betrag) || 0), 0);
+      insights.push(`Erfasste Gesamtkosten im Zeitraum: ${formatEuro(totalCosts)}.`);
+
+      return insights;
+    }
+
+    function renderInsights(entries) {
+      const target = document.getElementById("insightList");
+      const insights = buildInsights(entries);
+      target.innerHTML = insights.map(text => `<div class="top-item"><span>${escapeHtml(text)}</span></div>`).join("");
+    }
+
+    function escapeHtml(text) {
+      return String(text ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function resetForm() {
+      document.getElementById("mealForm").reset();
+      document.getElementById("datum").value = new Date().toISOString().slice(0, 10);
+    }
+
+    function renderAll() {
+      const data = loadData();
+      buildMonthFilter(data.essensEintraege);
+      const filtered = getFilteredEntries(data.essensEintraege);
+      renderEntries(filtered);
+      renderStats(filtered);
+      renderTopMeals(filtered);
+      renderInsights(filtered);
+    }
+
+    function deleteEntry(id) {
+      const ok = window.confirm("Diesen Eintrag wirklich löschen?");
+      if (!ok) return;
+      const data = loadData();
+      data.essensEintraege = data.essensEintraege.filter(entry => entry.id !== id);
+      saveData(data);
+      renderAll();
+    }
+    window.deleteEntry = deleteEntry;
+
+    document.getElementById("mealForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const datum = document.getElementById("datum").value;
+      const mahlzeit = document.getElementById("mahlzeit").value;
+      const typ = document.getElementById("typ").value;
+      const status = document.getElementById("status").value;
+      const gericht = normalizeText(document.getElementById("gericht").value);
+      const kategorie = normalizeText(document.getElementById("kategorie").value);
+      const rolle = document.getElementById("rolle").value;
+      const name = normalizeText(document.getElementById("name").value);
+      const teilnehmer = splitList(document.getElementById("teilnehmer").value);
+      const kosten = document.getElementById("kosten").value;
+      const anbieter = normalizeText(document.getElementById("anbieter").value);
+      const tags = splitList(document.getElementById("tags").value);
+      const notizen = normalizeText(document.getElementById("notizen").value);
+
+      const entry = {
+        id: createId(),
+        datum,
+        wochentag: getWeekday(datum),
+        mahlzeit,
+        typ,
+        status,
+        gericht,
+        kategorie,
+        tags,
+        vorgeschlagenVon: {
+          rolle,
+          name
+        },
+        teilnehmer,
+        kosten: {
+          betrag: kosten ? Number(kosten) : null,
+          waehrung: "EUR",
+          proPerson: null
+        },
+        ort: {
+          name: anbieter || (typ === "zuhause" ? "Zuhause" : ""),
+          anbieter: anbieter || "",
+          adresse: ""
+        },
+        einkauf: {
+          relevant: typ === "zuhause",
+          erstellt: false,
+          eintragsIds: []
+        },
+        notizen,
+        bewertung: null,
+        erstelltAm: new Date().toISOString(),
+        aktualisiertAm: new Date().toISOString()
+      };
+
+      const data = loadData();
+      data.essensEintraege.push(entry);
+      saveData(data);
+      resetForm();
+      renderAll();
+    });
+
+    document.getElementById("fillDemoBtn").addEventListener("click", function () {
+      document.getElementById("datum").value = new Date().toISOString().slice(0, 10);
+      document.getElementById("mahlzeit").value = "Abendessen";
+      document.getElementById("typ").value = "zuhause";
+      document.getElementById("status").value = "erledigt";
+      document.getElementById("gericht").value = "Wraps mit Gemüse";
+      document.getElementById("kategorie").value = "Wraps";
+      document.getElementById("rolle").value = "kind";
+      document.getElementById("name").value = "Leo";
+      document.getElementById("teilnehmer").value = "Mama, Leo, Philipp";
+      document.getElementById("kosten").value = "9.80";
+      document.getElementById("anbieter").value = "Zuhause";
+      document.getElementById("tags").value = "familie, schnell, abend";
+      document.getElementById("notizen").value = "Kam gut an.";
+    });
+
+    document.getElementById("clearAllBtn").addEventListener("click", function () {
+      const ok = window.confirm("Wirklich alle Essens-Einträge löschen?");
+      if (!ok) return;
+      saveData(structuredClone(DEFAULT_DATA));
+      renderAll();
+    });
+
+    document.getElementById("exportJsonBtn").addEventListener("click", function () {
+      const data = loadData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "haushaltsheld_food_data.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("monthFilter").addEventListener("change", renderAll);
+    document.getElementById("typeFilter").addEventListener("change", renderAll);
+
+    resetForm();
+    renderAll();
+  </script>
 
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
   <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
   <span class="ki-fab-label">KI</span>
 </button>
+
 <section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
   <div class="ki-head">
     <div class="ki-head-left">
       <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
         <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText">Ich helfe dir bei Einkauf, Wochenplan-Logik und typischen Artikeln.</p>
+        <p id="kiContextText"></p>
         <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
       </div>
     </div>
     <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
   </div>
+
   <div class="ki-suggestions" id="kiSuggestions"></div>
-  <div class="ki-chat" id="kiChat"><div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich helfe dir hier bei Einkauf, Pflichtartikeln, Optionen und Wochenplan-Ideen.</div></div>
+
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+  </div>
+
   <form class="ki-form" id="kiForm">
     <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
     <button class="ki-send" type="submit">Senden</button>
   </form>
 </section>
 
+
 <script>
-const SUPABASE_URL = "DEINE_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "DEIN_SUPABASE_ANON_KEY";
-const ACTIVE_HOUSEHOLD_FALLBACK = "";
-let supabase = null;
-let currentUser = null;
-let currentProfile = null;
-let currentHouseholdId = null;
-let cachedEntries = [];
-
-function getTodayDate(){
-  const now = new Date();
-  const offset = now.getTimezoneOffset();
-  return new Date(now.getTime() - offset * 60000).toISOString().split("T")[0];
-}
-function escapeHtml(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-function formatEuro(value){
-  return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(Number(value || 0));
-}
-function setBadge(id,text,type=""){
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.className = `status-pill ${type}`.trim();
-  el.textContent = text;
-}
-function getSupabaseClient(){
-  if(!SUPABASE_URL || SUPABASE_URL === "DEINE_SUPABASE_URL" || !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === "DEIN_SUPABASE_ANON_KEY"){
-    setBadge("supabaseState","Supabase-Platzhalter noch nicht ersetzt","warn");
-    return null;
-  }
-  if(!supabase){
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    setBadge("supabaseState","Supabase verbunden","ok");
-  }
-  return supabase;
-}
-async function resolveProfileAndHousehold(){
-  const client = getSupabaseClient();
-  if(!client) return false;
-
-  const { data: authData, error: authError } = await client.auth.getUser();
-  if(authError){
-    console.error(authError);
-    setBadge("authState","Auth-Fehler","err");
-    return false;
-  }
-  currentUser = authData?.user || null;
-  if(!currentUser){
-    setBadge("authState","Kein angemeldeter Nutzer","warn");
-    currentHouseholdId = ACTIVE_HOUSEHOLD_FALLBACK || localStorage.getItem("haushaltsheld_active_household_id") || "";
-    if(currentHouseholdId){
-      setBadge("householdState","Fallback-Haushalt aktiv","warn");
-      return true;
-    }
-    setBadge("householdState","Kein Haushalt gefunden","err");
-    return false;
-  }
-  setBadge("authState", `${currentUser.email || 'Nutzer'} geladen`, "ok");
-
-  const { data: profile, error: profileError } = await client
-    .from("profiles")
-    .select("id,name,role,household_id")
-    .eq("id", currentUser.id)
-    .maybeSingle();
-
-  if(profileError){
-    console.error(profileError);
-    setBadge("householdState","Profilfehler","err");
-    return false;
-  }
-  currentProfile = profile || null;
-  currentHouseholdId = profile?.household_id || ACTIVE_HOUSEHOLD_FALLBACK || localStorage.getItem("haushaltsheld_active_household_id") || "";
-  if(currentProfile?.name && !document.getElementById("buyer").value.trim()){
-    document.getElementById("buyer").value = currentProfile.name;
-  }
-  if(currentHouseholdId){
-    localStorage.setItem("haushaltsheld_active_household_id", currentHouseholdId);
-    setBadge("householdState","Haushalt geladen","ok");
-    return true;
-  }
-  setBadge("householdState","Kein household_id im Profil","err");
-  return false;
-}
-function packMeta({baseGroup,purchaseKind,priority,origin,buyer,note}){
-  const meta = {
-    baseGroup: baseGroup || "",
-    purchaseKind: purchaseKind || "Alltag",
-    priority: priority || "Pflicht",
-    origin: origin || "Manuell",
-    buyer: buyer || "",
-    note: note || ""
-  };
-  return `##HHMETA##${JSON.stringify(meta)}`;
-}
-function unpackMeta(raw){
-  const fallback = {baseGroup:"",purchaseKind:"Alltag",priority:"Pflicht",origin:"Manuell",buyer:"",note: raw || ""};
-  if(!raw || !raw.startsWith("##HHMETA##")) return fallback;
-  try{
-    const parsed = JSON.parse(raw.replace("##HHMETA##",""));
-    return {
-      baseGroup: parsed.baseGroup || "",
-      purchaseKind: parsed.purchaseKind || "Alltag",
-      priority: parsed.priority || "Pflicht",
-      origin: parsed.origin || "Manuell",
-      buyer: parsed.buyer || "",
-      note: parsed.note || ""
-    };
-  }catch{
-    return fallback;
-  }
-}
-function normalizeBaseGroup(title, baseGroup){
-  if(baseGroup && baseGroup.trim()) return baseGroup.trim();
-  const t = String(title || "").toLowerCase();
-  const rules = [
-    [/milch|weidemilch|vollmilch|h-milch|laktosefrei/, "Milch"],
-    [/hafer|oat/, "Haferdrink"],
-    [/käse|gouda|mozzarella|parmesan/, "Käse"],
-    [/brot|brötchen|toast/, "Brot"],
-    [/nudel|spaghetti|penne|fusilli/, "Nudeln"],
-    [/reis|basmati|jasmin/, "Reis"],
-    [/kartoffel/, "Kartoffeln"],
-    [/ei\b|eier/, "Eier"],
-    [/joghurt/, "Joghurt"],
-    [/tomate|passierte tomaten/, "Tomaten"],
-    [/apfel|äpfel/, "Äpfel"],
-    [/toilettenpapier|küchenrolle/, "Papierwaren"],
-    [/waschmittel|spülmittel/, "Reinigungsmittel"],
-    [/bett/, "Bett"],
-    [/tisch/, "Tisch"]
-  ];
-  for(const [regex, label] of rules){ if(regex.test(t)) return label; }
-  return String(title || "").trim();
-}
-function collectFormData(){
-  const title = document.getElementById("itemTitle").value.trim();
-  const baseGroup = normalizeBaseGroup(title, document.getElementById("baseGroup").value.trim());
-  return {
-    title,
-    baseGroup,
-    date: document.getElementById("neededDate").value,
-    purchaseKind: document.getElementById("purchaseKind").value,
-    category: document.getElementById("category").value,
-    priority: document.getElementById("priority").value,
-    origin: document.getElementById("origin").value,
-    status: document.getElementById("entryStatus").value,
-    quantity: document.getElementById("quantity").value ? parseFloat(document.getElementById("quantity").value) : null,
-    unit: document.getElementById("unit").value.trim(),
-    store: document.getElementById("store").value.trim(),
-    price: document.getElementById("price").value ? parseFloat(document.getElementById("price").value) : null,
-    buyer: document.getElementById("buyer").value.trim(),
-    note: document.getElementById("note").value.trim()
-  };
-}
-function resetForm(){
-  document.getElementById("itemTitle").value = "";
-  document.getElementById("baseGroup").value = "";
-  document.getElementById("neededDate").value = getTodayDate();
-  document.getElementById("purchaseKind").value = "Alltag";
-  document.getElementById("category").value = "Lebensmittel";
-  document.getElementById("priority").value = "Pflicht";
-  document.getElementById("origin").value = "Manuell";
-  document.getElementById("entryStatus").value = "offen";
-  document.getElementById("quantity").value = "";
-  document.getElementById("unit").value = "";
-  document.getElementById("store").value = "";
-  document.getElementById("price").value = "";
-  document.getElementById("note").value = "";
-  document.getElementById("bulkItems").value = "";
-  if(currentProfile?.name){ document.getElementById("buyer").value = currentProfile.name; }
-}
-function fillDemoData(){
-  document.getElementById("itemTitle").value = "Weidemilch 1,5 %";
-  document.getElementById("baseGroup").value = "Milch";
-  document.getElementById("neededDate").value = getTodayDate();
-  document.getElementById("purchaseKind").value = "Alltag";
-  document.getElementById("category").value = "Lebensmittel";
-  document.getElementById("priority").value = "Pflicht";
-  document.getElementById("origin").value = "Wochenplan";
-  document.getElementById("entryStatus").value = "offen";
-  document.getElementById("quantity").value = "2";
-  document.getElementById("unit").value = "Packungen";
-  document.getElementById("store").value = "REWE";
-  document.getElementById("price").value = "3.58";
-  document.getElementById("note").value = "Für den Wocheneinkauf und Frühstück.";
-}
-function fillWeekDemo(){
-  document.getElementById("purchaseKind").value = "Alltag";
-  document.getElementById("category").value = "Lebensmittel";
-  document.getElementById("priority").value = "Pflicht";
-  document.getElementById("origin").value = "Wochenplan";
-  document.getElementById("entryStatus").value = "offen";
-  document.getElementById("bulkItems").value = "2x Milch\nBrot\n500g Nudeln\nTomaten\nParmesan";
-}
-function parseBulkLines(text){
-  return text
-    .split(/\n+/)
-    .map(line => line.trim())
-    .filter(Boolean)
-    .map(line => {
-      let quantity = null;
-      let unit = "";
-      let title = line;
-
-      const patterns = [
-        /^([0-9]+(?:[\.,][0-9]+)?)\s*(x)\s+(.+)$/i,
-        /^([0-9]+(?:[\.,][0-9]+)?)\s+(stück|stk|packung|packungen|flasche|flaschen|dose|dosen|becher|becher|glas|gläser|rolle|rollen|brot|brote|eier?)\s+(.+)$/i,
-        /^([0-9]+(?:[\.,][0-9]+)?)\s*(kg|g|l|ml)\s+(.+)$/i,
-        /^([0-9]+(?:[\.,][0-9]+)?)\s+(.+)$/i
-      ];
-
-      for(const pattern of patterns){
-        const match = line.match(pattern);
-        if(!match) continue;
-
-        quantity = parseFloat(String(match[1]).replace(",", "."));
-        if(Number.isNaN(quantity)) quantity = null;
-
-        if(pattern === patterns[0]){
-          unit = "Stück";
-          title = match[3].trim();
-        }else if(pattern === patterns[1] || pattern === patterns[2]){
-          const rawUnit = match[2].trim().toLowerCase();
-          const unitMap = {
-            "stk":"Stück",
-            "stück":"Stück",
-            "packung":"Packung",
-            "packungen":"Packungen",
-            "flasche":"Flasche",
-            "flaschen":"Flaschen",
-            "dose":"Dose",
-            "dosen":"Dosen",
-            "becher":"Becher",
-            "glas":"Glas",
-            "gläser":"Gläser",
-            "rolle":"Rolle",
-            "rollen":"Rollen",
-            "brot":"Brot",
-            "brote":"Brote",
-            "ei":"Stück",
-            "eier":"Stück",
-            "kg":"kg",
-            "g":"g",
-            "l":"l",
-            "ml":"ml"
-          };
-          unit = unitMap[rawUnit] || match[2].trim();
-          title = match[3].trim();
-        }else{
-          unit = "";
-          title = match[2].trim();
-        }
-        break;
-      }
-
-      return {
-        title,
-        quantity,
-        unit,
-        baseGroup: normalizeBaseGroup(title, "")
-      };
-    });
-}
-async function fetchShoppingEntries(){
-  const client = getSupabaseClient();
-  if(!client || !currentHouseholdId){ cachedEntries = []; return []; }
-  const { data, error } = await client
-    .from("shopping_entries")
-    .select("*")
-    .eq("household_id", currentHouseholdId)
-    .order("purchased_at", { ascending:true })
-    .order("created_at", { ascending:false });
-  if(error){
-    console.error(error);
-    alert("Die Einkaufsliste konnte gerade nicht geladen werden.");
-    cachedEntries = [];
-    return [];
-  }
-  cachedEntries = data || [];
-  return cachedEntries;
-}
-async function saveSingleItem(){
-  const client = getSupabaseClient();
-  if(!client){ alert("Bitte zuerst die Supabase-Platzhalter in der Datei ersetzen."); return; }
-  if(!currentHouseholdId){ alert("Es wurde kein Haushalt gefunden. Bitte zuerst korrekt anmelden."); return; }
-  const form = collectFormData();
-  if(!form.title || !form.date){ alert("Bitte mindestens Artikelname und Datum ausfüllen."); return; }
-  const payload = {
-    household_id: currentHouseholdId,
-    user_id: currentProfile?.id || currentUser?.id || null,
-    title: form.title,
-    category: form.category,
-    quantity: form.quantity,
-    unit: form.unit || null,
-    status: form.status,
-    note: packMeta(form),
-    store: form.store || null,
-    price: form.price,
-    purchased_at: form.date
-  };
-  const { error } = await client.from("shopping_entries").insert(payload);
-  if(error){
-    console.error(error);
-    alert("Der Artikel konnte nicht gespeichert werden.");
-    return;
-  }
-  resetForm();
-  await renderAll();
-}
-async function saveBulkItems(){
-  const client = getSupabaseClient();
-  if(!client){ alert("Bitte zuerst die Supabase-Platzhalter in der Datei ersetzen."); return; }
-  if(!currentHouseholdId){ alert("Es wurde kein Haushalt gefunden. Bitte zuerst korrekt anmelden."); return; }
-  const lines = parseBulkLines(document.getElementById("bulkItems").value);
-  if(!lines.length){ alert("Bitte zuerst mehrere Artikel eingeben."); return; }
-  const form = collectFormData();
-  if(!form.date){ alert("Bitte oben ein Datum setzen."); return; }
-  const rows = lines.map(line => ({
-    household_id: currentHouseholdId,
-    user_id: currentProfile?.id || currentUser?.id || null,
-    title: line.title,
-    category: form.category,
-    quantity: line.quantity ?? form.quantity,
-    unit: line.unit || form.unit || null,
-    status: form.status,
-    note: packMeta({
-      baseGroup: line.baseGroup,
-      purchaseKind: form.purchaseKind,
-      priority: form.priority,
-      origin: form.origin,
-      buyer: form.buyer,
-      note: form.note
-    }),
-    store: form.store || null,
-    price: null,
-    purchased_at: form.date
-  }));
-  const { error } = await client.from("shopping_entries").insert(rows);
-  if(error){
-    console.error(error);
-    alert("Die Mehrfacheingabe konnte nicht gespeichert werden.");
-    return;
-  }
-  document.getElementById("bulkItems").value = "";
-  await renderAll();
-}
-function mapEntry(row){
-  const meta = unpackMeta(row.note || "");
-  return {
-    id: row.id,
-    title: row.title || "Artikel",
-    baseGroup: normalizeBaseGroup(row.title, meta.baseGroup),
-    purchaseKind: meta.purchaseKind || "Alltag",
-    priority: meta.priority || "Pflicht",
-    origin: meta.origin || "Manuell",
-    buyer: meta.buyer || "",
-    note: meta.note || "",
-    category: row.category || "Sonstiges",
-    quantity: row.quantity,
-    unit: row.unit || "",
-    store: row.store || "",
-    price: Number(row.price || 0),
-    date: row.purchased_at || "",
-    status: row.status || "offen"
-  };
-}
-function getFilteredEntries(){
-  const search = document.getElementById("searchFilter").value.trim().toLowerCase();
-  const status = document.getElementById("statusFilter").value;
-  const kind = document.getElementById("kindFilter").value;
-  const category = document.getElementById("categoryFilter").value;
-  const priority = document.getElementById("priorityFilter").value;
-
-  return cachedEntries.map(mapEntry).filter(entry => {
-    if(status !== "all" && entry.status !== status) return false;
-    if(kind !== "all" && entry.purchaseKind !== kind) return false;
-    if(category !== "all" && entry.category !== category) return false;
-    if(priority !== "all" && entry.priority !== priority) return false;
-    if(search){
-      const hay = [entry.title, entry.baseGroup, entry.note, entry.store, entry.category].join(" ").toLowerCase();
-      if(!hay.includes(search)) return false;
-    }
-    return true;
-  }).sort((a,b) => {
-    const statusOrder = { offen:0, verschoben:1, gekauft:2, gelöscht:3 };
-    const sa = statusOrder[a.status] ?? 9;
-    const sb = statusOrder[b.status] ?? 9;
-    if(sa !== sb) return sa - sb;
-    return String(a.date || '').localeCompare(String(b.date || ''));
-  });
-}
-async function updateEntryStatus(id, status, shiftDays=0){
-  const client = getSupabaseClient();
-  if(!client) return;
-  const existing = cachedEntries.find(e => e.id === id);
-  const update = { status };
-  if(shiftDays && existing?.purchased_at){
-    const date = new Date(existing.purchased_at + 'T12:00:00');
-    date.setDate(date.getDate() + shiftDays);
-    update.purchased_at = date.toISOString().split('T')[0];
-  }
-  const { error } = await client.from("shopping_entries").update(update).eq("id", id);
-  if(error){ console.error(error); alert("Der Status konnte nicht aktualisiert werden."); return; }
-  await renderAll();
-}
-async function deleteEntry(id){
-  const client = getSupabaseClient();
-  if(!client) return;
-  if(!confirm("Diesen Eintrag wirklich löschen?")) return;
-  const { error } = await client.from("shopping_entries").delete().eq("id", id);
-  if(error){ console.error(error); alert("Der Eintrag konnte nicht gelöscht werden."); return; }
-  await renderAll();
-}
-function updateCategoryFilter(entries){
-  const select = document.getElementById("categoryFilter");
-  const current = select.value || "all";
-  const categories = [...new Set(entries.map(mapEntry).map(e => e.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'de'));
-  select.innerHTML = '<option value="all">Alle</option>' + categories.map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join('');
-  if(categories.includes(current)) select.value = current;
-}
-function renderStats(entries){
-  document.getElementById("statTotal").textContent = String(entries.length);
-  document.getElementById("statOpen").textContent = String(entries.filter(e => e.status === 'offen').length);
-  document.getElementById("statRequired").textContent = String(entries.filter(e => e.priority === 'Pflicht' && e.status !== 'gekauft').length);
-  document.getElementById("statAcquisition").textContent = String(entries.filter(e => e.purchaseKind === 'Anschaffung').length);
-}
-function renderList(entries){
-  const list = document.getElementById("purchaseList");
-  if(!entries.length){
-    list.innerHTML = `<div class="empty">Noch keine passenden Einträge vorhanden. Sobald du speicherst, erscheinen sie hier direkt aus Supabase.</div>`;
-    return;
-  }
-  list.innerHTML = entries.map(entry => `
-    <div class="item">
-      <div>
-        <strong>${escapeHtml(entry.title)}</strong>
-        <div class="badges">
-          <span class="badge kind">${escapeHtml(entry.purchaseKind)}</span>
-          <span class="badge priority">${escapeHtml(entry.priority)}</span>
-          <span class="badge origin">${escapeHtml(entry.origin)}</span>
-          <span class="badge status-${escapeHtml(entry.status)}">${escapeHtml(entry.status)}</span>
-        </div>
-        <p><strong>Oberbegriff:</strong> ${escapeHtml(entry.baseGroup)} · <strong>Bereich:</strong> ${escapeHtml(entry.category)} · <strong>Datum:</strong> ${entry.date ? new Date(entry.date + 'T12:00:00').toLocaleDateString('de-DE') : '—'}</p>
-        <p>${entry.quantity ? `<strong>Menge:</strong> ${escapeHtml(entry.quantity)} ${escapeHtml(entry.unit)}` : ''}${entry.store ? `${entry.quantity ? ' · ' : ''}<strong>Geschäft:</strong> ${escapeHtml(entry.store)}` : ''}${entry.buyer ? `${entry.quantity || entry.store ? ' · ' : ''}<strong>Person:</strong> ${escapeHtml(entry.buyer)}` : ''}</p>
-        ${entry.note ? `<p>${escapeHtml(entry.note)}</p>` : ''}
-        <div class="item-actions">
-          ${entry.status !== 'gekauft' ? `<button class="mini-btn" type="button" onclick="updateEntryStatus('${entry.id}','gekauft')">Gekauft</button>` : ''}
-          <button class="mini-btn" type="button" onclick="updateEntryStatus('${entry.id}','verschoben',7)">+7 Tage</button>
-          <button class="mini-btn" type="button" onclick="deleteEntry('${entry.id}')">Löschen</button>
-        </div>
-      </div>
-      <div class="amount">${entry.price ? formatEuro(entry.price) : '—'}</div>
-    </div>
-  `).join('');
-}
-function buildAiInsights(entries){
-  const topGroups = new Map();
-  const tips = [];
-  entries.filter(e => e.status !== 'gelöscht').forEach(entry => {
-    const key = entry.baseGroup || entry.title;
-    topGroups.set(key, (topGroups.get(key) || 0) + 1);
-  });
-  const top = [...topGroups.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);
-  document.getElementById("aiTopGroups").textContent = top.length ? top.map(([name,count]) => `${name} (${count})`).join(' · ') : 'Noch keine Daten vorhanden.';
-
-  const openRequired = entries.filter(e => e.status === 'offen' && e.priority === 'Pflicht').length;
-  const optionalCount = entries.filter(e => e.priority === 'Optional' && e.status === 'offen').length;
-  const acquisitions = entries.filter(e => e.purchaseKind === 'Anschaffung' && e.status !== 'gekauft').length;
-  const foodCount = entries.filter(e => e.category === 'Lebensmittel').length;
-  if(openRequired) tips.push(`${openRequired} Pflichtartikel sind noch offen.`);
-  if(optionalCount) tips.push(`${optionalCount} optionale Einträge können beim Budgetdruck zuerst geprüft werden.`);
-  if(acquisitions) tips.push(`${acquisitions} Anschaffungen stehen noch aus – besser getrennt vom Wocheneinkauf behandeln.`);
-  if(foodCount >= 3) tips.push(`Lebensmittel werden bereits oft gepflegt. Damit kann die KI später Gewohnheiten wie Milch, Käse oder Brot besser erkennen.`);
-  if(!tips.length) tips.push("Sobald mehr Einträge vorhanden sind, werden hier sinnvolle Muster und Hinweise angezeigt.");
-  document.getElementById("aiSummary").textContent = entries.length
-    ? `Die Liste enthält aktuell ${entries.length} gefilterte Einträge. Für die KI sind vor allem Oberbegriffe, Kaufart und Wichtigkeit interessant.`
-    : 'Sobald Einträge da sind, entstehen hier erste Muster.';
-  document.getElementById("aiTips").innerHTML = tips.map(t => `<li>${escapeHtml(t)}</li>`).join('');
-}
-function buildPrintSheet(entries){
-  const now = new Date().toLocaleDateString('de-DE');
-  document.getElementById("printSheet").innerHTML = `
-    <h1 style="font-size:26px;margin-bottom:10px;">Meine Einkaufsliste</h1>
-    <p style="margin-bottom:8px;color:#556159;">HaushaltsHeld · Druckansicht</p>
-    <p style="margin-bottom:18px;color:#556159;">Stand: ${escapeHtml(now)} · Sichtbare Einträge: ${entries.length}</p>
-    ${entries.map(entry => `
-      <div style="border:1px solid #dfd1bc;border-radius:14px;padding:12px 14px;margin-bottom:10px;">
-        <strong>${escapeHtml(entry.title)}</strong><br>
-        <span>${escapeHtml(entry.purchaseKind)} · ${escapeHtml(entry.priority)} · ${escapeHtml(entry.category)} · ${entry.date ? new Date(entry.date + 'T12:00:00').toLocaleDateString('de-DE') : '—'}</span>
-        ${entry.note ? `<div style="margin-top:6px;color:#556159;">${escapeHtml(entry.note)}</div>` : ''}
-      </div>
-    `).join('')}
-  `;
-}
-function printCurrentView(){
-  const entries = getFilteredEntries();
-  buildPrintSheet(entries);
-  window.print();
-}
-async function renderAll(){
-  const profileOk = await resolveProfileAndHousehold();
-  if(profileOk){
-    await fetchShoppingEntries();
-  } else {
-    cachedEntries = [];
-  }
-  updateCategoryFilter(cachedEntries);
-  const filtered = getFilteredEntries();
-  renderStats(filtered);
-  renderList(filtered);
-  buildAiInsights(filtered);
-  buildPrintSheet(filtered);
-}
-function bindUi(){
-  document.getElementById("saveItemBtn").addEventListener("click", saveSingleItem);
-  document.getElementById("saveBulkBtn").addEventListener("click", saveBulkItems);
-  document.getElementById("clearFormBtn").addEventListener("click", resetForm);
-  document.getElementById("demoBtn").addEventListener("click", fillDemoData);
-  document.getElementById("fillWeekDemoBtn").addEventListener("click", fillWeekDemo);
-  document.getElementById("printBtn").addEventListener("click", printCurrentView);
-  document.getElementById("addBulkLineBtn").addEventListener("click", addQuickBulkLine);
-  document.getElementById("removeLastBulkLineBtn").addEventListener("click", removeLastBulkLine);
-  document.getElementById("clearBulkLinesBtn").addEventListener("click", clearBulkLines);
-  document.getElementById("bulkQuickTitle").addEventListener("keydown", (e) => {
-    if(e.key === "Enter"){
-      e.preventDefault();
-      addQuickBulkLine();
-    }
-  });
-  ["searchFilter","statusFilter","kindFilter","categoryFilter","priorityFilter"].forEach(id => {
-    document.getElementById(id).addEventListener("input", renderAll);
-    document.getElementById(id).addEventListener("change", renderAll);
-  });
-  document.getElementById("itemTitle").addEventListener("blur", () => {
-    const title = document.getElementById("itemTitle").value.trim();
-    if(title && !document.getElementById("baseGroup").value.trim()){
-      document.getElementById("baseGroup").value = normalizeBaseGroup(title, "");
-    }
-  });
-}
-function setView(mode){
-  document.getElementById("modeBadge").textContent = mode === 'child' ? 'Kindmodus aktiv' : 'Elternmodus aktiv';
-  document.getElementById("adminViewBtn").classList.toggle("active", mode !== 'child');
-  document.getElementById("childViewBtn").classList.toggle("active", mode === 'child');
-  localStorage.setItem("haushaltsheld_mode", mode === 'child' ? 'child' : 'parent');
-}
-document.getElementById("adminViewBtn").addEventListener("click", () => setView("admin"));
-document.getElementById("childViewBtn").addEventListener("click", () => setView("child"));
-window.updateEntryStatus = updateEntryStatus;
-window.deleteEntry = deleteEntry;
-
-(function initKi(){
+(function(){
+  const page = "essensplan";
   const fab = document.getElementById("kiFab");
   const panel = document.getElementById("kiPanel");
   const closeBtn = document.getElementById("kiClose");
@@ -1047,31 +1102,92 @@ window.deleteEntry = deleteEntry;
   const input = document.getElementById("kiInput");
   const chat = document.getElementById("kiChat");
   const suggestions = document.getElementById("kiSuggestions");
-  const chips = [
-    "Welche Pflichtartikel sind noch offen?",
-    "Was gehört eher zu Anschaffung statt Alltag?",
-    "Welche Oberbegriffe sollte ich sauber pflegen?"
-  ];
-  suggestions.innerHTML = chips.map(text => `<button class="ki-chip" type="button">${escapeHtml(text)}</button>`).join('');
-  suggestions.querySelectorAll('.ki-chip').forEach(btn => btn.addEventListener('click', () => { input.value = btn.textContent.trim(); input.focus(); }));
-  function addMsg(role,text){ const div=document.createElement('div'); div.className='ki-msg '+role; div.textContent=text; chat.appendChild(div); chat.scrollTop=chat.scrollHeight; }
-  fab.addEventListener('click',()=>panel.classList.add('open'));
-  closeBtn.addEventListener('click',()=>panel.classList.remove('open'));
-  form.addEventListener('submit',(e)=>{
-    e.preventDefault();
-    const message=input.value.trim();
-    if(!message) return;
-    addMsg('user',message);
-    input.value='';
-    addMsg('bot','Für tiefe KI-Antworten läuft später dein Netlify-Backend. Auf dieser Datei ist die Einkaufsliste aber schon so vorbereitet, dass Wochenplan, Pflichtartikel, Optionales und Kaufarten sauber gepflegt werden können.');
-  });
-})();
+  const contextText = document.getElementById("kiContextText");
+  const welcome = document.getElementById("kiWelcomeMsg");
 
-document.getElementById("neededDate").value = getTodayDate();
-bindUi();
-setView(localStorage.getItem("haushaltsheld_mode") === "child" ? "child" : "admin");
-renderAll();
-if (window.lucide) { lucide.createIcons(); }
+  if(!fab || !panel || !closeBtn || !form || !input || !chat || !suggestions || !contextText || !welcome) return;
+
+  const pageSettings = {
+    context: "Ich helfe dir beim Essensplan, bei Ideen für Mahlzeiten und bei der Struktur deiner Woche.",
+    suggestions: ["Mach mir einen einfachen Essensplan für 5 Tage.", "Welche Gerichte eignen sich gut für Kinder?", "Hilf mir mit einer schnellen Wochenstruktur fürs Kochen."],
+    welcome: "Hallo 👋 Ich bin deine Haushaltsheld KI. Ich helfe dir beim Essensplan und bei Ideen für die Woche."
+  };
+
+  function escapeHtml(value){
+    return String(value ?? "")
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
+
+  contextText.textContent = pageSettings.context;
+  welcome.textContent = pageSettings.welcome;
+
+  suggestions.innerHTML = pageSettings.suggestions.map(text =>
+    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
+  ).join('');
+
+  suggestions.querySelectorAll('.ki-chip').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      input.value = btn.textContent.trim();
+      input.focus();
+    });
+  });
+
+  function addMsg(role, text){
+    const div = document.createElement('div');
+    div.className = 'ki-msg ' + role;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage(message){
+    addMsg('user', message);
+    const loading = addMsg('bot', 'Ich denke kurz nach …');
+    loading.classList.add('ki-typing');
+
+    try{
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({message, page, mode: 'parent'})
+      });
+      const data = await response.json();
+      loading.remove();
+      addMsg('bot', data.reply || 'Ich konnte gerade nichts Sinnvolles antworten.');
+    }catch(err){
+      loading.remove();
+      addMsg('bot', 'Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.');
+    }
+  }
+
+  fab.addEventListener('click',()=>{
+    panel.classList.add('open');
+    input.focus();
+  });
+  closeBtn.addEventListener('click',()=>{
+    panel.classList.remove('open');
+  });
+  document.addEventListener('keydown',(e)=>{
+    if(e.key === 'Escape') panel.classList.remove('open');
+  });
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const message = input.value.trim();
+    if(!message) return;
+    input.value = '';
+    await sendMessage(message);
+  });
+
+  if(window.lucide && window.lucide.createIcons){
+    try{ window.lucide.createIcons(); }catch(e){}
+  }
+})();
 </script>
+
 </body>
 </html>

@@ -4,1437 +4,1012 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Haushaltsheld – Einkaufsliste</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ki-schnecke.css">
-
 <style>
 :root{
-  --bg:#f7f2e9;
-  --bg-2:#fdf9f3;
-  --card:#ffffff;
-  --soft:#f6efe4;
-  --soft2:#efe3d2;
-  --line:#dfd1bc;
-
-  --text:#2d342f;
-  --text2:#556159;
-  --muted:#7d8a82;
-
-  --accent:#4CAF50;
-  --accent-dark:#3E8E41;
-  --accent-soft:#e7f5e8;
-
-  --beige:#f2e6d7;
-  --sand:#e8d7c2;
-  --blue:#6b96d9;
-  --blue-soft:#e9f1ff;
-  --red:#cc6666;
-  --red-soft:#fdeaea;
-  --yellow:#b5882f;
-  --yellow-soft:#fbf4df;
-  --green:#5ca66f;
-  --green-soft:#e7f4ea;
-  --brown:#4d3c2c;
-  --brown-dark:#433324;
-
-  --shadow-xs:0 2px 8px rgba(54,45,28,.05);
-  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
-  --shadow:0 12px 34px rgba(54,45,28,.10);
-  --shadow-lg:0 18px 48px rgba(54,45,28,.12);
-
+  --bg:#f7f2e9;--bg-2:#fdf9f3;--card:#ffffff;--soft:#f6efe4;--soft2:#efe3d2;--line:#dfd1bc;
+  --text:#2d342f;--text2:#556159;--muted:#7d8a82;--accent:#4CAF50;--accent-dark:#3E8E41;--accent-soft:#e7f5e8;
+  --blue:#6b96d9;--blue-soft:#e9f1ff;--red:#cc6666;--red-soft:#fdeaea;--yellow:#b5882f;--yellow-soft:#fbf4df;
+  --green:#5ca66f;--green-soft:#e7f4ea;--brown:#4d3c2c;--brown-dark:#433324;
+  --shadow-xs:0 2px 8px rgba(54,45,28,.05);--shadow-sm:0 6px 18px rgba(54,45,28,.08);--shadow:0 12px 34px rgba(54,45,28,.10);
   --sidebar-w:258px;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;overflow-x:hidden}
-
 body{
   font-family:"Outfit",sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%),
-    linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
-  color:var(--text);
-  min-height:100vh;
-  font-size:16px;
-  line-height:1.6;
-  letter-spacing:-0.01em;
+  background:radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%), linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);
+  color:var(--text);min-height:100vh;font-size:16px;line-height:1.6;letter-spacing:-0.01em;
 }
-
-h1,h2,h3,h4,h5,h6{
-  font-family:"Outfit",sans-serif;
-  letter-spacing:-0.03em;
-  line-height:1.15;
-}
-
+h1,h2,h3,h4,h5,h6{font-family:"Outfit",sans-serif;letter-spacing:-0.03em;line-height:1.15}
 button,input,select,textarea{font:inherit}
-
-.app{
-  display:grid;
-  grid-template-columns:var(--sidebar-w) 1fr;
-  min-height:100vh;
-}
-
-/* Sidebar */
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}
 .sidebar{
   background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);
-  border-right:1px solid rgba(223,209,188,.85);
-  padding:28px 18px 24px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
-  z-index:10;
-  box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
+  border-right:1px solid rgba(223,209,188,.85);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;
+  position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10;box-shadow:inset -1px 0 0 rgba(255,255,255,.4);
 }
-.logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 8px 24px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:8px;
-}
-.logo-wrap img{
-  width:48px;
-  height:48px;
-  object-fit:contain;
-  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14));
-}
+.logo-wrap{padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.logo-link{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo-wrap img{width:48px;height:48px;object-fit:contain}
 .logo-name{font-weight:800;font-size:1.25rem;color:var(--text)}
 .logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}
-.nav-label{
-  font-size:.7rem;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  color:var(--muted);
-  padding:16px 10px 6px;
-}
-.nav{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.nav a{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px 13px;
-  border-radius:18px;
-  text-decoration:none;
-  color:var(--text2);
-  font-weight:700;
-  font-size:.98rem;
-  transition:all .18s ease;
-  border:1px solid transparent;
-  position:relative;
-}
-.nav a:hover{
-  background:rgba(255,255,255,.72);
-  border-color:rgba(223,209,188,.9);
-  transform:translateX(2px);
-  box-shadow:var(--shadow-xs);
-  color:var(--text);
-}
-.nav a.active{
-  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
-  color:#fff;
-  border-color:rgba(62,142,65,.28);
-  box-shadow:
-    0 5px 0 #2f6f33,
-    0 14px 26px rgba(62,142,65,.20),
-    inset 0 1px 0 rgba(255,255,255,.18);
-}
-.nav a.active .nav-icon{
-  background:rgba(255,255,255,.16);
-  border-color:rgba(255,255,255,.22);
-  color:#fff;
-}
-.nav-icon{
-  width:36px;
-  height:36px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.92);
-  color:var(--accent-dark);
-  flex-shrink:0;
-  box-shadow:0 2px 8px rgba(54,45,28,.05);
-}
-.nav-icon svg{width:18px;height:18px;stroke:currentColor}
-.sidebar-footer{
-  margin-top:auto;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-}
-.mode-switch{
-  display:flex;
-  gap:6px;
-  background:rgba(255,255,255,.86);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:5px;
-  box-shadow:var(--shadow-xs);
-}
-.mode-btn{
-  flex:1;
-  border:none;
-  background:transparent;
-  color:var(--muted);
-  padding:9px 12px;
-  border-radius:999px;
-  font-size:.82rem;
-  font-weight:800;
-  cursor:pointer;
-  transition:.18s ease;
-}
-.mode-btn.active{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%) !important;
-  color:#fff !important;
-  box-shadow:
-    0 3px 0 #2f6f33,
-    0 8px 18px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.2) !important;
-}
-
-/* Main */
-.main{
-  width:100%;
-  max-width:1580px;
-  padding:32px;
-}
-
-/* Header */
-.page-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:18px;
-  flex-wrap:wrap;
-  margin-bottom:22px;
-}
-.page-header h1{
-  font-size:2.35rem;
-  font-weight:800;
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.page-header p{
-  color:var(--muted);
-  font-size:.98rem;
-  max-width:860px;
-}
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.mode-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 16px;
-  border-radius:999px;
-  font-weight:800;
-  font-size:.88rem;
-  background:var(--soft);
-  border:1px solid var(--line);
-  color:var(--text2);
-  box-shadow:var(--shadow-xs);
-}
-
-/* Icons */
-.section-icon,
-.page-title-icon{
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  display:inline-grid;
-  place-items:center;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-  border:1px solid rgba(76,175,80,.16);
-  box-shadow:var(--shadow-xs);
-  flex-shrink:0;
-}
-.section-icon svg,
-.page-title-icon svg{
-  width:18px;
-  height:18px;
-  stroke:currentColor;
-}
-
-/* Hero */
-.hero{
-  background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);
-  border:1px solid rgba(76,175,80,.18);
-  border-radius:30px;
-  padding:28px 30px;
-  display:grid;
-  grid-template-columns:1.05fr .95fr;
-  gap:20px;
-  align-items:stretch;
-  margin-bottom:24px;
-  box-shadow:var(--shadow-sm);
-  position:relative;
-  overflow:hidden;
-}
-.hero::after{
-  content:"";
-  position:absolute;
-  right:-40px;
-  bottom:-40px;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  background:rgba(76,175,80,.07);
-  pointer-events:none;
-}
-.hero h2{
-  font-size:1.55rem;
-  font-weight:800;
-  margin-bottom:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.hero p{
-  color:var(--text2);
-  line-height:1.65;
-  margin-bottom:16px;
-}
-.hero-tags{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.hero-tag{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(223,209,188,.95);
-  padding:9px 14px;
-  border-radius:999px;
-  font-size:.88rem;
-  font-weight:800;
-  color:var(--text2);
-  box-shadow:0 1px 4px rgba(54,45,28,.04);
-}
-.hero-tag.accent{
-  background:#f8ebda;
-  border-color:#ecd1ad;
-}
-.hero-side{
-  display:grid;
-  gap:12px;
-}
-.mini{
-  background:rgba(255,255,255,.78);
-  border-radius:20px;
-  padding:16px;
-  border:1px solid rgba(223,209,188,.85);
-  box-shadow:var(--shadow-xs);
-}
-.mini strong{
-  display:block;
-  margin-bottom:6px;
-  font-size:.96rem;
-  font-weight:800;
-}
-.mini span{
-  color:var(--muted);
-  font-size:.88rem;
-  line-height:1.55;
-}
-
-/* Cards */
-.card{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:28px;
-  padding:24px;
-  margin-bottom:18px;
-  box-shadow:var(--shadow-sm);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:var(--shadow);
-}
-.card h2{
-  font-size:1.16rem;
-  font-weight:800;
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.card-sub{
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:16px;
-  font-size:.9rem;
-}
-
-/* Grid */
-.grid{
-  display:grid;
-  grid-template-columns:1.05fr .95fr;
-  gap:18px;
-}
-
-/* Form */
-.form-grid,.form-grid-3{
-  display:grid;
-  gap:14px;
-  margin-bottom:14px;
-}
+.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);font-weight:700;font-size:.98rem;transition:all .18s ease;border:1px solid transparent;position:relative}
+.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}
+.nav a.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-color:rgba(62,142,65,.28);box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)}
+.nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}
+.nav-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)}
+.nav-icon svg{width:18px;height:18px;stroke:currentColor;display:block}
+.main{width:100%;max-width:1600px;padding:32px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.page-header h1{font-size:2.35rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.page-header p{color:var(--muted);font-size:.98rem;max-width:900px}
+.page-title-icon,.section-icon{width:34px;height:34px;border-radius:12px;display:inline-grid;place-items:center;background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(76,175,80,.16);box-shadow:var(--shadow-xs);flex-shrink:0}
+.page-title-icon svg,.section-icon svg{width:18px;height:18px;stroke:currentColor;display:block}
+.hero{background:linear-gradient(180deg,#f5fbf5 0%, #ecf6ed 100%);border:1px solid rgba(76,175,80,.18);border-radius:30px;padding:28px 30px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:stretch;margin-bottom:24px;box-shadow:var(--shadow-sm)}
+.hero h2{font-size:1.55rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.hero p{color:var(--text2);line-height:1.65;margin-bottom:16px}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.95);padding:9px 14px;border-radius:999px;font-size:.88rem;font-weight:800;color:var(--text2);box-shadow:0 1px 4px rgba(54,45,28,.04)}
+.hero-tag.accent{background:#f8ebda;border-color:#ecd1ad}
+.hero-side{display:grid;gap:12px}
+.mini{background:rgba(255,255,255,.78);border-radius:20px;padding:16px;border:1px solid rgba(223,209,188,.85);box-shadow:var(--shadow-xs);transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
+.mini strong{display:block;margin-bottom:6px;font-size:.96rem;font-weight:800}
+.mini span{color:var(--muted);font-size:.88rem;line-height:1.55}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:26px;padding:20px;box-shadow:var(--shadow-sm);transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
+.stat.is-clickable{cursor:pointer}
+.stat.is-clickable:focus-visible{outline:3px solid rgba(76,175,80,.22);outline-offset:2px}
+.stat h3{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px}
+.stat .value{font-size:2rem;font-weight:800;margin-bottom:4px;letter-spacing:-0.04em}
+.stat p{font-size:.84rem;color:var(--muted);line-height:1.5}
+.grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm);transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
+.card h2{font-size:1.16rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.card-sub{color:var(--muted);line-height:1.6;margin-bottom:16px;font-size:.9rem}
+.form-grid,.form-grid-3{display:grid;gap:14px;margin-bottom:14px}
 .form-grid{grid-template-columns:repeat(2,1fr)}
 .form-grid-3{grid-template-columns:repeat(3,1fr)}
+.quantity-unit-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field label{display:block;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);background:#fffdf9;border-radius:16px;padding:13px 14px;font-size:.94rem;color:var(--text);outline:none;transition:.18s ease;min-height:48px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.field textarea{min-height:96px;resize:vertical}
+.btn{border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;padding:13px 22px;border-radius:16px;font-size:.95rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;box-shadow:0 4px 0 #2f6f33,0 10px 22px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.20)}
+.btn-soft{border:1.5px solid #d7c0a6;background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);color:var(--brown);padding:13px 22px;border-radius:16px;font-size:.95rem;font-weight:800;cursor:pointer}
+.helper{background:linear-gradient(180deg,#eef9f0 0%, #e6f4ea 100%);color:#3f6d4c;border-radius:18px;padding:15px 16px;line-height:1.65;font-size:.9rem;margin-top:14px;border:1px solid #c6e4cf;box-shadow:var(--shadow-xs)}
+.warning{background:linear-gradient(180deg,#fff8ef 0%, #f9edd9 100%);color:#7a5a2f;border-radius:18px;padding:15px 16px;line-height:1.65;font-size:.9rem;margin-top:12px;border:1px solid #ead2a8;box-shadow:var(--shadow-xs)}
+.filters{display:grid;grid-template-columns:1.2fr repeat(4,1fr);gap:12px;margin-bottom:16px}
+.list{display:grid;gap:12px}
+.item{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);border-radius:20px;padding:16px;border:1px solid transparent;transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;cursor:pointer;position:relative;width:100%}
+.item strong{display:block;margin-bottom:4px;font-size:1.06rem;font-weight:800}
+.item p{color:var(--muted);font-size:.92rem;line-height:1.5;margin-top:4px}
+.amount{font-weight:800;white-space:nowrap;font-size:1rem;padding-top:2px;color:var(--text2)}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.badge{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800;border:1px solid var(--line);background:#fff}
+.badge.kind{background:#f3f8ff;border-color:#d7e4fa;color:#4b6f9f}
+.badge.priority{background:#fff5d6;border-color:#eedfa3;color:#776000}
+.badge.origin{background:#f8ebda;border-color:#ecd1ad;color:#7b5a43}
+.badge.status-offen{background:var(--accent-soft);border-color:#b7ddbc;color:var(--accent-dark)}
+.badge.status-gekauft{background:#eaf0ff;border-color:#cad8ff;color:#4a66a3}
+.badge.status-verschoben{background:var(--yellow-soft);border-color:#ead9a2;color:#8b6b21}
+.item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.mini-btn{border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffdf9 0%, #f4e8da 100%);color:#655846;padding:8px 12px;border-radius:999px;font-size:.78rem;font-weight:800;cursor:pointer}
+.empty{background:var(--soft);border:1px dashed var(--line);border-radius:18px;padding:18px;color:var(--text2);line-height:1.5}
 
-.field label{
-  display:block;
-  font-size:.72rem;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  margin-bottom:8px;
+.store-group{display:grid;gap:10px}
+.store-group + .store-group{margin-top:8px}
+.store-heading{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:16px;
+  background:linear-gradient(180deg,#fff8ef 0%, #f9edd9 100%);
+  border:1px solid #ead2a8;color:#7a5a2f;
+  font-size:.9rem;font-weight:800;
 }
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  border:1.5px solid var(--line);
-  background:#fffdf9;
-  border-radius:16px;
-  padding:13px 14px;
-  font-size:.94rem;
-  color:var(--text);
-  outline:none;
-  transition:.18s ease;
-  min-height:48px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+.store-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:28px;height:28px;padding:0 10px;
+  border-radius:999px;background:#fff;border:1px solid rgba(223,209,188,.95);
+  color:var(--text2);font-size:.82rem;font-weight:800;
 }
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-  border-color:rgba(76,175,80,.7);
-  box-shadow:0 0 0 4px rgba(76,175,80,.10);
-  background:#fff;
-}
-.field textarea{
-  min-height:96px;
-  resize:vertical;
-}
+.store-items{display:grid;gap:12px}
 
-/* Buttons */
-.btn,
-button.btn,
-a.btn{
-  border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff !important;
-  padding:13px 22px;
-  border-radius:16px;
-  font-size:.95rem !important;
-  font-weight:800 !important;
-  text-decoration:none;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  white-space:nowrap;
-  box-shadow:
-    0 4px 0 #2f6f33,
-    0 10px 22px rgba(62,142,65,.22),
-    inset 0 1px 0 rgba(255,255,255,.20);
-  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
-  letter-spacing:.01em;
-}
-.btn:hover,
-button.btn:hover,
-a.btn:hover{
-  transform:translateY(-2px);
-  box-shadow:
-    0 6px 0 #2f6f33,
-    0 14px 28px rgba(62,142,65,.26),
-    inset 0 1px 0 rgba(255,255,255,.22);
-  filter:brightness(1.02);
-}
-.btn:active,
-button.btn:active,
-a.btn:active{
-  transform:translateY(1px);
-  box-shadow:
-    0 2px 0 #2f6f33,
-    0 6px 14px rgba(62,142,65,.18),
-    inset 0 1px 0 rgba(255,255,255,.16);
-}
-.btn-soft{
-  background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%) !important;
-  color:var(--brown) !important;
-  border:1.5px solid #d7c0a6 !important;
-  border-radius:16px !important;
-  box-shadow:
-    0 4px 0 #c7ae91,
-    0 8px 18px rgba(110,82,40,.10),
-    inset 0 1px 0 rgba(255,255,255,.65) !important;
-  opacity:1 !important;
-  filter:none !important;
-}
-.btn.btn-soft,
-button.btn.btn-soft,
-a.btn.btn-soft,
-.btn-soft span,
-.btn-soft svg{
-  color:var(--brown) !important;
-  stroke:currentColor !important;
-}
-.btn-soft:hover,
-button.btn-soft:hover,
-a.btn-soft:hover{
-  background:linear-gradient(180deg,#f1e1cf 0%, #e4cfb7 100%) !important;
-  color:var(--brown-dark) !important;
-  box-shadow:
-    0 6px 0 #c7ae91,
-    0 12px 22px rgba(110,82,40,.12),
-    inset 0 1px 0 rgba(255,255,255,.68) !important;
-}
-.btn-soft:hover span,
-.btn-soft:hover svg{
-  color:var(--brown-dark) !important;
-  stroke:currentColor !important;
-}
 
-/* List */
-.list{display:grid;gap:10px}
-.item{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:14px;
-  background:linear-gradient(180deg,#f9fcf9 0%, #f1f7f2 100%);
-  border-radius:20px;
-  padding:14px 16px;
-  border:1px solid transparent;
-  transition:.18s ease;
-}
+.card:hover,
+.stat:hover,
+.mini:hover,
 .item:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 24px rgba(54,45,28,.12);
   border-color:rgba(200,185,165,.9);
-  box-shadow:var(--shadow-xs);
-  transform:translateX(2px);
 }
-.item strong{
-  display:block;
-  margin-bottom:4px;
-  font-size:.96rem;
-  font-weight:800;
+.item > div{
+  width:100%;
 }
-.item p{
-  color:var(--muted);
-  font-size:.87rem;
-  line-height:1.5;
+.item-actions,
+.item-actions button{
+  position:relative;
+  z-index:2;
 }
-.amount{
-  font-weight:800;
-  white-space:nowrap;
-  font-size:.95rem;
-  padding-top:2px;
-  color:var(--text2);
-}
-
-/* Scanner */
-.scanner-box{
-  background:linear-gradient(180deg,#f7fbf7 0%, #eef7ef 100%);
-  border:1px dashed #c7dbc9;
-  border-radius:24px;
-  padding:18px;
-  margin-top:14px;
-}
-.scanner-actions{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-  margin-bottom:16px;
-}
-.scanner-btn{
-  border:1px solid #d8e6da;
-  background:#fff;
-  color:#53665a;
-  padding:14px 16px;
-  border-radius:16px;
-  font-size:.94rem;
-  font-weight:700;
-  cursor:pointer;
-  transition:.18s ease;
+.item-main{
   display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  min-height:56px;
-  box-shadow:0 1px 0 rgba(255,255,255,.8);
+  align-items:flex-start;
+  gap:12px;
 }
-.scanner-btn:hover{
-  background:#f9fcf9;
-  border-color:#c7dbc9;
-}
-.scanner-actions svg,.scanner-status svg,.scan-card svg,.scan-euro svg{
-  width:18px;
-  height:18px;
-  stroke:currentColor;
+.item-check{
+  width:22px;
+  height:22px;
+  margin-top:2px;
+  accent-color: var(--accent);
+  cursor:pointer;
   flex-shrink:0;
 }
-.scanner-status{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:16px;
-}
-.scanner-pill{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:#fff;
-  border:1px solid #d8e6da;
-  border-radius:999px;
-  padding:10px 12px;
-  font-size:.88rem;
-  font-weight:700;
-  color:#607068;
-}
-.scanner-preview{
-  margin-bottom:16px;
-  background:#fff;
-  border:1px solid #d8e6da;
-  border-radius:20px;
-  padding:16px;
-}
-.scanner-preview strong{
-  display:block;
-  margin-bottom:6px;
-  font-size:1rem;
-}
-.scanner-preview p{
-  color:var(--muted);
-  font-size:.92rem;
-  line-height:1.6;
-}
-.scanner-preview img{
-  display:none;
-  margin-top:12px;
-  width:100%;
-  max-width:100%;
-  max-height:260px;
-  object-fit:contain;
-  border-radius:14px;
-  border:1px solid #edf2ed;
-  background:#fafcfa;
-}
-.scan-meta{
-  display:grid;
-  grid-template-columns:1.1fr .95fr .95fr;
-  gap:12px;
-}
-.scan-card{
-  background:#fff;
-  border:1px solid #d8e6da;
-  border-radius:18px;
-  padding:14px;
-}
-.scan-card label{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:.74rem;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  margin-bottom:9px;
-}
-.scan-card input{
-  width:100%;
-  border:1.5px solid var(--line);
-  background:#fffdf9;
-  border-radius:16px;
-  padding:12px 13px;
-  min-height:48px;
-  outline:none;
-  color:var(--text);
-}
-.scan-card input:focus{
-  border-color:rgba(76,175,80,.7);
-  box-shadow:0 0 0 4px rgba(76,175,80,.10);
-}
-.scan-euro{
-  position:relative;
-}
-.scan-euro .euro-badge{
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  width:24px;
-  height:24px;
-  border-radius:999px;
-  display:grid;
-  place-items:center;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-  font-size:.9rem;
-  font-weight:900;
-  border:1px solid rgba(76,175,80,.18);
-}
-.scan-euro input{padding-left:46px}
-.scanner-note{
-  margin-top:14px;
-  color:var(--muted);
-  font-size:.88rem;
-  line-height:1.6;
-}
-.hidden-input{display:none}
 
-/* Helper */
-.helper{
-  background:linear-gradient(180deg,#eef9f0 0%, #e6f4ea 100%);
-  color:#3f6d4c;
-  border-radius:18px;
-  padding:15px 16px;
-  line-height:1.65;
-  font-size:.9rem;
-  margin-top:14px;
-  border:1px solid #c6e4cf;
-  box-shadow:var(--shadow-xs);
+.ai-box{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.85);border-radius:20px;padding:18px;margin-bottom:14px}
+.ai-box h3{font-size:1rem;margin-bottom:10px}
+.ai-box p{color:var(--text2);margin-bottom:10px}
+.ai-box ul{margin:0;padding-left:18px;color:var(--text2)}
+.print-sheet{display:none}
+@media(max-width:1300px){.stats{grid-template-columns:repeat(2,1fr)}.grid,.hero,.form-grid,.form-grid-3,.filters,.quantity-unit-row{grid-template-columns:1fr}}
+@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a{flex:0 1 auto;padding:10px 12px}.nav-label{display:none}}
+@media(max-width:760px){.main{padding:16px}.stats{grid-template-columns:1fr 1fr;gap:12px}.card,.stat{padding:18px}.page-header h1{font-size:1.95rem}}
+@media(max-width:420px){.stats{grid-template-columns:1fr}.page-header h1{font-size:1.75rem}}
+@media print{
+  body{background:#fff !important;margin:0 !important;padding:0 !important}
+  .sidebar,.hero,.stats,.filters,.item-actions,.helper,.warning,.btn,.btn-soft,.page-header,.card:not(:has(#purchaseList)):not(:has(#printBtn)){display:none !important}
+  .app,.main,.grid{display:block !important;width:100% !important;max-width:none !important;padding:0 !important;margin:0 !important;background:#fff !important}
+  .card{box-shadow:none !important;border:none !important;background:#fff !important}
+  #printSheet{display:block !important}
+  #purchaseList, #purchaseList *{display:none !important}
+  .print-only-hide{display:none !important}
+  @page{size:auto;margin:12mm}
 }
 
-/* KI */
+.page-help-bubble{
+  position:fixed;right:22px;bottom:110px;max-width:390px;width:min(390px,calc(100vw - 24px));
+  background:#fffaf4;border:1px solid var(--line);border-radius:24px;padding:18px 18px 16px;
+  box-shadow:0 18px 34px rgba(34,48,38,.16);z-index:9999;display:none;
+}
+.page-help-bubble.open{display:block}
+.page-help-bubble:after{
+  content:"";position:absolute;right:38px;bottom:-10px;width:18px;height:18px;background:#fffaf4;
+  border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg);
+}
+.page-help-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
+.page-help-main{display:flex;gap:10px;align-items:flex-start}
+.page-help-icon{
+  width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  display:grid;place-items:center;color:#fff;flex-shrink:0
+}
+.page-help-icon img{width:24px;height:24px;object-fit:contain}
+.page-help-bubble h3{font-size:1rem;font-weight:800;margin-bottom:4px}
+.page-help-bubble p{font-size:.9rem;color:var(--text2);line-height:1.55}
+.page-help-close{
+  border:1px solid var(--line);background:#fff;color:var(--text2);width:38px;height:38px;border-radius:12px;
+  cursor:pointer;font-size:1.2rem;line-height:1;flex-shrink:0
+}
+.page-help-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
 .ki-fab{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  width:74px;
-  height:74px;
-  border:none;
-  border-radius:24px;
+  position:fixed;right:22px;bottom:22px;width:74px;height:74px;border:none;border-radius:24px;
   background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
   box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  z-index:9998;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9998;
   transition:transform .18s ease, box-shadow .18s ease;
 }
-.ki-fab:hover{
-  transform:translateY(-3px);
-  box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28);
-}
+.ki-fab:hover{transform:translateY(-3px);box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28)}
 .ki-fab img{width:40px;height:40px;object-fit:contain}
-.ki-fab-label{
-  position:absolute;
-  bottom:8px;
-  right:10px;
-  color:#fff;
-  font-size:.78rem;
-  font-weight:800;
-  line-height:1;
-}
+.ki-fab-label{position:absolute;bottom:8px;right:10px;color:#fff;font-size:.78rem;font-weight:800;line-height:1}
+
 .ki-panel{
-  position:fixed;
-  right:22px;
-  bottom:108px;
-  width:min(390px,calc(100vw - 24px));
-  max-height:min(78vh,720px);
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:28px;
-  overflow:hidden;
-  box-shadow:0 24px 50px rgba(34,48,38,.18);
-  z-index:9999;
-  display:none;
+  position:fixed;right:22px;bottom:108px;width:min(390px,calc(100vw - 24px));max-height:min(78vh,720px);
+  background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;
+  box-shadow:0 24px 50px rgba(34,48,38,.18);z-index:9999;display:none;
 }
 .ki-panel.open{display:flex;flex-direction:column}
 .ki-head{
-  padding:20px 20px 16px;
-  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:14px;
+  padding:20px 20px 16px;background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:14px
 }
-.ki-head-left{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-}
+.ki-head-left{display:flex;gap:12px;align-items:flex-start}
 .ki-head-avatar{
-  width:48px;
-  height:48px;
-  border-radius:16px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
+  width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);display:flex;align-items:center;justify-content:center;flex-shrink:0
 }
-.ki-head-avatar img{
-  width:28px;
-  height:28px;
-  object-fit:contain;
-}
-.ki-head h3{
-  font-size:1.2rem !important;
-  font-weight:800 !important;
-  margin:0 0 4px;
-}
-.ki-head p{
-  font-size:.95rem !important;
-  color:var(--text2);
-  margin:0;
-}
-.ki-chat-link{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  margin-top:8px;
-  font-size:.9rem;
-  font-weight:800;
-  color:var(--accent-dark);
-  text-decoration:none;
-}
-.ki-chat-link:hover{
-  text-decoration:underline;
-}
+.ki-head-avatar img{width:28px;height:28px;object-fit:contain}
+.ki-head h3{font-size:1.2rem;font-weight:800;margin:0 0 4px}
+.ki-head p{font-size:.95rem;color:var(--text2);margin:0}
+.ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
+.ki-chat-link:hover{text-decoration:underline}
 .ki-close{
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background:#fff;
-  cursor:pointer;
-  flex-shrink:0;
-  color:var(--text2);
-  font-size:1.8rem;
-  line-height:1;
+  width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1
 }
-.ki-suggestions{
-  padding:16px 20px 14px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  border-bottom:1px solid var(--line);
-  background:#fff;
-}
-.ki-chip{
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:999px;
-  padding:10px 14px;
-  font-size:.95rem;
-  font-weight:700;
-  color:var(--text2);
-  cursor:pointer;
-}
-.ki-chat{
-  padding:18px 16px;
-  overflow:auto;
-  background:#fffaf4;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  min-height:220px;
-}
-.ki-msg{
-  max-width:84%;
-  padding:14px 16px;
-  border-radius:20px;
-  font-size:.97rem;
-  line-height:1.5;
-  white-space:pre-wrap;
-}
-.ki-msg.bot{
-  background:#f7eee0;
-  border:1px solid #ebd3b5;
-  color:#5f4332;
-}
-.ki-msg.user{
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  align-self:flex-end;
-}
-.ki-form{
-  padding:14px;
-  border-top:1px solid var(--line);
-  background:#fff;
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-}
+.ki-chat{padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px}
+.ki-msg{max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap}
+.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
+.ki-msg.user{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;align-self:flex-end}
+.ki-form{padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}
 .ki-input{
-  border:1.5px solid var(--line);
-  background:var(--bg-2);
-  border-radius:18px;
-  padding:14px 16px;
-  font-size:.97rem;
-  color:var(--text);
-  outline:none;
-  font-family:inherit;
+  border:1.5px solid var(--line);background:var(--bg-2);border-radius:18px;padding:14px 16px;
+  font-size:.97rem;color:var(--text);outline:none;font-family:inherit
 }
 .ki-send{
-  border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  color:#fff;
-  border-radius:18px;
-  padding:0 18px;
-  font-size:.95rem;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
-}
-.ki-typing{opacity:.8;font-style:italic}
-
-
-.ai-report-filter{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-bottom:16px;
-}
-.ai-report-actions{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin:8px 0 18px;
-}
-.ai-stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-bottom:16px;
-}
-.ai-stat{
-  background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
-  border:1px solid rgba(223,209,188,.95);
-  border-radius:20px;
-  padding:16px;
-  box-shadow:var(--shadow-xs);
-}
-.ai-stat strong{
-  display:block;
-  font-size:.8rem;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.06em;
-  margin-bottom:6px;
-}
-.ai-stat span{
-  display:block;
-  font-size:1.2rem;
-  font-weight:800;
-  color:var(--text);
-}
-.ai-report-box{
-  background:rgba(255,255,255,.7);
-  border:1px solid rgba(223,209,188,.85);
-  border-radius:20px;
-  padding:18px;
-  margin-bottom:14px;
-}
-.ai-report-box h3{
-  font-size:1rem;
-  margin-bottom:10px;
-}
-.ai-report-box p{
-  color:var(--text2);
-  margin-bottom:10px;
-}
-.ai-report-box ul{
-  margin:0;
-  padding-left:18px;
-  color:var(--text2);
-}
-.ai-report-box li+li{
-  margin-top:8px;
-}
-.ai-report-note{
-  color:var(--muted);
-  font-size:.9rem;
-  line-height:1.6;
-}
-@media(max-width:960px){
-  .ai-report-filter,.ai-stats{grid-template-columns:1fr}
-}
-
-/* Responsive */
-@media(max-width:1300px){
-  .grid,.hero,.form-grid,.form-grid-3{grid-template-columns:1fr}
-  .scan-meta{grid-template-columns:1fr}
-}
-@media(max-width:960px){
-  .app{grid-template-columns:1fr}
-  .sidebar{
-    height:auto;
-    position:relative;
-    flex-direction:row;
-    flex-wrap:wrap;
-    padding:16px;
-    gap:0;
-  }
-  .logo-wrap{
-    margin-bottom:0;
-    padding-bottom:0;
-    border-bottom:none;
-    border-right:1px solid var(--line);
-    padding-right:16px;
-    margin-right:16px;
-  }
-  .nav{
-    flex-direction:row;
-    flex-wrap:wrap;
-    flex:1;
-  }
-  .nav a{
-    flex:0 1 auto;
-    padding:10px 12px;
-  }
-  .nav-label,.sidebar-footer{display:none}
+  border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;
+  border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20)
 }
 @media(max-width:700px){
-  .ki-fab{right:14px;bottom:14px;width:68px;height:68px}
-  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+  .page-help-bubble,.ki-panel{right:10px;left:10px;bottom:98px;width:auto}
+  .ki-fab{right:14px;bottom:14px}
 }
-@media(max-width:600px){
-  .main{padding:16px}
-  .page-header h1{font-size:1.95rem}
-  .card{padding:18px;border-radius:24px}
-  .scanner-actions{grid-template-columns:1fr}
-  .scanner-status{flex-direction:column;align-items:stretch}
-  .scanner-pill{width:100%;justify-content:flex-start}
-}
-@media(max-width:420px){
-  .page-header h1{font-size:1.75rem}
-  .mode-badge{width:100%;justify-content:center}
+@media print{
+  .ki-fab,.ki-panel,.page-help-bubble{display:none !important}
 }
 
-
-.chat-badge{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  min-width:18px;
-  height:18px;
-  padding:0 5px;
-  border-radius:999px;
-  background:#cc6666;
-  color:#fff;
-  font-size:.68rem;
-  font-weight:800;
-  line-height:18px;
-  text-align:center;
-  border:2px solid #fff;
-  box-shadow:0 2px 8px rgba(204,102,102,.28);
-}
 </style>
 </head>
-<body data-page="einkaufsliste">
+<body>
 <div class="app">
-
-<aside class="sidebar">
-  <div class="logo-wrap">
-    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-    <div>
-      <div class="logo-name">Haushaltsheld</div>
-      <div class="logo-sub">Dein Familien-Assistent</div>
+  <aside class="sidebar">
+    <div class="logo-wrap">
+      <a class="logo-link" href="index.html">
+        <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+        <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Familien-Assistent</div></div>
+      </a>
     </div>
-  </div>
+    <div class="nav-label">Hauptmenü</div>
+    <nav class="nav">
+      <a href="index.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="4" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span><span>Dashboard</span></a>
+      <a href="finanzen.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M3 7h18v10H3z"/><path d="M16 12h.01"/></svg></span><span>Finanzen</span></a>
+      <a href="einkaufsliste.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"/></svg></span><span>Einkaufsliste</span></a>
+      <a href="aufgaben.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg></span><span>Aufgaben</span></a>
+      <a href="familienplaner.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/></svg></span><span>Familienplaner</span></a>
+      <a href="essensplan.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 2-6 6"/><path d="m17.5 7.5-7-7"/><path d="M10 12 4 18"/><path d="M14 10 22 18"/></svg></span><span>Essensplan</span></a>
+      <a href="essensplan_essverhalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="4"/><path d="m16 16 5 5"/></svg></span><span>Essensanalyse</span></a>
+      <a href="rezepte.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4H10a4 4 0 0 1 4 4v12a4 4 0 0 0-4-4H4.5A2.5 2.5 0 0 0 2 18.5z"/><path d="M22 6.5A2.5 2.5 0 0 0 19.5 4H14a4 4 0 0 0-4 4v12a4 4 0 0 1 4-4h5.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg></span><span>Rezepte</span></a>
+      <a href="admin_chat.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Familien-Chat</span></a>
+    </nav>
+  </aside>
 
-  <div class="nav-label">Hauptmenü</div>
-  <nav class="nav">
-    <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
-    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html" class="active"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
-    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
-    <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
-    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
-    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
-    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
-  </nav>
-
-  <div class="nav-label">Extras</div>
-  <nav class="nav">
-    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
-    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
-    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
-    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
-    <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
-  </nav>
-
-  <div class="sidebar-footer">
-    <div class="user-info">
-      <strong id="userName">👋 Willkommen</strong>
-      <span id="userRole">Eltern-Modus</span>
-    </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
-      <button class="mode-btn" id="childBtn" type="button">Kind</button>
-    </div>
-    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
-  </div>
-</aside>
-
-<main class="main">
-  <div class="page-header">
-    <div>
-      <h1>
-        <span class="page-title-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="20" r="1"></circle>
-            <circle cx="18" cy="20" r="1"></circle>
-            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
-          </svg>
-        </span>
-        <span>Einkaufsliste</span>
-      </h1>
-      <p>Finale Einkaufsliste mit Scanner, sauberer Verknüpfung und Schutz vor Doppelerfassung. Einkäufe werden als gemeinsame Einkaufsdaten gespeichert und dadurch nicht doppelt gezählt.</p>
-    </div>
-    <div class="header-right">
-      <a class="btn btn-soft" href="finanzen.html"><span>Zu Finanzen</span></a>
-      <a class="btn btn-soft" href="finanz_historie.html"><span>Zur Historie</span></a>
-      <button class="btn btn-soft" id="printShoppingAiBtn" type="button"><span>KI-Bericht drucken</span></button>
-      <span class="mode-badge" id="modeBadge">🛒 Einkaufsmodus aktiv</span>
-    </div>
-  </div>
-
-  <section class="hero">
-    <div>
-      <h2>
-        <span class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="20" r="1"></circle>
-            <circle cx="18" cy="20" r="1"></circle>
-            <path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"></path>
-          </svg>
-        </span>
-        <span>Einkäufe clever verknüpfen</span>
-      </h2>
-      <p>Jeder Einkauf wird einmal in der gemeinsamen Einkaufsdatenbasis gespeichert. Scanner, Formulare und Feierlichkeiten greifen auf dieselbe Quelle zu, damit nichts doppelt gezählt wird.</p>
-      <div class="hero-tags">
-        <span class="hero-tag">Kein Doppeltzählen</span>
-        <span class="hero-tag accent">Feierlichkeiten separat</span>
-        <span class="hero-tag">Scanner vorbereitet</span>
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1><span class="page-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"/></svg></span><span>Einkaufsliste</span></h1>
+        <p>Diese Version ist bewusst stabil: alles läuft lokal im Browser. So kannst du endlich direkt sehen, speichern, filtern, löschen und drucken.</p>
       </div>
     </div>
-    <div class="hero-side">
-      <div class="mini"><strong>Eine Datenquelle</strong><span>Einkäufe werden nur einmal gespeichert und später von anderen Seiten mitgenutzt.</span></div>
-      <div class="mini"><strong>Ideal für Anlässe</strong><span>Geburtstage, Weihnachten oder Sommerfeste lassen sich über das Anlass-Feld leichter auswerten.</span></div>
-    </div>
-  </section>
 
-  <section class="grid">
-    <div>
-      <section class="card">
-        <h2>
-          <span class="section-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 5v14"></path>
-              <path d="M5 12h14"></path>
-            </svg>
-          </span>
-          <span>Einkauf erfassen</span>
-        </h2>
-        <p class="card-sub">Beim Speichern wird der Einkauf nur einmal angelegt. Scanner-Daten können übernommen werden, ohne dass dadurch sofort ein doppelter Eintrag entsteht.</p>
-
-        <div class="form-grid">
-          <div class="field"><label for="store">Geschäft / Ort</label><input id="store" type="text" placeholder="z. B. Rewe, dm, Kiosk" /></div>
-          <div class="field"><label for="date">Datum</label><input id="date" type="date" /></div>
+    <section class="hero">
+      <div>
+        <h2><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/><path d="M8 14h8"/><path d="M8 18h4"/></svg></span><span>Eine Liste für den echten Haushalt</span></h2>
+        <p>Für Alltag, Spontankäufe und Anschaffungen – immer mit Datum. Du kannst einzelne Artikel speichern, mehrere auf einmal eintragen und unten sofort in <strong>Meine Einkaufsliste</strong> sehen.</p>
+        <div class="hero-tags">
+          <span class="hero-tag">Immer mit Datum</span>
+          <span class="hero-tag accent">Gekauft · Verschieben · Löschen</span>
+          <span class="hero-tag">Pflicht · Optional · Später · Wunsch</span>
         </div>
+      </div>
+      <div class="hero-side">
+        <div class="mini"><strong>Stabiler Testmodus</strong><span>Kein Supabase, kein Netlify nötig. Alles wird lokal im Browser gespeichert.</span></div>
+        <div class="mini"><strong>Direkt sichtbar</strong><span>Nach dem Speichern erscheint der Artikel sofort unten in deiner Einkaufsliste.</span></div>
+      </div>
+    </section>
 
-        <div class="form-grid-3">
-          <div class="field"><label for="purchaseType">Einkaufsart</label><select id="purchaseType"><option value="alltag">Alltag</option><option value="spontan">Spontan</option><option value="freizeit">Freizeit / Café / Bar</option><option value="feierlichkeiten">Feierlichkeiten</option></select></div>
-          <div class="field"><label for="category">Kategorie</label><select id="category"><option>Lebensmittel</option><option>Drogerie</option><option>Haushalt</option><option>Haustier</option><option>Tanken</option><option>Kiosk / Spontan</option><option>Freizeit / Bar / Café</option><option>Feierlichkeiten</option></select></div>
-          <div class="field"><label for="total">Gesamtbetrag</label><input id="total" type="number" step="0.01" placeholder="0.00" /></div>
-        </div>
+    <section class="stats">
+      <div class="stat is-clickable" data-stat-filter="all" tabindex="0" role="button" aria-label="Alle Einträge anzeigen"><h3>Gesamt</h3><div class="value" id="statTotal">0</div><p>Alle sichtbaren Einträge</p></div>
+      <div class="stat is-clickable" data-stat-filter="open" tabindex="0" role="button" aria-label="Offene Einträge anzeigen"><h3>Offen</h3><div class="value" id="statOpen">0</div><p>Noch nicht erledigt</p></div>
+      <div class="stat is-clickable" data-stat-filter="required" tabindex="0" role="button" aria-label="Pflicht-Einkäufe anzeigen"><h3>Pflicht</h3><div class="value" id="statRequired">0</div><p>Wichtige Einkäufe</p></div>
+      <div class="stat is-clickable" data-stat-filter="acquisition" tabindex="0" role="button" aria-label="Anschaffungen anzeigen"><h3>Anschaffung</h3><div class="value" id="statAcquisition">0</div><p>Größere Käufe</p></div>
+    </section>
 
-        <div class="form-grid-3">
-          <div class="field"><label for="method">Zahlung</label><select id="method"><option>Karte</option><option>Bar</option><option>PayPal</option><option>Lastschrift</option><option>Online</option></select></div>
-          <div class="field"><label for="buyer">Person</label><select id="buyer"><option>Allgemein</option><option>Monja</option><option>Michael</option><option>Kind 1</option><option>Kind 2</option></select></div>
-          <div class="field"><label for="occasion">Anlass / Event</label><input id="occasion" type="text" placeholder="z. B. Geburtstag Mia, Weihnachten 2026" /></div>
-        </div>
+    <section class="grid">
+      <div>
+        <section class="card">
+          <h2><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg></span><span>Artikel hinzufügen</span></h2>
+          <p class="card-sub">Ein Eintrag = ein Artikel.</p>
 
-        <div class="field"><label for="items">Artikel / Inhalt</label><textarea id="items" placeholder="z. B. Milch, Brot, Servietten, Kuchenkerzen"></textarea></div>
-        <div class="field"><label for="note">Notiz</label><textarea id="note" placeholder="z. B. Snacks und Deko für Geburtstag"></textarea></div>
-
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <button class="btn" id="savePurchaseBtn" type="button">Einkauf speichern</button>
-          <button class="btn btn-soft" id="examplePurchaseBtn" type="button"><span>Feier-Beispiel</span></button>
-        </div>
-
-        <div class="helper">Der Einkauf wird nur in <strong>haushaltsheld_shopping_entries_v2</strong> gespeichert. Scanner oder Formular erzeugen erst beim Speichern den finalen Eintrag – dadurch keine doppelte Zählung.</div>
-      </section>
-
-      <section class="card">
-        <h2>
-          <span class="section-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 7h16"></path>
-              <path d="M7 3h10"></path>
-              <rect x="5" y="7" width="14" height="14" rx="2"></rect>
-              <circle cx="12" cy="14" r="3"></circle>
-            </svg>
-          </span>
-          <span>Scanner & Schnell-Erfassung</span>
-        </h2>
-        <p class="card-sub">Kassenbon fotografieren, Beleg hochladen oder QR-/Barcode-Workflow vorbereiten. Der Scan füllt nur das Formular vor und speichert noch nichts doppelt.</p>
-
-        <div class="scanner-box">
-          <div class="scanner-actions">
-            <button class="scanner-btn" id="openCameraBtn" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 7h4l2-2h4l2 2h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
-                <circle cx="12" cy="13" r="4"></circle>
-              </svg>
-              <span>Foto aufnehmen</span>
-            </button>
-
-            <button class="scanner-btn" id="uploadReceiptBtn" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3v12"></path>
-                <path d="m7 10 5 5 5-5"></path>
-                <path d="M5 21h14"></path>
-              </svg>
-              <span>Kassenbon hochladen</span>
-            </button>
-
-            <button class="scanner-btn" id="scanQrBtn" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 8V3h5"></path>
-                <path d="M16 3h5v5"></path>
-                <path d="M21 16v5h-5"></path>
-                <path d="M8 21H3v-5"></path>
-                <rect x="7" y="7" width="10" height="10" rx="2"></rect>
-              </svg>
-              <span>QR / Barcode scannen</span>
-            </button>
-
-            <button class="scanner-btn" id="applyScanBtn" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6 9 17l-5-5"></path>
-              </svg>
-              <span>Scan übernehmen</span>
-            </button>
-          </div>
-
-          <input class="hidden-input" id="cameraInput" type="file" accept="image/*" capture="environment" />
-          <input class="hidden-input" id="receiptInput" type="file" accept="image/*,.pdf" />
-          <input class="hidden-input" id="qrInput" type="file" accept="image/*" capture="environment" />
-
-          <div class="scanner-status">
-            <div class="scanner-pill" id="scanStatus">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 8v4l3 3"></path>
-              </svg>
-              <span>Kein Beleg ausgewählt</span>
+          <div class="form-grid">
+            <div class="field">
+              <label for="itemTitle">Artikelname</label>
+              <input id="itemTitle" type="text" placeholder="z. B. Milch" />
             </div>
-            <div class="scanner-pill" id="scanType">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 5h18"></path>
-                <path d="M3 12h18"></path>
-                <path d="M3 19h18"></path>
-              </svg>
-              <span>Scan-Typ: offen</span>
-            </div>
-            <div class="scanner-pill" id="scanSource">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
-              </svg>
-              <span>Quelle: —</span>
+            <div class="field">
+              <label for="baseGroup">Oberbegriff</label>
+              <input id="baseGroup" type="text" placeholder="z. B. Milch" />
             </div>
           </div>
 
-          <div class="scanner-preview">
-            <strong>Scanner-Vorschau</strong>
-            <p id="scanPreviewText">Sobald du ein Bild oder einen Beleg auswählst, erscheint hier eine Vorschau. Mit „Scan übernehmen“ füllst du das Formular schneller vor.</p>
-            <img id="scanPreviewImage" alt="Scanner Vorschau" />
+          <div class="form-grid-3">
+            <div class="field">
+              <label for="neededDate">Datum</label>
+              <input id="neededDate" type="date" />
+            </div>
+            <div class="field">
+              <label for="purchaseKind">Kaufart</label>
+              <select id="purchaseKind"><option>Alltag</option><option>Spontan</option><option>Anschaffung</option></select>
+            </div>
+            <div class="field">
+              <label for="category">Bereich</label>
+              <select id="category"><option>Lebensmittel</option><option>Getränke</option><option>Drogerie</option><option>Haushalt</option><option>Apotheke</option><option>Kind/Baby</option><option>Tier</option><option>Wohnen</option><option>Technik</option><option>Sonstiges</option></select>
+            </div>
           </div>
 
-          <div class="scan-meta">
-            <div class="scan-card">
-              <label for="scanMerchant">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 9.5 5 4h14l2 5.5"></path>
-                  <path d="M4 9h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9z"></path>
-                </svg>
-                Händler
-              </label>
-              <input id="scanMerchant" type="text" placeholder="z. B. REWE, dm, Amazon" />
+          <div class="form-grid-3">
+            <div class="field">
+              <label for="priority">Wichtigkeit</label>
+              <select id="priority"><option>Pflicht</option><option>Optional</option><option>Später</option><option>Wunsch</option></select>
             </div>
+            <div class="field">
+              <label for="origin">Herkunft</label>
+              <select id="origin"><option>Manuell</option><option>Wochenplan</option><option>Kochrezept</option><option>Verordnung</option><option>KI-Vorschlag</option><option>Standardartikel</option><option>Zuletzt gekauft</option></select>
+            </div>
+            <div class="field">
+              <label for="entryStatus">Status</label>
+              <select id="entryStatus"><option value="offen">offen</option><option value="gekauft">gekauft</option><option value="verschoben">verschoben</option></select>
+            </div>
+          </div>
 
-            <div class="scan-card">
-              <label for="scanAmount">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 1v22"></path>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"></path>
-                </svg>
-                Betrag
-              </label>
-              <div class="scan-euro">
-                <span class="euro-badge">€</span>
-                <input id="scanAmount" type="number" step="0.01" placeholder="0,00" />
+          <div class="form-grid-3">
+            <div class="field">
+              <label>Menge & Einheit</label>
+              <div class="quantity-unit-row">
+                <input id="quantity" type="number" step="0.01" min="0" placeholder="z. B. 2" />
+                <select id="unit">
+                  <option value="">Einheit wählen</option>
+                  <option value="Stück">Stück</option>
+                  <option value="Gramm">Gramm</option>
+                  <option value="Kilogramm">Kilogramm</option>
+                  <option value="Milliliter">Milliliter</option>
+                  <option value="Liter">Liter</option>
+                  <option value="Meter">Meter</option>
+                  <option value="Packung">Packung</option>
+                  <option value="Rolle">Rolle</option>
+                  <option value="Flasche">Flasche</option>
+                  <option value="Dose">Dose</option>
+                </select>
               </div>
             </div>
-
-            <div class="scan-card">
-              <label for="scanCode">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 7v10"></path>
-                  <path d="M7 7v10"></path>
-                  <path d="M12 7v10"></path>
-                  <path d="M16 7v10"></path>
-                  <path d="M20 7v10"></path>
-                </svg>
-                QR / Code
-              </label>
-              <input id="scanCode" type="text" placeholder="optional" />
+            <div class="field">
+              <label for="store">Geschäft (optional)</label>
+              <input id="store" type="text" placeholder="z. B. Rewe" />
+            </div>
+            <div class="field">
+              <label for="price">Preis (optional)</label>
+              <input id="price" type="number" step="0.01" min="0" placeholder="0,00" />
             </div>
           </div>
 
-          <div class="scanner-note">
-            Kamera, Upload, Foto-Vorschau und QR-/Barcode-Vorbereitung sind eingebaut. Ein Scan übernimmt Daten nur in das Formular – gespeichert wird erst mit „Einkauf speichern“.
+          <div class="form-grid">
+            <div class="field">
+              <label for="buyer">Person</label>
+              <input id="buyer" type="text" placeholder="z. B. Monja" />
+            </div>
+            <div class="field">
+              <label for="baseGroupHelper">Oberbegriff prüfen</label>
+              <input id="baseGroupHelper" type="text" placeholder="wird automatisch mitgedacht" disabled />
+            </div>
           </div>
+
+          <div class="field">
+            <label for="note">Notiz</label>
+            <textarea id="note" placeholder="z. B. nur wenn im Angebot"></textarea>
+          </div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn" id="saveItemBtn" type="button">Artikel speichern</button>
+            <button class="btn-soft" id="clearFormBtn" type="button">Formular leeren</button>
+            <button class="btn-soft" id="demoBtn" type="button">Beispieldaten einsetzen</button>
+          </div>
+
+          <div class="helper">Tipp: Für Lebensmittel möglichst <strong>Artikelname + Oberbegriff</strong> pflegen.</div>
+        </section>
+
+        <section class="card">
+          <h2><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12H3"/><path d="M16 6H3"/><path d="M16 18H3"/><path d="M18 9v6"/><path d="M15 12h6"/></svg></span><span>Mehrere Artikel auf einmal</span></h2>
+          <p class="card-sub">Eine Zeile = ein Artikel. Mehr braucht es hier nicht.</p>
+
+          <div class="field">
+            <label for="bulkItems">Mehrfachliste</label>
+            <textarea id="bulkItems" placeholder="2 Milch&#10;1 Brot&#10;500 Gramm Nudeln&#10;10 Eier"></textarea>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="bulkStore">Geschäft für diese Liste</label>
+              <input id="bulkStore" type="text" placeholder="z. B. Rewe, dm, Aldi, IKEA" />
+            </div>
+            <div class="field">
+              <label for="bulkBuyer">Person (optional)</label>
+              <input id="bulkBuyer" type="text" placeholder="z. B. Monja" />
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn" id="saveBulkBtn" type="button">Zur Einkaufsliste hinzufügen</button>
+            <button class="btn-soft" id="clearBulkLinesBtn" type="button">Feld leeren</button>
+            <button class="btn-soft" id="fillBulkDemoBtn" type="button">Beispiel einsetzen</button>
+          </div>
+
+          <div class="warning">Die Mehrfachliste übernimmt Datum, Kaufart, Bereich, Wichtigkeit und auf Wunsch auch direkt das Geschäft für alle Artikel aus diesem Block.</div>
+        </section>
+      </div>
+
+      <div>
+        <section class="card">
+          <h2><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span><span>Filter & Ansicht</span></h2>
+          <div class="filters">
+            <div class="field"><label for="searchFilter">Suche</label><input id="searchFilter" type="text" placeholder="Artikel suchen" /></div>
+            <div class="field"><label for="statusFilter">Status</label><select id="statusFilter"><option value="all">Alle</option><option value="offen" selected>offen</option><option value="gekauft">gekauft</option><option value="verschoben">verschoben</option></select></div>
+            <div class="field"><label for="kindFilter">Kaufart</label><select id="kindFilter"><option value="all">Alle</option><option value="Alltag">Alltag</option><option value="Spontan">Spontan</option><option value="Anschaffung">Anschaffung</option></select></div>
+            <div class="field"><label for="categoryFilter">Bereich</label><select id="categoryFilter"><option value="all">Alle</option></select></div>
+            <div class="field"><label for="priorityFilter">Wichtigkeit</label><select id="priorityFilter"><option value="all">Alle</option><option value="Pflicht">Pflicht</option><option value="Optional">Optional</option><option value="Später">Später</option><option value="Wunsch">Wunsch</option></select></div>
+          </div>
+          <div class="helper">Der Einkaufszettel für Druck/PDF ist bewusst stark vereinfacht: nur Geschäft, Artikel und Anzahl/Einheit.</div>
+        </section>
+
+        <section class="card">
+          <h2><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M8 14h.01"/><path d="M12 10h.01"/><path d="M16 7h.01"/></svg></span><span>Geplante Summe</span></h2>
+          <p class="card-sub">Hier siehst du die Summe der aktuell sichtbaren Einträge mit Preisangabe.</p>
+          <div class="stats" style="grid-template-columns:1fr 1fr; margin-bottom:0;">
+            <div class="stat" style="margin-bottom:0;">
+              <h3>Sichtbare Summe</h3>
+              <div class="value" id="statVisibleTotal">0 €</div>
+              <p>Alle aktuell sichtbaren Einträge</p>
+            </div>
+            <div class="stat" style="margin-bottom:0;">
+              <h3>Offene Summe</h3>
+              <div class="value" id="statVisibleOpenTotal">0 €</div>
+              <p>Nur noch nicht gekaufte Einträge</p>
+            </div>
+          </div>
+          <div class="helper">Nur Einträge mit eingetragenem Preis werden berücksichtigt. Der Preis gilt dabei als <strong>Gesamtpreis pro Eintrag</strong>.</div>
+        </section>
+
+        <section class="card">
+          <h2><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg></span><span>Meine Einkaufsliste</span></h2>
+          <p class="card-sub">Hier siehst du standardmäßig nur <strong>offene</strong> Einträge für den echten Einkauf: <strong>Artikel</strong>, <strong>Anzahl/Einheit</strong> und optional <strong>Geschäft</strong>.</p>
+          <div class="list" id="purchaseList"></div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+            <button class="btn-soft" id="printBtn" type="button">Einkaufszettel drucken / PDF</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.1L18 9l-4.1 1.9L12 15l-1.9-4.1L6 9l4.1-1.9z"/></svg></span><span>KI-Hinweise</span></h2>
+          <div class="ai-box">
+            <h3>Häufige Oberbegriffe</h3>
+            <p id="aiTopGroups">Noch keine Daten vorhanden.</p>
+          </div>
+          <div class="ai-box">
+            <h3>Kurze Einschätzung</h3>
+            <p id="aiSummary">Sobald Einträge da sind, entstehen hier erste Muster.</p>
+            <ul id="aiTips"></ul>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="print-sheet" id="printSheet"></section>
+  </main>
+</div>
+
+<script>
+const STORAGE_KEY = "haushaltsheld_einkaufsliste_stabil_v1";
+let cachedEntries = [];
+
+function getTodayDate(){
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  return new Date(now.getTime() - offset * 60000).toISOString().split("T")[0];
+}
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function formatEuro(value){
+  return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(Number(value || 0));
+}
+function loadEntries(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch { return []; }
+}
+function saveEntries(entries){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+function normalizeCompareText(value){
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9äöüß]+/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+function normalizeQuantityValue(value){
+  if(value === null || value === undefined || value === "") return null;
+  const num = Number(value);
+  if(Number.isNaN(num)) return null;
+  return Number(num.toFixed(2));
+}
+function formatQuantity(value){
+  if(value === null || value === undefined || value === "") return "";
+  const num = Number(value);
+  if(Number.isNaN(num)) return String(value);
+  return new Intl.NumberFormat("de-DE", { maximumFractionDigits: 2 }).format(num);
+}
+function getMergeKey(entry){
+  return [
+    normalizeCompareText(entry.title),
+    normalizeCompareText(entry.baseGroup || entry.title),
+    normalizeCompareText(entry.unit),
+    normalizeCompareText(entry.store),
+    normalizeCompareText(entry.status),
+    normalizeCompareText(entry.purchaseKind),
+    normalizeCompareText(entry.category),
+    normalizeCompareText(entry.priority)
+  ].join("||");
+}
+function aggregateVisibleEntries(entries){
+  const groups = new Map();
+  entries.forEach(entry => {
+    const key = getMergeKey(entry);
+    const quantity = normalizeQuantityValue(entry.quantity);
+    if(!groups.has(key)){
+      groups.set(key, {
+        ...entry,
+        groupedIds: [entry.id],
+        mergedCount: 1,
+        quantity: quantity,
+        price: Number(entry.price) || 0,
+        hasPrice: entry.price !== null && entry.price !== undefined && entry.price !== "",
+        containsEmptyQuantity: quantity === null
+      });
+      return;
+    }
+
+    const group = groups.get(key);
+    group.groupedIds.push(entry.id);
+    group.mergedCount += 1;
+    if(quantity !== null){
+      group.quantity = (group.quantity === null ? 0 : group.quantity) + quantity;
+    }else{
+      group.containsEmptyQuantity = true;
+    }
+    if(entry.price !== null && entry.price !== undefined && entry.price !== ""){
+      group.price = (Number(group.price) || 0) + (Number(entry.price) || 0);
+      group.hasPrice = true;
+    }
+    if(!group.store && entry.store) group.store = entry.store;
+    if(!group.note && entry.note) group.note = entry.note;
+  });
+  return Array.from(groups.values());
+}
+function normalizeBaseGroup(title, baseGroup){
+  if(baseGroup && baseGroup.trim()) return baseGroup.trim();
+  const t = String(title || "").toLowerCase();
+  const rules = [
+    [/milch|weidemilch|vollmilch|h-milch|laktosefrei/, "Milch"],
+    [/käse|gouda|parmesan|mozzarella/, "Käse"],
+    [/brot|toast|brötchen/, "Brot"],
+    [/nudel|spaghetti|penne/, "Nudeln"],
+    [/reis/, "Reis"],
+    [/kartoffel/, "Kartoffeln"],
+    [/ei\b|eier/, "Eier"],
+    [/tomate/, "Tomaten"],
+    [/saft/, "Saft"],
+    [/bett/, "Bett"],
+    [/tisch/, "Tisch"]
+  ];
+  for(const [regex, label] of rules){ if(regex.test(t)) return label; }
+  return String(title || "").trim();
+}
+function collectFormData(){
+  const title = document.getElementById("itemTitle").value.trim();
+  const baseGroup = normalizeBaseGroup(title, document.getElementById("baseGroup").value.trim());
+  return {
+    id: Date.now().toString() + Math.random().toString(36).slice(2,7),
+    title,
+    baseGroup,
+    date: document.getElementById("neededDate").value,
+    purchaseKind: document.getElementById("purchaseKind").value,
+    category: document.getElementById("category").value,
+    priority: document.getElementById("priority").value,
+    origin: document.getElementById("origin").value,
+    status: document.getElementById("entryStatus").value,
+    quantity: document.getElementById("quantity").value ? parseFloat(document.getElementById("quantity").value) : null,
+    unit: document.getElementById("unit").value,
+    store: document.getElementById("store").value.trim(),
+    price: document.getElementById("price").value ? parseFloat(document.getElementById("price").value) : null,
+    buyer: document.getElementById("buyer").value.trim(),
+    note: document.getElementById("note").value.trim()
+  };
+}
+function resetForm(){
+  document.getElementById("itemTitle").value = "";
+  document.getElementById("baseGroup").value = "";
+  document.getElementById("neededDate").value = getTodayDate();
+  document.getElementById("purchaseKind").value = "Alltag";
+  document.getElementById("category").value = "Lebensmittel";
+  document.getElementById("priority").value = "Pflicht";
+  document.getElementById("origin").value = "Manuell";
+  document.getElementById("entryStatus").value = "offen";
+  document.getElementById("quantity").value = "";
+  document.getElementById("unit").value = "";
+  document.getElementById("store").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("buyer").value = "Monja";
+  document.getElementById("note").value = "";
+  document.getElementById("baseGroupHelper").value = "";
+}
+function fillDemoData(){
+  document.getElementById("itemTitle").value = "Milch";
+  document.getElementById("baseGroup").value = "Milch";
+  document.getElementById("neededDate").value = getTodayDate();
+  document.getElementById("purchaseKind").value = "Alltag";
+  document.getElementById("category").value = "Lebensmittel";
+  document.getElementById("priority").value = "Pflicht";
+  document.getElementById("origin").value = "Standardartikel";
+  document.getElementById("entryStatus").value = "offen";
+  document.getElementById("quantity").value = "2";
+  document.getElementById("unit").value = "Stück";
+  document.getElementById("store").value = "Rewe";
+  document.getElementById("price").value = "0.69";
+  document.getElementById("buyer").value = "Monja";
+  document.getElementById("note").value = "Für den Wocheneinkauf";
+  document.getElementById("baseGroupHelper").value = "Milch";
+}
+function saveSingleItem(){
+  const form = collectFormData();
+  if(!form.title || !form.date){
+    alert("Bitte mindestens Artikelname und Datum ausfüllen.");
+    return;
+  }
+  const entries = loadEntries();
+  entries.unshift(form);
+  saveEntries(entries);
+  resetForm();
+  renderAll();
+}
+function parseBulkLines(text){
+  return text.split(/\n+/).map(line => line.trim()).filter(Boolean).map(line => {
+    let quantity = null;
+    let unit = "";
+    let title = line;
+
+    let match = line.match(/^([0-9]+(?:[\.,][0-9]+)?)\s+(Gramm|Kilogramm|Milliliter|Liter|Meter|Stück|Packung|Rolle|Flasche|Dose)\s+(.+)$/i);
+    if(match){
+      quantity = parseFloat(String(match[1]).replace(",", "."));
+      unit = match[2];
+      title = match[3].trim();
+      return { title, quantity, unit, baseGroup: normalizeBaseGroup(title, "") };
+    }
+
+    match = line.match(/^([0-9]+(?:[\.,][0-9]+)?)\s+(.+)$/i);
+    if(match){
+      quantity = parseFloat(String(match[1]).replace(",", "."));
+      title = match[2].trim();
+      return { title, quantity, unit: "", baseGroup: normalizeBaseGroup(title, "") };
+    }
+
+    return { title, quantity: null, unit: "", baseGroup: normalizeBaseGroup(title, "") };
+  });
+}
+
+function fillBulkDemo(){
+  document.getElementById("bulkItems").value = "2 Milch\n1 Brot\n500 Gramm Nudeln\n10 Eier";
+  const bulkStore = document.getElementById("bulkStore");
+  const bulkBuyer = document.getElementById("bulkBuyer");
+  if(bulkStore) bulkStore.value = "Rewe";
+  if(bulkBuyer) bulkBuyer.value = document.getElementById("buyer").value || "Monja";
+}
+
+function saveBulkItems(){
+  const lines = parseBulkLines(document.getElementById("bulkItems").value);
+  if(!lines.length){
+    alert("Bitte zuerst mehrere Artikel eingeben.");
+    return;
+  }
+  const form = collectFormData();
+  if(!form.date){
+    alert("Bitte oben ein Datum setzen.");
+    return;
+  }
+  const bulkStore = (document.getElementById("bulkStore")?.value || "").trim();
+  const bulkBuyer = (document.getElementById("bulkBuyer")?.value || "").trim();
+
+  const entries = loadEntries();
+  lines.forEach(line => {
+    entries.unshift({
+      ...form,
+      id: Date.now().toString() + Math.random().toString(36).slice(2,7),
+      title: line.title,
+      baseGroup: line.baseGroup,
+      quantity: line.quantity ?? form.quantity,
+      unit: line.unit || form.unit,
+      store: bulkStore || form.store,
+      buyer: bulkBuyer || form.buyer
+    });
+  });
+  saveEntries(entries);
+  document.getElementById("bulkItems").value = "";
+  renderAll();
+}
+function clearBulkLines(){
+  document.getElementById("bulkItems").value = "";
+  const bulkStore = document.getElementById("bulkStore");
+  const bulkBuyer = document.getElementById("bulkBuyer");
+  if(bulkStore) bulkStore.value = "";
+  if(bulkBuyer) bulkBuyer.value = "";
+}
+function updateEntryStatus(ids, status, shiftDays=0){
+  const idList = Array.isArray(ids) ? ids : [ids];
+  const idSet = new Set(idList);
+  const entries = loadEntries().map(entry => {
+    if(!idSet.has(entry.id)) return entry;
+    const updated = { ...entry, status };
+    if(shiftDays && entry.date){
+      const d = new Date(entry.date + "T12:00:00");
+      d.setDate(d.getDate() + shiftDays);
+      updated.date = new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().split("T")[0];
+    }
+    return updated;
+  });
+  saveEntries(entries);
+  renderAll();
+}
+function deleteEntry(ids){
+  const idList = Array.isArray(ids) ? ids : [ids];
+  const confirmText = idList.length > 1
+    ? `Diese ${idList.length} zusammengeführten Einträge wirklich löschen?`
+    : "Diesen Eintrag wirklich löschen?";
+  if(!confirm(confirmText)) return;
+  const idSet = new Set(idList);
+  const entries = loadEntries().filter(entry => !idSet.has(entry.id));
+  saveEntries(entries);
+  renderAll();
+}
+function getFilteredEntries(){
+  const entries = loadEntries();
+  const search = document.getElementById("searchFilter").value.trim().toLowerCase();
+  const status = document.getElementById("statusFilter").value;
+  const kind = document.getElementById("kindFilter").value;
+  const category = document.getElementById("categoryFilter").value;
+  const priority = document.getElementById("priorityFilter").value;
+  return entries.filter(entry => {
+    if(status !== "all" && entry.status !== status) return false;
+    if(kind !== "all" && entry.purchaseKind !== kind) return false;
+    if(category !== "all" && entry.category !== category) return false;
+    if(priority !== "all" && entry.priority !== priority) return false;
+    if(search){
+      const hay = [entry.title, entry.baseGroup, entry.note, entry.store, entry.category].join(" ").toLowerCase();
+      if(!hay.includes(search)) return false;
+    }
+    return true;
+  });
+}
+function updateCategoryFilter(entries){
+  const select = document.getElementById("categoryFilter");
+  const current = select.value || "all";
+  const categories = [...new Set(entries.map(e => e.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'de'));
+  select.innerHTML = '<option value="all">Alle</option>' + categories.map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join('');
+  if(categories.includes(current)) select.value = current;
+}
+function renderStats(entries){
+  document.getElementById("statTotal").textContent = String(entries.length);
+  document.getElementById("statOpen").textContent = String(entries.filter(e => e.status === "offen").length);
+  document.getElementById("statRequired").textContent = String(entries.filter(e => e.priority === "Pflicht" && e.status !== "gekauft").length);
+  document.getElementById("statAcquisition").textContent = String(entries.filter(e => e.purchaseKind === "Anschaffung").length);
+}
+function groupEntriesForDisplay(entries){
+  const groups = new Map();
+  entries.forEach(entry => {
+    const rawStore = (entry.store || "").trim();
+    const store = rawStore || "Ohne Geschäft";
+    if(!groups.has(store)) groups.set(store, []);
+    groups.get(store).push(entry);
+  });
+  return [...groups.entries()].sort((a,b) => {
+    if(a[0] === "Ohne Geschäft" && b[0] !== "Ohne Geschäft") return 1;
+    if(b[0] === "Ohne Geschäft" && a[0] !== "Ohne Geschäft") return -1;
+    return a[0].localeCompare(b[0], "de");
+  });
+}
+function renderGroupedEntry(entry){
+  const amountLine = entry.quantity
+    ? `${escapeHtml(entry.quantity)}${entry.unit ? ` ${escapeHtml(entry.unit)}` : ""}`
+    : "";
+  const metaParts = [amountLine].filter(Boolean);
+  return `
+    <div class="item">
+      <div>
+        <strong>${escapeHtml(entry.title)}</strong>
+        ${metaParts.length ? `<p>${metaParts.join(" · ")}</p>` : ""}
+        <div class="item-actions">
+          ${entry.status !== "gekauft" ? `<label class="mini-btn" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" onchange="updateEntryStatus('${entry.id}','gekauft')"> Erledigt</label>` : ""}
+          <button class="mini-btn" type="button" onclick="updateEntryStatus('${entry.id}','verschoben',7)">+7 Tage</button>
+          <button class="mini-btn" type="button" onclick="deleteEntry('${entry.id}')">Löschen</button>
         </div>
-      </section>
+      </div>
+      <div class="amount">${entry.price ? formatEuro(entry.price) : "—"}</div>
     </div>
+  `;
+}
+function renderList(entries){
+  const list = document.getElementById("purchaseList");
+  if(!entries.length){
+    list.innerHTML = '<div class="empty">Noch keine passenden Einträge vorhanden. Sobald du speicherst, erscheinen sie hier direkt.</div>';
+    return;
+  }
 
-    <div>
-      <section class="card">
-        <h2>
-          <span class="section-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 8v5l3 2"></path>
-              <circle cx="12" cy="12" r="9"></circle>
-            </svg>
-          </span>
-          <span>Letzte Einkäufe</span>
-        </h2>
-        <div class="list" id="purchaseHistoryList"></div>
+  const groupedEntries = groupEntriesForDisplay(entries);
+  list.innerHTML = groupedEntries.map(([store, items]) => `
+    <section class="store-group">
+      <div class="store-heading">
+        <span>🏪 ${escapeHtml(store)}</span>
+        <span class="store-count">${items.length}</span>
+      </div>
+      <div class="store-items">
+        ${items.map(renderGroupedEntry).join("")}
+      </div>
+    </section>
+  `).join("");
+}
+
+function renderMoneyStats(entries){
+  const visibleTotal = entries.reduce((sum, e) => sum + (Number(e.price) || 0), 0);
+  const openTotal = entries.filter(e => e.status !== "gekauft").reduce((sum, e) => sum + (Number(e.price) || 0), 0);
+  document.getElementById("statVisibleTotal").textContent = formatEuro(visibleTotal);
+  document.getElementById("statVisibleOpenTotal").textContent = formatEuro(openTotal);
+}
+
+function buildAiInsights(entries){
+  const topMap = new Map();
+  entries.forEach(e => topMap.set(e.baseGroup || e.title, (topMap.get(e.baseGroup || e.title) || 0) + 1));
+  const top = [...topMap.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);
+  document.getElementById("aiTopGroups").textContent = top.length ? top.map(([name,count]) => `${name} (${count})`).join(" · ") : "Noch keine Daten vorhanden.";
+
+  const tips = [];
+  const openRequired = entries.filter(e => e.status === "offen" && e.priority === "Pflicht").length;
+  const acquisitions = entries.filter(e => e.purchaseKind === "Anschaffung" && e.status !== "gekauft").length;
+  if(openRequired) tips.push(`${openRequired} Pflichtartikel sind noch offen.`);
+  if(acquisitions) tips.push(`${acquisitions} Anschaffungen stehen noch aus.`);
+  if(!tips.length) tips.push("Sobald Einträge da sind, entstehen hier erste Muster.");
+  document.getElementById("aiSummary").textContent = entries.length ? `Die Liste enthält aktuell ${entries.length} sichtbare Einträge.` : "Sobald Einträge da sind, entstehen hier erste Muster.";
+  document.getElementById("aiTips").innerHTML = tips.map(t => `<li>${escapeHtml(t)}</li>`).join("");
+}
+function buildPrintSheet(entries){
+  const now = new Date().toLocaleDateString("de-DE");
+  const visibleTotal = entries.reduce((sum, e) => sum + (Number(e.price) || 0), 0);
+  const openTotal = entries.filter(e => e.status !== "gekauft").reduce((sum, e) => sum + (Number(e.price) || 0), 0);
+  const grouped = {};
+  const mergedEntries = aggregateVisibleEntries(entries);
+
+  mergedEntries.forEach(entry => {
+    const store = (entry.store && entry.store.trim()) ? entry.store.trim() : "Ohne Geschäft";
+    if(!grouped[store]) grouped[store] = [];
+    grouped[store].push(entry);
+  });
+
+  const sections = Object.entries(grouped).map(([store, items]) => {
+    const rows = items.map(entry => {
+      const qty = entry.quantity !== null && entry.quantity !== undefined ? `${escapeHtml(formatQuantity(entry.quantity))} ` : "";
+      const unit = entry.unit ? `${escapeHtml(entry.unit)} ` : "";
+      return `<li style="margin-bottom:8px;">${qty}${unit}<strong>${escapeHtml(entry.title)}</strong></li>`;
+    }).join("");
+
+    return `
+      <section style="margin-bottom:24px;">
+        <h2 style="font-size:20px;margin-bottom:10px;">${escapeHtml(store)}</h2>
+        <ul style="margin:0;padding-left:22px;">${rows}</ul>
       </section>
+    `;
+  }).join("");
 
-      <section class="card">
-        <h2>
-          <span class="section-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v4"></path>
-              <path d="M12 18v4"></path>
-              <path d="M4.93 4.93l2.83 2.83"></path>
-              <path d="M16.24 16.24l2.83 2.83"></path>
-              <path d="M2 12h4"></path>
-              <path d="M18 12h4"></path>
-              <path d="M4.93 19.07l2.83-2.83"></path>
-              <path d="M16.24 7.76l2.83-2.83"></path>
-            </svg>
-          </span>
-          <span>Feierlichkeiten aus Einkäufen</span>
-        </h2>
-        <div class="list" id="partyShoppingList"></div>
-      </section>
+  document.getElementById("printSheet").innerHTML = `
+    <h1 style="font-size:26px;margin-bottom:10px;">Meine Einkaufsliste</h1>
+    <p style="margin-bottom:8px;color:#556159;">HaushaltsHeld · Vereinfachte Druckansicht</p>
+    <p style="margin-bottom:8px;color:#556159;">Stand: ${escapeHtml(now)} · Sichtbare Einträge: ${entries.length}</p>
+    <p style="margin-bottom:4px;color:#2d342f;font-weight:700;">Geplante Summe: ${formatEuro(visibleTotal)}</p>
+    <p style="margin-bottom:18px;color:#2d342f;font-weight:700;">Offene Summe: ${formatEuro(openTotal)}</p>
+    ${sections || '<p>Keine Einträge vorhanden.</p>'}
+  `;
+}
+function printCurrentView(){
+  const entries = getFilteredEntries();
+  buildPrintSheet(entries);
+  window.print();
+}
+function renderAll(){
+  cachedEntries = loadEntries();
+  updateCategoryFilter(cachedEntries);
+  const filtered = getFilteredEntries();
+  renderStats(filtered);
+  renderMoneyStats(filtered);
+  renderList(filtered);
+  buildAiInsights(filtered);
+  buildPrintSheet(filtered);
+}
+function applyStatFilter(mode){
+  const searchFilter = document.getElementById("searchFilter");
+  const statusFilter = document.getElementById("statusFilter");
+  const kindFilter = document.getElementById("kindFilter");
+  const categoryFilter = document.getElementById("categoryFilter");
+  const priorityFilter = document.getElementById("priorityFilter");
 
-      <section class="card" id="shoppingAiReportCard">
-        <h2>
-          <span class="section-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 12h6"></path>
-              <path d="M12 9v6"></path>
-              <path d="M4.2 19.8a10 10 0 1 1 15.6 0"></path>
-            </svg>
-          </span>
-          <span>KI-Auswertung Einkaufsverhalten</span>
-        </h2>
-        <p class="card-sub">Diese Auswertung liest deine echten Einkaufsdaten, erkennt Muster und macht daraus einen druckbaren KI-Bericht.</p>
+  if(searchFilter) searchFilter.value = "";
+  if(statusFilter) statusFilter.value = "all";
+  if(kindFilter) kindFilter.value = "all";
+  if(categoryFilter) categoryFilter.value = "all";
+  if(priorityFilter) priorityFilter.value = "all";
 
-        <div class="ai-report-filter">
-          <div class="field">
-            <label for="shoppingAiPeriod">Zeitraum</label>
-            <select id="shoppingAiPeriod">
-              <option value="all">Kompletter Zeitraum</option>
-              <option value="today">Heute</option>
-              <option value="this_week">Diese Woche</option>
-              <option value="last_week">Letzte Woche</option>
-              <option value="this_month">Dieser Monat</option>
-              <option value="last_month">Letzter Monat</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="shoppingAiCategory">Kategorie</label>
-            <select id="shoppingAiCategory">
-              <option value="all">Alle Kategorien</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="shoppingAiStore">Geschäft</label>
-            <select id="shoppingAiStore">
-              <option value="all">Alle Geschäfte</option>
-            </select>
-          </div>
-        </div>
+  if(mode === "open" && statusFilter) statusFilter.value = "offen";
+  if(mode === "required" && priorityFilter) priorityFilter.value = "Pflicht";
+  if(mode === "acquisition" && kindFilter) kindFilter.value = "Anschaffung";
 
-        <div class="ai-report-actions">
-          <button class="btn" id="refreshShoppingAiBtn" type="button">KI-Bericht aktualisieren</button>
-          <button class="btn btn-soft" id="saveShoppingAiFilterBtn" type="button"><span>Filter merken</span></button>
-          <button class="btn btn-soft" id="printShoppingAiBtnCard" type="button"><span>KI-Bericht drucken</span></button>
-        </div>
+  renderAll();
+  document.getElementById("purchaseList")?.scrollIntoView({ behavior:"smooth", block:"start" });
+}
 
-        <div class="ai-stats">
-          <div class="ai-stat"><strong>Anzahl Einkäufe</strong><span id="shoppingAiCount">0</span></div>
-          <div class="ai-stat"><strong>Durchschnitt</strong><span id="shoppingAiAverage">0 €</span></div>
-          <div class="ai-stat"><strong>Gesamtausgaben</strong><span id="shoppingAiTotal">0 €</span></div>
-        </div>
+function bindUi(){
+  document.getElementById("saveItemBtn").addEventListener("click", saveSingleItem);
+  document.getElementById("clearFormBtn").addEventListener("click", resetForm);
+  document.getElementById("demoBtn").addEventListener("click", fillDemoData);
+  document.getElementById("saveBulkBtn").addEventListener("click", saveBulkItems);
+  document.getElementById("clearBulkLinesBtn").addEventListener("click", clearBulkLines);
+  document.getElementById("fillBulkDemoBtn").addEventListener("click", fillBulkDemo);
+  document.getElementById("printBtn").addEventListener("click", printCurrentView);
+  ["searchFilter","statusFilter","kindFilter","categoryFilter","priorityFilter"].forEach(id => {
+    document.getElementById(id).addEventListener("input", renderAll);
+    document.getElementById(id).addEventListener("change", renderAll);
+  });
+  document.querySelectorAll(".stat.is-clickable").forEach(card => {
+    const mode = card.dataset.statFilter || "all";
+    card.addEventListener("click", () => applyStatFilter(mode));
+    card.addEventListener("keydown", (event) => {
+      if(event.key === "Enter" || event.key === " "){
+        event.preventDefault();
+        applyStatFilter(mode);
+      }
+    });
+  });
+  document.getElementById("itemTitle").addEventListener("blur", () => {
+    const title = document.getElementById("itemTitle").value.trim();
+    const normalized = normalizeBaseGroup(title, document.getElementById("baseGroup").value.trim());
+    if(title && !document.getElementById("baseGroup").value.trim()){
+      document.getElementById("baseGroup").value = normalized;
+    }
+    document.getElementById("baseGroupHelper").value = normalized || "";
+  });
+}
+document.getElementById("neededDate").value = getTodayDate();
+bindUi();
+resetForm();
+renderAll();
+</script>
 
-        <div id="shoppingAiPrintable">
-          <div class="ai-report-box">
-            <h3>Zusammenfassung</h3>
-            <p id="shoppingAiSummary">Noch keine Auswertung vorhanden.</p>
-          </div>
 
-          <div class="ai-report-box">
-            <h3>KI-Bewertung</h3>
-            <p id="shoppingAiEvaluation">Sobald Einkäufe vorhanden sind, analysiert die KI hier dein Einkaufsverhalten.</p>
-          </div>
-
-          <div class="ai-report-box">
-            <h3>Empfehlung</h3>
-            <p id="shoppingAiRecommendation">Mit mehr Daten kann die KI gezieltere Empfehlungen ableiten.</p>
-          </div>
-
-          <div class="ai-report-box">
-            <h3>So kannst du das bündeln</h3>
-            <ul id="shoppingAiTips">
-              <li>Einkäufe gesammelt planen.</li>
-            </ul>
-          </div>
-
-          <p class="ai-report-note" id="shoppingAiMeta">Die KI-Auswertung nutzt dieselbe gemeinsame Einkaufsdatenbasis wie deine Liste und bleibt dadurch sauber auswertbar.</p>
-        </div>
-      </section>
+<div class="page-help-bubble open" id="pageHelpBubble">
+  <div class="page-help-head">
+    <div class="page-help-main">
+      <div class="page-help-icon"><img src="assets/assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Willkommen in deiner Einkaufsliste</h3>
+        <p>Hier trägst du Artikel ein und siehst sie direkt unter <strong>„Meine Einkaufsliste“</strong>. Für den Ausdruck bekommst du unten nur den einfachen Einkaufszettel mit <strong>Geschäft, Artikel und Anzahl/Einheit</strong>.</p>
+      </div>
     </div>
-  </section>
-</main>
+    <button class="page-help-close" id="pageHelpClose" type="button" aria-label="Sprechblase schließen">×</button>
+  </div>
+  <div class="page-help-actions">
+    <button class="btn" id="pageHelpLater" type="button">Später erinnern</button>
+    <button class="btn-soft" id="pageHelpHide" type="button">Nicht mehr anzeigen</button>
+  </div>
 </div>
 
 <button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
@@ -1448,19 +1023,15 @@ a.btn-soft:hover{
       <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
       <div>
         <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText">Ich unterstütze dich hier direkt im Elternbereich.</p>
+        <p id="kiContextText">Ich unterstütze dich bei Einkauf, Summen und Struktur direkt auf dieser Seite.</p>
         <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
       </div>
     </div>
     <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
   </div>
-
-  <div class="ki-suggestions" id="kiSuggestions"></div>
-
   <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.</div>
+    <div class="ki-msg bot">Hallo 👋 Ich helfe dir hier direkt bei deiner Einkaufsliste. Du kannst mir Fragen zu Kategorien, Summen, Struktur oder Einkaufsideen stellen.</div>
   </div>
-
   <form class="ki-form" id="kiForm">
     <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
     <button class="ki-send" type="submit">Senden</button>
@@ -1468,794 +1039,77 @@ a.btn-soft:hover{
 </section>
 
 <script>
-let lastScannedFile = null;
-let lastScannedSource = "";
-let lastScannedType = "";
-let lastScannedCode = "";
-let lastScanFingerprint = "";
-let currentScanSourceKey = "";
-
-function getTodayDate(){
-  const now = new Date();
-  const offset = now.getTimezoneOffset();
-  return new Date(now.getTime() - offset * 60000).toISOString().split("T")[0];
-}
-function cryptoId(){
-  return Date.now() + Math.floor(Math.random() * 999);
-}
-function formatEuro(value){
-  return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(value || 0);
-}
-function escapeHtml(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-function getSharedShoppingEntries(){
-  return JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "[]");
-}
-function saveSharedShoppingEntries(entries){
-  localStorage.setItem("haushaltsheld_shopping_entries_v2", JSON.stringify(entries));
-}
-function getFinanceEntries(){
-  return JSON.parse(localStorage.getItem("haushaltsheld_finance_entries_v2") || "[]");
-}
-function getImportKeys(){
-  return JSON.parse(localStorage.getItem("haushaltsheld_import_keys_v1") || "[]");
-}
-function saveImportKeys(keys){
-  localStorage.setItem("haushaltsheld_import_keys_v1", JSON.stringify(keys.slice(-200)));
-}
-function makeImportKey(source, date, total, payment, items){
-  return [
-    (source || "").trim().toLowerCase(),
-    date || "",
-    Number(total || 0).toFixed(2),
-    (payment || "").trim().toLowerCase(),
-    (items || "").trim().toLowerCase().replace(/\s+/g," ")
-  ].join("|");
-}
-function buildSourceKey(type, importKey){
-  return type + "|" + importKey;
-}
-function makeScanFingerprint(file, sourceLabel){
-  if(!file) return "";
-  return [
-    sourceLabel || "",
-    file.name || "",
-    file.size || 0,
-    file.type || "",
-    file.lastModified || 0
-  ].join("|");
-}
-function resetScannerState(){
-  lastScannedFile = null;
-  lastScannedSource = "";
-  lastScannedType = "";
-  lastScannedCode = "";
-  lastScanFingerprint = "";
-  currentScanSourceKey = "";
-}
-function fillExample(){
-  document.getElementById("store").value = "dm";
-  document.getElementById("date").value = getTodayDate();
-  document.getElementById("purchaseType").value = "feierlichkeiten";
-  document.getElementById("category").value = "Feierlichkeiten";
-  document.getElementById("total").value = "28.40";
-  document.getElementById("method").value = "Karte";
-  document.getElementById("buyer").value = "Allgemein";
-  document.getElementById("occasion").value = "Geburtstag Mia";
-  document.getElementById("items").value = "Servietten, Luftballons, Kerzen";
-  document.getElementById("note").value = "Kleine Party-Deko und Zubehör";
-  currentScanSourceKey = "";
-}
-function clearPurchaseForm(){
-  document.getElementById("store").value = "";
-  document.getElementById("date").value = getTodayDate();
-  document.getElementById("purchaseType").value = "alltag";
-  document.getElementById("category").value = "Lebensmittel";
-  document.getElementById("total").value = "";
-  document.getElementById("method").value = "Karte";
-  document.getElementById("buyer").value = "Allgemein";
-  document.getElementById("occasion").value = "";
-  document.getElementById("items").value = "";
-  document.getElementById("note").value = "";
-  currentScanSourceKey = "";
-}
-function purchaseExists(importKey, sourceKey){
-  const shoppingEntries = getSharedShoppingEntries();
-  const financeEntries = getFinanceEntries();
-
-  return shoppingEntries.some(entry => entry.importKey === importKey || (sourceKey && (entry.sourceKey || "") === sourceKey))
-    || financeEntries.some(entry => entry.importKey === importKey || (sourceKey && (entry.sourceKey || "") === sourceKey));
-}
-function savePurchase(){
-  const store = document.getElementById("store").value.trim();
-  const date = document.getElementById("date").value;
-  const type = document.getElementById("purchaseType").value;
-  const category = document.getElementById("category").value;
-  const total = parseFloat(document.getElementById("total").value);
-  const method = document.getElementById("method").value;
-  const buyer = document.getElementById("buyer").value;
-  const occasion = document.getElementById("occasion").value.trim();
-  const items = document.getElementById("items").value.trim();
-  const note = document.getElementById("note").value.trim();
-
-  if(!store || !date || Number.isNaN(total) || total < 0){
-    alert("Bitte Geschäft, Datum und einen gültigen Betrag (≥ 0) ausfüllen.");
-    return;
-  }
-
-  const importKey = makeImportKey(store, date, total, method, items || note || occasion || type);
-  const sourceKey = currentScanSourceKey || buildSourceKey("shopping", importKey);
-  const importKeys = getImportKeys();
-
-  if(importKeys.includes(importKey) || purchaseExists(importKey, sourceKey)){
-    alert("Dieser Einkauf ist bereits gespeichert und würde sonst doppelt gezählt werden.");
-    return;
-  }
-
-  const entry = {
-    id:cryptoId(),
-    store,
-    date,
-    type,
-    category,
-    total,
-    amount:total,
-    method,
-    payment:method,
-    buyer,
-    person:buyer,
-    occasion,
-    items,
-    note,
-    createdAt:Date.now(),
-    importKey,
-    sourceKey
-  };
-
-  const shoppingEntries = getSharedShoppingEntries();
-  shoppingEntries.push(entry);
-  saveSharedShoppingEntries(shoppingEntries);
-
-  importKeys.push(importKey);
-  saveImportKeys(importKeys);
-
-  renderAll();
-  clearPurchaseForm();
-  resetScannerState();
-  window.location.href = "einkaufsliste.html";
-}
-function renderAll(){
-  const purchases = [...getSharedShoppingEntries()].sort((a,b)=>{
-    const da = new Date((a.date || "") + "T12:00:00").getTime();
-    const db = new Date((b.date || "") + "T12:00:00").getTime();
-    return db - da;
-  });
-
-  document.getElementById("purchaseHistoryList").innerHTML = purchases.length
-    ? purchases.slice(0,8).map(e => `
-      <div class="item">
-        <div>
-          <strong>${escapeHtml(e.store || e.title || "Einkauf")}</strong>
-          <p>${new Date((e.date || getTodayDate()) + "T12:00:00").toLocaleDateString("de-DE")} · ${escapeHtml(e.method || e.payment || "—")}${e.occasion ? " · " + escapeHtml(e.occasion) : ""}<br>${escapeHtml(e.items || e.note || "")}</p>
-        </div>
-        <div class="amount">- ${formatEuro(e.total ?? e.amount)}</div>
-      </div>
-    `).join("")
-    : `<div class="item"><div><strong>Noch keine Einkäufe</strong><p>Sobald du speicherst, erscheint der Verlauf hier.</p></div><div class="amount">🛒</div></div>`;
-
-  const partyShopping = purchases.filter(e =>
-    (e.occasion && e.occasion.trim()) ||
-    e.type === "feierlichkeiten" ||
-    e.category === "Feierlichkeiten" ||
-    /geburtstag|weihnacht|fest|party|sommerfest/i.test(`${e.items || ""} ${e.note || ""} ${e.store || ""}`)
-  );
-
-  document.getElementById("partyShoppingList").innerHTML = partyShopping.length
-    ? partyShopping.slice(0,6).map(e => `
-      <div class="item">
-        <div>
-          <strong>${escapeHtml(e.store || "Einkauf")}</strong>
-          <p>${escapeHtml(e.occasion || "Feier-Kontext")} · ${escapeHtml(e.items || e.note || "")}</p>
-        </div>
-        <div class="amount">- ${formatEuro(e.total ?? e.amount)}</div>
-      </div>
-    `).join("")
-    : `<div class="item"><div><strong>Noch keine Feier-Einkäufe</strong><p>Sobald du Anlass-Einkäufe speicherst, erscheinen sie hier.</p></div><div class="amount">🎉</div></div>`;
-}
-
-/* Scanner */
-function setScanState(statusText, typeText, sourceText){
-  document.getElementById("scanStatus").innerHTML = `
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"></circle>
-      <path d="M12 8v4l3 3"></path>
-    </svg>
-    <span>${escapeHtml(statusText)}</span>
-  `;
-  document.getElementById("scanType").innerHTML = `
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 5h18"></path>
-      <path d="M3 12h18"></path>
-      <path d="M3 19h18"></path>
-    </svg>
-    <span>${escapeHtml(typeText)}</span>
-  `;
-  document.getElementById("scanSource").innerHTML = `
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
-    </svg>
-    <span>${escapeHtml(sourceText)}</span>
-  `;
-}
-function resetScanPreview(){
-  const previewImage = document.getElementById("scanPreviewImage");
-  previewImage.style.display = "none";
-  previewImage.removeAttribute("src");
-}
-function populateScanFields(fileName, sourceLabel){
-  const normalized = (fileName || "").toLowerCase();
-
-  let merchant = "";
-  let amount = "";
-  let code = lastScannedCode || "";
-
-  if(/rewe/.test(normalized)) merchant = "REWE";
-  if(/dm/.test(normalized)) merchant = "dm";
-  if(/aldi/.test(normalized)) merchant = "ALDI";
-  if(/lidl/.test(normalized)) merchant = "LIDL";
-  if(/amazon/.test(normalized)) merchant = "Amazon";
-  if(/rossmann/.test(normalized)) merchant = "Rossmann";
-  if(/ikea/.test(normalized)) merchant = "IKEA";
-  if(/paypal/.test(normalized)) merchant = "PayPal";
-
-  if(/29[,._-]?99|29\.99/.test(normalized)) amount = "29.99";
-  if(/19[,._-]?99|19\.99/.test(normalized)) amount = "19.99";
-  if(/9[,._-]?99|9\.99/.test(normalized)) amount = "9.99";
-
-  if(sourceLabel === "QR / Barcode"){
-    code = lastScannedCode || `QR-${Date.now().toString().slice(-6)}`;
-  }
-
-  document.getElementById("scanMerchant").value = merchant;
-  document.getElementById("scanAmount").value = amount;
-  document.getElementById("scanCode").value = code;
-}
-function handleSelectedFile(file, sourceLabel){
-  if(!file) return;
-
-  lastScannedFile = file;
-  lastScannedSource = sourceLabel;
-  lastScannedType = file.type || "Datei";
-  lastScanFingerprint = makeScanFingerprint(file, sourceLabel);
-  currentScanSourceKey = "";
-
-  setScanState(
-    `Beleg bereit: ${file.name}`,
-    `Scan-Typ: ${file.type || "Datei"}`,
-    `Quelle: ${sourceLabel}`
-  );
-
-  populateScanFields(file.name, sourceLabel);
-
-  const previewText = document.getElementById("scanPreviewText");
-  const previewImage = document.getElementById("scanPreviewImage");
-  previewText.textContent = `Ausgewählt: ${file.name}. Mit „Scan übernehmen“ kannst du jetzt das Formular automatisch vorfüllen.`;
-
-  if(file.type && file.type.startsWith("image/")){
-    const reader = new FileReader();
-    reader.onload = function(e){
-      previewImage.src = e.target.result;
-      previewImage.style.display = "block";
-    };
-    reader.readAsDataURL(file);
-  }else{
-    resetScanPreview();
-  }
-}
-function simulateQrScan(){
-  document.getElementById("qrInput").click();
-}
-function applyScannedData(){
-  if(!lastScannedFile && !document.getElementById("scanCode").value.trim()){
-    alert("Bitte zuerst einen Kassenbon fotografieren, hochladen oder einen QR-/Barcode-Scan starten.");
-    return;
-  }
-
-  const fileName = (lastScannedFile?.name || "").toLowerCase();
-  const scanMerchant = document.getElementById("scanMerchant").value.trim();
-  const scanAmount = document.getElementById("scanAmount").value.trim();
-  const scanCode = document.getElementById("scanCode").value.trim();
-
-  document.getElementById("date").value = getTodayDate();
-  document.getElementById("store").value = scanMerchant || (fileName ? fileName.replace(/\.[a-z0-9]+$/i,"") : "");
-  document.getElementById("total").value = scanAmount || "";
-  document.getElementById("method").value = scanCode ? "Online" : "Karte";
-  document.getElementById("buyer").value = "Allgemein";
-
-  let purchaseType = "alltag";
-  let category = "Lebensmittel";
-  let occasion = "";
-  let items = "Scanner-Vorschlag aus Beleg";
-  let note = "Daten aus Scanner übernommen.";
-
-  if(/geburtstag|party|weihnacht|fest|deko/.test(fileName)){
-    purchaseType = "feierlichkeiten";
-    category = "Feierlichkeiten";
-    occasion = "Geburtstag";
-    items = "Deko, Snacks oder Feier-Zubehör";
-    note = `Scanner-Vorschlag für Feierlichkeiten.${scanCode ? " Code: " + scanCode : ""}`;
-  }else if(/dm|rossmann/.test(fileName)){
-    category = "Drogerie";
-    items = "Drogerie-Einkauf";
-  }else if(/rewe|aldi|lidl|edeka/.test(fileName)){
-    category = "Lebensmittel";
-    items = "Lebensmittel-Einkauf";
-  }else if(/tank/.test(fileName)){
-    category = "Tanken";
-    items = "Tankbeleg";
-  }else if(scanCode){
-    category = "Kiosk / Spontan";
-    purchaseType = "spontan";
-    items = "QR-/Barcode-Scan übernommen";
-    note = `Code übernommen: ${scanCode}`;
-  }
-
-  document.getElementById("purchaseType").value = purchaseType;
-  document.getElementById("category").value = category;
-  document.getElementById("occasion").value = occasion;
-  document.getElementById("items").value = items;
-  document.getElementById("note").value = note;
-
-  const preparedImportKey = makeImportKey(
-    document.getElementById("store").value.trim(),
-    document.getElementById("date").value,
-    parseFloat(document.getElementById("total").value || "0"),
-    document.getElementById("method").value,
-    items || note || occasion || purchaseType
-  );
-  currentScanSourceKey = buildSourceKey("shopping", preparedImportKey);
-}
-function setupScanner(){
-  const cameraInput = document.getElementById("cameraInput");
-  const receiptInput = document.getElementById("receiptInput");
-  const qrInput = document.getElementById("qrInput");
-
-  document.getElementById("openCameraBtn").addEventListener("click",()=>cameraInput.click());
-  document.getElementById("uploadReceiptBtn").addEventListener("click",()=>receiptInput.click());
-  document.getElementById("scanQrBtn").addEventListener("click",simulateQrScan);
-  document.getElementById("applyScanBtn").addEventListener("click",applyScannedData);
-
-  cameraInput.addEventListener("change",(event)=>{
-    const file = event.target.files?.[0];
-    handleSelectedFile(file,"Kamera");
-  });
-
-  receiptInput.addEventListener("change",(event)=>{
-    const file = event.target.files?.[0];
-    handleSelectedFile(file,"Upload");
-  });
-
-  qrInput.addEventListener("change",(event)=>{
-    const file = event.target.files?.[0];
-    lastScannedCode = `QR-${Date.now().toString().slice(-6)}`;
-    handleSelectedFile(file || {name:lastScannedCode, type:"image/qr-placeholder", size:0, lastModified:Date.now()},"QR / Barcode");
-    document.getElementById("scanPreviewText").textContent = "QR-/Barcode-Workflow vorbereitet. Der erkannte oder eingetragene Code kann direkt übernommen werden.";
-    document.getElementById("scanCode").value = lastScannedCode;
-  });
-}
-
-
-function getPrintFilter(){
-  return JSON.parse(localStorage.getItem("haushaltsheld_print_filter_v1") || "{}");
-}
-function saveShoppingAiFilter(){
-  const filter = {
-    scope: "shopping_ai",
-    period: document.getElementById("shoppingAiPeriod").value,
-    category: document.getElementById("shoppingAiCategory").value,
-    store: document.getElementById("shoppingAiStore").value
-  };
-  localStorage.setItem("haushaltsheld_shopping_ai_filter_v1", JSON.stringify(filter));
-  localStorage.setItem("haushaltsheld_print_filter_v1", JSON.stringify(filter));
-}
-function loadShoppingAiFilter(){
-  const own = JSON.parse(localStorage.getItem("haushaltsheld_shopping_ai_filter_v1") || "null");
-  const fallback = getPrintFilter();
-  return own || fallback || {};
-}
-function startOfDay(date){
-  const d = new Date(date);
-  d.setHours(0,0,0,0);
-  return d;
-}
-function endOfDay(date){
-  const d = new Date(date);
-  d.setHours(23,59,59,999);
-  return d;
-}
-function getDateRange(period){
-  const now = new Date();
-  const today = startOfDay(now);
-  const day = today.getDay();
-  const mondayOffset = day === 0 ? 6 : day - 1;
-
-  if(period === "today"){
-    return {start: startOfDay(today), end: endOfDay(today)};
-  }
-  if(period === "this_week"){
-    const start = new Date(today);
-    start.setDate(today.getDate() - mondayOffset);
-    return {start: startOfDay(start), end: endOfDay(now)};
-  }
-  if(period === "last_week"){
-    const thisWeekStart = new Date(today);
-    thisWeekStart.setDate(today.getDate() - mondayOffset);
-    const start = new Date(thisWeekStart);
-    start.setDate(thisWeekStart.getDate() - 7);
-    const end = new Date(thisWeekStart);
-    end.setDate(thisWeekStart.getDate() - 1);
-    return {start: startOfDay(start), end: endOfDay(end)};
-  }
-  if(period === "this_month"){
-    const start = new Date(today.getFullYear(), today.getMonth(), 1);
-    return {start: startOfDay(start), end: endOfDay(now)};
-  }
-  if(period === "last_month"){
-    const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-    const end = new Date(today.getFullYear(), today.getMonth(), 0);
-    return {start: startOfDay(start), end: endOfDay(end)};
-  }
-  return null;
-}
-function parseShoppingDate(entry){
-  const value = entry.date || entry.createdAt || entry.updatedAt || getTodayDate();
-  return new Date(String(value).slice(0,10) + "T12:00:00");
-}
-function fillShoppingAiSelects(entries){
-  const categorySelect = document.getElementById("shoppingAiCategory");
-  const storeSelect = document.getElementById("shoppingAiStore");
-  const currentCategory = categorySelect.value || "all";
-  const currentStore = storeSelect.value || "all";
-
-  const categories = [...new Set(entries.map(e => e.category).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"de"));
-  const stores = [...new Set(entries.map(e => e.store).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"de"));
-
-  categorySelect.innerHTML = '<option value="all">Alle Kategorien</option>' + categories.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
-  storeSelect.innerHTML = '<option value="all">Alle Geschäfte</option>' + stores.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
-
-  categorySelect.value = categories.includes(currentCategory) ? currentCategory : "all";
-  storeSelect.value = stores.includes(currentStore) ? currentStore : "all";
-}
-function getFilteredShoppingAiEntries(){
-  const entries = getSharedShoppingEntries();
-  const period = document.getElementById("shoppingAiPeriod").value;
-  const category = document.getElementById("shoppingAiCategory").value;
-  const store = document.getElementById("shoppingAiStore").value;
-  const range = getDateRange(period);
-
-  return entries.filter(entry => {
-    const entryDate = parseShoppingDate(entry);
-    if(range && (entryDate < range.start || entryDate > range.end)) return false;
-    if(category !== "all" && (entry.category || "") !== category) return false;
-    if(store !== "all" && (entry.store || "") !== store) return false;
-    return true;
-  });
-}
-function buildShoppingAiReport(entries){
-  const total = entries.reduce((sum,e)=>sum + Number(e.total ?? e.amount ?? 0),0);
-  const average = entries.length ? total / entries.length : 0;
-
-  const byStore = {};
-  const byCategory = {};
-  const byDate = {};
-  let spontaneousCount = 0;
-  let partyCount = 0;
-
-  entries.forEach(entry => {
-    const amount = Number(entry.total ?? entry.amount ?? 0);
-    const store = entry.store || "Unbekannt";
-    const category = entry.category || "Ohne Kategorie";
-    const dayKey = String(entry.date || "").slice(0,10) || getTodayDate();
-
-    byStore[store] = (byStore[store] || 0) + amount;
-    byCategory[category] = (byCategory[category] || 0) + amount;
-    byDate[dayKey] = (byDate[dayKey] || 0) + 1;
-
-    if((entry.purchaseType || "").toLowerCase().includes("spontan") || category === "Kiosk / Spontan"){
-      spontaneousCount += 1;
-    }
-    if((entry.purchaseType || "").toLowerCase().includes("feier") || category === "Feierlichkeiten"){
-      partyCount += 1;
-    }
-  });
-
-  const topStore = Object.entries(byStore).sort((a,b)=>b[1]-a[1])[0];
-  const topCategory = Object.entries(byCategory).sort((a,b)=>b[1]-a[1])[0];
-  const duplicateDays = Object.values(byDate).filter(count => count > 1).length;
-  const smallBuys = entries.filter(e => Number(e.total ?? e.amount ?? 0) > 0 && Number(e.total ?? e.amount ?? 0) <= 20).length;
-
-  const summary = entries.length
-    ? `Im ausgewählten Zeitraum wurden ${entries.length} Einkäufe mit Gesamtausgaben von ${formatEuro(total)} erfasst. Der durchschnittliche Einkaufswert lag bei ${formatEuro(average)}.`
-    : "Noch keine passenden Einkäufe für diese Auswahl vorhanden.";
-
-  let evaluation = "Sobald mehr Einkaufsdaten vorhanden sind, kann die KI dein Verhalten klarer auswerten.";
-  let recommendation = "Lege zuerst einige Einkäufe an oder übernimm Scanner-Daten in die Einkaufsliste.";
-  let tips = [
-    "Einkaufsliste vor dem Einkauf vervollständigen.",
-    "Spontane Nachkäufe möglichst sammeln statt einzeln fahren."
-  ];
-
-  if(entries.length){
-    const parts = [];
-    if(topCategory){
-      parts.push(`Die stärkste Kategorie ist ${topCategory[0]} mit ${formatEuro(topCategory[1])}.`);
-    }
-    if(topStore){
-      parts.push(`Am häufigsten bzw. stärksten wurde bei ${topStore[0]} eingekauft (${formatEuro(topStore[1])}).`);
-    }
-    if(smallBuys >= 3){
-      parts.push(`Es wurden ${smallBuys} kleinere Einkäufe erkannt, was auf Nachkäufe oder spontane Besorgungen hindeuten kann.`);
-    }
-    if(duplicateDays >= 2){
-      parts.push(`An mehreren Tagen gab es mehr als einen Einkauf. Das spricht eher gegen gebündelte Wocheneinkäufe.`);
-    }
-    if(spontaneousCount > 0){
-      parts.push(`${spontaneousCount} Einkäufe wurden als spontan markiert.`);
-    }
-    if(partyCount > 0){
-      parts.push(`${partyCount} Einkäufe liefen im Bereich Feierlichkeiten und lassen sich dadurch separat auswerten.`);
-    }
-    evaluation = parts.join(" ") || evaluation;
-
-    if(smallBuys >= 3 || duplicateDays >= 2){
-      recommendation = "Einkäufe stärker bündeln und fehlende Artikel zuerst in der Einkaufsliste sammeln.";
-      tips = [
-        "Nur 1 bis 2 feste Einkaufstage pro Woche festlegen.",
-        "Fehlende Produkte erst in der Liste sammeln und nicht sofort einzeln kaufen.",
-        "Vor dem Einkauf Angebote und Vorräte kurz prüfen.",
-        "Spontankäufe separat markieren und am Monatsende prüfen."
-      ];
-    } else if(topCategory && /Lebensmittel/i.test(topCategory[0])) {
-      recommendation = "Lebensmittel-Einkäufe besser vorplanen, damit weniger kleine Nachkäufe entstehen.";
-      tips = [
-        "Mahlzeiten grob für mehrere Tage planen.",
-        "Grundartikel gesammelt einkaufen.",
-        "Vorräte kurz prüfen, bevor erneut gekauft wird.",
-        "Snacks und Kleinteile gezielt auf eine Liste setzen."
-      ];
-    } else {
-      recommendation = "Das Einkaufsverhalten wirkt schon recht geordnet. Mit mehr Daten werden die Hinweise noch präziser.";
-      tips = [
-        "Geschäfte und Kategorien weiter sauber pflegen.",
-        "Belege oder Scanner-Daten direkt zuordnen.",
-        "Spontane Einkäufe deutlich markieren.",
-        "Regelmäßig die stärksten Kategorien prüfen."
-      ];
-    }
-  }
-
-  return {
-    total, average, topStore: topStore ? topStore[0] : "—", topCategory: topCategory ? topCategory[0] : "—",
-    count: entries.length, summary, evaluation, recommendation, tips
-  };
-}
-function renderShoppingAiReport(){
-  const allEntries = getSharedShoppingEntries();
-  fillShoppingAiSelects(allEntries);
-  const entries = getFilteredShoppingAiEntries();
-  const report = buildShoppingAiReport(entries);
-
-  document.getElementById("shoppingAiCount").textContent = String(report.count);
-  document.getElementById("shoppingAiAverage").textContent = formatEuro(report.average);
-  document.getElementById("shoppingAiTotal").textContent = formatEuro(report.total);
-  document.getElementById("shoppingAiSummary").textContent = report.summary;
-  document.getElementById("shoppingAiEvaluation").textContent = report.evaluation;
-  document.getElementById("shoppingAiRecommendation").textContent = report.recommendation;
-  document.getElementById("shoppingAiTips").innerHTML = report.tips.map(t => `<li>${escapeHtml(t)}</li>`).join("");
-
-  const periodLabel = document.getElementById("shoppingAiPeriod").selectedOptions[0]?.textContent || "Kompletter Zeitraum";
-  document.getElementById("shoppingAiMeta").textContent = `Zeitraum: ${periodLabel} · Geschäft: ${report.topStore} · Stärkste Kategorie: ${report.topCategory}. Diese Auswertung nutzt dieselbe gemeinsame Einkaufsdatenbasis wie deine Liste.`;
-}
-function printShoppingAiReport(){
-  renderShoppingAiReport();
-  const printHtml = document.getElementById("shoppingAiPrintable").innerHTML;
-  const count = document.getElementById("shoppingAiCount").textContent;
-  const avg = document.getElementById("shoppingAiAverage").textContent;
-  const total = document.getElementById("shoppingAiTotal").textContent;
-  const periodLabel = document.getElementById("shoppingAiPeriod").selectedOptions[0]?.textContent || "Kompletter Zeitraum";
-
-  const win = window.open("", "_blank", "width=980,height=760");
-  win.document.write(`
-    <html>
-      <head>
-        <title>Haushaltsheld – KI-Auswertung Einkaufsverhalten</title>
-        <style>
-          body{font-family:Arial,sans-serif;padding:28px;color:#2d342f}
-          h1{font-size:28px;margin:0 0 10px}
-          .meta{margin-bottom:20px;color:#556159}
-          .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
-          .stat{border:1px solid #dfd1bc;border-radius:14px;padding:14px}
-          .stat strong{display:block;font-size:12px;text-transform:uppercase;color:#7d8a82;margin-bottom:6px}
-          .stat span{font-size:22px;font-weight:700}
-          .box{border:1px solid #dfd1bc;border-radius:14px;padding:16px;margin-top:14px}
-          .box h3{margin:0 0 10px}
-          ul{padding-left:20px}
-        </style>
-      </head>
-      <body>
-        <h1>🧠 KI-Auswertung Einkaufsverhalten</h1>
-        <div class="meta">Zeitraum: ${periodLabel}</div>
-        <div class="stats">
-          <div class="stat"><strong>Anzahl Einkäufe</strong><span>${count}</span></div>
-          <div class="stat"><strong>Durchschnitt</strong><span>${avg}</span></div>
-          <div class="stat"><strong>Gesamtausgaben</strong><span>${total}</span></div>
-        </div>
-        ${printHtml}
-      </body>
-    </html>
-  `);
-  win.document.close();
-  win.focus();
-  setTimeout(()=>win.print(), 250);
-}
-function applyShoppingAiStoredFilter(){
-  const filter = loadShoppingAiFilter();
-  const period = filter.period || "all";
-  document.getElementById("shoppingAiPeriod").value = period;
-}
-
-/* Init */
-document.getElementById("date").value = getTodayDate();
-document.getElementById("savePurchaseBtn").addEventListener("click",savePurchase);
-document.getElementById("examplePurchaseBtn").addEventListener("click",fillExample);
-setupScanner();
-applyShoppingAiStoredFilter();
-document.getElementById("refreshShoppingAiBtn").addEventListener("click", renderShoppingAiReport);
-document.getElementById("saveShoppingAiFilterBtn").addEventListener("click", () => {
-  saveShoppingAiFilter();
-  renderShoppingAiReport();
-});
-document.getElementById("printShoppingAiBtn").addEventListener("click", printShoppingAiReport);
-document.getElementById("printShoppingAiBtnCard").addEventListener("click", printShoppingAiReport);
-document.getElementById("shoppingAiPeriod").addEventListener("change", renderShoppingAiReport);
-document.getElementById("shoppingAiCategory").addEventListener("change", renderShoppingAiReport);
-document.getElementById("shoppingAiStore").addEventListener("change", renderShoppingAiReport);
-renderAll();
-renderShoppingAiReport();
-</script>
-
-<script>
 (function(){
-  const page = document.body.dataset.page || "allgemein";
-  const modeGetter = () => localStorage.getItem("haushaltsheld_mode") || "parent";
+  const hideKey = "hh_einkauf_help_hide";
+  const laterKey = "hh_einkauf_help_later";
+  const helpBubble = document.getElementById("pageHelpBubble");
+  const helpClose = document.getElementById("pageHelpClose");
+  const helpLater = document.getElementById("pageHelpLater");
+  const helpHide = document.getElementById("pageHelpHide");
+
+  function openHelp(){ if(helpBubble) helpBubble.classList.add("open"); }
+  function closeHelp(){ if(helpBubble) helpBubble.classList.remove("open"); }
+  function initHelp(){
+    const hidden = localStorage.getItem(hideKey) === "1";
+    const laterUntil = Number(localStorage.getItem(laterKey) || "0");
+    if(hidden || (laterUntil && Date.now() < laterUntil)) closeHelp();
+    else openHelp();
+  }
+
+  helpClose?.addEventListener("click", closeHelp);
+  helpLater?.addEventListener("click", () => {
+    localStorage.setItem(laterKey, String(Date.now() + 6 * 60 * 60 * 1000));
+    closeHelp();
+  });
+  helpHide?.addEventListener("click", () => {
+    localStorage.setItem(hideKey, "1");
+    closeHelp();
+  });
 
   const fab = document.getElementById("kiFab");
   const panel = document.getElementById("kiPanel");
-  const closeBtn = document.getElementById("kiClose");
+  const closePanel = document.getElementById("kiClose");
+  const chat = document.getElementById("kiChat");
   const form = document.getElementById("kiForm");
   const input = document.getElementById("kiInput");
-  const chat = document.getElementById("kiChat");
-  const suggestions = document.getElementById("kiSuggestions");
-  const contextText = document.getElementById("kiContextText");
-  const welcome = document.getElementById("kiWelcomeMsg");
 
-  const pageSettings = {
-    context: "Ich helfe dir beim Planen von Einkäufen, Spontankäufen und Feierlichkeiten.",
-    suggestions: [
-      "Hilf mir einen Einkauf für einen Kindergeburtstag zu planen.",
-      "Wie vermeide ich Doppelerfassungen beim Einkauf?",
-      "Wie kann ich spontane Einkäufe besser im Blick behalten?"
-    ]
-  };
+  function openPanel(){ panel?.classList.add("open"); }
+  function hidePanel(){ panel?.classList.remove("open"); }
 
-  contextText.textContent = "Ich unterstütze dich hier direkt im Elternbereich.";
-  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.";
+  fab?.addEventListener("click", openPanel);
+  closePanel?.addEventListener("click", hidePanel);
 
-  suggestions.innerHTML = pageSettings.suggestions.map(text =>
-    '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
-  ).join("");
-
-  suggestions.querySelectorAll(".ki-chip").forEach(btn => {
-    btn.addEventListener("click", () => {
-      input.value = btn.textContent.trim();
-      input.focus();
-    });
-  });
-
-  function openPanel(){
-    panel.classList.add("open");
-    input.focus();
-  }
-  function closePanel(){
-    panel.classList.remove("open");
+  function replyToUser(message){
+    const text = message.toLowerCase();
+    if(text.includes("summe")) return "Die geplante Summe siehst du auf der Seite. In der Druckansicht steht sie ebenfalls oben kompakt.";
+    if(text.includes("geschäft") || text.includes("laden")) return "Für mehrere Artikel auf einmal kannst du oben direkt ein Geschäft für den ganzen Block eintragen.";
+    if(text.includes("druck") || text.includes("pdf")) return "Der Einkaufszettel für Druck/PDF zeigt bewusst nur Geschäft, Artikel und Anzahl/Einheit.";
+    if(text.includes("rezept")) return "Für Essen gibt es jetzt „Kochrezept“. Für Apotheke oder medizinische Einkäufe nutzt du „Verordnung“.";
+    return "Ich habe deine Nachricht verstanden. Für tiefere Hilfe kannst du auch den Familien-Chat öffnen. Auf dieser Seite halte ich die Hilfe bewusst kurz und praktisch.";
   }
 
-  fab.addEventListener("click", openPanel);
-  closeBtn.addEventListener("click", closePanel);
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closePanel();
-  });
-
-  function addMsg(role, text){
-    const div = document.createElement("div");
-    div.className = "ki-msg " + role;
-    div.textContent = text;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-    return div;
-  }
-
-  async function sendMessage(message){
-    addMsg("user", message);
-    const loading = addMsg("bot", "Ich denke kurz nach …");
-    loading.classList.add("ki-typing");
-
-    try{
-      const response = await fetch("/.netlify/functions/chat", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({
-          message,
-          page,
-          mode: modeGetter()
-        })
-      });
-
-      const data = await response.json();
-      loading.remove();
-      addMsg("bot", data.reply || "Ich konnte gerade nichts Sinnvolles antworten.");
-    }catch(err){
-      loading.remove();
-      addMsg("bot", "Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.");
-    }
-  }
-
-  form.addEventListener("submit", async (e) => {
+  form?.addEventListener("submit", (e) => {
     e.preventDefault();
     const message = input.value.trim();
     if(!message) return;
+    const userMsg = document.createElement("div");
+    userMsg.className = "ki-msg user";
+    userMsg.textContent = message;
+    chat.appendChild(userMsg);
+
+    const botMsg = document.createElement("div");
+    botMsg.className = "ki-msg bot";
+    botMsg.textContent = replyToUser(message);
+    chat.appendChild(botMsg);
+
     input.value = "";
-    await sendMessage(message);
+    chat.scrollTop = chat.scrollHeight;
+    openPanel();
   });
+
+  initHelp();
 })();
 </script>
 
-<script src="ki-schnecke.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-  const childBtn = document.getElementById('childBtn');
-  if(childBtn && !childBtn.dataset.boundToChildMode){
-    childBtn.dataset.boundToChildMode = '1';
-    childBtn.addEventListener('click', function(){ window.location.href = 'kindermodus.html'; });
-  }
-});
-</script>
-
-<script>
-(function(){
-  const AUTH_KEYS=["haushaltsheld_user","haushaltsheld_current_user"];const USERS_KEY="haushaltsheld_users";const FAMILY_ROOM_KEY="hh_family_chat_room";const FAMILY_SEEN_KEY="hh_family_chat_seen_parent";const DIRECT_CHATS_KEY="hh_direct_chats_v2";const DIRECT_SEEN_PREFIX="hh_direct_seen_";
-  function readJSON(key,fallback){try{const raw=localStorage.getItem(key);if(!raw)return fallback;const parsed=JSON.parse(raw);return parsed??fallback}catch(error){return fallback}}
-  function slugify(value){return String(value||"").toLowerCase().trim().replace(/\s+/g,"-").replace(/[^a-z0-9äöüß_-]/gi,"")}
-  function getUserId(user){return user?.id||user?.userId||user?.username||slugify(user?.name||user?.displayName||"user")}
-  function getAuthUser(){for(const key of AUTH_KEYS){const user=readJSON(key,null);if(user)return user}return null}
-  function normalizeMessage(msg,fallbackType){return{id:msg?.id||("msg_"+Math.random().toString(36).slice(2,10)),conversationType:msg?.conversationType||fallbackType,senderId:msg?.senderId||msg?.authorId||slugify(msg?.senderName||msg?.author||msg?.sender||""),senderName:msg?.senderName||msg?.author||msg?.sender||"Unbekannt",text:msg?.text||msg?.message||msg?.content||"",timestamp:msg?.timestamp||msg?.time||msg?.createdAt||new Date().toISOString(),deleted:!!msg?.deleted}}
-  function getConversationKeyForUsers(userA,userB){return[String(userA||""),String(userB||"")].sort().join("__")}
-  function getUsers(currentUserId){const stored=readJSON(USERS_KEY,[]);const users=Array.isArray(stored)?stored.map((u)=>({id:getUserId(u),name:u?.name||u?.displayName||u?.username||"Nutzer",role:u?.role||""})):[];if(currentUserId&&!users.find((u)=>u.id===currentUserId)){const auth=getAuthUser();users.unshift({id:currentUserId,name:auth?.name||auth?.displayName||auth?.username||"Nutzer",role:auth?.role||""})}return users}
-  function getFamilyMessages(){const room=readJSON(FAMILY_ROOM_KEY,{messages:[]});const messages=Array.isArray(room?.messages)?room.messages:[];return messages.map((m)=>normalizeMessage(m,"family"))}
-  function getDirectMessages(conversationId){const store=readJSON(DIRECT_CHATS_KEY,{});const messages=Array.isArray(store?.[conversationId])?store[conversationId]:[];return messages.map((m)=>normalizeMessage(m,"direct"))}
-  function getUnreadCount(currentUserId,conversation){if(!currentUserId||!conversation)return 0;if(conversation.type==="family"){const seen=readJSON(FAMILY_SEEN_KEY,{});const lastSeen=seen?.[currentUserId]||"";return conversation.messages.filter((m)=>m.senderId!==currentUserId&&String(m.timestamp||"")>String(lastSeen)).length}const seen=readJSON(DIRECT_SEEN_PREFIX+conversation.id,{});const lastSeen=seen?.[currentUserId]||"";return conversation.messages.filter((m)=>m.senderId!==currentUserId&&String(m.timestamp||"")>String(lastSeen)).length}
-  function buildConversations(currentUserId){const users=getUsers(currentUserId);const conversations=[{type:"family",id:"family",messages:getFamilyMessages()}];users.filter((u)=>u.id!==currentUserId).forEach((u)=>{const id=getConversationKeyForUsers(currentUserId,u.id);conversations.push({type:"direct",id,messages:getDirectMessages(id)})});return conversations}
-  function updateGlobalChatBadge(){const badge=document.getElementById("chatBadge");if(!badge)return;const auth=getAuthUser();const currentUserId=auth?getUserId(auth):"";const conversations=buildConversations(currentUserId);const unreadTotal=conversations.reduce((sum,conversation)=>sum+getUnreadCount(currentUserId,conversation),0);if(unreadTotal>0){badge.style.display="inline-block";badge.textContent=unreadTotal>99?"99+":String(unreadTotal)}else{badge.style.display="none";badge.textContent="0"}}
-  document.addEventListener("DOMContentLoaded",updateGlobalChatBadge);window.addEventListener("storage",updateGlobalChatBadge);window.updateGlobalChatBadge=updateGlobalChatBadge;
-})();
-</script>
 </body>
 </html>

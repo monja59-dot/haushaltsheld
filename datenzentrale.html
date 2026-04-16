@@ -672,12 +672,16 @@ tbody tr:hover td{background:#fbfdfb}
   .page-header h1{font-size:1.75rem}
   .mode-badge{width:100%;justify-content:center}
 }
+
+#kiWelcomeMsg{display:none !important;}
 </style>
 </head>
 <body data-page="datenzentrale">
 <div class="app">
 
   <aside class="sidebar">
+  <a href="index.html" style="text-decoration:none;color:inherit;">
+    <a href="index.html" style="text-decoration:none;color:inherit;display:block;">
   <div class="logo-wrap">
     <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
     <div>
@@ -685,6 +689,8 @@ tbody tr:hover td{background:#fbfdfb}
       <div class="logo-sub">Dein Familien-Assistent</div>
     </div>
   </div>
+</a>
+  </a>
 
   <div class="nav-label">Hauptmenü</div>
   <nav class="nav">
@@ -786,7 +792,7 @@ tbody tr:hover td{background:#fbfdfb}
         </div>
         <h3>Einkaufs-Einträge</h3>
         <div class="value info" id="shoppingCount">0</div>
-        <p>Einträge in haushaltsheld_shopping_entries_v2</p>
+        <p>Einträge in haushaltsheld_einkaufsliste_stabil_v1</p>
       </div>
 
       <div class="stat">
@@ -1074,8 +1080,7 @@ tbody tr:hover td{background:#fbfdfb}
   <div class="ki-suggestions" id="kiSuggestions"></div>
 
   <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot" id="kiWelcomeMsg">Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.</div>
-  </div>
+</div>
 
   <form class="ki-form" id="kiForm">
     <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
@@ -1116,11 +1121,44 @@ function getFinanceEntries(){
 function saveFinanceEntries(entries){
   localStorage.setItem("haushaltsheld_finance_entries_v2", JSON.stringify(entries));
 }
+function normalizeShoppingEntry(entry){
+  if(!entry || typeof entry !== "object") return null;
+  return {
+    id: entry.id || uid(),
+    title: entry.title || entry.source || "Einkauf",
+    baseGroup: entry.baseGroup || entry.title || entry.source || "Einkauf",
+    date: entry.date || getTodayDate(),
+    purchaseKind: entry.purchaseKind || "Alltag",
+    category: entry.category || "Lebensmittel",
+    priority: entry.priority || "Pflicht",
+    origin: entry.origin || "Beleg-Import",
+    status: entry.status || "offen",
+    quantity: entry.quantity ?? null,
+    unit: entry.unit || "",
+    store: entry.store || entry.title || entry.source || "",
+    price: entry.price ?? entry.amount ?? null,
+    buyer: entry.buyer || entry.person || "Allgemein",
+    note: entry.note || entry.text || "Aus der Datenzentrale übernommen",
+    payment: entry.payment || "",
+    amount: entry.amount ?? entry.price ?? null,
+    person: entry.person || entry.buyer || "Allgemein",
+    occasion: entry.occasion || "",
+    type: entry.type || "Ausgabe",
+    importKey: entry.importKey || "",
+    sourceKey: entry.sourceKey || ""
+  };
+}
 function getShoppingEntries(){
-  return JSON.parse(localStorage.getItem("haushaltsheld_shopping_entries_v2") || "[]");
+  let entries = [];
+  try{
+    entries = JSON.parse(localStorage.getItem("haushaltsheld_einkaufsliste_stabil_v1") || "[]");
+  }catch{
+    entries = [];
+  }
+  return entries.map(normalizeShoppingEntry).filter(Boolean);
 }
 function saveShoppingEntries(entries){
-  localStorage.setItem("haushaltsheld_shopping_entries_v2", JSON.stringify(entries));
+  localStorage.setItem("haushaltsheld_einkaufsliste_stabil_v1", JSON.stringify(entries));
 }
 function getImports(){
   return JSON.parse(localStorage.getItem("haushaltsheld_recent_receipts") || "[]");
@@ -1333,6 +1371,7 @@ function saveAsShopping(){
   const amount = parseFloat(document.getElementById("amountField").value);
   const payment = document.getElementById("paymentField").value;
   const person = document.getElementById("personField").value;
+  const category = document.getElementById("categoryField").value;
   const occasion = document.getElementById("occasionField").value.trim();
   const items = document.getElementById("itemsField").value.trim();
 
@@ -1358,17 +1397,28 @@ function saveAsShopping(){
 
   const shoppingEntries = getShoppingEntries();
   shoppingEntries.push({
-    id:uid(),
+    id: uid(),
+    title: items || source,
+    baseGroup: items || source,
     date,
-    title:source,
-    text:items || pendingScannerTransfer?.note || "Aus der Datenzentrale übernommen",
+    purchaseKind: "Alltag",
+    category: category || "Lebensmittel",
+    priority: "Pflicht",
+    origin: "Beleg-Import",
+    status: "offen",
+    quantity: null,
+    unit: "",
+    store: source,
+    price: amount,
+    buyer: person,
+    note: items || pendingScannerTransfer?.note || "Aus der Datenzentrale übernommen",
     payment,
     amount,
     person,
     occasion,
-    type:"Ausgabe",
+    type: "Ausgabe",
     importKey,
-    sourceKey:sourceKeyToSave
+    sourceKey: sourceKeyToSave
   });
   saveShoppingEntries(shoppingEntries);
 
@@ -1406,9 +1456,9 @@ function renderLatestShopping(){
       <div class="item">
         <div>
           <strong>${escapeHtml(e.title || "Einkauf")}</strong>
-          <p>${new Date(e.date + "T12:00:00").toLocaleDateString("de-DE")} · ${escapeHtml(e.payment || "—")}${e.occasion ? " · " + escapeHtml(e.occasion) : ""}</p>
+          <p>${new Date(e.date + "T12:00:00").toLocaleDateString("de-DE")} · ${escapeHtml(e.store || "Ohne Geschäft")}${e.category ? " · " + escapeHtml(e.category) : ""}</p>
         </div>
-        <div class="amount info">- ${formatEuro(e.amount)}</div>
+        <div class="amount info">${e.price ? formatEuro(e.price) : "—"}</div>
       </div>
     `).join("")
     : `<div class="item"><div><strong>Noch keine Einkäufe</strong><p>Sobald du etwas zur Einkaufsliste speicherst, erscheint es hier.</p></div><div class="amount info">—</div></div>`;
@@ -1457,18 +1507,22 @@ function renderTips(){
   const shoppingEntries = getShoppingEntries();
   const keys = getImportKeys();
 
+  const openShopping = shoppingEntries.filter(e => e.status !== "gekauft").length;
   const tips = [];
   if(keys.length){
     tips.push(["Doppeltzählungsschutz aktiv",`${keys.length} Prüf-Schlüssel verhindern doppelte Übernahmen.`]);
   }
+  if(shoppingEntries.length){
+    tips.push(["Einkaufsliste verbunden",`${shoppingEntries.length} Einträge kommen direkt aus haushaltsheld_einkaufsliste_stabil_v1.`]);
+  }
+  if(openShopping){
+    tips.push(["Offene Einkaufsartikel",`${openShopping} Einträge in deiner Einkaufsliste sind noch offen.`]);
+  }
   if(financeEntries.length && shoppingEntries.length){
-    tips.push(["Beide Datenquellen aktiv",`Finanzen (${financeEntries.length}) und Einkauf (${shoppingEntries.length}) laufen getrennt, aber verknüpft.`]);
+    tips.push(["Beide Datenquellen aktiv",`Finanzen (${financeEntries.length}) und Einkauf (${shoppingEntries.length}) laufen jetzt über die echte Einkaufsdatenbasis.`]);
   }
   if(!financeEntries.length && !shoppingEntries.length){
     tips.push(["Leere Datenbasis",`Es sind noch keine Einträge vorhanden. Starte mit dem Beleg-Import oder speichere hier manuell.`]);
-  }
-  if(financeEntries.some(e => e.occasion)){
-    tips.push(["Feierlichkeiten erkannt",`Anlass-Felder sind bereits vorhanden und können später separat ausgewertet werden.`]);
   }
 
   document.getElementById("tipsList").innerHTML = tips.map(t => `
@@ -1538,8 +1592,7 @@ renderAll();
   };
 
   contextText.textContent = "Ich unterstütze dich hier direkt im Elternbereich.";
-  welcome.textContent = "Hallo 👋 Ich bin deine Haushaltsheld KI. Frag mich einfach, ich unterstütze dich direkt auf dieser Seite.";
-
+  if(welcome) welcome.textContent = "";
   suggestions.innerHTML = pageSettings.suggestions.map(text =>
     '<button class="ki-chip" type="button">'+escapeHtml(text)+'</button>'
   ).join("");
@@ -1606,5 +1659,15 @@ renderAll();
   });
 })();
 </script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  if(window.lucide && lucide.createIcons){
+    lucide.createIcons();
+  }
+});
+</script>
 </body>
+
 </html>

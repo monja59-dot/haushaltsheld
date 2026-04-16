@@ -76,13 +76,14 @@ button,input,select,textarea{font:inherit}
 .btn-soft,.chip-btn{background:linear-gradient(180deg,#f4e7d7 0%, #ead8c3 100%);color:#4d3c2c;box-shadow:0 4px 0 #c7ae91,0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.65)}
 .btn:hover,.btn-soft:hover,.chip-btn:hover{transform:translateY(-2px);filter:brightness(1.02)}
 .btn:active,.btn-soft:active,.chip-btn:active{transform:translateY(0)}
-.top-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,.85fr);gap:18px;align-items:start}
-.left-stack,.right-stack{display:grid;gap:18px}
-.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:22px;box-shadow:var(--shadow-sm);transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
+.top-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,360px);gap:24px;align-items:start}
+.left-stack,.right-stack{display:grid;gap:24px;min-width:0}
+.right-stack{align-self:start;position:sticky;top:20px}
+.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:26px;padding:22px;box-shadow:var(--shadow-sm);transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
 .card h3{font-size:1.08rem;margin-bottom:6px;display:flex;align-items:center;gap:10px}
 .card-sub{color:var(--muted);font-size:.9rem;margin-bottom:14px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.stat{border:1px solid rgba(223,209,188,.9);border-radius:22px;padding:16px;background:#fffdf9}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{border:1px solid rgba(223,209,188,.9);border-radius:20px;padding:14px;background:#fffdf9}
 .stat span{display:block;font-size:.75rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
 .stat strong{display:block;font-size:1.45rem;line-height:1.1}
 .stat small{display:block;color:var(--text2);margin-top:6px}
@@ -115,23 +116,64 @@ button,input,select,textarea{font:inherit}
 .entry strong{font-size:1rem;white-space:nowrap}
 .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .meta{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#faf5ee;border:1px solid var(--line);font-size:.75rem;font-weight:700;color:var(--text2)}
-.small-card{padding:18px;border-radius:24px}
-.side-card-list{display:grid;gap:10px}
+.small-card{padding:18px 18px 19px;border-radius:24px}
+.side-card-list{display:grid;gap:12px}
 .side-line{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(223,209,188,.9)}
 .side-line:last-child{border-bottom:none;padding-bottom:0}
 .side-line span{color:var(--text2)}
 .empty{padding:20px;border:1px dashed var(--line);border-radius:20px;background:#fffdf9;color:var(--muted);text-align:center}
 .print-note{font-size:.82rem;color:var(--muted);margin-top:10px}
 .hidden{display:none!important}
+
+.import-tools{display:grid;gap:14px}
+.import-grid{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:12px}
+.import-actions{display:flex;gap:10px;flex-wrap:wrap}
+.import-preview{display:grid;gap:10px;margin-top:6px}
+.import-preview-item{border:1px solid rgba(223,209,188,.95);border-radius:20px;background:#fff;padding:14px 16px}
+.import-preview-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.import-preview-head strong{font-size:.98rem}
+.import-preview-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.import-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#faf5ee;border:1px solid var(--line);font-size:.75rem;font-weight:700;color:var(--text2)}
+.import-badge.ok{background:var(--accent-soft);border-color:rgba(76,175,80,.24);color:var(--accent-dark)}
+.import-badge.warn{background:var(--yellow-soft);border-color:rgba(181,136,47,.24);color:#8a6b1f}
+.import-badge.bad{background:var(--danger-soft);border-color:rgba(204,102,102,.24);color:#a14d4d}
+.import-note{font-size:.84rem;color:var(--muted);line-height:1.6}
+.import-toggle{display:flex;align-items:center;gap:10px;margin-top:10px}
+.import-toggle input{width:18px;height:18px}
+.import-media-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.import-media-box{border:1px dashed var(--line);border-radius:20px;background:#fffdf9;padding:14px}
+.import-media-box h4{font-size:.95rem;margin-bottom:6px}
+.import-media-box p{font-size:.84rem;color:var(--muted);line-height:1.55}
+.import-thumb-wrap{margin-top:12px;border:1px solid rgba(223,209,188,.9);border-radius:18px;background:#fff;padding:10px;display:none}
+.import-thumb-wrap.active{display:block}
+.import-thumb{display:block;max-width:100%;max-height:260px;object-fit:contain;border-radius:12px;margin:0 auto}
+.import-qr-result{margin-top:12px;padding:12px 14px;border-radius:16px;border:1px solid rgba(223,209,188,.9);background:#fff;display:none}
+.import-qr-result.active{display:block}
+.import-qr-result strong{display:block;margin-bottom:6px}
+.import-qr-result code{display:block;white-space:pre-wrap;word-break:break-word;font-family:inherit;color:var(--text2)}
+.import-capture-inputs{display:none}
+.import-camera-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.import-camera-actions .btn,.import-camera-actions .btn-soft{justify-content:center}
+.import-ocr-result{margin-top:12px;padding:12px 14px;border-radius:16px;border:1px solid rgba(223,209,188,.9);background:#fff;display:none}
+.import-ocr-result.active{display:block}
+.import-ocr-result strong{display:block;margin-bottom:6px}
+.import-ocr-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.import-ocr-canvas{margin-top:12px;border:1px solid rgba(223,209,188,.9);border-radius:18px;background:#fff;padding:10px;display:none}
+.import-ocr-canvas.active{display:block}
+.import-ocr-canvas canvas{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:12px}
+@media (max-width:760px){.import-media-grid{grid-template-columns:1fr}}
+@media (max-width:1020px){.import-grid{grid-template-columns:1fr}}
 @media (max-width:1320px){
-  .stats{grid-template-columns:repeat(2,1fr)}
   .filters-grid{grid-template-columns:repeat(3,1fr)}
   .sub-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:1180px){
+  .top-grid{grid-template-columns:1fr;gap:20px}
+  .right-stack{position:static;top:auto}
 }
 @media (max-width:1020px){
   .app{grid-template-columns:1fr}
   .sidebar{height:auto;position:relative}
-  .top-grid{grid-template-columns:1fr}
   .main{padding:18px}
 }
 @media (max-width:760px){
@@ -163,29 +205,120 @@ button,input,select,textarea{font:inherit}
 .ki-fab img{width:40px;height:40px;object-fit:contain}
 .ki-fab-label{ position:absolute; bottom:8px; right:10px; color:#fff; font-size:.78rem; font-weight:800; line-height:1; }
 .ki-panel{
-  position:fixed; right:22px; bottom:108px; width:min(390px,calc(100vw - 24px));
+  position:fixed; right:22px; bottom:108px; width:min(420px,calc(100vw - 24px));
   max-height:min(78vh,720px); background:#fff; border:1px solid var(--line); border-radius:28px;
   overflow:hidden; box-shadow:0 24px 50px rgba(34,48,38,.18); z-index:9999; display:none;
 }
 .ki-panel.open{display:flex;flex-direction:column}
-.ki-head{ padding:20px 20px 16px; background:linear-gradient(180deg,#fffaf4 0%,#fff 100%); border-bottom:1px solid var(--line); display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
-.ki-head-left{display:flex;gap:12px;align-items:flex-start}
-.ki-head-avatar{ width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%); box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20); display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.ki-head{
+  padding:20px 20px 16px;
+  background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
+  border-bottom:1px solid var(--line);
+  display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+  flex:0 0 auto;
+}
+.ki-head-left{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.ki-head-avatar{
+  width:48px;height:48px;border-radius:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
 .ki-head-avatar img{width:28px;height:28px;object-fit:contain}
 .ki-head h3{font-size:1.2rem;font-weight:800;margin:0 0 4px}
 .ki-head p{font-size:.95rem;color:var(--text2);margin:0}
 .ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
 .ki-chat-link:hover{text-decoration:underline}
-.ki-close{ width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1; }
-.ki-suggestions{ padding:16px 20px 14px;display:flex;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);background:#fff; }
-.ki-chip{ border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:.95rem;font-weight:700;color:var(--text2);cursor:pointer; }
-.ki-chat{ padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px; }
-.ki-msg{ max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap; }
-.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
-.ki-msg.user{ background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%); color:#fff; align-self:flex-end; }
-.ki-form{ padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px; }
-.ki-input{ border:1.5px solid var(--line);background:var(--bg2);border-radius:18px;padding:14px 16px;font-size:.97rem;color:var(--text);outline:none;font-family:inherit; }
-.ki-send{ border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%); color:#fff;border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer; box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20); }
+.ki-close{
+  width:46px;height:46px;border-radius:16px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;flex-shrink:0;color:var(--text2);
+  font-size:1.8rem;line-height:1;
+}
+.ki-suggestions{
+  padding:14px 16px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+  flex:0 0 auto;
+}
+.ki-chip{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:999px;
+  padding:12px 16px;
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--text2);
+  cursor:pointer;
+  text-align:left;
+}
+.ki-chat{
+  padding:14px 16px;
+  overflow:auto;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  flex:1 1 auto;
+  min-height:140px;
+}
+.ki-msg{
+  max-width:100%;
+  padding:14px 16px;
+  border-radius:20px;
+  font-size:.97rem;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+.ki-msg.bot{
+  background:#f7eee0;
+  border:1px solid #ebd3b5;
+  color:#5f4332;
+  align-self:flex-start;
+}
+.ki-msg.user{
+  max-width:84%;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  align-self:flex-end;
+}
+.ki-form{
+  padding:14px 16px 16px;
+  border-top:1px solid var(--line);
+  background:#fff;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  flex:0 0 auto;
+}
+.ki-input{
+  border:1.5px solid var(--line);
+  background:var(--bg2);
+  border-radius:18px;
+  padding:14px 16px;
+  font-size:.97rem;
+  color:var(--text);
+  outline:none;
+  font-family:inherit;
+  min-width:0;
+}
+.ki-send{
+  border:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
+  color:#fff;
+  border-radius:18px;
+  padding:0 18px;
+  font-size:.95rem;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);
+}
+@media(max-width:700px){
+  .ki-panel{right:10px;left:10px;bottom:94px;width:auto}
+  .ki-form{grid-template-columns:1fr auto}
+}
 .quick-manage{display:grid;grid-template-columns:1.1fr .9fr auto;gap:10px;margin-top:14px}
 .quick-manage .field{gap:6px}
 .quick-custom-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
@@ -212,6 +345,9 @@ button,input,select,textarea{font:inherit}
   .sidebar,.bubble-actions,.filter-actions,.form-actions,.quick-add,.mode-badge,.btn,.btn-soft,.chip-btn,.nav-drop-head,.logout-btn,.mode-switch,.ki-fab,.ki-panel{display:none!important}
   .app{display:block}.main{padding:0}.card,.acc-item,.stat,.entry{box-shadow:none!important;border-color:#ccc!important}.top-grid{display:block}
 }
+
+
+
 </style>
 </head>
 <body>
@@ -298,6 +434,10 @@ button,input,select,textarea{font:inherit}
             <button class="quick-pill" data-open="mobility">+ Tanken</button>
             <button class="quick-pill" data-open="pets">+ Haustier</button>
             <button class="quick-pill" data-open="fixed">+ Fixkosten</button>
+            <button class="quick-pill" data-open="health">+ Gesundheit</button>
+            <button class="quick-pill" data-open="children">+ Kinder</button>
+            <button class="quick-pill" data-open="saving">+ Sparen</button>
+            <button class="quick-pill" data-open="other">+ Sonstiges</button>
           </div>
           <div class="quick-manage">
             <div class="field"><label for="quickLabel">Neuer Schnellzugriff</label><input id="quickLabel" type="text" placeholder="z. B. Tierarzt Bella"></div>
@@ -347,6 +487,79 @@ button,input,select,textarea{font:inherit}
             <button class="btn-soft" type="button" id="resetFilters">Filter zurücksetzen</button>
           </div>
           <div class="print-note">Hinweis: Im Ausdruck werden Sidebar, Buttons und geschlossene Steuerungselemente ausgeblendet.</div>
+        </div>
+
+
+        <div class="card">
+          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M8 13h8"></path><path d="M8 17h5"></path></svg></span>Beleg-Import & automatische Zuordnung</h3>
+          <p class="card-sub">Füge Kontoauszüge, Rechnungsdaten oder Kassenbon-Text direkt ein. Die Seite schlägt automatisch Kategorie, Unterkategorie, Konto und Typ vor — ohne das Layout zu verändern.</p>
+          <div class="import-tools">
+            <div class="import-grid">
+              <div class="field" style="grid-column:span 2"><label for="importText">Text einfügen</label><textarea id="importText" placeholder="z. B. 12.04.2026 REWE 48,90
+13.04.2026 Netflix 12,99
+14.04.2026 Tankstelle 65,20"></textarea></div>
+              <div class="field"><label for="importFile">Datei laden</label><input id="importFile" type="file" accept=".csv,.txt,.tsv,.json,.ofx,.qif"></div>
+            </div>
+            <div class="import-grid">
+              <div class="field"><label for="importSourceType">Importquelle</label><select id="importSourceType"><option value="scanner">Scanner / Beleg</option><option value="card_import">Kartenimport</option><option value="bank_api">Bank-API / Kontoauszug</option><option value="manual">Manuell übernommen</option></select></div>
+              <div class="field"><label for="importDefaultPerson">Standard-Zuordnung</label><select id="importDefaultPerson"><option value="">Automatisch</option><option value="Mama">Mama</option><option value="Papa">Papa</option><option value="Kind">Kind</option></select></div>
+              <div class="field"><label for="importDefaultAccount">Standard-Konto / Karte</label><select id="importDefaultAccount"><option value="">Automatisch</option></select></div>
+            </div>
+            <div class="import-actions">
+              <button class="btn" type="button" id="analyzeImportBtn">Import prüfen</button>
+              <button class="btn-soft" type="button" id="importSafeBtn">Nur sichere Zuordnungen</button>
+              <button class="btn-soft" type="button" id="importAllBtn">Alle importieren</button>
+              <button class="btn-soft" type="button" id="clearImportBtn">Import leeren</button>
+            </div>
+            <div class="import-media-grid">
+              <div class="import-media-box">
+                <h4>Foto-Upload für Kassenzettel & Rechnungen</h4>
+                <p>Du kannst jetzt Belegfotos direkt mit der Kamera aufnehmen oder ein vorhandenes Bild auswählen. Das Bild wird hier als Belegvorschau geladen und kann zusammen mit Text- oder QR-Daten weiterverarbeitet werden.</p>
+                <div class="import-camera-actions">
+                  <label class="btn" for="receiptPhotoCamera">📸 Foto aufnehmen</label>
+                  <label class="btn-soft" for="receiptPhotoGallery">📁 Bild auswählen</label>
+                </div>
+                <div class="import-capture-inputs">
+                  <input id="receiptPhotoCamera" type="file" accept="image/*" capture="environment">
+                  <input id="receiptPhotoGallery" type="file" accept="image/*">
+                </div>
+                <div id="receiptPhotoPreview" class="import-thumb-wrap">
+                  <img id="receiptPhotoThumb" class="import-thumb" alt="Belegvorschau">
+                </div>
+              </div>
+              <div class="import-media-box">
+                <h4>QR-Code aus Rechnung / Beleg lesen</h4>
+                <p>Wenn auf dem Bild ein QR-Code vorhanden ist, kann die Seite ihn direkt auslesen und den Inhalt in den Import übernehmen. Das klappt in modernen Browsern besonders gut.</p>
+                <div class="import-actions" style="margin-top:12px">
+                  <button class="btn-soft" type="button" id="scanQrBtn">QR aus Foto lesen</button>
+                  <button class="btn-soft" type="button" id="useQrTextBtn">QR-Inhalt übernehmen</button>
+                </div>
+                <div id="qrScanResult" class="import-qr-result">
+                  <strong>QR-Ergebnis</strong>
+                  <code id="qrScanText">Noch kein QR-Code gelesen.</code>
+                </div>
+              </div>
+
+              <div class="import-media-box">
+                <h4>OCR Light & smarte Zuordnung</h4>
+                <p>Ohne echte Volltext-OCR wertet die Seite jetzt deinen Importtext, QR-Inhalte, Dateinamen und typische Belegbegriffe intelligenter aus. Betrag, Datum, Händler und Kategorie werden dadurch deutlich besser vorgeschlagen.</p>
+                <div class="import-actions" style="margin-top:12px">
+                  <button class="btn-soft" type="button" id="prepareOcrBtn">Foto für OCR vorbereiten</button>
+                  <button class="btn-soft" type="button" id="useOcrPrepBtn">OCR-Hinweis übernehmen</button>
+                  <button class="btn" type="button" id="ocrLightAnalyzeBtn">OCR Light auswerten</button>
+                </div>
+                <div id="ocrPrepResult" class="import-ocr-result">
+                  <strong>OCR-Status</strong>
+                  <div id="ocrPrepText">Noch keine OCR-Vorbereitung durchgeführt.</div>
+                  <div id="ocrPrepMeta" class="import-ocr-meta"></div>
+                </div>
+                <div id="ocrPreviewWrap" class="import-ocr-canvas">
+                  <canvas id="ocrPreviewCanvas"></canvas>
+                </div>
+              </div>
+            </div>
+            <div id="importPreview" class="import-preview"><div class="empty">Noch keine Importdaten geprüft.</div></div>
+          </div>
         </div>
 
         <div class="accordion" id="financeAccordion"></div>
@@ -435,18 +648,17 @@ button,input,select,textarea{font:inherit}
   </div>
   <div class="ki-suggestions" id="kiSuggestions"></div>
   <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot">Hallo 👋 Ich bin deine HaushaltsHeld-Schnecke. Ich helfe dir hier direkt bei Einnahmen, Ausgaben, Kategorien, Budgets und wiederkehrenden Kosten.</div>
-  </div>
+</div>
   <form class="ki-form" id="kiForm">
     <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
     <button class="ki-send" type="submit">Senden</button>
   </form>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const STORAGE_KEY = 'hh_finance_entries_v8';
 const BUBBLE_KEY = 'hh_finance_bubble_hidden';
+const LEARNING_RULES_KEY = 'hh_finance_learning_rules_v1';
 const BANK_SOURCES_KEY = 'hh_finance_bank_sources_v1';
 const DEFAULT_BANK_SOURCES = [
   {id:'source_family_giro', label:'Familienkonto', type:'Gemeinschaftskonto', owner:'Familie', bankName:'Hausbank', lastDigits:'', connectionStatus:'geplant'},
@@ -607,44 +819,768 @@ const budgetList = document.getElementById('budgetList');
 const recurringList = document.getElementById('recurringList');
 const reminderList = document.getElementById('reminderList');
 
+const IMPORT_STATE = { rawText:'', items:[] };
+const IMPORT_MEDIA_STATE = { photoName:'', photoDataUrl:'', qrText:'', ocrPrepared:false, ocrDataUrl:'', ocrSummary:'', ocrMeta:[] };
+
+function getImportAccountOptions(){
+  const select = document.getElementById('importDefaultAccount');
+  if(!select) return;
+  select.innerHTML = '<option value="">Automatisch</option>' + getBankSources().map(item => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.label)} · ${escapeHtml(item.type)}</option>`).join('');
+}
+
+function normalizeAmount(value){
+  const raw = String(value || '').trim();
+  if(!raw) return 0;
+  let cleaned = raw.replace(/[^\d,.-]/g,'');
+  if(cleaned.includes(',') && cleaned.includes('.')){
+    if(cleaned.lastIndexOf(',') > cleaned.lastIndexOf('.')) cleaned = cleaned.replace(/\./g,'').replace(',', '.');
+    else cleaned = cleaned.replace(/,/g,'');
+  }else if(cleaned.includes(',')) cleaned = cleaned.replace(',', '.');
+  const num = Number(cleaned);
+  return Number.isFinite(num) ? Math.abs(num) : 0;
+}
+
+function normalizeDateValue(value){
+  const raw = String(value || '').trim();
+  if(!raw) return today();
+  if(/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+  const m = raw.match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{2,4})$/);
+  if(m){
+    const year = m[3].length === 2 ? `20${m[3]}` : m[3];
+    return `${year}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`;
+  }
+  const d = new Date(raw);
+  return Number.isNaN(d.getTime()) ? today() : d.toISOString().slice(0,10);
+}
+
+function detectTypeByCategoryId(id){
+  const cat = CATEGORIES.find(item => item.id === id);
+  return cat ? cat.type : 'expense';
+}
+
+
+function normalizeLearningKey(text){
+  return String(text || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9&+\s]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+function getLearningRules(){
+  return readJSON(LEARNING_RULES_KEY, []);
+}
+
+function setLearningRules(rules){
+  writeJSON(LEARNING_RULES_KEY, rules);
+}
+
+function getLearningCandidates(text){
+  const hay = normalizeLearningKey(text);
+  if(!hay) return [];
+  const candidates = new Set();
+  candidates.add(hay);
+  const merchant = normalizeLearningKey(extractMerchantName(text));
+  if(merchant) candidates.add(merchant);
+
+  const phrasePatterns = [
+    /(aldi|lidl|rewe|edeka|netto|penny|kaufland|dm|rossmann|ikea|amazon|paypal|netflix|spotify|disney\+|apotheke|sparkasse|volksbank|ing|dhl|shell|aral|esso|jet|h&m|c&a|deichmann|fressnapf|tierarzt|bahn|db|uber|taxi)/i
+  ];
+  phrasePatterns.forEach(pattern => {
+    const match = String(text || '').match(pattern);
+    if(match && match[1]) candidates.add(normalizeLearningKey(match[1]));
+  });
+
+  hay.split(' ').filter(part => part.length >= 4).forEach(part => candidates.add(part));
+  return Array.from(candidates).filter(Boolean);
+}
+
+function findLearningMatch(text){
+  const rules = getLearningRules();
+  if(!rules.length) return null;
+  const candidates = getLearningCandidates(text);
+  let best = null;
+
+  for(const rule of rules){
+    if(!rule || !rule.key) continue;
+    const exact = candidates.includes(rule.key);
+    const partial = candidates.some(candidate => candidate.includes(rule.key) || rule.key.includes(candidate));
+    if(!exact && !partial) continue;
+
+    let score = exact ? 0.72 : 0.56;
+    score += Math.min(0.22, (Number(rule.seenCount || 1) - 1) * 0.04);
+    if(rule.accountId) score += 0.03;
+    if(rule.person) score += 0.03;
+
+    if(!best || score > best.confidence){
+      best = {
+        key: rule.key,
+        title: rule.title || '',
+        merchant: rule.merchant || '',
+        mainCategory: rule.mainCategory || '',
+        subCategory: rule.subCategory || '',
+        type: rule.type || '',
+        person: rule.person || '',
+        accountId: rule.accountId || '',
+        paymentMethod: rule.paymentMethod || '',
+        recurring: rule.recurring || '',
+        interval: rule.interval || '',
+        confidence: Math.min(0.96, score),
+        seenCount: Number(rule.seenCount || 1),
+        reason: exact ? 'Gelernte Zuordnung erkannt' : 'Ähnliche gelernte Zuordnung erkannt'
+      };
+    }
+  }
+  return best;
+}
+
+function rememberLearningFromEntry(entry, sourceText=''){
+  if(!entry) return;
+  const rawBase = [entry.title || '', sourceText || '', entry.notes || ''].join(' ').trim();
+  const merchant = extractMerchantName(rawBase);
+  const key = normalizeLearningKey(merchant || entry.title || '');
+  if(!key) return;
+
+  const rules = getLearningRules();
+  const existingIndex = rules.findIndex(rule => rule && rule.key === key);
+  const payload = {
+    key,
+    merchant: merchant || entry.title || '',
+    title: entry.title || '',
+    mainCategory: entry.mainCategory || '',
+    subCategory: entry.subCategory || '',
+    type: entry.type || '',
+    person: entry.person || '',
+    accountId: entry.accountId || '',
+    paymentMethod: entry.paymentMethod || '',
+    recurring: entry.recurring || '',
+    interval: entry.interval || '',
+    seenCount: 1,
+    lastUsed: new Date().toISOString()
+  };
+
+  if(existingIndex >= 0){
+    const current = rules[existingIndex] || {};
+    rules[existingIndex] = {
+      ...current,
+      ...payload,
+      seenCount: Number(current.seenCount || 0) + 1
+    };
+  }else{
+    rules.unshift(payload);
+  }
+
+  setLearningRules(
+    rules
+      .filter(rule => rule && rule.key)
+      .sort((a,b) => Number(b.seenCount || 0) - Number(a.seenCount || 0))
+      .slice(0, 250)
+  );
+}
+
+function guessCategoryFromText(text){
+  const hay = String(text || '').toLowerCase();
+  const rules = [
+    {id:'fixed', subs:['Miete / Kredit','Internet / Handy','Versicherungen','Abos'], keys:['miete','strom','gas','wasser','versicherung','internet','handy','abo','netflix','spotify','prime']},
+    {id:'variable', subs:['Einkäufe','Freizeit','Shopping'], keys:['rewe','aldi','lidl','edeka','rossmann','dm','kino','restaurant','cafe','shopping','amazon','online-shop']},
+    {id:'mobility', subs:['Tanken','Parken','Werkstatt & Auto','Bahnfahrten'], keys:['shell','aral','esso','tank','bahn','db ','uber','taxi','parken','werkstatt']},
+    {id:'household', subs:['Haushaltsartikel','Reinigung','Sonstiges'], keys:['putz','haushalt','ikea','möbel','kueche','küche']},
+    {id:'health', subs:['Medikamente','Arztkosten','Sonstiges'], keys:['apotheke','arzt','zahnarzt','medikament','rezept','klinik']},
+    {id:'pets', subs:['Futter','Tierarzt','Zubehör'], keys:['tierarzt','fressnapf','haustier','katze','hund','futter']},
+    {id:'children', subs:['Schule','Hobbys','Kleidung'], keys:['schule','kita','verein','spielzeug','kinder','klassenfahrt']},
+    {id:'saving', subs:['Rücklagen (Notgroschen)','Sparziele (Urlaub, Wünsche)','Investitionen'], keys:['spar','rücklage','ruecklage','urlaubskasse','investment']},
+    {id:'income', subs:['Gehalt','Kindergeld','Nebenjob','Sonstiges'], keys:['gehalt','lohn','kindergeld','gutschrift','erstattung','zahlungseingang']},
+    {id:'other', subs:['Ungeplante Ausgaben','Einmalige Kosten'], keys:['gebühr','gebuehr','sonstiges','notfall']}
+  ];
+  for(const rule of rules){
+    if(rule.keys.some(key => hay.includes(key))) return {categoryId:rule.id, subCategory:rule.subs[0], confidence:0.9};
+  }
+  return {categoryId:'other', subCategory:'Ungeplante Ausgaben', confidence:0.35};
+}
+
+function guessPersonFromText(text, fallback=''){
+  if(fallback) return fallback;
+  const hay = String(text || '').toLowerCase();
+  if(hay.includes('mama')) return 'Mama';
+  if(hay.includes('papa')) return 'Papa';
+  if(hay.includes('kind')) return 'Kind';
+  return '';
+}
+
+function guessAccountFromText(text, fallback=''){
+  if(fallback) return fallback;
+  const hay = String(text || '').toLowerCase();
+  return getBankSources().find(item => {
+    return [item.label,item.type,item.owner,item.bankName,item.lastDigits].filter(Boolean).some(part => hay.includes(String(part).toLowerCase()));
+  })?.id || '';
+}
+
+function parseDelimitedRows(text, delimiter){
+  const lines = String(text || '').split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+  return lines.map(line => line.split(delimiter).map(part => part.trim())).filter(parts => parts.length >= 2);
+}
+
+function parseImportText(rawText){
+  const raw = String(rawText || '').trim();
+  if(!raw) return [];
+  try{
+    if(raw.startsWith('[')){
+      const arr = JSON.parse(raw);
+      if(Array.isArray(arr)) return arr.map(item => ({
+        date: item.date || item.bookingDate || item.vorgangsdatum || today(),
+        title: item.title || item.text || item.beschreibung || item.payee || 'Import',
+        amount: item.amount || item.betrag || item.value || 0,
+        notes: item.notes || item.notiz || '',
+        person: item.person || '',
+        accountId: item.accountId || ''
+      }));
+    }
+  }catch(err){}
+
+  const delimiter = raw.includes('	') ? '	' : (raw.includes(';') ? ';' : ',');
+  const rows = parseDelimitedRows(raw, delimiter);
+  if(rows.length >= 1 && rows.some(parts => parts.length >= 3)){
+    const headerLike = rows[0].join(' ').toLowerCase();
+    const hasHeader = /date|datum|betrag|amount|title|text|beschreibung/.test(headerLike);
+    const body = hasHeader ? rows.slice(1) : rows;
+    return body.map(parts => ({
+      date: parts[0] || today(),
+      title: parts[1] || 'Import',
+      amount: parts[2] || 0,
+      notes: parts.slice(3).join(' | ')
+    })).filter(item => item.title || item.amount);
+  }
+
+  return raw.split(/\r?\n/).map(line => line.trim()).filter(Boolean).map(line => {
+    const dateMatch = line.match(/(\d{1,2}[.\/-]\d{1,2}[.\/-]\d{2,4}|\d{4}-\d{2}-\d{2})/);
+    const amountMatch = line.match(/(-?\d+[\.,]\d{2})\s*(€|eur)?/i);
+    let title = line;
+    if(dateMatch) title = title.replace(dateMatch[0], '').trim();
+    if(amountMatch) title = title.replace(amountMatch[0], '').trim();
+    title = title.replace(/^[-–—:;]+|[-–—:;]+$/g,'').trim();
+    return {
+      date: dateMatch ? dateMatch[0] : today(),
+      title: title || 'Import',
+      amount: amountMatch ? amountMatch[1] : 0,
+      notes: line
+    };
+  });
+}
+
+
+function extractMerchantName(text){
+  const hay = String(text || '').replace(/\s+/g,' ').trim();
+  const patterns = [
+    /(aldi|lidl|rewe|edeka|netto|penny|kaufland|dm|rossmann|ikea|amazon|paypal|netflix|spotify|disney\+|apotheke|sparkasse|volksbank|ing|dhl|shell|aral|esso|jet|h&m|c&a|deichmann|fressnapf|tierarzt|bahn|db|uber|taxi)/i
+  ];
+  for(const pattern of patterns){
+    const match = hay.match(pattern);
+    if(match) return match[1];
+  }
+  const stripped = hay
+    .replace(/[\d.,]+\s*(€|eur)?/gi,' ')
+    .replace(/\d{1,2}[./-]\d{1,2}[./-]\d{2,4}/g,' ')
+    .trim();
+  return stripped.split(/\s+/).slice(0,4).join(' ') || '';
+}
+
+function extractBestAmount(text){
+  const matches = [...String(text || '').matchAll(/-?\d{1,3}(?:[.\s]\d{3})*(?:,\d{2})|-?\d+(?:[.,]\d{2})/g)]
+    .map(match => normalizeAmount(match[0]))
+    .filter(val => !Number.isNaN(val) && val !== 0);
+  if(!matches.length) return 0;
+  const positive = matches.filter(val => val > 0);
+  return (positive.length ? positive : matches).sort((a,b) => b - a)[0];
+}
+
+function extractBestDate(text){
+  const hay = String(text || '');
+  const iso = hay.match(/\b\d{4}-\d{2}-\d{2}\b/);
+  if(iso) return normalizeDateValue(iso[0]);
+  const local = hay.match(/\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b/);
+  if(local) return normalizeDateValue(local[0]);
+  return today();
+}
+
+function deriveOcrLightData(row, sourceText){
+  const text = String(sourceText || '').trim();
+  const merchant = extractMerchantName(text);
+  const amount = row.amount ? normalizeAmount(row.amount) : extractBestAmount(text);
+  const date = row.date ? normalizeDateValue(row.date) : extractBestDate(text);
+  const guess = guessCategoryFromText(text);
+  const debtWords = /(kredit|hypothek|rate|ratenzahlung|darlehen|restschuld|dispo)/i.test(text);
+  const recurringWords = /(abo|monatlich|jährlich|miete|vertrag|netflix|spotify|disney\+|versicherung|rate)/i.test(text);
+  const healthWords = /(apotheke|arzt|zahnarzt|medikament|rezept|praxis|gesundheit)/i.test(text);
+  const shoppingWords = /(shop|amazon|h&m|c&a|deichmann|zalando)/i.test(text);
+  const foodWords = /(aldi|lidl|rewe|edeka|netto|penny|kaufland|supermarkt)/i.test(text);
+
+  let categoryId = guess.categoryId;
+  let subCategory = row.subCategory || guess.subCategory;
+  let reason = 'Textmuster erkannt';
+
+  if(debtWords){
+    categoryId = 'fixed';
+    subCategory = 'Miete / Kredit';
+    reason = 'Kredit-/Ratenbegriffe erkannt';
+  }else if(healthWords){
+    categoryId = 'health';
+    subCategory = 'Arztkosten';
+    reason = 'Gesundheitsbegriffe erkannt';
+  }else if(foodWords){
+    categoryId = 'variable';
+    subCategory = 'Einkäufe';
+    reason = 'Supermarkt erkannt';
+  }else if(shoppingWords){
+    categoryId = 'variable';
+    subCategory = 'Shopping';
+    reason = 'Shopping-Begriffe erkannt';
+  }else if(/(shell|aral|esso|jet|tank)/i.test(text)){
+    categoryId = 'mobility';
+    subCategory = 'Tanken';
+    reason = 'Tankstelle erkannt';
+  }else if(/(tierarzt|fressnapf|haustier|katze|hund)/i.test(text)){
+    categoryId = 'pets';
+    subCategory = /(tierarzt)/i.test(text) ? 'Tierarzt' : 'Futter';
+    reason = 'Haustier-Begriffe erkannt';
+  }
+
+  let confidence = 0.45;
+  if(merchant) confidence += 0.18;
+  if(amount > 0) confidence += 0.18;
+  if(date) confidence += 0.08;
+  if(reason) confidence += 0.10;
+  if(row.title) confidence += 0.06;
+  confidence = Math.max(0.25, Math.min(0.98, confidence));
+
+  const suggestedTitle = row.title && row.title !== 'Import' ? row.title : (merchant || 'Import');
+  return {
+    merchant,
+    amount: amount || 0,
+    date,
+    categoryId,
+    subCategory,
+    confidence,
+    reason,
+    recurring: recurringWords ? 'ja' : (row.recurring || 'nein'),
+    interval: recurringWords ? 'monatlich' : (row.interval || ''),
+    title: suggestedTitle
+  };
+}
+
+function buildOcrLightSourceText(baseText=''){
+  return [
+    baseText,
+    IMPORT_MEDIA_STATE.qrText ? `QR ${IMPORT_MEDIA_STATE.qrText}` : '',
+    IMPORT_MEDIA_STATE.photoName ? `Datei ${IMPORT_MEDIA_STATE.photoName}` : '',
+    IMPORT_MEDIA_STATE.ocrPrepared ? `OCR vorbereitet ${(IMPORT_MEDIA_STATE.ocrMeta || []).join(' ')}` : ''
+  ].filter(Boolean).join(' | ');
+}
+
+function runOcrLightAnalysis(){
+  const textArea = document.getElementById('importText');
+  if(!textArea) return;
+  const raw = buildOcrLightSourceText(textArea.value.trim());
+  if(!raw){
+    alert('Bitte zuerst Text, Datei, QR oder ein Belegfoto laden.');
+    return;
+  }
+  analyzeImportInput(raw);
+  updateOcrPreparation('OCR Light hat Importtext, QR-Inhalt und Beleg-Hinweise ausgewertet. Die Vorschläge unten wurden aktualisiert.', [
+    IMPORT_MEDIA_STATE.photoName ? `Foto: ${IMPORT_MEDIA_STATE.photoName}` : 'ohne Foto',
+    IMPORT_MEDIA_STATE.qrText ? 'QR genutzt' : 'ohne QR',
+    'smarte Zuordnung aktiv'
+  ], true);
+}
+
+function buildImportedPreviewItems(rows){
+  const defaultPerson = document.getElementById('importDefaultPerson')?.value || '';
+  const defaultAccount = document.getElementById('importDefaultAccount')?.value || '';
+  const importSource = document.getElementById('importSourceType')?.value || 'scanner';
+  return rows.map((row, idx) => {
+    const photoNote = IMPORT_MEDIA_STATE.photoName ? ` Foto: ${IMPORT_MEDIA_STATE.photoName}` : '';
+    const qrNote = IMPORT_MEDIA_STATE.qrText ? ` QR: ${IMPORT_MEDIA_STATE.qrText}` : '';
+    const ocrNote = IMPORT_MEDIA_STATE.ocrPrepared ? ` OCR vorbereitet: ${(IMPORT_MEDIA_STATE.ocrMeta || []).join(', ')}` : '';
+    const sourceText = `${row.title || ''} ${row.notes || ''}${photoNote}${qrNote}${ocrNote}`.trim();
+
+    const learning = findLearningMatch(sourceText);
+    const smart = deriveOcrLightData(row, sourceText);
+    const accountId = learning?.accountId || guessAccountFromText(sourceText, row.accountId || defaultAccount);
+    const account = getBankSourceById(accountId);
+    const categoryId = learning?.mainCategory
+      ? (CATEGORIES.find(cat => cat.title === learning.mainCategory)?.id || smart.categoryId)
+      : smart.categoryId;
+    const amount = smart.amount || normalizeAmount(row.amount);
+    const confidence = Math.max(
+      learning?.confidence || 0,
+      smart.confidence || 0,
+      amount > 0 ? 0.68 : 0.25,
+      smart.title ? 0.58 : 0.25
+    );
+
+    const mainCategory = learning?.mainCategory || CATEGORIES.find(cat => cat.id === categoryId)?.title || 'Sonstiges';
+    const subCategory = learning?.subCategory || smart.subCategory || '—';
+    const title = row.title && row.title !== 'Import' ? row.title : (learning?.title || smart.title || 'Import');
+    const person = row.person || learning?.person || guessPersonFromText(sourceText, defaultPerson);
+    const recurring = learning?.recurring || smart.recurring || 'nein';
+    const interval = learning?.interval || smart.interval || '';
+    const paymentMethod = row.paymentMethod || learning?.paymentMethod || '';
+
+    const reasonParts = [];
+    if(learning?.reason) reasonParts.push(`${learning.reason} (${learning.seenCount}× bestätigt)`);
+    if(smart.reason) reasonParts.push(`OCR Light: ${smart.reason}`);
+
+    return {
+      id:`import_${idx}_${Math.random().toString(36).slice(2,8)}`,
+      selected: confidence >= 0.6,
+      confidence,
+      mainCategory,
+      subCategory,
+      categoryId,
+      type: learning?.type || detectTypeByCategoryId(categoryId),
+      title,
+      amount,
+      person,
+      paymentMethod,
+      accountId,
+      accountLabel: account ? account.label : '',
+      accountType: account ? account.type : '',
+      accountOwner: account ? account.owner : '',
+      bankName: account ? account.bankName : '',
+      cardName: account && /karte/i.test(account.type) ? account.label : '',
+      entrySource: importSource,
+      externalReference: row.externalReference || '',
+      recurring,
+      interval,
+      date: smart.date || normalizeDateValue(row.date),
+      dueDate: '', goalDate:'', nextAppointment:'', kilometers:'', liters:'', pricePerLiter:'', consumption:'', vet:'', treatment:'',
+      notes: [row.notes || '', ...reasonParts, sourceText].filter(Boolean).join(' | '),
+      createdAt: new Date().toISOString()
+    };
+  }).filter(item => item.title || item.amount);
+}
+
+function renderImportPreview(){
+  const box = document.getElementById('importPreview');
+  if(!box) return;
+  const items = IMPORT_STATE.items || [];
+  if(!items.length){
+    box.innerHTML = '<div class="empty">Noch keine Importdaten geprüft.</div>';
+    return;
+  }
+  box.innerHTML = items.map(item => {
+    const level = item.confidence >= 0.8 ? 'ok' : (item.confidence >= 0.6 ? 'warn' : 'bad');
+    const label = item.confidence >= 0.8 ? 'sicher' : (item.confidence >= 0.6 ? 'prüfen' : 'unsicher');
+    return `<article class="import-preview-item">
+      <div class="import-toggle"><input type="checkbox" data-import-toggle="${escapeHtml(item.id)}" ${item.selected ? 'checked' : ''}><strong>${escapeHtml(item.title)}</strong><span class="import-badge ${level}">${label}</span></div>
+      <div class="import-preview-head"><div><div class="import-preview-meta">
+        <span class="import-badge">${escapeHtml(item.mainCategory)} · ${escapeHtml(item.subCategory || '—')}</span>
+        <span class="import-badge">${escapeHtml(item.person || 'ohne Zuordnung')}</span>
+        <span class="import-badge">${escapeHtml(item.accountLabel || 'ohne Konto')}</span>
+        <span class="import-badge">${formatDate(item.date)}</span>
+        ${item.notes ? `<p style="color:var(--text2);margin-top:10px">${escapeHtml(item.notes)}</p>` : ''}
+        ${item.notes && item.notes.includes('Gelernte Zuordnung') ? '<p class="import-note" style="margin-top:8px">Die Seite hat hier aus früheren Einträgen gelernt.</p>' : ''}
+        ${item.confidence >= 0.8 ? '<p class="import-note" style="margin-top:8px">OCR Light hat hier eine starke Zuordnung erkannt.</p>' : ''}
+      </div><strong>${euro(item.amount)}</strong></div>
+    </article>`;
+  }).join('');
+  box.querySelectorAll('[data-import-toggle]').forEach(input => input.addEventListener('change', () => {
+    const item = IMPORT_STATE.items.find(entry => entry.id === input.getAttribute('data-import-toggle'));
+    if(item) item.selected = input.checked;
+  }));
+}
+
+function analyzeImportInput(rawText){
+  IMPORT_STATE.rawText = rawText;
+  IMPORT_STATE.items = buildImportedPreviewItems(parseImportText(rawText));
+  renderImportPreview();
+}
+
+function appendImportedEntries(mode='all'){
+  const items = (IMPORT_STATE.items || []).filter(item => item.selected && (mode === 'all' || item.confidence >= 0.8));
+  if(!items.length){
+    alert(mode === 'all' ? 'Keine markierten Importdaten vorhanden.' : 'Keine sicheren Zuordnungen gefunden.');
+    return;
+  }
+  const entries = getEntries();
+  items.slice().reverse().forEach(item => {
+    const importedEntry = {...item, id:uid()};
+    entries.unshift(importedEntry);
+    rememberLearningFromEntry(importedEntry, importedEntry.notes || importedEntry.title || '');
+  });
+  setEntries(entries);
+  renderAll();
+  renderBankingUI();
+  alert(`${items.length} Einträge importiert.`);
+}
+
+
+function updateReceiptPreview(){
+  const wrap = document.getElementById('receiptPhotoPreview');
+  const img = document.getElementById('receiptPhotoThumb');
+  if(!wrap || !img) return;
+  if(IMPORT_MEDIA_STATE.photoDataUrl){
+    img.src = IMPORT_MEDIA_STATE.photoDataUrl;
+    wrap.classList.add('active');
+  }else{
+    img.removeAttribute('src');
+    wrap.classList.remove('active');
+  }
+}
+
+function updateQrResult(message, active = true){
+  const box = document.getElementById('qrScanResult');
+  const text = document.getElementById('qrScanText');
+  if(!box || !text) return;
+  text.textContent = message || 'Noch kein QR-Code gelesen.';
+  box.classList.toggle('active', !!active);
+}
+
+function resetOcrPreparation(){
+  IMPORT_MEDIA_STATE.ocrPrepared = false;
+  IMPORT_MEDIA_STATE.ocrDataUrl = '';
+  IMPORT_MEDIA_STATE.ocrSummary = '';
+  IMPORT_MEDIA_STATE.ocrMeta = [];
+  const box = document.getElementById('ocrPrepResult');
+  const text = document.getElementById('ocrPrepText');
+  const meta = document.getElementById('ocrPrepMeta');
+  const wrap = document.getElementById('ocrPreviewWrap');
+  const canvas = document.getElementById('ocrPreviewCanvas');
+  if(text) text.textContent = 'Noch keine OCR-Vorbereitung durchgeführt.';
+  if(meta) meta.innerHTML = '';
+  if(box) box.classList.remove('active');
+  if(wrap) wrap.classList.remove('active');
+  if(canvas){
+    const ctx = canvas.getContext('2d');
+    ctx && ctx.clearRect(0,0,canvas.width || 0, canvas.height || 0);
+  }
+}
+
+function updateOcrPreparation(summary, metaItems = [], active = true){
+  const box = document.getElementById('ocrPrepResult');
+  const text = document.getElementById('ocrPrepText');
+  const meta = document.getElementById('ocrPrepMeta');
+  if(text) text.textContent = summary || 'Noch keine OCR-Vorbereitung durchgeführt.';
+  if(meta) meta.innerHTML = (metaItems || []).map(item => `<span class="import-badge">${escapeHtml(item)}</span>`).join('');
+  if(box) box.classList.toggle('active', !!active);
+}
+
+async function loadReceiptPhoto(file){
+  if(!file) return;
+  const reader = new FileReader();
+  const dataUrl = await new Promise((resolve, reject) => {
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(reader.error || new Error('Foto konnte nicht gelesen werden.'));
+    reader.readAsDataURL(file);
+  }).catch(() => '');
+  if(!dataUrl) return;
+  IMPORT_MEDIA_STATE.photoName = file.name || 'belegfoto';
+  IMPORT_MEDIA_STATE.photoDataUrl = dataUrl;
+  resetOcrPreparation();
+  updateReceiptPreview();
+  updateQrResult('Foto geladen. Du kannst jetzt den QR-Code lesen oder den Beleg zusammen mit Textdaten importieren.', true);
+}
+
+async function scanQrFromCurrentPhoto(){
+  if(!IMPORT_MEDIA_STATE.photoDataUrl){
+    updateQrResult('Bitte zuerst ein Belegfoto auswählen.', true);
+    return;
+  }
+  if(!('BarcodeDetector' in window)){
+    updateQrResult('Dieser Browser unterstützt das direkte QR-Lesen leider nicht. Das Foto bleibt aber geladen.', true);
+    return;
+  }
+  try{
+    const detector = new BarcodeDetector({formats:['qr_code']});
+    const img = new Image();
+    const loaded = new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+    img.src = IMPORT_MEDIA_STATE.photoDataUrl;
+    await loaded;
+    const codes = await detector.detect(img);
+    if(!codes.length || !codes[0]?.rawValue){
+      IMPORT_MEDIA_STATE.qrText = '';
+      updateQrResult('Kein QR-Code erkannt. Das Foto bleibt trotzdem als Belegvorschau erhalten.', true);
+      return;
+    }
+    IMPORT_MEDIA_STATE.qrText = String(codes[0].rawValue || '').trim();
+    updateQrResult(IMPORT_MEDIA_STATE.qrText, true);
+  }catch(err){
+    IMPORT_MEDIA_STATE.qrText = '';
+    updateQrResult('Der QR-Code konnte gerade nicht ausgelesen werden.', true);
+  }
+}
+
+async function prepareCurrentPhotoForOcr(){
+  if(!IMPORT_MEDIA_STATE.photoDataUrl){
+    updateOcrPreparation('Bitte zuerst ein Belegfoto auswählen.', [], true);
+    return;
+  }
+  try{
+    const img = new Image();
+    const loaded = new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+    img.src = IMPORT_MEDIA_STATE.photoDataUrl;
+    await loaded;
+    const maxWidth = 1600;
+    const scale = img.width > maxWidth ? maxWidth / img.width : 1;
+    const width = Math.max(1, Math.round(img.width * scale));
+    const height = Math.max(1, Math.round(img.height * scale));
+    const canvas = document.getElementById('ocrPreviewCanvas');
+    const wrap = document.getElementById('ocrPreviewWrap');
+    if(!canvas || !wrap){
+      updateOcrPreparation('Die OCR-Vorschau konnte nicht vorbereitet werden.', [], true);
+      return;
+    }
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, width, height);
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+    let brightnessSum = 0;
+    for(let i = 0; i < data.length; i += 4){
+      const gray = Math.round(data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114);
+      const boosted = gray > 170 ? 255 : (gray < 110 ? 0 : Math.min(255, Math.max(0, (gray - 110) * 4)));
+      data[i] = boosted;
+      data[i + 1] = boosted;
+      data[i + 2] = boosted;
+      brightnessSum += boosted;
+    }
+    ctx.putImageData(imageData, 0, 0);
+    wrap.classList.add('active');
+    IMPORT_MEDIA_STATE.ocrPrepared = true;
+    IMPORT_MEDIA_STATE.ocrDataUrl = canvas.toDataURL('image/png');
+    const avgBrightness = Math.round(brightnessSum / (data.length / 4));
+    const orientation = width >= height ? 'Querformat' : 'Hochformat';
+    const quality = avgBrightness > 180 ? 'hell' : (avgBrightness < 90 ? 'dunkel' : 'ausgeglichen');
+    IMPORT_MEDIA_STATE.ocrMeta = [
+      `${width}×${height}px`,
+      orientation,
+      `Kontrast erhöht`,
+      `Helligkeit: ${quality}`
+    ];
+    IMPORT_MEDIA_STATE.ocrSummary = 'Das Belegfoto ist jetzt für eine spätere OCR vorbereitet. Kontrast und Schwarz-Weiß-Darstellung wurden auf Lesbarkeit optimiert.';
+    updateOcrPreparation(IMPORT_MEDIA_STATE.ocrSummary, IMPORT_MEDIA_STATE.ocrMeta, true);
+  }catch(err){
+    IMPORT_MEDIA_STATE.ocrPrepared = false;
+    IMPORT_MEDIA_STATE.ocrDataUrl = '';
+    IMPORT_MEDIA_STATE.ocrSummary = '';
+    IMPORT_MEDIA_STATE.ocrMeta = [];
+    updateOcrPreparation('Die OCR-Vorbereitung konnte gerade nicht durchgeführt werden.', [], true);
+  }
+}
+
+function useOcrPreparationForImport(){
+  const textArea = document.getElementById('importText');
+  if(!textArea) return;
+  if(!IMPORT_MEDIA_STATE.ocrPrepared){
+    updateOcrPreparation('Bitte zuerst die OCR-Vorbereitung starten.', [], true);
+    return;
+  }
+  const lines = [
+    '[OCR-VORBEREITUNG]',
+    IMPORT_MEDIA_STATE.photoName ? `Datei: ${IMPORT_MEDIA_STATE.photoName}` : '',
+    ...(IMPORT_MEDIA_STATE.ocrMeta || []),
+    'Status: Foto für spätere Texterkennung vorbereitet'
+  ].filter(Boolean);
+  const nextValue = [textArea.value.trim(), lines.join(' | ')].filter(Boolean).join('\n');
+  textArea.value = nextValue;
+  analyzeImportInput(buildOcrLightSourceText(nextValue));
+}
+
+function useQrTextForImport(){
+  const textArea = document.getElementById('importText');
+  if(!textArea) return;
+  if(!IMPORT_MEDIA_STATE.qrText){
+    updateQrResult('Es liegt noch kein QR-Ergebnis zum Übernehmen vor.', true);
+    return;
+  }
+  const nextValue = [textArea.value.trim(), IMPORT_MEDIA_STATE.qrText].filter(Boolean).join('\n');
+  textArea.value = nextValue;
+  analyzeImportInput(buildOcrLightSourceText(nextValue));
+}
+
+function setupImportTools(){
+  getImportAccountOptions();
+  const textArea = document.getElementById('importText');
+  const fileInput = document.getElementById('importFile');
+  const analyzeBtn = document.getElementById('analyzeImportBtn');
+  const importSafeBtn = document.getElementById('importSafeBtn');
+  const importAllBtn = document.getElementById('importAllBtn');
+  const clearBtn = document.getElementById('clearImportBtn');
+  const photoCameraInput = document.getElementById('receiptPhotoCamera');
+  const photoGalleryInput = document.getElementById('receiptPhotoGallery');
+  const scanQrBtn = document.getElementById('scanQrBtn');
+  const useQrTextBtn = document.getElementById('useQrTextBtn');
+  const prepareOcrBtn = document.getElementById('prepareOcrBtn');
+  const useOcrPrepBtn = document.getElementById('useOcrPrepBtn');
+  const ocrLightAnalyzeBtn = document.getElementById('ocrLightAnalyzeBtn');
+  if(!textArea || !fileInput || !analyzeBtn || !importSafeBtn || !importAllBtn || !clearBtn) return;
+
+  analyzeBtn.addEventListener('click', () => analyzeImportInput(buildOcrLightSourceText(textArea.value)));
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files && fileInput.files[0];
+    if(!file) return;
+    const content = await file.text().catch(() => '');
+    if(content){ textArea.value = content; analyzeImportInput(buildOcrLightSourceText(content)); }
+  });
+  importSafeBtn.addEventListener('click', () => appendImportedEntries('safe'));
+  importAllBtn.addEventListener('click', () => appendImportedEntries('all'));
+  const handleReceiptPhotoChange = async (input) => {
+    const file = input.files && input.files[0];
+    if(!file) return;
+    await loadReceiptPhoto(file);
+  };
+  photoCameraInput?.addEventListener('change', () => handleReceiptPhotoChange(photoCameraInput));
+  photoGalleryInput?.addEventListener('change', () => handleReceiptPhotoChange(photoGalleryInput));
+  scanQrBtn?.addEventListener('click', scanQrFromCurrentPhoto);
+  useQrTextBtn?.addEventListener('click', useQrTextForImport);
+  prepareOcrBtn?.addEventListener('click', prepareCurrentPhotoForOcr);
+  useOcrPrepBtn?.addEventListener('click', useOcrPreparationForImport);
+  ocrLightAnalyzeBtn?.addEventListener('click', runOcrLightAnalysis);
+  clearBtn.addEventListener('click', () => {
+    textArea.value = '';
+    fileInput.value = '';
+    if(photoCameraInput) photoCameraInput.value = '';
+    if(photoGalleryInput) photoGalleryInput.value = '';
+    IMPORT_STATE.rawText = '';
+    IMPORT_STATE.items = [];
+    IMPORT_MEDIA_STATE.photoName = '';
+    IMPORT_MEDIA_STATE.photoDataUrl = '';
+    IMPORT_MEDIA_STATE.qrText = '';
+    resetOcrPreparation();
+    updateReceiptPreview();
+    updateQrResult('', false);
+    renderImportPreview();
+  });
+  document.getElementById('importSourceType')?.addEventListener('change', () => { if(textArea.value.trim()) analyzeImportInput(textArea.value); });
+  document.getElementById('importDefaultPerson')?.addEventListener('change', () => { if(textArea.value.trim()) analyzeImportInput(textArea.value); });
+  document.getElementById('importDefaultAccount')?.addEventListener('change', () => { if(textArea.value.trim()) analyzeImportInput(textArea.value); });
+  updateReceiptPreview();
+  updateQrResult('', false);
+  resetOcrPreparation();
+}
+
 function euro(v){ return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(Number(v||0)); }
-const SUPABASE_URL = 'HIER_DEINE_SUPABASE_URL_EINTRAGEN';
-const SUPABASE_ANON_KEY = 'HIER_DEINEN_SUPABASE_ANON_KEY_EINTRAGEN';
-
-let supabaseClient = null;
-const appState = {
-  entries: [],
-  bankSources: [],
-  currentUser: null,
-  currentHouseholdId: null,
-  supabaseReady: false
-};
-
 function readJSON(key,fallback){ try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }catch(e){ return fallback; } }
 function writeJSON(key,value){ localStorage.setItem(key, JSON.stringify(value)); }
-function getEntries(){ return Array.isArray(appState.entries) ? appState.entries : []; }
-function setEntries(entries){ appState.entries = Array.isArray(entries) ? entries : []; persistShadowCache(); }
-function uid(){ return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('entry_' + Math.random().toString(36).slice(2,10)); }
+function getEntries(){ return readJSON(STORAGE_KEY, []); }
+function setEntries(entries){ writeJSON(STORAGE_KEY, entries); }
+function uid(){ return 'entry_' + Math.random().toString(36).slice(2,10); }
 function today(){ return new Date().toISOString().slice(0,10); }
 function createdDateOnly(s){ return String(s||'').slice(0,10); }
 function compareDate(val, from, to){ if(!val) return true; if(from && val < from) return false; if(to && val > to) return false; return true; }
 
-function hasSupabaseConfig(){
-  return !SUPABASE_URL.includes('HIER_DEINE_SUPABASE_URL_EINTRAGEN') && !SUPABASE_ANON_KEY.includes('HIER_DEINEN_SUPABASE_ANON_KEY_EINTRAGEN');
-}
-
-function persistShadowCache(){
-  try{
-    writeJSON(STORAGE_KEY, getEntries());
-    writeJSON(BANK_SOURCES_KEY, getBankSources());
-  }catch(e){}
-}
-
 function getBankSources(){
-  const items = Array.isArray(appState.bankSources) ? appState.bankSources : [];
+  const items = readJSON(BANK_SOURCES_KEY, []);
   return items.length ? items : DEFAULT_BANK_SOURCES;
 }
-function setBankSources(items){ appState.bankSources = Array.isArray(items) ? items : []; persistShadowCache(); }
+function setBankSources(items){ writeJSON(BANK_SOURCES_KEY, items); }
 function getBankSourceOptions(){
   return getBankSources().map(item => ({ value:item.id, label:`${item.label} · ${item.type}${item.owner ? ' · ' + item.owner : ''}` }));
 }
@@ -656,174 +1592,97 @@ function applyAccountFilter(accountId){
   renderAll();
   document.getElementById('filtersVisible')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
-
-function ensureSupabase(){
-  if(!hasSupabaseConfig() || !window.supabase) return null;
-  if(!supabaseClient) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  return supabaseClient;
+function getFieldsForCategory(cat){
+  const fields = [...cat.fields];
+  BASE_BANK_FIELDS.forEach(field => {
+    if(!fields.some(existing => existing.name === field.name)) fields.push(field);
+  });
+  return fields;
 }
 
-function parseMetaFromNotes(rawNotes){
-  const input = String(rawNotes || '');
-  const marker = '[HH_META]';
-  const idx = input.indexOf(marker);
-  if(idx === -1) return { cleanNotes: input.trim(), meta: {} };
-  const clean = input.slice(0, idx).trim();
-  const jsonText = input.slice(idx + marker.length).trim();
-  try{ return { cleanNotes: clean, meta: JSON.parse(jsonText) || {} }; }catch(e){ return { cleanNotes: input.trim(), meta: {} }; }
-}
-
-function combineNotesWithMeta(notes, meta){
-  const cleanNotes = String(notes || '').trim();
-  const cleanMeta = Object.fromEntries(Object.entries(meta || {}).filter(([,value]) => value));
-  if(!Object.keys(cleanMeta).length) return cleanNotes;
-  return `${cleanNotes}${cleanNotes ? '\\n\\n' : ''}[HH_META]${JSON.stringify(cleanMeta)}`;
-}
-
-function mapAccountRow(row){
-  return {
-    id: row.id,
-    label: row.label || 'Konto / Karte',
-    type: row.account_type || 'Konto',
-    owner: row.owner_label || '',
-    bankName: row.bank_name || '',
-    lastDigits: row.last_digits || '',
-    connectionStatus: row.connection_status || 'manuell'
-  };
-}
-
-function mapEntryRow(row){
-  const parsed = parseMetaFromNotes(row.notes || '');
-  const meta = parsed.meta || {};
-  return {
-    id: row.id,
-    mainCategory: row.main_category || '',
-    subCategory: row.sub_category || '',
-    type: row.entry_type || '',
-    title: row.title || '',
-    amount: Number(row.amount || 0),
-    person: row.person_label || '',
-    paymentMethod: row.payment_method || '',
-    accountId: row.account_id || '',
-    entrySource: row.entry_source || 'manual',
-    externalReference: row.external_reference || '',
-    recurring: row.recurring || 'nein',
-    interval: row.interval_label || '',
-    date: row.entry_date || '',
-    dueDate: meta.dueDate || '',
-    goalDate: meta.goalDate || '',
-    nextAppointment: meta.nextAppointment || '',
-    kilometers: row.kilometers || '',
-    liters: row.liters || '',
-    pricePerLiter: row.price_per_liter || '',
-    consumption: row.consumption || '',
-    vet: row.vet || '',
-    treatment: row.treatment || '',
-    occasion: row.occasion || '',
-    notes: parsed.cleanNotes || '',
-    createdAt: row.created_at || '',
-    accountLabel: row.account_label || '',
-    accountType: row.account_type || '',
-    accountOwner: row.owner_label || '',
-    bankName: row.bank_name || '',
-    cardName: row.card_name || '',
-    importKey: row.import_key || '',
-    sourceKey: row.source_key || ''
-  };
-}
-
-async function resolveCurrentHouseholdId(client, currentUser){
-  const localUser = readJSON('haushaltsheld_user', null) || readJSON('haushaltsheld_current_user', null) || {};
-  const candidates = [
-    currentUser?.user_metadata?.household_id,
-    currentUser?.app_metadata?.household_id,
-    localUser?.household_id,
-    localUser?.householdId
-  ].filter(Boolean);
-  if(candidates.length) return candidates[0];
-
-  try{
-    const profileQuery = await client.from('profiles').select('*').eq('id', currentUser?.id || '').maybeSingle();
-    const profile = profileQuery.data || {};
-    if(profile.household_id) return profile.household_id;
-  }catch(e){}
-
-  try{
-    const householdQuery = await client.from('households').select('id').limit(1);
-    const householdId = householdQuery?.data?.[0]?.id;
-    if(householdId) return householdId;
-  }catch(e){}
-
-  return null;
-}
-
-async function seedDefaultBankSources(client, householdId){
-  if(!householdId) return;
-  const payload = DEFAULT_BANK_SOURCES.map(item => ({
-    household_id: householdId,
-    label: item.label,
-    account_type: item.type,
-    owner_label: item.owner,
-    bank_name: item.bankName,
-    last_digits: item.lastDigits,
-    connection_status: item.connectionStatus || 'geplant'
-  }));
-  const { error } = await client.from('finance_accounts').insert(payload);
-  if(error) console.warn('Standard-Konten konnten nicht angelegt werden:', error.message);
-}
-
-async function loadSupabaseState(){
-  const client = ensureSupabase();
-  if(!client){
-    appState.entries = [];
-    appState.bankSources = [...DEFAULT_BANK_SOURCES];
-    appState.supabaseReady = false;
-    persistShadowCache();
-    return;
+function buildFilterOptions(){
+  filterMain.innerHTML = '<option value="">Alle</option>' + CATEGORIES.map(c => `<option value="${c.title}">${c.title}</option>`).join('');
+  const accountFilter = document.getElementById('filterAccount');
+  if(accountFilter){
+    accountFilter.innerHTML = '<option value="">Alle</option>' + getBankSources().map(item => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.label)} · ${escapeHtml(item.type)}</option>`).join('');
   }
+  updateSubFilter();
+}
+function updateSubFilter(){
+  const main = filterMain.value;
+  let subs = [];
+  if(main){ const cat = CATEGORIES.find(c => c.title === main); subs = cat ? cat.subs : []; }
+  else { subs = [...new Set(CATEGORIES.flatMap(c => c.subs))]; }
+  filterSub.innerHTML = '<option value="">Alle</option>' + subs.map(s => `<option value="${s}">${s}</option>`).join('');
+}
 
-  const userResult = await client.auth.getUser().catch(() => ({ data:{ user:null } }));
-  appState.currentUser = userResult?.data?.user || null;
-  appState.currentHouseholdId = await resolveCurrentHouseholdId(client, appState.currentUser);
+function renderAccordion(){
+  accordion.innerHTML = CATEGORIES.map((cat, idx) => `
+    <div class="acc-item ${idx===0?'open':''}" data-acc="${cat.id}">
+      <button class="acc-head" type="button">
+        <span class="icon-chip ${cat.accent}">${getCategoryIcon(cat.id)}</span>
+        <span class="acc-title"><strong>${cat.title}</strong><span>${cat.desc}</span></span>
+        <span class="acc-arrow">⌄</span>
+      </button>
+      <div class="acc-body">
+        <form class="category-form" data-cat="${cat.id}">
+          <div class="sub-grid">
+            ${getFieldsForCategory(cat).map(field => fieldHTML(field, cat)).join('')}
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit">Eintrag speichern</button>
+            <button class="btn-soft" type="reset">Zurücksetzen</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `).join('');
 
-  if(!appState.currentHouseholdId){
-    appState.entries = [];
-    appState.bankSources = [...DEFAULT_BANK_SOURCES];
-    appState.supabaseReady = true;
-    persistShadowCache();
-    return;
-  }
+  accordion.querySelectorAll('.acc-head').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.acc-item');
+      const isOpen = item.classList.contains('open');
+      accordion.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
+      if(!isOpen) item.classList.add('open');
+    });
+  });
 
-  const bankResult = await client.from('finance_accounts').select('*').eq('household_id', appState.currentHouseholdId).order('created_at', { ascending:true });
-  if(bankResult.error){
-    console.warn('Konten konnten nicht geladen werden:', bankResult.error.message);
-    appState.bankSources = [...DEFAULT_BANK_SOURCES];
-  }else{
-    appState.bankSources = (bankResult.data || []).map(mapAccountRow);
-    if(!appState.bankSources.length){
-      await seedDefaultBankSources(client, appState.currentHouseholdId);
-      const seeded = await client.from('finance_accounts').select('*').eq('household_id', appState.currentHouseholdId).order('created_at', { ascending:true });
-      appState.bankSources = (seeded.data || []).map(mapAccountRow);
+  accordion.querySelectorAll('.category-form').forEach(form => {
+    const cat = CATEGORIES.find(c => c.id === form.dataset.cat);
+    const subSelect = form.querySelector('[name="subCategory"]');
+    if(subSelect) subSelect.innerHTML = cat.subs.map(s => `<option value="${s}">${s}</option>`).join('');
+    const recurring = form.querySelector('[name="recurring"]');
+    const interval = form.querySelector('[name="interval"]');
+    if(interval && !recurring){ interval.closest('.field')?.classList.add('hidden'); }
+    if(recurring && interval){
+      const toggleInterval = () => interval.closest('.field').classList.toggle('hidden', recurring.value !== 'ja');
+      recurring.addEventListener('change', toggleInterval); toggleInterval();
     }
-  }
-
-  const entriesResult = await client.from('finance_entries_v2').select('*').eq('household_id', appState.currentHouseholdId).order('entry_date', { ascending:false }).order('created_at', { ascending:false });
-  if(entriesResult.error){
-    console.warn('Finanz-Einträge konnten nicht geladen werden:', entriesResult.error.message);
-    appState.entries = [];
-  }else{
-    appState.entries = (entriesResult.data || []).map(mapEntryRow);
-  }
-
-  appState.supabaseReady = true;
-  persistShadowCache();
+    if(form.querySelector('[name="date"]')) form.querySelector('[name="date"]').value = today();
+    form.addEventListener('submit', (e) => saveEntry(e, cat));
+  });
 }
 
-async function saveEntry(e, cat){
+function fieldHTML(field, cat){
+  const colSpan = field.type === 'textarea' ? 'style="grid-column:span 3"' : '';
+  if(field.type === 'dynamic-select'){
+    return `<div class="field"><label>${field.label}</label><select name="${field.name}" data-dynamic-source="${field.source || ''}" ${field.required?'required':''}><option value="">Bitte wählen</option></select></div>`;
+  }
+  if(field.type === 'select'){
+    const opts = field.name === 'subCategory'
+      ? ''
+      : (field.options||[]).map(v => `<option value="${v}">${v}</option>`).join('');
+    return `<div class="field" ${colSpan}><label>${field.label}</label><select name="${field.name}" ${field.required?'required':''}>${opts}</select></div>`;
+  }
+  if(field.type === 'textarea'){
+    return `<div class="field" ${colSpan}><label>${field.label}</label><textarea name="${field.name}" placeholder="${field.placeholder||''}"></textarea></div>`;
+  }
+  return `<div class="field"><label>${field.label}</label><input name="${field.name}" type="${field.type}" ${field.placeholder?`placeholder="${field.placeholder}"`:''} ${field.step?`step="${field.step}"`:''} ${field.required?'required':''}></div>`;
+}
+
+function saveEntry(e, cat){
   e.preventDefault();
   const form = e.currentTarget;
-  const submitBtn = form.querySelector('button[type="submit"]');
-  if(submitBtn) submitBtn.disabled = true;
   const data = Object.fromEntries(new FormData(form).entries());
   const entry = {
     id: uid(),
@@ -859,19 +1718,15 @@ async function saveEntry(e, cat){
   entry.bankName = source ? source.bankName : '';
   entry.cardName = source && /karte/i.test(source.type) ? source.label : '';
 
-  try{
-    await saveEntryToSupabase(entry);
-    form.reset();
-    const dateField = form.querySelector('[name="date"]'); if(dateField) dateField.value = today();
-    const sub = form.querySelector('[name="subCategory"]'); if(sub && cat.subs.length) sub.value = cat.subs[0];
-    syncBankSelects();
-    renderAll();
-  }catch(error){
-    console.error(error);
-    alert('Der Eintrag konnte nicht gespeichert werden. Prüfe später die Supabase-Werte und die Tabellenstruktur.');
-  }finally{
-    if(submitBtn) submitBtn.disabled = false;
-  }
+  const entries = getEntries();
+  entries.unshift(entry);
+  setEntries(entries);
+  rememberLearningFromEntry(entry, [entry.title, entry.notes, entry.accountLabel, entry.bankName].filter(Boolean).join(' '));
+  form.reset();
+  const dateField = form.querySelector('[name="date"]'); if(dateField) dateField.value = today();
+  const sub = form.querySelector('[name="subCategory"]'); if(sub && cat.subs.length) sub.value = cat.subs[0];
+  syncBankSelects();
+  renderAll();
 }
 
 function filteredEntries(){
@@ -1018,6 +1873,36 @@ function getCategoryIcon(id){
 
 function renderAll(){ renderEntries(); renderOverview(); }
 
+
+function openQuickTarget(target){
+  openAccordion(target);
+  window.setTimeout(() => {
+    const form = accordion.querySelector(`.category-form[data-cat="${target}"]`);
+    if(!form) return;
+
+    const subSelect = form.querySelector('[name="subCategory"]');
+    const titleInput = form.querySelector('[name="title"]');
+    const presets = {
+      mobility: 'Tanken',
+      health: 'Arztkosten',
+      pets: 'Tierarzt',
+      children: 'Schule',
+      saving: 'Rücklagen (Notgroschen)',
+      other: 'Ungeplante Ausgaben'
+    };
+
+    if(subSelect && presets[target]){
+      subSelect.value = presets[target];
+      subSelect.dispatchEvent(new Event('change', { bubbles:true }));
+    }
+
+    if(titleInput){
+      titleInput.focus();
+      try{ form.scrollIntoView({ behavior:'smooth', block:'center' }); }catch(e){}
+    }
+  }, 120);
+}
+
 function openAccordion(id){
   accordion.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
   const item = accordion.querySelector(`[data-acc="${id}"]`); if(item){ item.classList.add('open'); item.scrollIntoView({behavior:'smooth', block:'start'}); }
@@ -1031,7 +1916,11 @@ function getQuickAccess(){
     {label:'+ Einkauf', target:'variable', fixed:true},
     {label:'+ Tanken', target:'mobility', fixed:true},
     {label:'+ Haustier', target:'pets', fixed:true},
-    {label:'+ Fixkosten', target:'fixed', fixed:true}
+    {label:'+ Fixkosten', target:'fixed', fixed:true},
+    {label:'+ Gesundheit', target:'health', fixed:true},
+    {label:'+ Kinder', target:'children', fixed:true},
+    {label:'+ Sparen', target:'saving', fixed:true},
+    {label:'+ Sonstiges', target:'other', fixed:true}
   ];
   const custom = readJSON(QUICK_KEY, []).filter(item => item && item.label && item.target);
   return [...base, ...custom];
@@ -1041,7 +1930,7 @@ function renderQuickAccess(){
   const box = document.querySelector('.quick-add');
   if(box){
     box.innerHTML = getQuickAccess().map(item => `<button class="quick-pill" data-open="${escapeHtml(item.target)}">${escapeHtml(item.label)}</button>`).join('');
-    box.querySelectorAll('.quick-pill').forEach(btn => btn.addEventListener('click', ()=> openAccordion(btn.dataset.open)));
+    box.querySelectorAll('.quick-pill').forEach(btn => btn.addEventListener('click', ()=> openQuickTarget(btn.dataset.open)));
   }
   const list = document.getElementById('quickCustomList');
   if(list){
@@ -1088,17 +1977,13 @@ function renderBankSourceList(){
       <small>${escapeHtml(item.type)} · ${escapeHtml(item.owner || '—')} · ${counts[item.id] || 0} Buchung${(counts[item.id]||0)===1?'':'en'}</small>
       <button class="bank-remove" type="button" data-remove-bank="${escapeHtml(item.id)}" aria-label="Entfernen">×</button>
     </span>`).join('') : '<div class="empty">Noch keine Konten oder Karten angelegt.</div>';
-  list.querySelectorAll('[data-remove-bank]').forEach(btn => btn.addEventListener('click', async (ev) => {
+  list.querySelectorAll('[data-remove-bank]').forEach(btn => btn.addEventListener('click', (ev) => {
     ev.stopPropagation();
     const id = btn.getAttribute('data-remove-bank');
-    try{
-      await removeBankSourceFromSupabase(id);
-      renderBankingUI();
-      renderAll();
-    }catch(error){
-      console.error(error);
-      alert('Das Konto oder die Karte konnte nicht entfernt werden.');
-    }
+    const updated = getBankSources().filter(item => item.id !== id);
+    setBankSources(updated.length ? updated : DEFAULT_BANK_SOURCES);
+    renderBankingUI();
+    renderAll();
   }));
   list.querySelectorAll('[data-bank-filter]').forEach(chip => chip.addEventListener('click', () => applyAccountFilter(chip.getAttribute('data-bank-filter'))));
   const existingNote = document.getElementById('bankActiveNote');
@@ -1116,9 +2001,10 @@ function renderBankingUI(){
   renderBankSourceList();
   buildFilterOptions();
   syncBankSelects();
+  getImportAccountOptions();
 }
 
-async function addBankSource(){
+function addBankSource(){
   const label = String(document.getElementById('bankLabel')?.value || '').trim();
   const type = document.getElementById('bankType')?.value || 'Girokonto';
   const owner = document.getElementById('bankOwner')?.value || 'Familie';
@@ -1126,16 +2012,12 @@ async function addBankSource(){
   const lastDigits = String(document.getElementById('bankDigits')?.value || '').trim();
   const connectionStatus = document.getElementById('bankConnection')?.value || 'geplant';
   if(!label) return;
-  try{
-    await addBankSourceToSupabase({ label, type, owner, bankName, lastDigits, connectionStatus });
-    ['bankLabel','bankInstitute','bankDigits'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-    const conn = document.getElementById('bankConnection'); if(conn) conn.value='geplant';
-    renderBankingUI();
-    renderAll();
-  }catch(error){
-    console.error(error);
-    alert('Das Konto oder die Karte konnte nicht gespeichert werden.');
-  }
+  const items = getBankSources();
+  items.push({id:'source_' + Math.random().toString(36).slice(2,10), label, type, owner, bankName, lastDigits, connectionStatus});
+  setBankSources(items);
+  ['bankLabel','bankInstitute','bankDigits'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  const conn = document.getElementById('bankConnection'); if(conn) conn.value='geplant';
+  renderBankingUI();
 }
 
 function setupKi(){
@@ -1147,44 +2029,75 @@ function setupKi(){
   const chat = document.getElementById('kiChat');
   const sug = document.getElementById('kiSuggestions');
   if(!fab || !panel || !close || !form || !input || !chat || !sug) return;
+
+  const cleanChat = () => {
+    chat.querySelectorAll('.ki-msg.bot').forEach(msg => {
+      if(!msg.textContent.trim()){
+        msg.remove();
+      }
+    });
+  };
+
+  const clearChatOnOpen = () => {
+    chat.innerHTML = '';
+    cleanChat();
+  };
+
   const suggestions = [
     'Hilf mir beim Monatsbudget',
     'Welche Kategorie passt zu dieser Ausgabe?',
     'Wo kann ich Einsparpotenziale finden?',
     'Wie plane ich wiederkehrende Kosten besser?'
   ];
+
   sug.innerHTML = suggestions.map(text => `<button class="ki-chip" type="button">${escapeHtml(text)}</button>`).join('');
-  sug.querySelectorAll('.ki-chip').forEach(btn => btn.addEventListener('click', ()=> { input.value = btn.textContent.trim(); input.focus(); }));
-  const toggle = (open) => panel.classList.toggle('open', open);
-  fab.addEventListener('click', ()=> toggle(!panel.classList.contains('open')));
-  close.addEventListener('click', ()=> toggle(false));
+  sug.querySelectorAll('.ki-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      input.value = btn.textContent.trim();
+      input.focus();
+    });
+  });
+
+  const toggle = (open) => {
+    panel.classList.toggle('open', open);
+    if(open){
+      clearChatOnOpen();
+    }
+  };
+
+  fab.addEventListener('click', () => toggle(!panel.classList.contains('open')));
+  close.addEventListener('click', () => toggle(false));
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const message = input.value.trim();
     if(!message) return;
+
+    cleanChat();
     chat.insertAdjacentHTML('beforeend', `<div class="ki-msg user">${escapeHtml(message)}</div>`);
     input.value = '';
+
     const typing = document.createElement('div');
     typing.className = 'ki-msg bot';
     typing.textContent = 'Ich denke kurz nach …';
     chat.appendChild(typing);
     chat.scrollTop = chat.scrollHeight;
+
     try{
-      const response = await fetch('/.netlify/functions/chat', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({message, page:'finanzen', mode:'parent'})
-      });
-      const data = response.ok ? await response.json().catch(() => ({})) : {};
-      typing.textContent = data.reply || data.message || 'Ich bin da und helfe dir gern beim Sortieren deiner Finanzen, Kategorien und Budgets.';
+      const reply = buildLocalKiReply(message);
+      typing.textContent = reply || 'Ich konnte dazu gerade keinen Hinweis erzeugen.';
+      chat.scrollTop = chat.scrollHeight;
     }catch(err){
       typing.textContent = 'Die Verbindung zur KI war gerade nicht erreichbar. Du kannst es gleich noch einmal probieren oder direkt in den Familien-Chat wechseln.';
+      chat.scrollTop = chat.scrollHeight;
     }
-    chat.scrollTop = chat.scrollHeight;
   });
+
+  // safety cleanup on load
+  cleanChat();
 }
 
-async function initUI(){
-  await loadSupabaseState();
+function initUI(){
   renderBankingUI();
   renderAccordion();
   renderAll();
@@ -1196,6 +2109,7 @@ async function initUI(){
   renderQuickAccess();
   document.getElementById('addQuickAccess').addEventListener('click', addQuickAccessItem);
   document.getElementById('addBankSource').addEventListener('click', addBankSource);
+  setupImportTools();
   document.querySelector('#extrasDrop .nav-drop-head').addEventListener('click', ()=> document.getElementById('extrasDrop').classList.toggle('open'));
   document.getElementById('childBtn').addEventListener('click', ()=> window.location.href = 'kindermodus.html');
 
@@ -1207,19 +2121,11 @@ async function initUI(){
   try{ if(raw){ const u = JSON.parse(raw); document.getElementById('userName').textContent = '👋 ' + (u.name || u.username || 'Willkommen'); document.getElementById('userRole').textContent = String(u.role || u.modus || 'Eltern-Modus'); } }catch(e){}
   updateChatBadge();
   setupKi();
-
-  if(!hasSupabaseConfig()){
-    console.info('Supabase-Platzhalter sind noch gesetzt. Trage URL und Anon Key erst ganz am Schluss ein.');
-  }
 }
 
-async function handleLogout(){
-  try{
-    const client = ensureSupabase();
-    if(client) await client.auth.signOut().catch(()=>{});
-    localStorage.removeItem('haushaltsheld_user');
-    localStorage.removeItem('haushaltsheld_current_user');
-  }catch(e){}
+
+function handleLogout(){
+  try{ localStorage.removeItem('haushaltsheld_user'); localStorage.removeItem('haushaltsheld_current_user'); }catch(e){}
   window.location.href = 'login.html';
 }
 
@@ -1227,17 +2133,17 @@ function updateChatBadge(){
   const AUTH_KEYS=['haushaltsheld_user','haushaltsheld_current_user']; const USERS_KEY='haushaltsheld_users'; const FAMILY_ROOM_KEY='hh_family_chat_room'; const FAMILY_SEEN_KEY='hh_family_chat_seen_parent'; const DIRECT_CHATS_KEY='hh_direct_chats_v2'; const DIRECT_SEEN_PREFIX='hh_direct_seen_';
   const read = (key, fallback)=>{ try{ const raw=localStorage.getItem(key); return raw?JSON.parse(raw):fallback; }catch(e){ return fallback; } };
   const slug = value => String(value||'').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9äöüß_-]/gi,'');
-  const getUserId = user => user?.id||user?.userId||user?.username||slug(user?.name||user?.displayName||'user');
+  const getUserId = user => user?.idoruser?.userIdoruser?.username||slug(user?.name||user?.displayName||'user');
   let authUser = null; for(const key of AUTH_KEYS){ authUser = read(key,null); if(authUser) break; }
   const currentUserId = getUserId(authUser||{}); if(!currentUserId) return;
   const users = Array.isArray(read(USERS_KEY,[])) ? read(USERS_KEY,[]).map(u=>({id:getUserId(u),name:u?.name||u?.username||'Nutzer'})) : [];
   const familyRoom = read(FAMILY_ROOM_KEY,{messages:[]}); const familyMessages = Array.isArray(familyRoom?.messages)?familyRoom.messages:[];
   const seenFamily = read(FAMILY_SEEN_KEY,{}); const lastFamilySeen = seenFamily?.[currentUserId] || '';
-  let unread = familyMessages.filter(m => (m.senderId||slug(m.senderName||'')) !== currentUserId && String(m.timestamp||'') > String(lastFamilySeen)).length;
+  let unread = familyMessages.filter(m => (m.senderIdorslug(m.senderName||'')) !== currentUserId && String(m.timestamp||'') > String(lastFamilySeen)).length;
   const directStore = read(DIRECT_CHATS_KEY,{});
   Object.keys(directStore||{}).forEach(convId => {
     const seen = read(DIRECT_SEEN_PREFIX+convId,{}); const lastSeen = seen?.[currentUserId] || '';
-    unread += (Array.isArray(directStore[convId])?directStore[convId]:[]).filter(m => (m.senderId||slug(m.senderName||'')) !== currentUserId && String(m.timestamp||'') > String(lastSeen)).length;
+    unread += (Array.isArray(directStore[convId])?directStore[convId]:[]).filter(m => (m.senderIdorslug(m.senderName||'')) !== currentUserId && String(m.timestamp||'') > String(lastSeen)).length;
   });
   const badge = document.getElementById('chatBadge');
   if(!badge) return; if(unread > 0){ badge.textContent = unread > 99 ? '99+' : String(unread); badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
@@ -1245,5 +2151,63 @@ function updateChatBadge(){
 
 document.addEventListener('DOMContentLoaded', initUI);
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  try{
+    if(typeof setupKi === 'function'){
+      setupKi();
+    }else{
+      const fab = document.getElementById('kiFab');
+      const panel = document.getElementById('kiPanel');
+      const close = document.getElementById('kiClose');
+      const form = document.getElementById('kiForm');
+      const input = document.getElementById('kiInput');
+      const chat = document.getElementById('kiChat');
+      const sug = document.getElementById('kiSuggestions');
+      if(fab && panel && close){
+        fab.addEventListener('click', function(){ panel.classList.toggle('open'); });
+        close.addEventListener('click', function(){ panel.classList.remove('open'); });
+      }
+      if(form && input && chat){
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          const value = (input.value || '').trim();
+          if(!value) return;
+          const user = document.createElement('div');
+          user.className = 'ki-msg user';
+          user.textContent = value;
+          chat.appendChild(user);
+          const bot = document.createElement('div');
+          bot.className = 'ki-msg bot';
+          bot.textContent = 'Ich habe deine Anfrage aufgenommen. Die KI-Schnecke ist wieder aktiv.';
+          chat.appendChild(bot);
+          input.value = '';
+          chat.scrollTop = chat.scrollHeight;
+        });
+      }
+      if(sug){
+        sug.innerHTML = [
+          'Hilf mir beim Monatsbudget',
+          'Welche Kategorie passt zu dieser Ausgabe?',
+          'Wo kann ich Einsparpotenziale finden?',
+          'Wie plane ich wiederkehrende Kosten besser?'
+        ].map(function(text){ return '<button class="ki-chip" type="button">'+text+'</button>'; }).join('');
+        sug.querySelectorAll('.ki-chip').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            if(input){
+              input.value = btn.textContent.trim();
+              input.focus();
+            }
+          });
+        });
+      }
+    }
+  }catch(err){
+    console.error('KI fallback failed', err);
+  }
+});
+</script>
+
 </body>
 </html>
