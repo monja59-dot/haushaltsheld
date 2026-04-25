@@ -414,6 +414,7 @@ button,input,select,textarea{font:inherit}
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="hh-data.js"></script>
 <script>
 const SHADOW_STORAGE_KEY = 'haushaltsheld_finance_entries_v2';
 const SHADOW_BANK_KEY = 'hh_finance_bank_sources_v1';
@@ -451,7 +452,11 @@ function formatDate(iso){
   return new Date(iso + 'T12:00:00').toLocaleDateString('de-DE');
 }
 function persistShadowCache(){
-  writeJSON(SHADOW_STORAGE_KEY, appState.entries || []);
+  if(window.HHData && typeof HHData.saveFinanceEntries === 'function'){
+    HHData.saveFinanceEntries(appState.entries || []);
+  }else{
+    writeJSON(SHADOW_STORAGE_KEY, appState.entries || []);
+  }
   writeJSON(SHADOW_BANK_KEY, appState.bankSources || []);
 }
 function hasSupabaseConfig(){
@@ -543,7 +548,7 @@ async function resolveCurrentHouseholdId(client, currentUser){
 async function loadSupabaseState(){
   const client = ensureSupabase();
   if(!client){
-    appState.entries = readJSON(SHADOW_STORAGE_KEY, []);
+    appState.entries = (window.HHData && typeof HHData.getFinanceEntries === 'function') ? HHData.getFinanceEntries() : readJSON(SHADOW_STORAGE_KEY, []);
     appState.bankSources = readJSON(SHADOW_BANK_KEY, DEFAULT_BANK_SOURCES);
     return;
   }
@@ -670,9 +675,14 @@ async function deleteEntry(id){
       appState.entries = (appState.entries || []).filter(entry => entry.id !== id);
       persistShadowCache();
     }else{
-      const next = (readJSON(SHADOW_STORAGE_KEY, []) || []).filter(entry => entry.id !== id);
+      const current = (window.HHData && typeof HHData.getFinanceEntries === 'function') ? HHData.getFinanceEntries() : (readJSON(SHADOW_STORAGE_KEY, []) || []);
+      const next = current.filter(entry => entry.id !== id);
       appState.entries = next;
-      writeJSON(SHADOW_STORAGE_KEY, next);
+      if(window.HHData && typeof HHData.saveFinanceEntries === 'function'){
+        HHData.saveFinanceEntries(next);
+      }else{
+        writeJSON(SHADOW_STORAGE_KEY, next);
+      }
     }
     buildFilterOptions();
     renderAll();

@@ -250,6 +250,29 @@ button,input,select,textarea{font:inherit}
   .ki-fab,.ki-panel,.page-help-bubble{display:none !important}
 }
 
+
+/* KI Auto-Popup */
+.ki-popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:9998;display:flex;align-items:flex-end;justify-content:flex-end;padding:100px 22px 110px;pointer-events:none;opacity:0;transition:opacity .3s ease;}
+.ki-popup-overlay.show{opacity:1;pointer-events:all;}
+.ki-popup{background:linear-gradient(180deg,#ffffff 0%,#fffdf9 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:20px 22px;max-width:340px;width:100%;box-shadow:0 16px 48px rgba(54,45,28,.18),0 4px 0 #2f6f33;transform:translateY(20px);transition:transform .3s ease;position:relative;}
+.ki-popup-overlay.show .ki-popup{transform:translateY(0);}
+.ki-popup-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.ki-popup-avatar{width:44px;height:44px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));display:grid;place-items:center;flex-shrink:0;overflow:hidden;border:2px solid rgba(255,255,255,.3);}
+.ki-popup-avatar img{width:100%;height:100%;object-fit:cover;}
+.ki-popup-title{font-weight:800;font-size:.95rem;color:var(--text);line-height:1.2;}
+.ki-popup-sub{font-size:.78rem;color:var(--muted);font-weight:700;}
+.ki-popup-text{font-size:.92rem;line-height:1.55;color:var(--text2);margin-bottom:16px;min-height:40px;}
+.ki-popup-typing{display:inline-flex;gap:5px;align-items:center;}
+.ki-popup-typing span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:popupDot .9s infinite;}
+.ki-popup-typing span:nth-child(2){animation-delay:.2s;}
+.ki-popup-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes popupDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.ki-popup-actions{display:flex;gap:8px;}
+.ki-popup-btn{flex:1;border:none;padding:10px 14px;border-radius:14px;font-weight:800;font-size:.88rem;cursor:pointer;font-family:inherit;transition:.15s ease;}
+.ki-popup-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;box-shadow:0 3px 0 #2f6f33;}
+.ki-popup-btn.secondary{background:var(--soft);color:var(--text2);border:1px solid var(--line);}
+.ki-popup-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1;padding:0;}
+
 </style>
 </head>
 <body>
@@ -1183,7 +1206,6 @@ renderAll();
       <div>
         <h3>Haushaltsheld KI</h3>
         <p id="kiContextText"></p>
-        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
       </div>
     </div>
     <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
@@ -1238,5 +1260,140 @@ renderAll();
   form.addEventListener('submit',async(e)=>{e.preventDefault();const message=input.value.trim();if(!message)return;input.value='';await sendMessage(message);});
 })();
 </script>
+
+<div class="ki-popup-overlay" id="kiPopupOverlay">
+  <div class="ki-popup" id="kiPopup" role="dialog" aria-label="Haushaltsheld KI Tipp">
+    <button class="ki-popup-close" id="kiPopupClose" aria-label="Schließen">×</button>
+    <div class="ki-popup-head">
+      <div class="ki-popup-avatar"><img src="assets/assetsschnecke.png" alt="Schnecki"></div>
+      <div>
+        <div class="ki-popup-title">Haushaltsheld KI</div>
+        <div class="ki-popup-sub" id="kiPopupSub">Analysiert gerade…</div>
+      </div>
+    </div>
+    <div class="ki-popup-text" id="kiPopupText">
+      <div class="ki-popup-typing"><span></span><span></span><span></span></div>
+    </div>
+    <div class="ki-popup-actions">
+      <button class="ki-popup-btn secondary" id="kiPopupDismiss">Verstanden</button>
+      <button class="ki-popup-btn primary" id="kiPopupOpen">Im Chat weiter fragen</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  var PAGE_ID = 'einkauf';
+  var POPUP_KEY = 'hh_ki_popup_' + PAGE_ID;
+  var POPUP_DELAY = 2000;
+
+  function getPageData(){
+          try{
+            const items = JSON.parse(localStorage.getItem('haushaltsheld_einkaufsliste_stabil_v1')||'[]');
+            const open = items.filter(i=>!i.done&&!i.erledigt).length;
+            const done = items.filter(i=>i.done||i.erledigt).length;
+            const cats = [...new Set(items.map(i=>i.category||i.kategorie).filter(Boolean))];
+            return 'Einkaufsliste: '+open+' Artikel offen, '+done+' erledigt. Kategorien: '+(cats.slice(0,4).join(', ')||'keine')+'.';
+          }catch(e){ return 'Einkaufsseite geöffnet.'; }
+        }
+
+  var lastTip = '';
+
+  function closePopup(){
+    var overlay = document.getElementById('kiPopupOverlay');
+    if(overlay){ overlay.classList.remove('show'); }
+  }
+
+  function openWidget(tipText){
+    closePopup();
+    var fab = document.getElementById('kiFab');
+    var panel = document.getElementById('kiPanel');
+    var input = document.getElementById('kiInput');
+    if(panel){ panel.classList.add('open'); }
+    if(input){ input.focus(); }
+    // Tipp als erste Nachricht im Widget anzeigen falls noch keine Nachrichten
+    var chat = document.getElementById('kiChat');
+    var welcomeMsg = document.getElementById('kiWelcomeMsg');
+    if(welcomeMsg && tipText){ welcomeMsg.textContent = tipText; }
+  }
+
+  async function fetchTip(data){
+    try{
+      var res = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          message: 'Analysiere diese Daten und gib mir einen kurzen, hilfreichen Tipp: ' + data,
+          page: PAGE_ID,
+          mode: 'auto_tip',
+          system: 'Du bist die Haushaltsheld KI auf der Einkaufsseite. Gib einen kurzen Einkaufs- oder Spartipp (max 2 Sätze). Wenn die Liste leer ist, mach einen smarten Vorschlag.'
+        })
+      });
+      var json = await res.json();
+      return json.reply || json.message || 'Alles sieht gut aus – weiter so!';
+    } catch(e) {
+      return 'Ich bin bereit für deine Fragen zu dieser Seite!';
+    }
+  }
+
+  async function showPopup(){
+    // Nicht zu oft zeigen: max 1x pro Stunde
+    try{
+      var lastShown = Number(localStorage.getItem(POPUP_KEY) || 0);
+      if(Date.now() - lastShown < 60*60*1000) return;
+    }catch(e){}
+
+    var overlay = document.getElementById('kiPopupOverlay');
+    var textEl = document.getElementById('kiPopupText');
+    var subEl = document.getElementById('kiPopupSub');
+    if(!overlay) return;
+
+    // Popup anzeigen mit Loading
+    overlay.classList.add('show');
+    if(subEl) subEl.textContent = 'Analysiert gerade…';
+    if(textEl) textEl.innerHTML = '<div class="ki-popup-typing"><span></span><span></span><span></span></div>';
+
+    // Daten sammeln + Tipp holen
+    var data = getPageData();
+    var tip = await fetchTip(data);
+    lastTip = tip;
+
+    if(textEl) textEl.textContent = tip;
+    if(subEl) subEl.textContent = 'Persönlicher Tipp für dich';
+
+    // Zeitstempel speichern
+    try{ localStorage.setItem(POPUP_KEY, String(Date.now())); }catch(e){}
+
+    // Auch Welcome-Message im Widget setzen
+    var welcomeMsg = document.getElementById('kiWelcomeMsg');
+    if(welcomeMsg) welcomeMsg.textContent = tip;
+
+    // Auto-dismiss nach 20 Sekunden
+    setTimeout(closePopup, 20000);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // Buttons verdrahten
+    var closeBtn = document.getElementById('kiPopupClose');
+    var dismissBtn = document.getElementById('kiPopupDismiss');
+    var openBtn = document.getElementById('kiPopupOpen');
+
+    if(closeBtn) closeBtn.addEventListener('click', closePopup);
+    if(dismissBtn) dismissBtn.addEventListener('click', closePopup);
+    if(openBtn) openBtn.addEventListener('click', function(){ openWidget(lastTip); });
+
+    // Klick außerhalb schließt Popup
+    var overlay = document.getElementById('kiPopupOverlay');
+    if(overlay) overlay.addEventListener('click', function(e){
+      if(e.target === overlay) closePopup();
+    });
+
+    // Verzögert starten
+    setTimeout(showPopup, POPUP_DELAY);
+  });
+})();
+</script>
+
 </body>
 </html>
