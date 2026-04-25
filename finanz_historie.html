@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>HaushaltsHeld – Finanz-Historie</title>
+<title>Haushaltsheld – Finanz-Historie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -218,6 +218,11 @@ button,input,select,textarea{font:inherit}
   transform:translateX(4px);
   background:#fffdf9;
 }
+
+.quick-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.quick-pill{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font-size:.85rem;font-weight:800;color:var(--text2);cursor:pointer;transition:.15s ease;white-space:nowrap;}
+.quick-pill:hover{border-color:var(--accent);color:var(--accent-dark);background:var(--accent-soft);}
+.quick-pill.active{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-color:var(--accent-dark);box-shadow:0 3px 0 #2f6f33;}
 </style>
 </head>
 <body>
@@ -240,7 +245,7 @@ button,input,select,textarea{font:inherit}
       <a href="familienplaner.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg></span><span>Familienplaner</span></a>
       <a href="essensplan.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 3v8"></path><path d="M6 3v8"></path><path d="M4 7h2"></path><path d="M11 3v18"></path><path d="M15 3c2 2 2 6 0 8"></path><path d="M15 11v10"></path></svg></span><span>Essensplan</span></a>
       <a href="rezepte.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span><span>Rezepte</span></a>
-      <a href="admin_chat.html"><span class="nav-icon" style="position:relative"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span id="chatBadge" class="chat-badge hidden">0</span></span><span>Familien-Chat</span></a>
+      <a href="admin_chat.html"><span class="nav-icon" style="position:relative"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
     </nav>
 
     <div class="nav-label">Extras</div>
@@ -254,7 +259,9 @@ button,input,select,textarea{font:inherit}
         <a href="finanzbericht.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M8 14v3"></path><path d="M12 10v7"></path><path d="M16 6v11"></path></svg></span><span>Bericht</span></a>
         <a href="finanz_historie.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path><path d="M12 7v5l3 3"></path></svg></span><span>Historie</span></a>
         <a href="beleg_import.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><path d="M14 2v6h6"></path></svg></span><span>Belege</span></a>
-        <a href="nutzer-verwalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span>Nutzer verwalten</span></a>
+        <a href="rezepte.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4H10a4 4 0 0 1 4 4v12a4 4 0 0 0-4-4H4.5A2.5 2.5 0 0 0 2 18.5z"/><path d="M22 6.5A2.5 2.5 0 0 0 19.5 4H14a4 4 0 0 0-4 4v12a4 4 0 0 1 4-4h5.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg></span><span>Rezepte</span></a>
+      <a href="essensplan_essverhalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="4"/><path d="m16 16 5 5"/></svg></span><span>Essensanalyse</span></a>
+      <a href="nutzer-verwalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span>Nutzer verwalten</span></a>
         <a href="admin.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path><path d="m9 12 2 2 4-4"></path></svg></span><span>Familienrechte</span></a>
       </div>
     </div>
@@ -281,7 +288,21 @@ button,input,select,textarea{font:inherit}
       <div><span class="mode-badge">Elternmodus aktiv</span></div>
     </div>
 
-    <section class="info-bubble" id="historyBubble">
+    
+      <div class="quick-filters" id="quickFilters">
+        <button class="quick-pill active" data-cat="">Alle</button>
+        <button class="quick-pill" data-cat="income">💰 Einnahmen</button>
+        <button class="quick-pill" data-cat="fixed">🏠 Fixkosten</button>
+        <button class="quick-pill" data-cat="variable">🛒 Einkäufe</button>
+        <button class="quick-pill" data-cat="insurance">🛡️ Versicherungen</button>
+        <button class="quick-pill" data-cat="subscription">📺 Abos</button>
+        <button class="quick-pill" data-cat="mobility">🚗 Mobilität</button>
+        <button class="quick-pill" data-cat="health">💊 Gesundheit</button>
+        <button class="quick-pill" data-cat="children">👶 Kinder</button>
+        <button class="quick-pill" data-cat="saving">🐖 Sparen</button>
+        <button class="quick-pill" data-cat="other">📦 Sonstiges</button>
+      </div>
+<section class="info-bubble" id="historyBubble">
       <div class="bubble-icon">🧾</div>
       <div>
         <h2>Gefilterter Verlauf mit denselben Steuerungen wie in Finanzen</h2>
@@ -394,7 +415,7 @@ button,input,select,textarea{font:inherit}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SHADOW_STORAGE_KEY = 'hh_finance_entries_v8';
+const SHADOW_STORAGE_KEY = 'haushaltsheld_finance_entries_v2';
 const SHADOW_BANK_KEY = 'hh_finance_bank_sources_v1';
 const BUBBLE_KEY = 'hh_finance_history_bubble_hidden';
 const DEFAULT_BANK_SOURCES = [
@@ -859,9 +880,115 @@ function updateChatBadge(){
   });
   const badge = document.getElementById('chatBadge');
   if(!badge) return;
-  if(unread > 0){ badge.textContent = unread > 99 ? '99+' : String(unread); badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
+  if(unread > 0){ badge.textContent = unread > 99 ? '99+' : String(unread); badge.style.display='inline-block'; } else { badge.style.display='none'; }
 }
 document.addEventListener('DOMContentLoaded', initUI);
 </script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>document.addEventListener("DOMContentLoaded",function(){if(window.lucide)lucide.createIcons();});</script>
+
+<script>
+(function(){
+  // Kategorie-Mapping für Schnellfilter
+  const CAT_MAP = {
+    income:       ['income','einnahme','gehalt','lohn','rente'],
+    fixed:        ['fixed','fixkosten','miete','strom','gas','wasser','internet'],
+    variable:     ['variable','einkauf','lebensmittel','rewe','aldi','edeka','lidl'],
+    insurance:    ['insurance','versicherung','haftpflicht','kranken','lebens','kfz-versicherung'],
+    subscription: ['subscription','abo','abonnement','netflix','spotify','amazon','streaming','disney'],
+    mobility:     ['mobility','mobilität','tanken','auto','bahn','bus','taxi','uber'],
+    health:       ['health','gesundheit','arzt','apotheke','medikament','zahnarzt'],
+    children:     ['children','kinder','kind','schule','kita','kindergarten','spielzeug'],
+    saving:       ['saving','sparen','rücklage','depot'],
+    other:        ['other','sonstiges']
+  };
+
+  let activeQuickCat = '';
+
+  function matchesCat(entry, cat){
+    if(!cat) return true;
+    const keywords = CAT_MAP[cat] || [cat];
+    const haystack = [
+      entry.type, entry.category, entry.kategorie,
+      entry.subcategory, entry.title, entry.beschreibung,
+      entry.notes
+    ].join(' ').toLowerCase();
+    return keywords.some(k => haystack.includes(k));
+  }
+
+  // Original getFilteredEntries wrappen
+  document.addEventListener('DOMContentLoaded', () => {
+    const pills = document.querySelectorAll('#quickFilters .quick-pill');
+    
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeQuickCat = pill.dataset.cat || '';
+        
+        // filterMain Select anpassen wenn möglich
+        const mainSel = document.getElementById('filterMain');
+        if(mainSel && activeQuickCat){
+          // Versuche passende Option zu setzen
+          const opt = Array.from(mainSel.options).find(o => 
+            o.value === activeQuickCat || 
+            (CAT_MAP[activeQuickCat]||[]).includes(o.value)
+          );
+          if(opt){ mainSel.value = opt.value; }
+          else { mainSel.value = ''; }
+        } else if(mainSel) {
+          mainSel.value = '';
+        }
+        
+        // Filter anwenden
+        if(typeof applyFilters === 'function') applyFilters();
+        else if(typeof renderEntries === 'function') renderEntries();
+        else if(typeof render === 'function') render();
+      });
+    });
+
+    // Originale Filter-Funktion patchen um Schnellfilter einzubeziehen
+    const origGetFiltered = window.getFilteredEntries;
+    if(typeof origGetFiltered === 'function'){
+      window.getFilteredEntries = function(){
+        let entries = origGetFiltered();
+        if(activeQuickCat){
+          entries = entries.filter(e => matchesCat(e, activeQuickCat));
+        }
+        return entries;
+      };
+    }
+  });
+})();
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Print Button
+  const printBtn = document.getElementById('printBtn');
+  if(printBtn) printBtn.addEventListener('click', function(){ window.print(); });
+
+  // Reset Filters
+  const resetBtn = document.getElementById('resetFilters');
+  if(resetBtn) resetBtn.addEventListener('click', function(){
+    ['filterMain','filterSub','filterPerson','filterType','filterRecurring',
+     'filterAccount','filterSource','filterSearch','filterDateFrom','filterDateTo',
+     'filterCreatedFrom','filterCreatedTo'].forEach(function(id){
+      const el = document.getElementById(id);
+      if(el){ el.value = ''; }
+    });
+    // Schnellfilter zurücksetzen
+    document.querySelectorAll('#quickFilters .quick-pill').forEach(function(p){ p.classList.remove('active'); });
+    const allPill = document.querySelector('#quickFilters .quick-pill[data-cat=""]');
+    if(allPill) allPill.classList.add('active');
+    // Filter neu anwenden
+    if(typeof applyFilters==='function') applyFilters();
+    else if(typeof renderAll==='function') renderAll();
+    else if(typeof render==='function') render();
+  });
+});
+</script>
+
 </body>
 </html>

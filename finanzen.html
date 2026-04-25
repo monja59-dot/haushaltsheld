@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>HaushaltsHeld – Finanzen</title>
+<title>Haushaltsheld – Finanzen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -348,6 +348,55 @@ button,input,select,textarea{font:inherit}
 
 
 
+
+/* Monats-Zusammenfassung Header */
+.month-summary-bar{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}
+.month-stat{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;font-size:.88rem;font-weight:800;border:1px solid var(--line);background:rgba(255,255,255,.8)}
+.month-stat.income{background:#eef7ef;border-color:#c8e6c9;color:#2e7d32}
+.month-stat.expense{background:#fdeaea;border-color:#f5c6c6;color:#c62828}
+.month-stat.balance{background:#e8f4fd;border-color:#b3d4f0;color:#1565c0}
+
+/* Monats-Übersichtskarte */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:6px}
+.summary-item{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center}
+.summary-item .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.summary-item .s-value{font-size:1.6rem;font-weight:800;line-height:1}
+.summary-item.income .s-value{color:#2e7d32}
+.summary-item.expense .s-value{color:#c62828}
+.summary-item.balance .s-value{color:#1565c0}
+.summary-bar{height:10px;border-radius:999px;background:var(--soft2);overflow:hidden;margin-top:10px}
+.summary-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-dark));transition:width .4s ease}
+
+/* Bank-Coming-Soon Karte */
+.bank-soon-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:#fff3e0;border:1px solid #ffcc80;color:#e65100;font-size:.82rem;font-weight:800;margin-bottom:14px}
+.bank-email-form{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.bank-email-form input{flex:1;min-width:200px;border:1.5px solid var(--line);border-radius:14px;padding:12px 16px;font-size:.95rem;font-family:inherit;outline:none}
+.bank-email-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(76,175,80,.12)}
+.bank-email-btn{border:none;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;padding:12px 20px;border-radius:14px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:inherit}
+.bank-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.bank-feature-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--soft);border-radius:14px;border:1px solid var(--line);font-size:.88rem;font-weight:700;color:var(--text2)}
+
+/* Toast Benachrichtigung */
+.hh-toast{position:fixed;bottom:100px;right:22px;z-index:9999;padding:14px 20px;border-radius:18px;font-weight:800;font-size:.95rem;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.18);transform:translateY(20px);opacity:0;transition:all .3s ease;pointer-events:none;max-width:320px}
+.hh-toast.show{transform:translateY(0);opacity:1}
+.hh-toast.success{background:linear-gradient(135deg,#43a047,#2e7d32)}
+.hh-toast.error{background:linear-gradient(135deg,#e53935,#b71c1c)}
+.hh-toast.info{background:linear-gradient(135deg,#1976d2,#0d47a1)}
+
+/* PDF Upload */
+.pdf-upload-zone{border:2px dashed var(--line);border-radius:18px;padding:24px;text-align:center;cursor:pointer;transition:.2s ease;background:var(--soft)}
+.pdf-upload-zone:hover,.pdf-upload-zone.drag{border-color:var(--accent);background:var(--accent-soft)}
+.pdf-upload-zone .pdf-icon{font-size:2rem;margin-bottom:8px}
+.pdf-upload-zone p{color:var(--muted);font-weight:700;margin:0}
+.pdf-status{margin-top:10px;padding:10px 14px;border-radius:12px;font-weight:700;font-size:.9rem;display:none}
+.pdf-status.ok{background:#eef7ef;color:#2e7d32;display:block}
+.pdf-status.err{background:#fdeaea;color:#c62828;display:block}
+
+@media(max-width:700px){
+  .summary-grid{grid-template-columns:1fr}
+  .bank-features{grid-template-columns:1fr}
+  .month-summary-bar{gap:8px}
+}
 </style>
 </head>
 <body>
@@ -370,7 +419,7 @@ button,input,select,textarea{font:inherit}
       <a href="familienplaner.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg></span><span>Familienplaner</span></a>
       <a href="essensplan.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 3v8"></path><path d="M6 3v8"></path><path d="M4 7h2"></path><path d="M11 3v18"></path><path d="M15 3c2 2 2 6 0 8"></path><path d="M15 11v10"></path></svg></span><span>Essensplan</span></a>
       <a href="rezepte.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span><span>Rezepte</span></a>
-      <a href="admin_chat.html"><span class="nav-icon" style="position:relative"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span id="chatBadge" class="chat-badge hidden">0</span></span><span>Familien-Chat</span></a>
+      <a href="admin_chat.html"><span class="nav-icon" style="position:relative"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
     </nav>
 
     <div class="nav-label">Extras</div>
@@ -384,7 +433,9 @@ button,input,select,textarea{font:inherit}
         <a href="finanzbericht.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M8 14v3"></path><path d="M12 10v7"></path><path d="M16 6v11"></path></svg></span><span>Bericht</span></a>
         <a href="finanz_historie.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path><path d="M12 7v5l3 3"></path></svg></span><span>Historie</span></a>
         <a href="beleg_import.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><path d="M14 2v6h6"></path></svg></span><span>Belege</span></a>
-        <a href="nutzer-verwalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span>Nutzer verwalten</span></a>
+        <a href="rezepte.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4H10a4 4 0 0 1 4 4v12a4 4 0 0 0-4-4H4.5A2.5 2.5 0 0 0 2 18.5z"/><path d="M22 6.5A2.5 2.5 0 0 0 19.5 4H14a4 4 0 0 0-4 4v12a4 4 0 0 1 4-4h5.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg></span><span>Rezepte</span></a>
+      <a href="essensplan_essverhalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="4"/><path d="m16 16 5 5"/></svg></span><span>Essensanalyse</span></a>
+      <a href="nutzer-verwalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span>Nutzer verwalten</span></a>
         <a href="admin.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path><path d="m9 12 2 2 4-4"></path></svg></span><span>Familienrechte</span></a>
       </div>
     </div>
@@ -408,7 +459,14 @@ button,input,select,textarea{font:inherit}
         <h1><span class="page-icon"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z"></path><path d="M3 10h18"></path><path d="M17 14h.01"></path></svg></span>Finanzen</h1>
         <p>Hier kannst du Einnahmen, Ausgaben, Budgets, wiederkehrende Kosten und Planungen strukturiert erfassen. Jeder Bereich ist einzeln aufklappbar, damit die Seite ruhiger bleibt und du direkt in der passenden Kategorie arbeiten kannst.</p>
       </div>
-      <span class="mode-badge">Elternmodus aktiv</span>
+      <div>
+        <span class="mode-badge">Elternmodus aktiv</span>
+        <div class="month-summary-bar" id="headerSummary">
+          <span class="month-stat income" id="hdrIncome">↑ Einnahmen: –</span>
+          <span class="month-stat expense" id="hdrExpense">↓ Ausgaben: –</span>
+          <span class="month-stat balance" id="hdrBalance">= Bilanz: –</span>
+        </div>
+      </div>
     </div>
 
     <section class="info-bubble" id="financeBubble">
@@ -422,6 +480,39 @@ button,input,select,textarea{font:inherit}
         </div>
       </div>
     </section>
+    <!-- Monats-Zusammenfassung -->
+    <div class="card" id="monthlySummaryCard" style="margin-bottom:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+        <h3 style="margin:0;">📊 <span id="summaryMonthLabel">Dieser Monat</span></h3>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-soft" type="button" id="summaryPrevBtn">← Vormonat</button>
+          <button class="btn-soft" type="button" id="summaryNextBtn">Nächster →</button>
+        </div>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-item income">
+          <div class="s-label">Einnahmen</div>
+          <div class="s-value" id="summaryIncome">–</div>
+        </div>
+        <div class="summary-item expense">
+          <div class="s-label">Ausgaben</div>
+          <div class="s-value" id="summaryExpense">–</div>
+        </div>
+        <div class="summary-item balance">
+          <div class="s-label">Bilanz</div>
+          <div class="s-value" id="summaryBalance">–</div>
+        </div>
+      </div>
+      <div class="summary-bar" style="margin-top:14px;">
+        <div class="summary-bar-fill" id="summaryBarFill" style="width:0%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:.8rem;color:var(--muted);font-weight:700;">
+        <span id="summaryBarLabel">Ausgaben vs. Einnahmen</span>
+        <span id="summaryBarPct">–</span>
+      </div>
+      <div id="summaryTopCats" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+
 
     <div class="top-grid">
       <section class="left-stack">
@@ -448,22 +539,26 @@ button,input,select,textarea{font:inherit}
         </div>
 
         <div class="card">
-          <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z"></path><path d="M3 10h18"></path><path d="M17 14h.01"></path></svg></span>Banken, Konten & Karten</h3>
-          <p class="card-sub">Hier verwaltest du deine Zahlungsquellen für spätere Bank-API, Kreditkarten und mehrere Konten pro Nutzer. Die Auswahl steht dir danach in allen Finanz-Einträgen und Filtern zur Verfügung.</p>
-          <div class="bank-config-grid">
-            <div class="field"><label for="bankLabel">Anzeigename</label><input id="bankLabel" type="text" placeholder="z. B. Sparkasse Mama oder Visa Urlaub"></div>
-            <div class="field"><label for="bankType">Typ</label><select id="bankType"><option value="Girokonto">Girokonto</option><option value="Gemeinschaftskonto">Gemeinschaftskonto</option><option value="Tagesgeld">Tagesgeld</option><option value="Debitkarte">Debitkarte</option><option value="Kreditkarte">Kreditkarte</option><option value="Prepaid-Karte">Prepaid-Karte</option></select></div>
-            <div class="field"><label for="bankOwner">Zuordnung</label><select id="bankOwner"><option value="Mama">Mama</option><option value="Papa">Papa</option><option value="Kind">Kind</option><option value="Familie">Familie</option></select></div>
-            <button class="btn-soft" type="button" id="addBankSource" style="align-self:end">+ Hinzufügen</button>
+          <div class="bank-soon-badge">🏦 Kommt bald</div>
+          <h3>Bank-Verbindung & automatischer Abgleich</h3>
+          <p class="card-sub">Wir arbeiten an der direkten Bank-Anbindung über eine sichere API. Sobald sie verfügbar ist, werden Kontobewegungen automatisch importiert und kategorisiert.</p>
+          <div class="bank-features">
+            <div class="bank-feature-item">🔄 Automatischer Kontoabgleich</div>
+            <div class="bank-feature-item">🏦 Mehrere Konten & Karten</div>
+            <div class="bank-feature-item">📊 Echtzeitübersicht</div>
+            <div class="bank-feature-item">🔒 Sichere Verbindung (PSD2)</div>
+            <div class="bank-feature-item">📱 DKB, ING, Sparkasse & mehr</div>
+            <div class="bank-feature-item">🤖 KI-Kategorisierung</div>
           </div>
-          <div class="bank-config-meta">
-            <div class="field"><label for="bankInstitute">Bank / Anbieter</label><input id="bankInstitute" type="text" placeholder="z. B. Sparkasse, ING, Visa"></div>
-            <div class="field"><label for="bankDigits">Endziffern</label><input id="bankDigits" type="text" placeholder="z. B. 1234"></div>
-            <div class="field"><label for="bankConnection">API-Status</label><select id="bankConnection"><option value="geplant">API geplant</option><option value="manuell">Nur manuell</option><option value="bereit">API vorbereitet</option><option value="verbunden">API verbunden</option></select></div>
+          <p style="margin-top:16px;color:var(--muted);font-weight:700;font-size:.9rem;">Lass dich benachrichtigen wenn die Bank-Verbindung startet:</p>
+          <div class="bank-email-form">
+            <input type="email" id="bankNotifyEmail" placeholder="deine@email.de" autocomplete="email">
+            <button class="bank-email-btn" type="button" id="bankNotifyBtn">Benachrichtigen</button>
           </div>
-          <div id="bankSourceList" class="bank-chip-list"></div>
-          <div class="bank-note">Gedacht für mehrere Bankkarten, Kreditkarten und Konten pro Nutzer. Später kann jede Zahlung dadurch sauber mit Bank-API, Karte oder manuellem Eintrag verknüpft werden.</div>
+          <div id="bankNotifyStatus" style="display:none;margin-top:10px;padding:10px 14px;border-radius:12px;font-weight:700;font-size:.9rem;"></div>
+          <p style="margin-top:14px;font-size:.82rem;color:var(--muted);">Bis dahin kannst du Kontoauszüge manuell hochladen – direkt im Import-Bereich weiter unten.</p>
         </div>
+
 
         <div class="card">
           <h3><span class="icon-chip"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg></span>Filter & Druck</h3>
@@ -498,11 +593,20 @@ button,input,select,textarea{font:inherit}
               <div class="field" style="grid-column:span 2"><label for="importText">Text einfügen</label><textarea id="importText" placeholder="z. B. 12.04.2026 REWE 48,90
 13.04.2026 Netflix 12,99
 14.04.2026 Tankstelle 65,20"></textarea></div>
-              <div class="field"><label for="importFile">Datei laden</label><input id="importFile" type="file" accept=".csv,.txt,.tsv,.json,.ofx,.qif"></div>
+              <div class="field" style="grid-column:span 1;">
+                <label>Datei laden</label>
+                <div class="pdf-upload-zone" id="pdfDropZone">
+                  <div class="pdf-icon">📄</div>
+                  <p>CSV, TXT, PDF oder Kontoauszug</p>
+                  <p style="font-size:.82rem;margin-top:4px;">Drag &amp; Drop oder klicken</p>
+                  <input id="importFile" type="file" accept=".csv,.txt,.tsv,.json,.ofx,.qif,.pdf" style="display:none;">
+                </div>
+                <div class="pdf-status" id="pdfStatus"></div>
+              </div>
             </div>
             <div class="import-grid">
               <div class="field"><label for="importSourceType">Importquelle</label><select id="importSourceType"><option value="scanner">Scanner / Beleg</option><option value="card_import">Kartenimport</option><option value="bank_api">Bank-API / Kontoauszug</option><option value="manual">Manuell übernommen</option></select></div>
-              <div class="field"><label for="importDefaultPerson">Standard-Zuordnung</label><select id="importDefaultPerson"><option value="">Automatisch</option><option value="Mama">Mama</option><option value="Papa">Papa</option><option value="Kind">Kind</option></select></div>
+              <div class="field"><label for="importDefaultPerson">Standard-Zuordnung</label><select id="importDefaultPerson"><option value="">Automatisch</option></select></div>
               <div class="field"><label for="importDefaultAccount">Standard-Konto / Karte</label><select id="importDefaultAccount"><option value="">Automatisch</option></select></div>
             </div>
             <div class="import-actions">
@@ -629,34 +733,10 @@ button,input,select,textarea{font:inherit}
   </main>
 </div>
 
-<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-  <span class="ki-fab-label">KI</span>
-</button>
 
-<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
-  <div class="ki-head">
-    <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
-      <div>
-        <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText">Ich unterstütze dich direkt in deinem Finanzbereich – beim Strukturieren, Prüfen und Sparen.</p>
-        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
-      </div>
-    </div>
-    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
-  </div>
-  <div class="ki-suggestions" id="kiSuggestions"></div>
-  <div class="ki-chat" id="kiChat">
-</div>
-  <form class="ki-form" id="kiForm">
-    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
-    <button class="ki-send" type="submit">Senden</button>
-  </form>
-</section>
 
 <script>
-const STORAGE_KEY = 'hh_finance_entries_v8';
+const STORAGE_KEY = 'haushaltsheld_finance_entries_v2';
 const BUBBLE_KEY = 'hh_finance_bubble_hidden';
 const LEARNING_RULES_KEY = 'hh_finance_learning_rules_v1';
 const BANK_SOURCES_KEY = 'hh_finance_bank_sources_v1';
@@ -1303,15 +1383,43 @@ function appendImportedEntries(mode='all'){
     return;
   }
   const entries = getEntries();
+
+  // ── Doppelbuchungs-Schutz beim Import ────────────────
+  const existingFingerprints = new Set(entries.map(e =>
+    [(e.title||'').toLowerCase().trim(),
+     Math.abs(Number(e.amount||0)).toFixed(2),
+     (e.date||'').slice(0,10)].join('|')
+  ));
+
+  let skipped = 0;
+  const newEntries = [];
   items.slice().reverse().forEach(item => {
+    const fp = [(item.title||'').toLowerCase().trim(),
+                Math.abs(Number(item.amount||0)).toFixed(2),
+                (item.date||'').slice(0,10)].join('|');
+    if(existingFingerprints.has(fp)){
+      skipped++;
+      return;
+    }
+    existingFingerprints.add(fp);
     const importedEntry = {...item, id:uid()};
-    entries.unshift(importedEntry);
+    newEntries.push(importedEntry);
     rememberLearningFromEntry(importedEntry, importedEntry.notes || importedEntry.title || '');
   });
+  // ─────────────────────────────────────────────────────
+
+  if(!newEntries.length){
+    alert('ℹ️ Alle ' + items.length + ' Buchungen sind bereits vorhanden – nichts importiert.');
+    return;
+  }
+
+  newEntries.forEach(e => entries.unshift(e));
   setEntries(entries);
   renderAll();
   renderBankingUI();
-  alert(`${items.length} Einträge importiert.`);
+  const msg = newEntries.length + ' Einträge importiert.' + (skipped > 0 ? '\n(' + skipped + ' Duplikat(e) übersprungen)' : '');
+  alert(msg);
+  if(typeof showToast === 'function') showToast('✅ ' + msg.split('\n')[0], 'success');
 }
 
 
@@ -1571,7 +1679,13 @@ function readJSON(key,fallback){ try{ const raw = localStorage.getItem(key); ret
 function writeJSON(key,value){ localStorage.setItem(key, JSON.stringify(value)); }
 function getEntries(){ return readJSON(STORAGE_KEY, []); }
 function setEntries(entries){ writeJSON(STORAGE_KEY, entries); }
-function uid(){ return 'entry_' + Math.random().toString(36).slice(2,10); }
+function uid(){
+  try{
+    return 'entry_' + ([...crypto.getRandomValues(new Uint8Array(6))].map(b=>b.toString(36)).join('')) + '_' + Date.now().toString(36);
+  }catch(e){
+    return 'entry_' + Math.random().toString(36).slice(2,10) + '_' + Date.now().toString(36);
+  }
+}
 function today(){ return new Date().toISOString().slice(0,10); }
 function createdDateOnly(s){ return String(s||'').slice(0,10); }
 function compareDate(val, from, to){ if(!val) return true; if(from && val < from) return false; if(to && val > to) return false; return true; }
@@ -1684,6 +1798,28 @@ function saveEntry(e, cat){
   e.preventDefault();
   const form = e.currentTarget;
   const data = Object.fromEntries(new FormData(form).entries());
+
+  // ── Doppelbuchungs-Schutz ────────────────────────────
+  const existing = appState.entries || [];
+  const newTitle = (data.title || cat.title || '').toLowerCase().trim();
+  const newAmount = Number(data.amount || 0);
+  const newDate = data.date || today();
+  const isDuplicate = existing.some(function(ex){
+    const sameTitle = (ex.title||'').toLowerCase().trim() === newTitle;
+    const sameAmount = Math.abs(Number(ex.amount||0)) === Math.abs(newAmount);
+    const sameDate = (ex.date||'').slice(0,10) === newDate.slice(0,10);
+    return sameTitle && sameAmount && sameDate;
+  });
+  if(isDuplicate){
+    const confirmed = window.confirm(
+      '⚠️ Es gibt bereits eine ähnliche Buchung:\n' +
+      '"' + (data.title||cat.title) + '" · ' + newAmount.toFixed(2) + ' € · ' + newDate + '\n\n' +
+      'Trotzdem speichern?'
+    );
+    if(!confirmed) return;
+  }
+  // ────────────────────────────────────────────────────
+
   const entry = {
     id: uid(),
     mainCategory: cat.title,
@@ -1723,6 +1859,9 @@ function saveEntry(e, cat){
   setEntries(entries);
   rememberLearningFromEntry(entry, [entry.title, entry.notes, entry.accountLabel, entry.bankName].filter(Boolean).join(' '));
   form.reset();
+  // Submit-Sperre gegen Doppelklick
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if(submitBtn){ submitBtn.disabled=true; setTimeout(function(){ submitBtn.disabled=false; },1500); }
   const dateField = form.querySelector('[name="date"]'); if(dateField) dateField.value = today();
   const sub = form.querySelector('[name="subCategory"]'); if(sub && cat.subs.length) sub.value = cat.subs[0];
   syncBankSelects();
@@ -2113,9 +2252,30 @@ function initUI(){
   document.querySelector('#extrasDrop .nav-drop-head').addEventListener('click', ()=> document.getElementById('extrasDrop').classList.toggle('open'));
   document.getElementById('childBtn').addEventListener('click', ()=> window.location.href = 'kindermodus.html');
 
-  if(localStorage.getItem(BUBBLE_KEY) === '1') document.getElementById('financeBubble').classList.add('hidden');
-  document.getElementById('bubbleHide').addEventListener('click', ()=> { localStorage.setItem(BUBBLE_KEY,'1'); document.getElementById('financeBubble').classList.add('hidden'); });
-  document.getElementById('bubbleLater').addEventListener('click', ()=> document.getElementById('financeBubble').classList.add('hidden'));
+  // Bubble-Listeners sicher in DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', function(){
+    const bubble = document.getElementById('financeBubble');
+    const hideBtn = document.getElementById('bubbleHide');
+    const laterBtn = document.getElementById('bubbleLater');
+    if(!bubble) return;
+
+    // Bubble ausblenden falls bereits weggeklickt
+    if(localStorage.getItem(BUBBLE_KEY) === '1'){
+      bubble.style.display = 'none';
+    }
+
+    if(hideBtn) hideBtn.addEventListener('click', function(){
+      bubble.style.display = 'none';
+      try{ localStorage.setItem(BUBBLE_KEY,'1'); }catch(e){}
+    });
+
+    if(laterBtn) laterBtn.addEventListener('click', function(){
+      bubble.style.display = 'none';
+      // Nach 6 Stunden wieder anzeigen
+      try{ localStorage.setItem(BUBBLE_KEY + '_later', String(Date.now() + 6*60*60*1000)); }catch(e){}
+      setTimeout(function(){ bubble.style.display = ''; }, 6*60*60*1000);
+    });
+  });
 
   const raw = localStorage.getItem('haushaltsheld_user') || localStorage.getItem('haushaltsheld_current_user');
   try{ if(raw){ const u = JSON.parse(raw); document.getElementById('userName').textContent = '👋 ' + (u.name || u.username || 'Willkommen'); document.getElementById('userRole').textContent = String(u.role || u.modus || 'Eltern-Modus'); } }catch(e){}
@@ -2146,7 +2306,7 @@ function updateChatBadge(){
     unread += (Array.isArray(directStore[convId])?directStore[convId]:[]).filter(m => (m.senderIdorslug(m.senderName||'')) !== currentUserId && String(m.timestamp||'') > String(lastSeen)).length;
   });
   const badge = document.getElementById('chatBadge');
-  if(!badge) return; if(unread > 0){ badge.textContent = unread > 99 ? '99+' : String(unread); badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
+  if(!badge) return; if(unread > 0){ badge.textContent = unread > 99 ? '99+' : String(unread); badge.style.display='inline-block'; } else { badge.style.display='none'; }
 }
 
 document.addEventListener('DOMContentLoaded', initUI);
@@ -2206,6 +2366,330 @@ document.addEventListener('DOMContentLoaded', function(){
   }catch(err){
     console.error('KI fallback failed', err);
   }
+});
+</script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>document.addEventListener("DOMContentLoaded",function(){if(window.lucide)lucide.createIcons();});</script>
+
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+  <span class="ki-fab-label">KI</span>
+</button>
+
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <p id="kiContextText"></p>
+        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+  </div>
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+  </div>
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+<script>
+(function(){
+  const page = "finanzen";
+  const fab = document.getElementById("kiFab");
+  const panel = document.getElementById("kiPanel");
+  const closeBtn = document.getElementById("kiClose");
+  const form = document.getElementById("kiForm");
+  const input = document.getElementById("kiInput");
+  const chat = document.getElementById("kiChat");
+  const suggestions = document.getElementById("kiSuggestions");
+  const contextText = document.getElementById("kiContextText");
+  const welcome = document.getElementById("kiWelcomeMsg");
+  if(!fab||!panel||!closeBtn||!form||!input||!chat||!suggestions||!contextText||!welcome) return;
+  const pageSettings = {
+    context: "Ich helfe dir beim Sparen, bei Ausgaben-Analysen und Finanz-Tipps.",
+    suggestions: ["Wo kann ich sparen?", "Analysiere meine Ausgaben.", "Gib mir Spartipps für diesen Monat."],
+    welcome: "Hallo 👋 Ich bin deine Haushaltsheld KI. Ich unterstütze dich bei Finanzen und Sparzielen."
+  };
+  function escapeHtml(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+  contextText.textContent = pageSettings.context;
+  welcome.textContent = pageSettings.welcome;
+  suggestions.innerHTML = pageSettings.suggestions.map(t=>'<button class="ki-chip" type="button">'+escapeHtml(t)+'</button>').join('');
+  suggestions.querySelectorAll('.ki-chip').forEach(btn=>{btn.addEventListener('click',()=>{input.value=btn.textContent.trim();input.focus();});});
+  function addMsg(role,text){const d=document.createElement('div');d.className='ki-msg '+role;d.textContent=text;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d;}
+  async function sendMessage(message){
+    addMsg('user',message);
+    const loading=addMsg('bot','Ich denke kurz nach …');
+    loading.classList.add('ki-typing');
+    try{
+      const res=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,page,mode:'parent'})});
+      const data=await res.json();
+      loading.remove();
+      addMsg('bot',data.reply||'Ich konnte gerade nichts Sinnvolles antworten.');
+    }catch(err){loading.remove();addMsg('bot','Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.');}
+  }
+  fab.addEventListener('click',()=>{panel.classList.add('open');input.focus();});
+  closeBtn.addEventListener('click',()=>{panel.classList.remove('open');});
+  document.addEventListener('keydown',(e)=>{if(e.key==='Escape')panel.classList.remove('open');});
+  form.addEventListener('submit',async(e)=>{e.preventDefault();const message=input.value.trim();if(!message)return;input.value='';await sendMessage(message);});
+})();
+</script>
+
+<div class="hh-toast" id="hhToast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function(){
+  // ── Toast Funktion ──────────────────────────────────────
+  function showToast(msg, type='success', duration=3500){
+    const t = document.getElementById('hhToast');
+    if(!t) return;
+    t.textContent = msg;
+    t.className = 'hh-toast ' + type + ' show';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(()=>{ t.classList.remove('show'); }, duration);
+  }
+  window.showToast = showToast;
+
+  // ── Hilfsfunktion: Einträge laden ───────────────────────
+  function loadEntries(){
+    try{ return JSON.parse(localStorage.getItem('haushaltsheld_finance_entries_v2')||'[]'); }
+    catch(e){ return []; }
+  }
+
+  // ── Monats-Zusammenfassung ──────────────────────────────
+  let summaryOffset = 0;
+
+  function formatEuro(v){
+    return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(Number(v||0));
+  }
+
+  function updateSummary(){
+    const entries = loadEntries();
+    const now = new Date();
+    const target = new Date(now.getFullYear(), now.getMonth() + summaryOffset, 1);
+    const year = target.getFullYear();
+    const month = target.getMonth();
+
+    const monthEntries = entries.filter(e=>{
+      const d = new Date(e.date||e.createdAt||e.timestamp||'');
+      return d.getFullYear()===year && d.getMonth()===month;
+    });
+
+    const income = monthEntries
+      .filter(e=>['income','einnahme','Einnahmen'].includes(e.type||e.category||''))
+      .reduce((s,e)=>s+Math.abs(Number(e.amount||e.betrag||0)),0);
+
+    const expense = monthEntries
+      .filter(e=>!['income','einnahme','Einnahmen'].includes(e.type||e.category||''))
+      .reduce((s,e)=>s+Math.abs(Number(e.amount||e.betrag||0)),0);
+
+    const balance = income - expense;
+    const pct = income > 0 ? Math.min(100, Math.round((expense/income)*100)) : 0;
+
+    const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    const label = months[month] + ' ' + year;
+
+    // Große Karte
+    const setEl = (id,val)=>{ const el=document.getElementById(id); if(el) el.textContent=val; };
+    setEl('summaryMonthLabel', label);
+    setEl('summaryIncome', formatEuro(income));
+    setEl('summaryExpense', formatEuro(expense));
+    setEl('summaryBalance', formatEuro(balance));
+    setEl('summaryBarPct', pct + '% ausgegeben');
+    const bar = document.getElementById('summaryBarFill');
+    if(bar) bar.style.width = pct + '%';
+
+    // Top-Kategorien
+    const cats = {};
+    monthEntries.forEach(e=>{ const cat=e.category||e.kategorie||'Sonstiges'; cats[cat]=(cats[cat]||0)+Math.abs(Number(e.amount||0)); });
+    const topCats = Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const topEl = document.getElementById('summaryTopCats');
+    if(topEl) topEl.innerHTML = topCats.map(([k,v])=>
+      `<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--soft);border:1px solid var(--line);font-size:.82rem;font-weight:700;color:var(--text2);">${k}: ${formatEuro(v)}</span>`
+    ).join('');
+
+    // Kleiner Header
+    setEl('hdrIncome', '↑ ' + formatEuro(income));
+    setEl('hdrExpense', '↓ ' + formatEuro(expense));
+    setEl('hdrBalance', (balance>=0?'+ ':'') + formatEuro(balance));
+    const hdrBal = document.getElementById('hdrBalance');
+    if(hdrBal){ hdrBal.classList.toggle('income', balance>=0); hdrBal.classList.toggle('expense', balance<0); }
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    updateSummary();
+    const prev = document.getElementById('summaryPrevBtn');
+    const next = document.getElementById('summaryNextBtn');
+    if(prev) prev.addEventListener('click',()=>{ summaryOffset--; updateSummary(); });
+    if(next) next.addEventListener('click',()=>{ if(summaryOffset<0){ summaryOffset++; updateSummary(); } });
+  });
+  window.addEventListener('storage', updateSummary);
+
+  // ── Personen-Select dynamisch befüllen ──────────────────
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const sel = document.getElementById('importDefaultPerson');
+    if(!sel) return;
+    try{
+      const users = JSON.parse(localStorage.getItem('haushaltsheld_users')||'[]');
+      users.forEach(u=>{
+        const opt = document.createElement('option');
+        opt.value = u.name||u.id;
+        opt.textContent = u.name||(u.role==='parent'?'Elternteil':'Kind');
+        sel.appendChild(opt);
+      });
+      if(sel.options.length===1){
+        ['Mama','Papa','Kind','Familie'].forEach(n=>{
+          const opt=document.createElement('option'); opt.value=n; opt.textContent=n; sel.appendChild(opt);
+        });
+      }
+    }catch(e){}
+  });
+
+  // ── PDF Drag & Drop + Upload ────────────────────────────
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const zone = document.getElementById('pdfDropZone');
+    const fileInput = document.getElementById('importFile');
+    const statusEl = document.getElementById('pdfStatus');
+    const textArea = document.getElementById('importText');
+    if(!zone || !fileInput) return;
+
+    zone.addEventListener('click', ()=> fileInput.click());
+
+    zone.addEventListener('dragover', e=>{ e.preventDefault(); zone.classList.add('drag'); });
+    zone.addEventListener('dragleave', ()=> zone.classList.remove('drag'));
+    zone.addEventListener('drop', e=>{
+      e.preventDefault();
+      zone.classList.remove('drag');
+      const file = e.dataTransfer?.files?.[0];
+      if(file) handleFile(file);
+    });
+
+    fileInput.addEventListener('change', ()=>{
+      if(fileInput.files?.[0]) handleFile(fileInput.files[0]);
+    });
+
+    async function handleFile(file){
+      const name = file.name.toLowerCase();
+      if(name.endsWith('.pdf')){
+        await extractPDF(file);
+      } else {
+        const text = await file.text();
+        if(textArea) textArea.value = text;
+        if(statusEl){ statusEl.textContent = '✅ ' + file.name + ' geladen – bereit zum Analysieren.'; statusEl.className='pdf-status ok'; }
+        showToast('Datei geladen: ' + file.name, 'success');
+      }
+    }
+
+    async function extractPDF(file){
+      if(statusEl){ statusEl.textContent = '⏳ PDF wird verarbeitet…'; statusEl.className='pdf-status ok'; }
+      try{
+        if(typeof pdfjsLib === 'undefined') throw new Error('PDF.js nicht geladen');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+        let fullText = '';
+        for(let i=1; i<=pdf.numPages; i++){
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          fullText += content.items.map(item=>item.str).join(' ') + '\n';
+        }
+        if(textArea) textArea.value = fullText.trim();
+        if(statusEl){ statusEl.textContent = '✅ PDF gelesen: ' + pdf.numPages + ' Seite(n) – Text bereit zum Analysieren.'; statusEl.className='pdf-status ok'; }
+        showToast('PDF erfolgreich gelesen (' + pdf.numPages + ' Seiten)', 'success');
+      }catch(err){
+        if(statusEl){ statusEl.textContent = '❌ PDF konnte nicht gelesen werden: ' + err.message; statusEl.className='pdf-status err'; }
+        showToast('PDF-Fehler: ' + err.message, 'error');
+      }
+    }
+  });
+
+  // ── Bank E-Mail Benachrichtigung ────────────────────────
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('bankNotifyBtn');
+    const input = document.getElementById('bankNotifyEmail');
+    const status = document.getElementById('bankNotifyStatus');
+    if(!btn || !input) return;
+
+    btn.addEventListener('click', async ()=>{
+      const email = input.value.trim();
+      if(!email || !email.includes('@')){ showToast('Bitte eine gültige E-Mail eingeben.','error'); return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Wird gesendet…';
+
+      try{
+        const res = await fetch('/.netlify/functions/bank-notify', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if(res.ok && data.ok){
+          if(status){ status.textContent='✅ Super! Wir benachrichtigen dich unter ' + email + ' sobald die Bank-Verbindung startet.'; status.style.background='#eef7ef'; status.style.color='#2e7d32'; status.style.display='block'; }
+          input.value='';
+          showToast('E-Mail gespeichert – du wirst benachrichtigt!','success');
+          localStorage.setItem('hh_bank_notify_email', email);
+        } else {
+          throw new Error(data.error||'Unbekannter Fehler');
+        }
+      }catch(err){
+        // Fallback: lokal speichern
+        localStorage.setItem('hh_bank_notify_email', email);
+        if(status){ status.textContent='✅ Gespeichert! (Offline-Modus – wird synchronisiert wenn du online bist)'; status.style.background='#fff3e0'; status.style.color='#e65100'; status.style.display='block'; }
+        showToast('Lokal gespeichert – wird synchronisiert','info');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Benachrichtigen';
+      }
+    });
+
+    // Vorherige E-Mail wiederherstellen
+    const saved = localStorage.getItem('hh_bank_notify_email');
+    if(saved && input){ input.value = saved; }
+  });
+
+  // ── Import-Feedback (Toast nach Import) ────────────────
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const importAllBtn = document.getElementById('importAllBtn');
+    const importSafeBtn = document.getElementById('importSafeBtn');
+
+    function wrapImport(btn, label){
+      if(!btn) return;
+      const orig = btn.onclick;
+      btn.addEventListener('click', ()=>{
+        setTimeout(()=>{
+          const entries = loadEntries();
+          showToast(label + ' – ' + entries.length + ' Einträge gesamt', 'success');
+          updateSummary();
+        }, 800);
+      });
+    }
+    wrapImport(importAllBtn, '✅ Import abgeschlossen');
+    wrapImport(importSafeBtn, '✅ Sichere Einträge importiert');
+  });
+
+})();
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const resetBtn = document.getElementById('resetFilters');
+  if(resetBtn) resetBtn.addEventListener('click', function(){
+    ['filterMain','filterSub','filterPerson','filterType','filterRecurring',
+     'filterAccount','filterSource','filterSearch','filterDateFrom','filterDateTo',
+     'filterCreatedFrom','filterCreatedTo'].forEach(function(id){
+      const el = document.getElementById(id); if(el) el.value='';
+    });
+    if(typeof renderAll==='function') renderAll();
+    else if(typeof render==='function') render();
+  });
 });
 </script>
 

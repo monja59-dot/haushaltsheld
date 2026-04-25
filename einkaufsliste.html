@@ -255,7 +255,7 @@ button,input,select,textarea{font:inherit}
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="logo-wrap">
+    <div class="logo-wrap" style="cursor:pointer;" onclick="window.location.href='index.html'">
       <a class="logo-link" href="index.html">
         <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
         <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Familien-Assistent</div></div>
@@ -263,15 +263,15 @@ button,input,select,textarea{font:inherit}
     </div>
     <div class="nav-label">Hauptmenü</div>
     <nav class="nav">
-      <a href="index.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="4" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span><span>Dashboard</span></a>
-      <a href="finanzen.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M3 7h18v10H3z"/><path d="M16 12h.01"/></svg></span><span>Finanzen</span></a>
-      <a href="einkaufsliste.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"/></svg></span><span>Einkaufsliste</span></a>
-      <a href="aufgaben.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg></span><span>Aufgaben</span></a>
-      <a href="familienplaner.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/></svg></span><span>Familienplaner</span></a>
-      <a href="essensplan.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 2-6 6"/><path d="m17.5 7.5-7-7"/><path d="M10 12 4 18"/><path d="M14 10 22 18"/></svg></span><span>Essensplan</span></a>
-      <a href="essensplan_essverhalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="4"/><path d="m16 16 5 5"/></svg></span><span>Essensanalyse</span></a>
-      <a href="rezepte.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4H10a4 4 0 0 1 4 4v12a4 4 0 0 0-4-4H4.5A2.5 2.5 0 0 0 2 18.5z"/><path d="M22 6.5A2.5 2.5 0 0 0 19.5 4H14a4 4 0 0 0-4 4v12a4 4 0 0 1 4-4h5.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg></span><span>Rezepte</span></a>
-      <a href="admin_chat.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Familien-Chat</span></a>
+      <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+      <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+      <a href="einkaufsliste.html" class="active"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkaufsliste</span></a>
+      <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+      <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+      <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+      <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+      <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+      <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
     </nav>
   </aside>
 
@@ -280,7 +280,8 @@ button,input,select,textarea{font:inherit}
       <div>
         <h1><span class="page-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H7"/></svg></span><span>Einkaufsliste</span></h1>
         <p>Diese Version ist bewusst stabil: alles läuft lokal im Browser. So kannst du endlich direkt sehen, speichern, filtern, löschen und drucken.</p>
-      </div>
+      
+    <span class="mode-badge">Elternmodus aktiv</span></div>
     </div>
 
     <section class="hero">
@@ -1092,31 +1093,7 @@ renderAll();
   </div>
 </div>
 
-<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-  <span class="ki-fab-label">KI</span>
-</button>
 
-<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
-  <div class="ki-head">
-    <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
-      <div>
-        <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText">Ich unterstütze dich bei Einkauf, Summen und Struktur direkt auf dieser Seite.</p>
-        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
-      </div>
-    </div>
-    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
-  </div>
-  <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot">Hallo 👋 Ich helfe dir hier direkt bei deiner Einkaufsliste. Du kannst mir Fragen zu Kategorien, Summen, Struktur oder Einkaufsideen stellen.</div>
-  </div>
-  <form class="ki-form" id="kiForm">
-    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
-    <button class="ki-send" type="submit">Senden</button>
-  </form>
-</section>
 
 <script>
 (function(){
@@ -1191,5 +1168,75 @@ renderAll();
 })();
 </script>
 
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>document.addEventListener("DOMContentLoaded",function(){if(window.lucide)lucide.createIcons();});</script>
+
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+  <span class="ki-fab-label">KI</span>
+</button>
+
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <p id="kiContextText"></p>
+        <a class="ki-chat-link" href="admin_chat.html">Zum Familien-Chat</a>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+  </div>
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+  </div>
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+<script>
+(function(){
+  const page = "einkauf";
+  const fab = document.getElementById("kiFab");
+  const panel = document.getElementById("kiPanel");
+  const closeBtn = document.getElementById("kiClose");
+  const form = document.getElementById("kiForm");
+  const input = document.getElementById("kiInput");
+  const chat = document.getElementById("kiChat");
+  const suggestions = document.getElementById("kiSuggestions");
+  const contextText = document.getElementById("kiContextText");
+  const welcome = document.getElementById("kiWelcomeMsg");
+  if(!fab||!panel||!closeBtn||!form||!input||!chat||!suggestions||!contextText||!welcome) return;
+  const pageSettings = {
+    context: "Ich helfe dir beim Einkauf, bei Mengen, Kategorien und günstigen Alternativen.",
+    suggestions: ["Was fehlt noch auf meiner Liste?", "Welche günstigen Alternativen gibt es?", "Hilf mir beim Strukturieren der Einkaufsliste."],
+    welcome: "Hallo 👋 Ich bin deine Haushaltsheld KI. Ich helfe dir beim Einkauf und mit Spartipps."
+  };
+  function escapeHtml(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+  contextText.textContent = pageSettings.context;
+  welcome.textContent = pageSettings.welcome;
+  suggestions.innerHTML = pageSettings.suggestions.map(t=>'<button class="ki-chip" type="button">'+escapeHtml(t)+'</button>').join('');
+  suggestions.querySelectorAll('.ki-chip').forEach(btn=>{btn.addEventListener('click',()=>{input.value=btn.textContent.trim();input.focus();});});
+  function addMsg(role,text){const d=document.createElement('div');d.className='ki-msg '+role;d.textContent=text;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d;}
+  async function sendMessage(message){
+    addMsg('user',message);
+    const loading=addMsg('bot','Ich denke kurz nach …');
+    loading.classList.add('ki-typing');
+    try{
+      const res=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,page,mode:'parent'})});
+      const data=await res.json();
+      loading.remove();
+      addMsg('bot',data.reply||'Ich konnte gerade nichts Sinnvolles antworten.');
+    }catch(err){loading.remove();addMsg('bot','Gerade gibt es ein kleines Verbindungsproblem. Versuch es bitte gleich noch einmal.');}
+  }
+  fab.addEventListener('click',()=>{panel.classList.add('open');input.focus();});
+  closeBtn.addEventListener('click',()=>{panel.classList.remove('open');});
+  document.addEventListener('keydown',(e)=>{if(e.key==='Escape')panel.classList.remove('open');});
+  form.addEventListener('submit',async(e)=>{e.preventDefault();const message=input.value.trim();if(!message)return;input.value='';await sendMessage(message);});
+})();
+</script>
 </body>
 </html>

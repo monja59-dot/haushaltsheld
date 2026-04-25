@@ -780,8 +780,8 @@ button,input,select,textarea{font:inherit}
 
   <div class="sidebar-footer">
     <div class="user-info">
-      <strong id="userName">👋 Willkommen</strong>
-      <span id="userRole">Eltern-Modus</span>
+      <strong id="sidebarUserName">👋 Willkommen</strong>
+      <span id="sidebarUserRole">Eltern-Modus</span>
     </div>
     <div class="mode-switch">
       <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
@@ -1119,7 +1119,7 @@ function openAddUserModal(){
 }
 function closeUserModal(){ document.getElementById("userModal").classList.remove("show"); }
 function updateRoleDisplay(){
-  const role = document.getElementById("userRole").value;
+  const role = document.getElementById("sidebarUserRole").value;
   const noteBox = document.getElementById("roleHint");
   if(noteBox){
     noteBox.textContent = role === "child"
@@ -1131,9 +1131,9 @@ function resetUserRightsToggles(){ return; }
 
 function handleSaveUser(event){
   event.preventDefault();
-  const name = document.getElementById("userName").value.trim();
+  const name = document.getElementById("sidebarUserName").value.trim();
   const birthdate = document.getElementById("userBirthdate").value;
-  const role = document.getElementById("userRole").value;
+  const role = document.getElementById("sidebarUserRole").value;
   const pin = document.getElementById("userPin").value.trim();
   const errorMsg = document.getElementById("modalError");
   errorMsg.classList.remove("show");
@@ -1166,9 +1166,9 @@ function editUser(index){
   const user = allUsers[index]; if(!user) return;
   currentUserId = index;
   document.getElementById("modalTitle").textContent = "Nutzer bearbeiten";
-  document.getElementById("userName").value = user.name || "";
+  document.getElementById("sidebarUserName").value = user.name || "";
   document.getElementById("userBirthdate").value = user.birthdate || "";
-  document.getElementById("userRole").value = user.role || "";
+  document.getElementById("sidebarUserRole").value = user.role || "";
   document.getElementById("userPin").value = user.pin || "";
   updateRoleDisplay();
   document.getElementById("modalError").classList.remove("show");
