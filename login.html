@@ -261,28 +261,57 @@ body{
 
 <script>
 let selectedUser = null;
+let users = [];
+
+const ROLE_LABELS = {
+  owner: "Familien-Verwalter",
+  parent: "Elternteil",
+  parent_limited: "Eingeschränktes Elternteil",
+  teen: "Jugendkonto",
+  child: "Kinderkonto",
+  guest: "Gast / Betreuung"
+};
 
 function readJson(key, fallback){
   try{
-    const value = JSON.parse(localStorage.getItem(key));
+    const raw = localStorage.getItem(key);
+    if(!raw) return fallback;
+    const value = JSON.parse(raw);
     return value ?? fallback;
   }catch(error){
     return fallback;
   }
 }
 
+function slugify(value){
+  return String(value || "").toLowerCase().trim().replace(/\s+/g,"-").replace(/[^a-z0-9äöüß_-]/gi,"");
+}
+
+function getUserId(user){
+  return user?.id || user?.userId || user?.username || slugify(user?.name || user?.displayName || "user");
+}
+
+function normalizeRole(role){
+  const value = String(role || "").toLowerCase().trim();
+  if(value === "owner" || value === "admin" || value === "familien-verwalter") return "owner";
+  if(value === "parent" || value === "eltern" || value === "elternteil") return "parent";
+  if(value === "parent_limited" || value === "eingeschränktes elternteil" || value === "eingeschraenktes elternteil") return "parent_limited";
+  if(value === "teen" || value === "jugend" || value === "jugendkonto") return "teen";
+  if(value === "child" || value === "kind" || value === "kinderkonto") return "child";
+  if(value === "guest" || value === "gast" || value === "betreuung") return "guest";
+  return "guest";
+}
+
+function roleLabel(role){ return ROLE_LABELS[normalizeRole(role)] || "Nutzer"; }
+function isAdultRole(role){ const r = normalizeRole(role); return r === "owner" || r === "parent" || r === "parent_limited"; }
+function isMinorRole(role){ const r = normalizeRole(role); return r === "child" || r === "teen"; }
+
 function getFamilyCode(){
   const savedAccess = readJson("haushaltsheld_family_access", null);
-  if(savedAccess && savedAccess.code){
-    return String(savedAccess.code);
-  }
+  if(savedAccess && savedAccess.code) return String(savedAccess.code);
   return "424242";
 }
-
-function createUserId(){
-  return "user-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2,8);
-}
-
+function createUserId(){ return "user-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2,8); }
 function calculateAge(birthdate){
   if(!birthdate) return 0;
   const birth = new Date(birthdate);
@@ -293,191 +322,140 @@ function calculateAge(birthdate){
   if(monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
   return Math.max(0, age);
 }
-
 function getDisplayAge(user){
   if(user && user.birthdate) return calculateAge(user.birthdate);
-  return Number(user?.age) || 0;
+  return Number(user?.age) || Number(user?.alter) || 0;
 }
-
-function normalizeUsers(users){
+function getRightsSystem(){
+  const rights = readJson("hh_rights_system_v1", {});
+  return { roles:rights.roles||{}, protection:rights.protection||{}, child:rights.child||{}, privacy:rights.privacy||{}, finance:rights.finance||{}, chat:rights.chat||{} };
+}
+function getRoleFromRights(user){
+  const id = getUserId(user);
+  const rights = getRightsSystem();
+  return normalizeRole(rights.roles?.[id] || user.role || user.modus || "guest");
+}
+function getProtectionLevel(user){
+  const id = getUserId(user);
+  const rights = getRightsSystem();
+  const role = getRoleFromRights(user);
+  if(rights.protection?.[id]) return rights.protection[id];
+  if(role === "child") return "protected";
+  if(role === "teen") return "independent";
+  return "custom";
+}
+function protectionLabel(level){
+  return ({ protected:"Geschützt", guided:"Begleitet", independent:"Selbstständiger", custom:"Individuell" })[level] || "Individuell";
+}
+function normalizeUsers(rawUsers){
   let changed = false;
-  const normalized = (Array.isArray(users) ? users : []).map((user) => {
+  const seen = new Map();
+  (Array.isArray(rawUsers) ? rawUsers : []).forEach((user) => {
     const next = { ...user };
-    if(!next.id){
-      next.id = createUserId();
-      changed = true;
-    }
-    if(!next.birthdate && Number(next.age) > 0){
-      const year = new Date().getFullYear() - Number(next.age);
-      next.birthdate = `${year}-01-01`;
-      changed = true;
-    }
+    if(!next.id){ next.id = createUserId(); changed = true; }
+    if(!next.name && next.username){ next.name = next.username; changed = true; }
+    if(!next.birthdate && Number(next.age) > 0){ const year = new Date().getFullYear() - Number(next.age); next.birthdate = `${year}-01-01`; changed = true; }
+    next.role = getRoleFromRights(next);
+    next.age = getDisplayAge(next);
     if(next.rights == null) next.rights = {};
-    return next;
+    const dedupeKey = getUserId(next) || slugify(next.name || "");
+    if(!seen.has(dedupeKey)) seen.set(dedupeKey, next);
+    else { const existing = seen.get(dedupeKey); seen.set(dedupeKey, { ...existing, ...next, id: existing.id || next.id }); changed = true; }
   });
-  if(changed){
-    localStorage.setItem("haushaltsheld_users", JSON.stringify(normalized));
-  }
+  const normalized = Array.from(seen.values());
+  if(changed) localStorage.setItem("haushaltsheld_users", JSON.stringify(normalized));
   return normalized;
 }
-
 function seedUsersIfNeeded(){
   const existing = readJson("haushaltsheld_users", null);
-  if(existing && Array.isArray(existing) && existing.length > 0){
-    return normalizeUsers(existing);
-  }
-
+  if(existing && Array.isArray(existing) && existing.length > 0) return normalizeUsers(existing);
   const demoUsers = [
-    { id:createUserId(), name:"Anna", birthdate:"1988-01-01", role:"parent", pin:"1234", rights:{} },
+    { id:createUserId(), name:"Anna", birthdate:"1988-01-01", role:"owner", pin:"1234", rights:{} },
     { id:createUserId(), name:"Leo", birthdate:"2017-01-01", role:"child", pin:"5678", rights:{ meinGeld:true, aufgaben:true, einkaufsliste:true, familienplaner:true, chat:true } }
   ];
-
   localStorage.setItem("haushaltsheld_users", JSON.stringify(demoUsers));
-  return demoUsers;
+  return normalizeUsers(demoUsers);
 }
-
-function roleLabel(role){
-  return role === "parent" ? "Eltern" : "Kind";
+function getRedirectForRole(role){
+  const normalized = normalizeRole(role);
+  if(normalized === "child" || normalized === "teen") return "kindermodus.html";
+  return "index.html";
 }
-
 function renderUsers(){
-  const users = seedUsersIfNeeded();
+  users = seedUsersIfNeeded();
   const userSelector = document.getElementById("userSelector");
   const emptyState = document.getElementById("emptyState");
   userSelector.innerHTML = "";
-
-  if(!Array.isArray(users) || users.length === 0){
-    emptyState.style.display = "block";
-    return [];
-  }
-
+  if(!Array.isArray(users) || users.length === 0){ emptyState.style.display = "block"; return []; }
   emptyState.style.display = "none";
-
   users.forEach((user, index) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "user-btn";
     const age = getDisplayAge(user);
-    btn.innerHTML = `<strong>${user.name}</strong><small>${roleLabel(user.role)}${age ? " · " + age + " J." : ""}</small>`;
-    btn.onclick = () => {
-      selectedUser = index;
-      document.querySelectorAll(".user-btn").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-    };
+    const role = getRoleFromRights(user);
+    const protection = getProtectionLevel(user);
+    const protectionText = isMinorRole(role) ? ` · Schutz: ${protectionLabel(protection)}` : "";
+    btn.innerHTML = `<strong>${user.name}</strong><small>${roleLabel(role)}${age ? " · " + age + " J." : ""}${protectionText}</small>`;
+    btn.onclick = () => { selectedUser = index; document.querySelectorAll(".user-btn").forEach((b) => b.classList.remove("active")); btn.classList.add("active"); };
     userSelector.appendChild(btn);
   });
-
   return users;
 }
-
+function redirectIfAlreadyLoggedIn(){
+  const existingAuth = readJson("haushaltsheld_user", null);
+  if(!existingAuth) return;
+  const role = normalizeRole(existingAuth.role);
+  if(isMinorRole(role)) localStorage.setItem("hh_active_child", JSON.stringify(existingAuth));
+  else localStorage.removeItem("hh_active_child");
+  window.location.href = getRedirectForRole(role);
+}
 const familyCodeInput = document.getElementById("familyCode");
 familyCodeInput.value = getFamilyCode();
-let users = renderUsers();
-
-const existingAuth = readJson("haushaltsheld_user", null);
-if(existingAuth && existingAuth.role === "parent"){
-  window.location.href = "index.html";
-} else if(existingAuth && existingAuth.role === "child"){
-  localStorage.setItem("hh_active_child", JSON.stringify(existingAuth));
-  window.location.href = "kindermodus.html";
-}
-
-
-document.getElementById("pin").addEventListener("input", (e) => {
-  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-});
-
-document.getElementById("familyCode").addEventListener("input", (e) => {
-  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-});
-
+renderUsers();
+redirectIfAlreadyLoggedIn();
+document.getElementById("pin").addEventListener("input", (e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ""); });
+document.getElementById("familyCode").addEventListener("input", (e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ""); });
 function handleLogin(event){
   event.preventDefault();
-
-  users = renderUsers();
-
+  renderUsers();
   const familyCode = document.getElementById("familyCode").value.trim();
   const pin = document.getElementById("pin").value.trim();
   const error = document.getElementById("errorMsg");
-
   error.classList.remove("show");
-
-  if(familyCode !== getFamilyCode()){
-    error.textContent = "❌ Familien-Code falsch";
-    error.classList.add("show");
-    return;
-  }
-
-  if(selectedUser === null){
-    error.textContent = "❌ Bitte zuerst einen Nutzer auswählen";
-    error.classList.add("show");
-    return;
-  }
-
+  if(familyCode !== getFamilyCode()){ error.textContent = "❌ Familien-Code falsch"; error.classList.add("show"); return; }
+  if(selectedUser === null){ error.textContent = "❌ Bitte zuerst einen Nutzer auswählen"; error.classList.add("show"); return; }
   const user = users[selectedUser];
-
-  if(!user){
-    error.textContent = "❌ Dieser Nutzer existiert nicht mehr. Bitte neu auswählen.";
-    error.classList.add("show");
-    selectedUser = null;
-    renderUsers();
-    return;
-  }
-
-  if(String(user.pin) !== pin){
-    error.textContent = "❌ PIN falsch";
-    error.classList.add("show");
-    return;
-  }
-
+  if(!user){ error.textContent = "❌ Dieser Nutzer existiert nicht mehr. Bitte neu auswählen."; error.classList.add("show"); selectedUser = null; renderUsers(); return; }
+  if(String(user.pin) !== pin){ error.textContent = "❌ PIN falsch"; error.classList.add("show"); return; }
+  const role = getRoleFromRights(user);
+  const protectionLevel = getProtectionLevel(user);
+  const rightsSystem = getRightsSystem();
+  const id = getUserId(user);
   const authUser = {
-    id: user.id,
-    name: user.name,
-    role: user.role,
-    birthdate: user.birthdate || "",
-    age: getDisplayAge(user),
-    rights: user.rights || {}
+    id, name:user.name, role, roleLabel:roleLabel(role), birthdate:user.birthdate || "", age:getDisplayAge(user),
+    protectionLevel, isAdult:isAdultRole(role), isChild:role === "child", isTeen:role === "teen", canAccessAdmin:role === "owner" || role === "parent",
+    rights:user.rights || {}, childRights:rightsSystem.child?.[id] || {}, privacySettings:rightsSystem.privacy?.[id] || {}, financeSettings:rightsSystem.finance?.[id] || {}, chatSettings:rightsSystem.chat?.[id] || {},
+    loggedInAt:new Date().toISOString()
   };
-
   localStorage.setItem("haushaltsheld_user", JSON.stringify(authUser));
-
-  if(user.role === "child"){
-    localStorage.setItem("hh_active_child", JSON.stringify(authUser));
-    window.location.href = "kindermodus.html";
-  } else {
-    localStorage.removeItem("hh_active_child");
-    window.location.href = "index.html";
-  }
+  localStorage.setItem("haushaltsheld_current_user", JSON.stringify(authUser));
+  if(isMinorRole(role)) localStorage.setItem("hh_active_child", JSON.stringify(authUser));
+  else localStorage.removeItem("hh_active_child");
+  window.location.href = getRedirectForRole(role);
 }
-
 function handleForgotPin(){
   const users = JSON.parse(localStorage.getItem("haushaltsheld_users") || "[]");
-
-  if(selectedUser === null){
-    alert("Bitte zuerst einen Nutzer auswählen.");
-    return;
-  }
-
+  if(selectedUser === null){ alert("Bitte zuerst einen Nutzer auswählen."); return; }
   const enteredFamilyCode = prompt("Bitte Familien-Code eingeben:");
   if(!enteredFamilyCode) return;
-
-  if(enteredFamilyCode !== getFamilyCode()){
-    alert("❌ Falscher Familien-Code");
-    return;
-  }
-
+  if(enteredFamilyCode !== getFamilyCode()){ alert("❌ Falscher Familien-Code"); return; }
   const newPin = prompt("Neue 4-stellige PIN eingeben:");
-  if(!newPin || newPin.length !== 4){
-    alert("❌ Ungültige PIN");
-    return;
-  }
-
+  if(!newPin || !/^\d{4}$/.test(newPin)){ alert("❌ Ungültige PIN. Bitte genau 4 Zahlen eingeben."); return; }
   users[selectedUser].pin = newPin;
   localStorage.setItem("haushaltsheld_users", JSON.stringify(users));
-
   alert("✅ PIN erfolgreich geändert");
 }
-
 </script>
 
 </body>
