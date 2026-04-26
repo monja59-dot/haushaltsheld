@@ -3,8 +3,8 @@
 
   const STORAGE_KEYS = {
     appData: "hh_app_data",
-    currentUser: "hh_current_user",
-    permissions: "hh_permissions",
+    currentUser: "haushaltsheld_user",
+    permissions: "hh_permissions_v2",
     settings: "hh_settings"
   };
 
@@ -25,7 +25,13 @@
 
   const DEFAULT_PERMISSIONS = {
     kind1: {
-      canViewMoney: true,
+      // Neues einheitliches Format (kompatibel mit permissions.js / HHPermissions)
+      money: false,
+      appointments: false,
+      scanner: false,
+      shopping: false,
+      // Legacy-Felder für Rückwärtskompatibilität
+      canViewMoney: false,
       canUseChat: true,
       canScanReceipts: false,
       canCreateWish: true,
@@ -152,6 +158,15 @@
 
       if (current.role === "parent") return true;
 
+      // Zuerst HHPermissions (hh_permissions_v2) prüfen
+      try {
+        const v2 = JSON.parse(localStorage.getItem("hh_permissions_v2") || "{}");
+        if (v2[targetUserId] && permissionName in v2[targetUserId]) {
+          return !!v2[targetUserId][permissionName];
+        }
+      } catch(e) {}
+
+      // Fallback auf eigene Permissions
       const permissions = this.getPermissions();
       return !!permissions?.[targetUserId]?.[permissionName];
     },

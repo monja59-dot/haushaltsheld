@@ -193,58 +193,32 @@ button,input,select,textarea{font:inherit}
 }
 .page-help-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 
-.ki-fab{
-  position:fixed;right:22px;bottom:22px;width:74px;height:74px;border:none;border-radius:24px;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 6px 0 #2f6f33,0 16px 30px rgba(62,142,65,.24);
-  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9998;
-  transition:transform .18s ease, box-shadow .18s ease;
-}
+
 .ki-fab:hover{transform:translateY(-3px);box-shadow:0 8px 0 #2f6f33,0 20px 34px rgba(62,142,65,.28)}
 .ki-fab img{width:40px;height:40px;object-fit:contain}
 .ki-fab-label{position:absolute;bottom:8px;right:10px;color:#fff;font-size:.78rem;font-weight:800;line-height:1}
 
-.ki-panel{
-  position:fixed;right:22px;bottom:108px;width:min(390px,calc(100vw - 24px));max-height:min(78vh,720px);
-  background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;
-  box-shadow:0 24px 50px rgba(34,48,38,.18);z-index:9999;display:none;
-}
+
 .ki-panel.open{display:flex;flex-direction:column}
-.ki-head{
-  padding:20px 20px 16px;background:linear-gradient(180deg,#fffaf4 0%,#fff 100%);
-  border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:14px
-}
-.ki-head-left{display:flex;gap:12px;align-items:flex-start}
-.ki-head-avatar{
-  width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20);display:flex;align-items:center;justify-content:center;flex-shrink:0
-}
-.ki-head-avatar img{width:28px;height:28px;object-fit:contain}
-.ki-head h3{font-size:1.2rem;font-weight:800;margin:0 0 4px}
-.ki-head p{font-size:.95rem;color:var(--text2);margin:0}
-.ki-chat-link{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:.9rem;font-weight:800;color:var(--accent-dark);text-decoration:none}
-.ki-chat-link:hover{text-decoration:underline}
-.ki-close{
-  width:46px;height:46px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;
-  flex-shrink:0;color:var(--text2);font-size:1.8rem;line-height:1
-}
-.ki-chat{padding:18px 16px;overflow:auto;background:#fffaf4;display:flex;flex-direction:column;gap:14px;min-height:220px}
-.ki-msg{max-width:84%;padding:14px 16px;border-radius:20px;font-size:.97rem;line-height:1.5;white-space:pre-wrap}
-.ki-msg.bot{background:#f7eee0;border:1px solid #ebd3b5;color:#5f4332}
-.ki-msg.user{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;align-self:flex-end}
-.ki-form{padding:14px;border-top:1px solid var(--line);background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}
-.ki-input{
-  border:1.5px solid var(--line);background:var(--bg-2);border-radius:18px;padding:14px 16px;
-  font-size:.97rem;color:var(--text);outline:none;font-family:inherit
-}
-.ki-send{
-  border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;
-  border-radius:18px;padding:0 18px;font-size:.95rem;font-weight:800;cursor:pointer;
-  box-shadow:0 4px 0 #2f6f33,0 10px 20px rgba(62,142,65,.20)
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media(max-width:700px){
-  .page-help-bubble,.ki-panel{right:10px;left:10px;bottom:98px;width:auto}
-  .ki-fab{right:14px;bottom:14px}
+  .page-help-bubble,
+  
 }
 @media print{
   .ki-fab,.ki-panel,.page-help-bubble{display:none !important}
@@ -272,6 +246,580 @@ button,input,select,textarea{font:inherit}
 .ki-popup-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;box-shadow:0 3px 0 #2f6f33;}
 .ki-popup-btn.secondary{background:var(--soft);color:var(--text2);border:1px solid var(--line);}
 .ki-popup-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1;padding:0;}
+
+
+/* ═══════════════════════════════════════════
+   HAUSHALTSHELD KI WIDGET – Neues Design
+   ═══════════════════════════════════════════ */
+
+/* FAB Button – Schnecke unten links, verschiebbar */
+.ki-fab {
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--accent, #4CAF50) 0%, var(--accent-dark, #3E8E41) 100%);
+  cursor: grab;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 0 #2f6f33, 0 14px 32px rgba(62,142,65,.35);
+  transition: box-shadow .15s ease, transform .15s ease;
+  user-select: none;
+  touch-action: none;
+  padding: 0;
+}
+.ki-fab:active { cursor: grabbing; }
+.ki-fab img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.2));
+}
+.ki-fab-label { display: none; }
+
+/* Puls-Animation */
+.ki-fab::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: rgba(76,175,80,.25);
+  animation: kiPulse 2.2s ease-out infinite;
+  pointer-events: none;
+}
+.ki-fab::after {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: rgba(76,175,80,.12);
+  animation: kiPulse 2.2s ease-out infinite .4s;
+  pointer-events: none;
+}
+.ki-fab.dragging::before,
+.ki-fab.dragging::after { display: none; }
+
+@keyframes kiPulse {
+  0%   { transform: scale(1);   opacity: 1; }
+  70%  { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Chat Panel */
+.ki-panel {
+  position: fixed;
+  left: 22px;
+  bottom: 106px;
+  width: 380px;
+  max-height: 560px;
+  background: linear-gradient(180deg, #ffffff 0%, #fffdf9 100%);
+  border: 1px solid rgba(223,209,188,.95);
+  border-radius: 28px;
+  box-shadow: 0 24px 64px rgba(54,45,28,.18), 0 4px 0 #2f6f33;
+  display: flex;
+  flex-direction: column;
+  z-index: 9991;
+  opacity: 0;
+  transform: translateY(16px) scale(.96);
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  overflow: hidden;
+}
+.ki-panel.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+/* Panel Header */
+.ki-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid rgba(223,209,188,.7);
+  background: linear-gradient(135deg, rgba(76,175,80,.06) 0%, transparent 100%);
+  flex-shrink: 0;
+}
+.ki-head-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ki-head-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--accent, #4CAF50), var(--accent-dark, #3E8E41));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,.4);
+  box-shadow: 0 4px 12px rgba(62,142,65,.25);
+  flex-shrink: 0;
+}
+.ki-head-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.ki-head h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text, #2d342f);
+  margin: 0 0 2px;
+}
+.ki-head-status {
+  font-size: .75rem;
+  color: var(--accent-dark, #3E8E41);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ki-head-status::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent, #4CAF50);
+  display: inline-block;
+}
+.ki-head p {
+  font-size: .8rem;
+  color: var(--muted, #7d8a82);
+  font-weight: 600;
+  margin: 0;
+}
+.ki-close {
+  width: 34px; height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(223,209,188,.8);
+  background: rgba(255,255,255,.8);
+  color: var(--muted, #7d8a82);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: .15s ease;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.ki-close:hover { background: #fdeaea; color: #c62828; border-color: #f5c6c6; }
+
+/* Suggestions */
+.ki-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 12px 16px 8px;
+  flex-shrink: 0;
+}
+.ki-chip {
+  border: 1.5px solid rgba(223,209,188,.9);
+  background: rgba(255,255,255,.9);
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--text2, #556159);
+  cursor: pointer;
+  transition: .15s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.ki-chip:hover {
+  background: var(--accent-soft, #e7f5e8);
+  border-color: var(--accent, #4CAF50);
+  color: var(--accent-dark, #3E8E41);
+}
+
+/* Chat-Bereich */
+.ki-chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+.ki-chat::-webkit-scrollbar { width: 4px; }
+.ki-chat::-webkit-scrollbar-track { background: transparent; }
+.ki-chat::-webkit-scrollbar-thumb { background: rgba(223,209,188,.8); border-radius: 99px; }
+
+.ki-msg {
+  max-width: 88%;
+  padding: 11px 15px;
+  border-radius: 18px;
+  font-size: .9rem;
+  line-height: 1.5;
+  font-weight: 600;
+  word-break: break-word;
+}
+.ki-msg.bot {
+  background: linear-gradient(135deg, var(--soft, #f6efe4) 0%, rgba(246,239,228,.6) 100%);
+  border: 1px solid rgba(223,209,188,.8);
+  color: var(--text, #2d342f);
+  align-self: flex-start;
+  border-bottom-left-radius: 6px;
+}
+.ki-msg.user {
+  background: linear-gradient(135deg, var(--accent, #4CAF50), var(--accent-dark, #3E8E41));
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 3px 10px rgba(62,142,65,.25);
+}
+.ki-msg.ki-typing {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 14px 18px;
+}
+.ki-msg.ki-typing span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent, #4CAF50);
+  animation: kiDot .9s infinite;
+}
+.ki-msg.ki-typing span:nth-child(2) { animation-delay: .2s; }
+.ki-msg.ki-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes kiDot {
+  0%,60%,100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+/* Eingabe-Bereich */
+.ki-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 16px;
+  border-top: 1px solid rgba(223,209,188,.6);
+  flex-shrink: 0;
+  background: rgba(255,255,255,.6);
+}
+.ki-input {
+  flex: 1;
+  border: 1.5px solid rgba(223,209,188,.9);
+  background: #fffdf9;
+  border-radius: 16px;
+  padding: 11px 16px;
+  font-size: .92rem;
+  color: var(--text, #2d342f);
+  outline: none;
+  transition: .18s ease;
+  font-family: inherit;
+  font-weight: 600;
+}
+.ki-input:focus {
+  border-color: var(--accent, #4CAF50);
+  box-shadow: 0 0 0 3px rgba(76,175,80,.12);
+  background: #fff;
+}
+.ki-send {
+  border: none;
+  background: linear-gradient(135deg, var(--accent, #4CAF50), var(--accent-dark, #3E8E41));
+  color: #fff;
+  padding: 11px 18px;
+  border-radius: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: .9rem;
+  box-shadow: 0 3px 0 #2f6f33;
+  transition: .15s ease;
+  white-space: nowrap;
+}
+.ki-send:hover { transform: translateY(-1px); }
+.ki-send:active { transform: translateY(1px); box-shadow: 0 1px 0 #2f6f33; }
+
+@media (max-width: 500px) {
+  .ki-panel { width: calc(100vw - 20px); left: 10px; right: 10px; }
+}
+
+
+/* ═══════════════════════════════════════
+   KASSENZETTEL-SCANNER WIDGET
+   ═══════════════════════════════════════ */
+.receipt-scanner-card {
+  background: linear-gradient(180deg,#ffffff 0%,#fffdf9 100%);
+  border: 1px solid rgba(223,209,188,.95);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 6px 18px rgba(54,45,28,.08);
+  margin-bottom: 18px;
+}
+.receipt-scanner-card h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.receipt-input-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  background: rgba(255,255,255,.86);
+  border: 1px solid var(--line,#dfd1bc);
+  border-radius: 999px;
+  padding: 5px;
+  width: fit-content;
+}
+.receipt-tab {
+  border: none;
+  background: transparent;
+  color: var(--muted,#7d8a82);
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: .88rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: .18s ease;
+  font-family: inherit;
+}
+.receipt-tab.active {
+  background: linear-gradient(135deg,var(--accent,#4CAF50),var(--accent-dark,#3E8E41));
+  color: #fff;
+  box-shadow: 0 3px 0 #2f6f33;
+}
+.receipt-upload-zone {
+  border: 2px dashed var(--line,#dfd1bc);
+  border-radius: 18px;
+  padding: 32px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: .2s ease;
+  background: var(--soft,#f6efe4);
+  position: relative;
+}
+.receipt-upload-zone:hover,
+.receipt-upload-zone.drag { border-color: var(--accent,#4CAF50); background: var(--accent-soft,#e7f5e8); }
+.receipt-upload-zone input[type=file] { display: none; }
+.receipt-upload-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.receipt-upload-zone p { color: var(--muted,#7d8a82); font-weight: 700; margin: 0; }
+.receipt-upload-zone small { color: var(--muted,#7d8a82); font-size: .82rem; }
+.receipt-preview-img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 12px;
+  margin-top: 12px;
+  object-fit: contain;
+  display: none;
+}
+.receipt-text-area {
+  width: 100%;
+  min-height: 140px;
+  border: 1.5px solid var(--line,#dfd1bc);
+  border-radius: 18px;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: .92rem;
+  resize: vertical;
+  outline: none;
+  background: #fffdf9;
+  transition: .18s ease;
+}
+.receipt-text-area:focus { border-color: var(--accent,#4CAF50); box-shadow: 0 0 0 3px rgba(76,175,80,.1); }
+.receipt-scan-btn {
+  width: 100%;
+  margin-top: 14px;
+  border: none;
+  background: linear-gradient(135deg,var(--accent,#4CAF50),var(--accent-dark,#3E8E41));
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 18px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 4px 0 #2f6f33, 0 10px 22px rgba(62,142,65,.2);
+  transition: .15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.receipt-scan-btn:disabled { opacity: .6; cursor: not-allowed; }
+.receipt-scan-btn:hover:not(:disabled) { transform: translateY(-1px); }
+
+/* Ergebnis-Panel */
+.receipt-result {
+  margin-top: 18px;
+  display: none;
+}
+.receipt-result.show { display: block; }
+.receipt-result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.receipt-result-head h4 { font-size: 1rem; font-weight: 800; margin: 0; }
+.receipt-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.receipt-meta-pill {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 800;
+  background: var(--soft,#f6efe4);
+  border: 1px solid var(--line,#dfd1bc);
+  color: var(--text2,#556159);
+}
+.receipt-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.receipt-items-list::-webkit-scrollbar { width: 4px; }
+.receipt-items-list::-webkit-scrollbar-thumb { background: rgba(223,209,188,.8); border-radius: 99px; }
+.receipt-item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--soft,#f6efe4);
+  border: 1px solid rgba(223,209,188,.8);
+  cursor: pointer;
+  transition: .15s ease;
+  user-select: none;
+}
+.receipt-item-row:hover { border-color: var(--accent,#4CAF50); }
+.receipt-item-row.selected {
+  background: var(--accent-soft,#e7f5e8);
+  border-color: var(--accent,#4CAF50);
+}
+.receipt-item-check {
+  width: 22px; height: 22px;
+  border-radius: 8px;
+  border: 2px solid var(--line,#dfd1bc);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: .85rem;
+  transition: .15s ease;
+}
+.receipt-item-row.selected .receipt-item-check {
+  background: var(--accent,#4CAF50);
+  border-color: var(--accent,#4CAF50);
+  color: #fff;
+}
+.receipt-item-info { flex: 1; }
+.receipt-item-title { font-weight: 800; font-size: .92rem; }
+.receipt-item-meta { font-size: .78rem; color: var(--muted,#7d8a82); font-weight: 700; margin-top: 2px; }
+.receipt-item-price {
+  font-weight: 800;
+  font-size: .92rem;
+  color: var(--text,#2d342f);
+  white-space: nowrap;
+}
+.receipt-item-cat {
+  font-size: .72rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.8);
+  border: 1px solid var(--line,#dfd1bc);
+  color: var(--text2,#556159);
+  white-space: nowrap;
+}
+.receipt-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.receipt-actions button {
+  flex: 1;
+  min-width: 140px;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: .9rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: .15s ease;
+}
+.receipt-btn-primary {
+  background: linear-gradient(135deg,var(--accent,#4CAF50),var(--accent-dark,#3E8E41));
+  color: #fff;
+  box-shadow: 0 3px 0 #2f6f33;
+}
+.receipt-btn-secondary {
+  background: var(--soft,#f6efe4);
+  color: var(--text2,#556159);
+  border: 1px solid var(--line,#dfd1bc) !important;
+}
+.receipt-select-all {
+  font-size: .82rem;
+  font-weight: 800;
+  color: var(--accent-dark,#3E8E41);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+.receipt-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  background: var(--soft,#f6efe4);
+  border-radius: 18px;
+  margin-top: 14px;
+  font-weight: 700;
+  color: var(--text2,#556159);
+}
+.receipt-loading-dots span {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent,#4CAF50);
+  animation: rDot .9s infinite;
+  margin: 0 2px;
+}
+.receipt-loading-dots span:nth-child(2) { animation-delay: .2s; }
+.receipt-loading-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes rDot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+.receipt-error {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #fdeaea;
+  border: 1px solid #f5c6c6;
+  color: #c62828;
+  font-weight: 700;
+  margin-top: 14px;
+  display: none;
+}
+.receipt-error.show { display: block; }
+.receipt-success-toast {
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: #eef7ef;
+  border: 1px solid #c8e6c9;
+  color: #2e7d32;
+  font-weight: 800;
+  margin-top: 10px;
+  display: none;
+}
+.receipt-success-toast.show { display: block; }
 
 </style>
 </head>
@@ -332,7 +880,83 @@ button,input,select,textarea{font:inherit}
 
     <section class="grid">
       <div>
-        <section class="card">
+        
+<!-- ═══ KASSENZETTEL-SCANNER ═══ -->
+<div class="receipt-scanner-card" id="receiptScannerCard">
+  <h3>
+    <span style="font-size:1.4rem;">🧾</span>
+    Kassenzettel scannen & analysieren
+  </h3>
+
+  <div class="receipt-input-tabs">
+    <button class="receipt-tab active" id="receiptTabPhoto" type="button">📷 Foto / Scan</button>
+    <button class="receipt-tab" id="receiptTabText" type="button">📝 Text eingeben</button>
+  </div>
+
+  <!-- Foto-Upload -->
+  <div id="receiptPhotoPanel">
+    <div class="receipt-upload-zone" id="receiptDropZone">
+      <input type="file" id="receiptFileInput" accept="image/*,image/heic,.pdf">
+      <div class="receipt-upload-icon">📷</div>
+      <p>Foto aufnehmen oder hochladen</p>
+      <small>JPG, PNG, HEIC, PDF – Kamera oder Datei</small>
+      <br>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;">
+        <button type="button" onclick="document.getElementById('receiptCameraInput').click()"
+          style="border:1.5px solid var(--line,#dfd1bc);background:#fff;padding:8px 16px;border-radius:12px;font-weight:800;cursor:pointer;font-family:inherit;font-size:.88rem;">
+          📷 Kamera
+        </button>
+        <button type="button" onclick="document.getElementById('receiptFileInput').click()"
+          style="border:1.5px solid var(--line,#dfd1bc);background:#fff;padding:8px 16px;border-radius:12px;font-weight:800;cursor:pointer;font-family:inherit;font-size:.88rem;">
+          🖼️ Galerie / Datei
+        </button>
+      </div>
+      <input type="file" id="receiptCameraInput" accept="image/*" capture="environment" style="display:none;">
+      <img id="receiptPreviewImg" class="receipt-preview-img" alt="Vorschau">
+    </div>
+  </div>
+
+  <!-- Text-Eingabe -->
+  <div id="receiptTextPanel" style="display:none;">
+    <textarea class="receipt-text-area" id="receiptTextInput"
+      placeholder="Kassenzetteltext hier einfügen – z.B. aus einer E-Mail, App oder abgetippt:&#10;&#10;REWE Markt&#10;Vollmilch 3,5%   1,29&#10;Bio-Eier 10St    2,49&#10;Zucker 1kg       0,89&#10;..."></textarea>
+  </div>
+
+  <button class="receipt-scan-btn" id="receiptScanBtn" type="button">
+    <span>🔍</span>
+    <span id="receiptScanBtnText">Kassenzettel analysieren</span>
+  </button>
+
+  <!-- Loading -->
+  <div class="receipt-loading" id="receiptLoading" style="display:none;">
+    <div class="receipt-loading-dots"><span></span><span></span><span></span></div>
+    <span>KI analysiert den Kassenzettel…</span>
+  </div>
+
+  <!-- Fehler -->
+  <div class="receipt-error" id="receiptError"></div>
+
+  <!-- Ergebnis -->
+  <div class="receipt-result" id="receiptResult">
+    <div class="receipt-result-head">
+      <h4>✅ <span id="receiptItemCount">0</span> Artikel erkannt</h4>
+      <button class="receipt-select-all" id="receiptSelectAll" type="button">Alle auswählen</button>
+    </div>
+    <div class="receipt-meta" id="receiptMeta"></div>
+    <div class="receipt-items-list" id="receiptItemsList"></div>
+    <div class="receipt-success-toast" id="receiptSuccessToast"></div>
+    <div class="receipt-actions">
+      <button class="receipt-btn-primary" type="button" id="receiptAddToListBtn">
+        🛒 Artikel auf die Einkaufsliste
+      </button>
+      <button class="receipt-btn-secondary" type="button" id="receiptNewScanBtn">
+        🔄 Neuer Scan
+      </button>
+    </div>
+  </div>
+</div>
+
+<section class="card">
           <h2><span class="section-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg></span><span>Artikel hinzufügen</span></h2>
           <p class="card-sub">Ein Eintrag = ein Artikel.</p>
 
@@ -1194,31 +1818,6 @@ renderAll();
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>document.addEventListener("DOMContentLoaded",function(){if(window.lucide)lucide.createIcons();});</script>
 
-<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
-  <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-  <span class="ki-fab-label">KI</span>
-</button>
-
-<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI">
-  <div class="ki-head">
-    <div class="ki-head-left">
-      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt=""></div>
-      <div>
-        <h3>Haushaltsheld KI</h3>
-        <p id="kiContextText"></p>
-      </div>
-    </div>
-    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
-  </div>
-  <div class="ki-suggestions" id="kiSuggestions"></div>
-  <div class="ki-chat" id="kiChat">
-    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
-  </div>
-  <form class="ki-form" id="kiForm">
-    <input class="ki-input" id="kiInput" type="text" placeholder="Schreibe hier deine Frage..." autocomplete="off">
-    <button class="ki-send" type="submit">Senden</button>
-  </form>
-</section>
 <script>
 (function(){
   const page = "einkauf";
@@ -1241,7 +1840,7 @@ renderAll();
   contextText.textContent = pageSettings.context;
   welcome.textContent = pageSettings.welcome;
   suggestions.innerHTML = pageSettings.suggestions.map(t=>'<button class="ki-chip" type="button">'+escapeHtml(t)+'</button>').join('');
-  suggestions.querySelectorAll('.ki-chip').forEach(btn=>{btn.addEventListener('click',()=>{input.value=btn.textContent.trim();input.focus();});});
+  suggestions.querySelectorAll(');});
   function addMsg(role,text){const d=document.createElement('div');d.className='ki-msg '+role;d.textContent=text;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d;}
   async function sendMessage(message){
     addMsg('user',message);
@@ -1392,6 +1991,584 @@ renderAll();
     // Verzögert starten
     setTimeout(showPopup, POPUP_DELAY);
   });
+})();
+</script>
+
+
+
+
+<script>
+window['__kiPage']        = 'einkauf';
+window['__kiContext']     = 'Ich helfe dir beim Einkauf und mit Spartipps.';
+window['__kiWelcome']     = 'Hallo 👋 Ich helfe dir beim Einkaufen und mit günstigeren Alternativen.';
+window['__kiSuggestions'] = ['Was fehlt noch?','Günstige Alternativen?','Liste strukturieren'];
+</script>
+<button class="ki-fab" id="kiFab" type="button" aria-label="Haushaltsheld KI öffnen">
+  <img src="assets/assetsschnecke.png" alt="Haushaltsheld KI">
+</button>
+
+<section class="ki-panel" id="kiPanel" aria-label="Haushaltsheld KI Chat">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar">
+        <img src="assets/assetsschnecke.png" alt="">
+      </div>
+      <div>
+        <h3>Haushaltsheld KI</h3>
+        <div class="ki-head-status">Online &amp; bereit</div>
+        <p id="kiContextText" style="margin-top:2px;"></p>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button" aria-label="Schließen">×</button>
+  </div>
+  <div class="ki-suggestions" id="kiSuggestions"></div>
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+  </div>
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text"
+      placeholder="Stell mir eine Frage…" autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+
+
+<script>
+/* ── KI Widget: Drag & Drop + Chat ── */
+(function(){
+  var STORAGE_POS_KEY = 'hh_ki_fab_pos';
+
+  function initWidget(){
+    var fab    = document.getElementById('kiFab');
+    var panel  = document.getElementById('kiPanel');
+    var closeBtn = document.getElementById('kiClose');
+    var form   = document.getElementById('kiForm');
+    var input  = document.getElementById('kiInput');
+    var chat   = document.getElementById('kiChat');
+    var suggestions = document.getElementById('kiSuggestions');
+    var contextText = document.getElementById('kiContextText');
+    var welcome = document.getElementById('kiWelcomeMsg');
+
+    if(!fab || !panel) return;
+
+    /* ── Position wiederherstellen ── */
+    try{
+      var saved = JSON.parse(localStorage.getItem(STORAGE_POS_KEY)||'null');
+      if(saved && saved.left !== undefined){
+        fab.style.left   = saved.left + 'px';
+        fab.style.bottom = saved.bottom + 'px';
+        fab.style.right  = 'auto';
+        updatePanelPos(fab, panel);
+      }
+    }catch(e){}
+
+    /* ── Drag Logic ── */
+    var isDragging = false;
+    var dragStartX, dragStartY, fabStartX, fabStartY;
+    var moved = false;
+
+    function startDrag(e){
+      if(e.type === 'touchstart') e.preventDefault();
+      isDragging = true;
+      moved = false;
+      fab.classList.add('dragging');
+      var touch = e.touches ? e.touches[0] : e;
+      dragStartX = touch.clientX;
+      dragStartY = touch.clientY;
+      var rect = fab.getBoundingClientRect();
+      fabStartX = rect.left;
+      fabStartY = rect.top;
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup',   endDrag);
+      document.addEventListener('touchmove', onDrag, {passive:false});
+      document.addEventListener('touchend',  endDrag);
+    }
+
+    function onDrag(e){
+      if(!isDragging) return;
+      if(e.type === 'touchmove') e.preventDefault();
+      var touch = e.touches ? e.touches[0] : e;
+      var dx = touch.clientX - dragStartX;
+      var dy = touch.clientY - dragStartY;
+      if(Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+
+      var newLeft = fabStartX + dx;
+      var newTop  = fabStartY + dy;
+
+      /* Innerhalb des Viewports bleiben */
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      newLeft = Math.max(8, Math.min(newLeft, vw - 76));
+      newTop  = Math.max(8, Math.min(newTop,  vh - 76));
+
+      fab.style.left   = newLeft + 'px';
+      fab.style.top    = newTop  + 'px';
+      fab.style.bottom = 'auto';
+      fab.style.right  = 'auto';
+
+      updatePanelPos(fab, panel);
+    }
+
+    function endDrag(){
+      if(!isDragging) return;
+      isDragging = false;
+      fab.classList.remove('dragging');
+      document.removeEventListener('mousemove', onDrag);
+      document.removeEventListener('mouseup',   endDrag);
+      document.removeEventListener('touchmove', onDrag);
+      document.removeEventListener('touchend',  endDrag);
+
+      /* Snap zu nächster Seite */
+      var rect = fab.getBoundingClientRect();
+      var vw   = window.innerWidth;
+      var vh   = window.innerHeight;
+      var snapLeft = rect.left < vw/2
+        ? 14
+        : vw - 82;
+      var snapBottom = vh - rect.bottom + rect.height/2;
+      snapBottom = Math.max(14, Math.min(snapBottom, vh - 82));
+
+      fab.style.left   = snapLeft + 'px';
+      fab.style.top    = 'auto';
+      fab.style.bottom = snapBottom + 'px';
+      fab.style.right  = 'auto';
+
+      updatePanelPos(fab, panel);
+
+      /* Speichern */
+      try{ localStorage.setItem(STORAGE_POS_KEY, JSON.stringify({left: snapLeft, bottom: snapBottom})); }catch(e){}
+
+      /* Kein Click nach Drag */
+      if(moved){
+        fab.addEventListener('click', blockClick, {once:true, capture:true});
+      }
+    }
+
+    function blockClick(e){ e.stopImmediatePropagation(); e.preventDefault(); }
+
+    /* Panel immer neben dem FAB positionieren */
+    function updatePanelPos(fab, panel){
+      var rect   = fab.getBoundingClientRect();
+      var vw     = window.innerWidth;
+      var ph     = 560;
+      var pw     = 380;
+
+      /* Panel über oder unter dem FAB? */
+      var topSpace    = rect.top;
+      var bottomSpace = window.innerHeight - rect.bottom;
+      var spaceAbove  = topSpace > ph + 16;
+      var spaceBelow  = bottomSpace > ph + 16;
+
+      if(spaceAbove || !spaceBelow){
+        /* Panel über FAB */
+        panel.style.bottom = (window.innerHeight - rect.top + 12) + 'px';
+        panel.style.top    = 'auto';
+      } else {
+        /* Panel unter FAB */
+        panel.style.top    = (rect.bottom + 12) + 'px';
+        panel.style.bottom = 'auto';
+      }
+
+      /* Links/Rechts */
+      var fabCenter = rect.left + rect.width/2;
+      var panelLeft = fabCenter - pw/2;
+      panelLeft = Math.max(10, Math.min(panelLeft, vw - pw - 10));
+      panel.style.left  = panelLeft + 'px';
+      panel.style.right = 'auto';
+    }
+
+    fab.addEventListener('mousedown',  startDrag);
+    fab.addEventListener('touchstart', startDrag, {passive:false});
+
+    /* ── Öffnen/Schließen ── */
+    fab.addEventListener('click', function(){
+      if(moved) return;
+      var isOpen = panel.classList.contains('open');
+      if(isOpen){
+        panel.classList.remove('open');
+      } else {
+        updatePanelPos(fab, panel);
+        panel.classList.add('open');
+        if(input) input.focus();
+      }
+    });
+
+    if(closeBtn) closeBtn.addEventListener('click', function(){
+      panel.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') panel.classList.remove('open');
+    });
+
+    /* ── Suggestions ── */
+    if(suggestions && window.__kiSuggestions){
+      suggestions.innerHTML = window.__kiSuggestions.map(function(t){
+        return '<button class="ki-chip" type="button">'+escHtml(t)+'</button>';
+      }).join('');
+      suggestions.querySelectorAll('.ki-chip').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if(input){ input.value = btn.textContent.trim(); input.focus(); }
+        });
+      });
+    }
+
+    /* ── Context & Welcome ── */
+    if(contextText && window.__kiContext) contextText.textContent = window.__kiContext;
+    if(welcome && window.__kiWelcome) welcome.textContent = window.__kiWelcome;
+
+    /* ── Chat senden ── */
+    function addMsg(role, text){
+      var d = document.createElement('div');
+      d.className = 'ki-msg ' + role;
+      d.textContent = text;
+      chat.appendChild(d);
+      chat.scrollTop = chat.scrollHeight;
+      return d;
+    }
+
+    async function send(message){
+      addMsg('user', message);
+      var loading = addMsg('bot', '');
+      loading.classList.add('ki-typing');
+      loading.innerHTML = '<span></span><span></span><span></span>';
+      try{
+        var res = await fetch('/.netlify/functions/chat', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            message: message,
+            page: window.__kiPage || 'unknown',
+            mode: 'parent'
+          })
+        });
+        var data = await res.json();
+        loading.classList.remove('ki-typing');
+        loading.innerHTML = '';
+        loading.textContent = data.reply || 'Ich konnte gerade nicht antworten.';
+      } catch(err){
+        loading.classList.remove('ki-typing');
+        loading.textContent = 'Verbindungsproblem – bitte kurz warten und erneut versuchen.';
+      }
+    }
+
+    if(form) form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var msg = input.value.trim();
+      if(!msg) return;
+      input.value = '';
+      await send(msg);
+    });
+  }
+
+  function escHtml(v){
+    return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initWidget);
+  } else {
+    initWidget();
+  }
+})();
+</script>
+
+
+<script>
+/* ═══ KASSENZETTEL-SCANNER LOGIK ═══ */
+(function(){
+  var SHOPPING_KEY = 'haushaltsheld_einkaufsliste_stabil_v1';
+  var FINANCE_KEY  = 'haushaltsheld_finance_entries_v2';
+  var IMPORT_LOG_KEY = 'hh_receipt_import_log';
+
+  var currentReceipt = null;
+  var currentMode = 'photo'; // photo | text
+
+  function $(id){ return document.getElementById(id); }
+  function fmt(v){ return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(Number(v||0)); }
+  function today(){ return new Date().toISOString().split('T')[0]; }
+
+  function loadJSON(key, fb){ try{ return JSON.parse(localStorage.getItem(key)||'null')||fb; }catch(e){ return fb; } }
+  function saveJSON(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+
+  /* ── Tabs ── */
+  function initTabs(){
+    var tabPhoto = $('receiptTabPhoto');
+    var tabText  = $('receiptTabText');
+    if(!tabPhoto || !tabText) return;
+    tabPhoto.addEventListener('click', function(){
+      currentMode = 'photo';
+      tabPhoto.classList.add('active'); tabText.classList.remove('active');
+      $('receiptPhotoPanel').style.display = '';
+      $('receiptTextPanel').style.display  = 'none';
+    });
+    tabText.addEventListener('click', function(){
+      currentMode = 'text';
+      tabText.classList.add('active'); tabPhoto.classList.remove('active');
+      $('receiptTextPanel').style.display  = '';
+      $('receiptPhotoPanel').style.display = 'none';
+    });
+  }
+
+  /* ── Bild-Upload ── */
+  function initUpload(){
+    var zone    = $('receiptDropZone');
+    var fileIn  = $('receiptFileInput');
+    var camIn   = $('receiptCameraInput');
+    var preview = $('receiptPreviewImg');
+    if(!zone) return;
+
+    zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('drag'); });
+    zone.addEventListener('dragleave', function(){ zone.classList.remove('drag'); });
+    zone.addEventListener('drop', function(e){
+      e.preventDefault(); zone.classList.remove('drag');
+      var file = e.dataTransfer.files[0];
+      if(file) handleImageFile(file);
+    });
+
+    if(fileIn) fileIn.addEventListener('change', function(){
+      if(fileIn.files[0]) handleImageFile(fileIn.files[0]);
+    });
+    if(camIn) camIn.addEventListener('change', function(){
+      if(camIn.files[0]) handleImageFile(camIn.files[0]);
+    });
+  }
+
+  function handleImageFile(file){
+    var preview = $('receiptPreviewImg');
+    if(preview && file.type.startsWith('image/')){
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+    }
+    $('receiptDropZone').dataset.file = '';
+    window._receiptFile = file;
+  }
+
+  /* ── Scan starten ── */
+  function initScanBtn(){
+    var btn = $('receiptScanBtn');
+    if(!btn) return;
+    btn.addEventListener('click', startScan);
+  }
+
+  async function startScan(){
+    var btn = $('receiptScanBtn');
+    var loading = $('receiptLoading');
+    var errEl   = $('receiptError');
+    var resultEl = $('receiptResult');
+
+    // Reset
+    errEl.classList.remove('show');
+    resultEl.classList.remove('show');
+    btn.disabled = true;
+    loading.style.display = 'flex';
+    $('receiptScanBtnText').textContent = 'Wird analysiert…';
+
+    try {
+      var payload = {};
+
+      if(currentMode === 'photo' && window._receiptFile){
+        var file = window._receiptFile;
+        var base64 = await fileToBase64(file);
+        payload.imageBase64 = base64;
+        payload.imageType   = file.type || 'image/jpeg';
+      } else if(currentMode === 'text'){
+        var text = $('receiptTextInput').value.trim();
+        if(!text){ throw new Error('Bitte zuerst Text eingeben.'); }
+        payload.text = text;
+      } else {
+        throw new Error('Bitte zuerst ein Foto aufnehmen oder Text eingeben.');
+      }
+
+      var res  = await fetch('/.netlify/functions/receipt-items', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      var data = await res.json();
+
+      if(!data.ok) throw new Error(data.error || 'Analyse fehlgeschlagen');
+
+      currentReceipt = data.receipt;
+      renderResult(data.receipt);
+
+    } catch(err){
+      errEl.textContent = '❌ ' + err.message;
+      errEl.classList.add('show');
+    } finally {
+      btn.disabled = false;
+      loading.style.display = 'none';
+      $('receiptScanBtnText').textContent = 'Kassenzettel analysieren';
+    }
+  }
+
+  function fileToBase64(file){
+    return new Promise(function(resolve, reject){
+      var reader = new FileReader();
+      reader.onload = function(){ resolve(reader.result.split(',')[1]); };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* ── Ergebnis rendern ── */
+  function renderResult(receipt){
+    var resultEl  = $('receiptResult');
+    var countEl   = $('receiptItemCount');
+    var metaEl    = $('receiptMeta');
+    var listEl    = $('receiptItemsList');
+
+    var items = (receipt.items || []).filter(function(i){ return i.price > 0; });
+    if(countEl) countEl.textContent = items.length;
+
+    // Prüfen welche Artikel bereits auf der Einkaufsliste stehen
+    var existingOnList = new Set(
+      loadJSON(SHOPPING_KEY, []).map(function(i){ return (i.title||'').toLowerCase().trim(); })
+    );
+
+    // Meta-Infos
+    var meta = [];
+    if(receipt.store) meta.push('<span class="receipt-meta-pill">🏪 ' + esc(receipt.store) + '</span>');
+    if(receipt.date)  meta.push('<span class="receipt-meta-pill">📅 ' + esc(receipt.date) + '</span>');
+    if(receipt.total) meta.push('<span class="receipt-meta-pill">💰 Gesamt: ' + fmt(receipt.total) + '</span>');
+    if(receipt.payment) meta.push('<span class="receipt-meta-pill">💳 ' + esc(receipt.payment) + '</span>');
+    if(metaEl) metaEl.innerHTML = meta.join('');
+
+    // Items
+    if(listEl){
+      listEl.innerHTML = items.map(function(item, idx){
+        var qty = item.quantity && item.unit
+          ? item.quantity + ' ' + item.unit
+          : (item.quantity && item.quantity !== 1 ? item.quantity + 'x' : '');
+        var alreadyOnList = existingOnList.has((item.title||'').toLowerCase().trim());
+        return '<div class="receipt-item-row ' + (alreadyOnList ? '' : 'selected') + '" data-idx="'+idx+'" onclick="toggleReceiptItem(this)" title="' + (alreadyOnList ? 'Bereits auf der Einkaufsliste' : '') + '">' +
+          '<div class="receipt-item-check" style="' + (alreadyOnList ? 'background:#aaa;border-color:#aaa;color:#fff;' : '') + '">' + (alreadyOnList ? '↩' : '✓') + '</div>' +
+          '<div class="receipt-item-info">' +
+            '<div class="receipt-item-title">' + esc(item.title) + (alreadyOnList ? ' <span style="font-size:.72rem;color:#aaa;font-weight:700;">(bereits auf Liste)</span>' : '') + '</div>' +
+            (qty ? '<div class="receipt-item-meta">' + esc(qty) + '</div>' : '') +
+          '</div>' +
+          '<span class="receipt-item-cat">' + esc(item.category||'Sonstiges') + '</span>' +
+          '<div class="receipt-item-price">' + fmt(item.price) + '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    resultEl.classList.add('show');
+  }
+
+  window.toggleReceiptItem = function(el){
+    el.classList.toggle('selected');
+  };
+
+  /* ── Select All ── */
+  function initSelectAll(){
+    var btn = $('receiptSelectAll');
+    if(!btn) return;
+    var allSelected = true;
+    btn.addEventListener('click', function(){
+      allSelected = !allSelected;
+      document.querySelectorAll('.receipt-item-row').forEach(function(row){
+        if(allSelected) row.classList.add('selected');
+        else row.classList.remove('selected');
+      });
+      btn.textContent = allSelected ? 'Alle abwählen' : 'Alle auswählen';
+    });
+  }
+
+  /* ── Zur Einkaufsliste hinzufügen ── */
+  function initAddToList(){
+    var btn = $('receiptAddToListBtn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      if(!currentReceipt) return;
+      var selected = getSelectedItems();
+      if(!selected.length){ alert('Bitte mindestens einen Artikel auswählen.'); return; }
+
+      var items = loadJSON(SHOPPING_KEY, []);
+
+      // Alle bestehenden Titel (nicht nur heute) für Duplikat-Check
+      var existingTitles = new Set(
+        items.map(function(i){ return (i.title||'').toLowerCase().trim(); })
+      );
+
+      var added = 0;
+      var skipped = [];
+      var newItems = [];
+
+      selected.forEach(function(item){
+        var titleLow = (item.title||'').toLowerCase().trim();
+        if(existingTitles.has(titleLow)){
+          skipped.push(item.title);
+          return;
+        }
+        var newEntry = {
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2,6) + '_' + added,
+          title: item.title,
+          baseGroup: item.title,
+          quantity: item.quantity || null,
+          unit: item.unit || '',
+          category: item.category || 'Lebensmittel',
+          date: today(),
+          purchaseKind: 'Einkauf',
+          done: false,
+          fromReceipt: true,
+          receiptStore: currentReceipt.store || '',
+          receiptDate: currentReceipt.date || today()
+        };
+        items.unshift(newEntry);
+        newItems.push(newEntry);
+        existingTitles.add(titleLow);
+        added++;
+      });
+
+      saveJSON(SHOPPING_KEY, items);
+
+      // Feedback
+      var msg = '';
+      if(added > 0 && skipped.length === 0){
+        msg = '✅ ' + added + ' Artikel auf die Einkaufsliste gesetzt!';
+      } else if(added > 0 && skipped.length > 0){
+        msg = '✅ ' + added + ' Artikel hinzugefügt. ' + skipped.length + ' bereits auf der Liste: ' + skipped.slice(0,3).join(', ') + (skipped.length > 3 ? '…' : '');
+      } else {
+        msg = 'ℹ️ Alle ausgewählten Artikel sind bereits auf der Liste: ' + skipped.slice(0,4).join(', ');
+      }
+      showReceiptSuccess(msg);
+
+      // Visuelles Feedback: hinzugefügte Zeilen grün markieren
+      document.querySelectorAll('.receipt-item-row.selected').forEach(function(row){
+        var idx = parseInt(row.dataset.idx);
+        var receipt_items = (currentReceipt.items||[]).filter(function(i){ return i.price > 0; });
+        var item = receipt_items[idx];
+        if(item){
+          var titleLow = (item.title||'').toLowerCase().trim();
+          var wasAdded = newItems.some(function(n){ return (n.title||'').toLowerCase().trim() === titleLow; });
+          row.style.opacity = wasAdded ? '1' : '0.5';
+          row.querySelector('.receipt-item-check').textContent = wasAdded ? '✓' : '↩';
+          row.querySelector('.receipt-item-check').style.background = wasAdded ? '#4CAF50' : '#aaa';
+        }
+      });
+
+      // Button-Text kurz ändern
+      btn.textContent = '✅ Auf der Liste!';
+      btn.style.background = 'linear-gradient(135deg,#43a047,#2e7d32)';
+      setTimeout(function(){
+        btn.innerHTML = '🛒 Artikel auf die Einkaufsliste';
+        btn.style.background = '';
+      }, 3000);
+
+      window.dispatchEvent(new Event('storage'));
+    });
+  }
+
+  
+    initNewScan();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 </script>
 
