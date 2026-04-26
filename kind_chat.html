@@ -1,13 +1,214 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Haushaltsheld – Chat</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mein Chat – Haushaltsheld</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap');
+
+:root{
+  --bg:#f7f2e9; --bg2:#fdf9f3; --card:#ffffff;
+  --line:#dfd1bc; --text:#2d342f; --text2:#556159; --muted:#7d8a82;
+  --soft:#f6efe4; --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --sidebar-w:260px;
+  --accent:#4CAF50; --accent-dark:#388E3C; --accent-soft:#e8f5e9;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+
+body{
+  font-family:'Baloo 2',sans-serif;
+  background:radial-gradient(circle at top left,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%,var(--bg) 100%);
+  color:var(--text); min-height:100vh; font-size:16px; line-height:1.6;
+}
+
+h1,h2,h3,h4{font-family:'Baloo 2',sans-serif;letter-spacing:-0.02em;line-height:1.2;}
+button,input,select,textarea{font-family:'Baloo 2',sans-serif;}
+
+/* APP LAYOUT */
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%,#fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:20px 14px 20px; display:flex; flex-direction:column;
+  gap:6px; position:sticky; top:0; height:100vh; overflow-y:auto; z-index:10;
+}
+
+/* Kind-Avatar */
+.kind-avatar-wrap{
+  display:flex; align-items:center; gap:12px;
+  padding:12px 10px 16px; border-bottom:1px solid var(--line); margin-bottom:8px;
+  cursor:pointer;
+}
+.kind-avatar{
+  width:46px; height:46px; border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+  display:grid; place-items:center; font-size:1.5rem;
+  border:3px solid white; box-shadow:0 3px 10px rgba(62,142,65,.3);
+  overflow:hidden; flex-shrink:0;
+}
+.kind-avatar img{width:100%;height:100%;object-fit:cover;}
+.kind-name{font-size:1rem;font-weight:800;color:var(--text);line-height:1.2;}
+.kind-role{font-size:.75rem;color:var(--muted);font-weight:600;}
+
+/* NAV */
+.nav-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:12px 8px 4px;}
+.nav{display:flex;flex-direction:column;gap:3px;}
+.nav a{
+  display:flex; align-items:center; gap:10px; padding:9px 10px;
+  border-radius:16px; text-decoration:none; color:var(--text2);
+  font-weight:600; font-size:.95rem; transition:all .18s ease;
+  border:1px solid transparent; position:relative;
+}
+.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);}
+.nav a.active{background:rgba(255,255,255,.9);border-color:rgba(223,209,188,.8);box-shadow:var(--shadow-xs);}
+
+/* Nav Dot + Chip */
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.nav-chip{
+  width:30px;height:30px;border-radius:9px;
+  display:grid;place-items:center;flex-shrink:0;
+}
+
+/* Chat Badge */
+.chat-badge{
+  margin-left:auto; min-width:18px; height:18px; padding:0 5px;
+  border-radius:999px; background:#cc6666; color:#fff;
+  font-size:.65rem; font-weight:800; line-height:18px; text-align:center;
+}
+
+/* Sidebar Footer */
+.sidebar-footer{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:grid;gap:8px;}
+.back-btn{
+  width:100%; border:1.5px solid #ddcbb4;
+  background:linear-gradient(135deg,#fffaf4 0%,#f1e4d3 100%);
+  color:#665646; padding:9px 12px; border-radius:14px;
+  font-size:.88rem; font-weight:800; cursor:pointer; transition:.18s ease;
+  box-shadow:0 3px 0 #cdb394,0 8px 18px rgba(110,82,40,.10);
+}
+.logout-btn{
+  width:100%; border:1.5px solid #ffcdd2;
+  background:linear-gradient(135deg,#fff5f5 0%,#ffe0e0 100%);
+  color:#c62828; padding:9px 12px; border-radius:14px;
+  font-size:.88rem; font-weight:800; cursor:pointer; transition:.18s ease;
+  box-shadow:0 3px 0 #ef9a9a;
+}
+
+/* MAIN */
+.main{width:100%;max-width:1400px;padding:28px;}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.page-header h1{font-size:2rem;font-weight:800;}
+.page-header p{color:var(--muted);font-size:.95rem;}
+
+/* CARD */
+.card{
+  background:linear-gradient(180deg,#ffffff 0%,#fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:24px; padding:22px; box-shadow:var(--shadow-sm);
+}
+
+/* MODE BADGE */
+.mode-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 14px;
+  border-radius:999px;font-weight:800;font-size:.85rem;
+  background:var(--accent-soft);border:1px solid rgba(76,175,80,.3);
+  color:var(--accent-dark);
+}
+
+/* SCHNECKI ANIMATION */
+@keyframes schnecki-bounce{
+  0%,100%{transform:translateY(0) rotate(0deg);}
+  25%{transform:translateY(-8px) rotate(-3deg);}
+  75%{transform:translateY(-4px) rotate(3deg);}
+}
+@keyframes schnecki-pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+}
+.schnecki-mascot{animation:schnecki-bounce 3s ease-in-out infinite;}
+.schnecki-pulse{animation:schnecki-pulse 2s ease-in-out infinite;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .app{grid-template-columns:1fr;}
+  .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:12px;}
+  .kind-avatar-wrap{border-bottom:none;border-right:1px solid var(--line);padding-right:14px;margin-right:14px;margin-bottom:0;padding-bottom:0;}
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1;}
+  .nav a{flex:0 1 auto;padding:8px 10px;}
+  .nav-label,.sidebar-footer{display:none;}
+  .nav-dot{display:none;}
+}
+@media(max-width:600px){.main{padding:14px;}.page-header h1{font-size:1.7rem;}}
+
+:root{
+  --accent:#E91E63;
+  --accent-dark:#C2185B;
+  --accent-soft:#fce4ec;
+  --accent-text:#880e4f;
+  --accent-shadow:#ad1457;
+}
+.mode-badge{background:#fce4ec;border-color:rgba(0,0,0,.1);color:#C2185B;}
+.nav a.active{background:#fce4ec;border-color:#E91E6333;}
+.card-accent{background:linear-gradient(135deg,#E91E63 0%,#C2185B 100%);color:#fff;}
+.btn-primary{border:none;background:linear-gradient(135deg,#E91E63,#C2185B);color:#fff;
+  padding:12px 20px;border-radius:16px;font-weight:800;cursor:pointer;font-family:inherit;
+  font-size:.95rem;box-shadow:0 4px 0 #ad1457,0 10px 22px #E91E6333;transition:.15s ease;}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-soft{border:1.5px solid #E91E6344;background:#fce4ec;color:#C2185B;
+  padding:10px 16px;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;font-size:.9rem;}
+/* KI Widget Kind-Design */
+.ki-fab{position:fixed;left:22px;bottom:22px;width:64px;height:64px;border-radius:50%;
+  border:none;background:linear-gradient(135deg,#E91E63,#C2185B);cursor:pointer;z-index:9990;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 5px 0 #ad1457,0 12px 28px #E91E6344;}
+.ki-fab::before{content:'';position:absolute;inset:-8px;border-radius:50%;
+  background:#E91E6333;animation:kiPulse 2.2s ease-out infinite;pointer-events:none;}
+@keyframes kiPulse{0%{transform:scale(1);opacity:1;}70%{transform:scale(1.5);opacity:0;}100%{transform:scale(1.5);opacity:0;}}
+.ki-fab img{width:42px;height:42px;object-fit:contain;}
+.ki-panel{position:fixed;left:22px;bottom:100px;width:320px;max-height:480px;
+  background:#fff;border:1px solid rgba(223,209,188,.95);border-radius:24px;
+  box-shadow:0 20px 60px rgba(54,45,28,.15),0 4px 0 #ad1457;
+  display:flex;flex-direction:column;z-index:9991;
+  opacity:0;transform:translateY(16px) scale(.96);pointer-events:none;
+  transition:opacity .25s,transform .25s;overflow:hidden;}
+.ki-panel.open{opacity:1;transform:none;pointer-events:all;}
+.ki-head{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid rgba(223,209,188,.6);
+  background:linear-gradient(135deg,#fce4ec,rgba(255,255,255,.5));}
+.ki-head-left{display:flex;align-items:center;gap:10px;}
+.ki-head-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;
+  background:linear-gradient(135deg,#E91E63,#C2185B);display:grid;place-items:center;}
+.ki-head-avatar img{width:100%;height:100%;object-fit:cover;}
+.ki-head h3{font-size:.95rem;font-weight:800;margin:0;color:var(--text);}
+.ki-head-status{font-size:.72rem;color:#C2185B;font-weight:700;}
+.ki-close{width:30px;height:30px;border-radius:10px;border:1px solid rgba(223,209,188,.8);
+  background:rgba(255,255,255,.8);color:var(--muted);font-size:1.1rem;cursor:pointer;
+  display:grid;place-items:center;}
+.ki-chat{flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px;}
+.ki-msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:.88rem;line-height:1.5;font-weight:600;}
+.ki-msg.bot{background:#fce4ec;border:1px solid #E91E6333;color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;}
+.ki-msg.user{background:linear-gradient(135deg,#E91E63,#C2185B);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.ki-msg.ki-typing{display:flex;gap:5px;align-items:center;padding:14px;}
+.ki-msg.ki-typing span{width:7px;height:7px;border-radius:50%;background:#E91E63;animation:kiDot .9s infinite;}
+.ki-msg.ki-typing span:nth-child(2){animation-delay:.2s;}
+.ki-msg.ki-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes kiDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.ki-form{display:flex;gap:8px;padding:10px 14px;border-top:1px solid rgba(223,209,188,.5);}
+.ki-input{flex:1;border:1.5px solid rgba(223,209,188,.9);background:#fffdf9;border-radius:14px;
+  padding:9px 14px;font-size:.88rem;outline:none;font-family:inherit;font-weight:600;}
+.ki-input:focus{border-color:#E91E63;box-shadow:0 0 0 3px #E91E6322;}
+.ki-send{border:none;background:linear-gradient(135deg,#E91E63,#C2185B);color:#fff;
+  padding:9px 16px;border-radius:14px;font-weight:800;cursor:pointer;font-family:inherit;font-size:.85rem;
+  box-shadow:0 3px 0 #ad1457;}
+
 :root{
   --bg:#f6fbff; --line:#dde7ef; --card:#ffffff; --text:#294050; --text2:#60758a; --muted:#8092a4;
   --accent:#6f97c6; --accent-dark:#3f6fd1; --shadow-xs:0 4px 10px rgba(63,89,120,.05);
@@ -120,7 +321,7 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
 .btn{border:none;border-radius:20px;padding:10px 16px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#7da9d7 0%, #5986b2 100%);color:#fff;box-shadow:var(--shadow-xs)}
 .btn.secondary{background:#fff;color:var(--text2);border:1px solid #d8e3ec}
 .info-note{padding:14px 16px;border-radius:18px;background:#f5f9fe;border:1px solid #d8e5f2;color:#5c7c9f;font-weight:800}
-.ki-fab{position:fixed;right:22px;bottom:22px;z-index:40;width:62px;height:62px;border:none;border-radius:20px;background:linear-gradient(135deg,#8db4df 0%, #648db8 100%);box-shadow:0 18px 35px rgba(79,126,168,.28);cursor:pointer;overflow:visible}
+.ki-fab{position:fixed;left: 22px;bottom:22px;z-index:40;width:62px;height:62px;border:none;border-radius:20px;background:linear-gradient(135deg,#8db4df 0%, #648db8 100%);box-shadow:0 18px 35px rgba(79,126,168,.28);cursor:pointer;overflow:visible}
 .snail-talk{position:fixed;right:94px;bottom:30px;z-index:41;max-width:230px;background:#fff;border:1px solid #dce7ef;border-radius:18px 18px 6px 18px;padding:10px 12px;font-size:.86rem;font-weight:800;color:#5b7898;box-shadow:0 10px 22px rgba(63,89,120,.12);opacity:0;transform:translateY(8px);pointer-events:none;transition:.25s ease}
 .snail-talk.show{opacity:1;transform:translateY(0)}
 .snail-talk::after{content:"";position:absolute;right:-7px;bottom:14px;width:12px;height:12px;background:#fff;border-right:1px solid #dce7ef;border-bottom:1px solid #dce7ef;transform:rotate(-45deg)}
@@ -140,34 +341,69 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
 @keyframes snailBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @media(max-width:980px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap}.logo-wrap{padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px;margin-bottom:0}.nav{flex-direction:row;flex-wrap:wrap}.nav-label,.sidebar-footer{display:none}.chat-layout{grid-template-columns:1fr}}
 @media(max-width:700px){.main{padding:16px}.stats{grid-template-columns:1fr}.message{max-width:92%}.snail-talk{right:76px;max-width:180px}}
+
 </style>
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar">
-    <div class="logo-wrap">
-      <div class="logo-img"><img src="assets/assetsschnecke.png" alt="Haushaltsheld"></div>
-      <div><div class="logo-name">Haushaltsheld</div><div class="logo-sub">Dein Kinderbereich</div></div>
-    </div>
-    <div class="nav-label">Kindermodus</div>
-    <nav class="nav">
-      <a href="kindermodus.html" data-key="dashboard"><span class="nav-icon">🏠</span><span>Mein Bereich</span></a>
-      <a href="kind_aufgaben.html" data-key="aufgaben"><span class="nav-icon">📋</span><span>Aufgaben</span></a>
-      <a href="kind_mein_geld.html" data-key="meinGeld"><span class="nav-icon">💰</span><span>Mein Geld</span></a>
-      <a href="kind_sparziel.html" data-key="sparziele"><span class="nav-icon">🎯</span><span>Sparziel</span></a>
-      <a href="kind_wuensche.html" data-key="wuensche"><span class="nav-icon">🎁</span><span>Wünsche</span></a>
-      <a href="kind_chat.html" class="active" data-key="chat"><span class="nav-icon">💬</span><span>Chat</span><span class="chat-badge" id="chatBadge">0</span></a>
-      <a href="#" data-coming-soon="true" data-key="essensplan"><span class="nav-icon">🍽️</span><span>Essensplan</span></a>
-    </nav>
-    <div class="nav-label">Optional</div>
-    <nav class="nav">
-      <a href="#" data-coming-soon="true" data-key="familienplaner"><span class="nav-icon">📅</span><span>Familienplaner</span></a>
-      <a href="#" data-coming-soon="true" data-key="einkaufsliste"><span class="nav-icon">🛒</span><span>Einkaufsliste</span></a>
-    </nav>
-    <div class="sidebar-footer"><button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button></div>
-  </aside>
+<aside class="sidebar">
 
-  <main class="main">
+  <!-- Kind-Avatar -->
+  <div class="kind-avatar-wrap" onclick="window.location.href='kindermodus.html'">
+    <div class="kind-avatar" id="kindAvatar">🧒</div>
+    <div>
+      <div class="kind-name" id="kindName">Hallo!</div>
+      <div class="kind-role">Kindermodus</div>
+    </div>
+  </div>
+
+  <div class="nav-label">Mein Bereich</div>
+  <nav class="nav">
+    <a href="kindermodus.html" >
+      <span class="nav-dot" style="background:#4CAF50;"></span>
+      <span class="nav-chip" style="background:#4CAF50;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></span>
+      <span>Startseite</span>
+    </a>
+  </nav>
+
+  <div class="nav-label">Schnellzugriff</div>
+  <nav class="nav">
+    <a href="kind_aufgaben.html" >
+      <span class="nav-dot" style="background:#FF9800;"></span>
+      <span class="nav-chip" style="background:#FF9800;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>
+      <span>Meine Aufgaben</span>
+    </a>
+    <a href="kind_mein_geld.html" >
+      <span class="nav-dot" style="background:#FFC107;"></span>
+      <span class="nav-chip" style="background:#FFC107;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
+      <span>Mein Geld</span>
+    </a>
+    <a href="kind_sparziel.html" >
+      <span class="nav-dot" style="background:#2196F3;"></span>
+      <span class="nav-chip" style="background:#2196F3;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+      <span>Meine Sparziele</span>
+    </a>
+    <a href="kind_wuensche.html" >
+      <span class="nav-dot" style="background:#9C27B0;"></span>
+      <span class="nav-chip" style="background:#9C27B0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      <span>Meine Wünsche</span>
+    </a>
+    <a href="kind_chat.html" class="active" style="position:relative;">
+      <span class="nav-dot" style="background:#E91E63;"></span>
+      <span class="nav-chip" style="background:#E91E63;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+      <span>Mein Chat</span>
+      <span class="chat-badge" id="chatBadge" style="display:none;">0</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="back-btn" onclick="window.location.href='index.html'">👨‍👩‍👧 Zum Elternbereich</button>
+    <button class="logout-btn" onclick="doLogout()">🚪 Abmelden</button>
+  </div>
+
+</aside>
+<main class="main">
+
     <div class="page-header">
       <div>
         <h1>Mein Chat</h1>
@@ -216,25 +452,65 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
         </div>
       </section>
     </div>
-  </main>
+  
+</main>
 </div>
-
-<div class="snail-talk" id="snailTalk">Hallo! Ich bin da. 🐌</div>
-<button class="ki-fab" id="kiFab" type="button" aria-label="Kinder-KI öffnen">
-  <span class="snail-fab" aria-hidden="true">
-    <span class="snail-shell"></span><span class="snail-body"></span>
-    <span class="snail-head"><span class="snail-eye left"></span><span class="snail-eye right"></span><span class="snail-mouth"></span></span>
-  </span>
-</button>
-
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(window.lucide) lucide.createIcons();
+  loadKindAvatar();
+});
+
+function doLogout(){
+  localStorage.removeItem('hh_active_child');
+  window.location.href = 'login.html';
+}
+
+function loadKindAvatar(){
+  try{
+    const child = JSON.parse(localStorage.getItem('hh_active_child')||'null');
+    if(!child) return;
+    const nameEl = document.getElementById('kindName');
+    const avatarEl = document.getElementById('kindAvatar');
+    if(nameEl) nameEl.textContent = child.nickname || child.name || 'Hallo!';
+    if(avatarEl){
+      if(child.photo){ avatarEl.innerHTML = '<img src="'+child.photo+'" alt="">'; }
+      else { avatarEl.textContent = child.avatar || '🧒'; }
+    }
+  }catch(e){}
+}
+
+// Chat-Badge
+(function(){
+  const FAMILY_ROOM_KEY = 'hh_family_chat_room';
+  const FAMILY_SEEN_KEY = 'hh_family_chat_seen_child';
+  function updateBadge(){
+    try{
+      const child = JSON.parse(localStorage.getItem('hh_active_child')||'null');
+      if(!child) return;
+      const uid = child.id || child.name;
+      const room = JSON.parse(localStorage.getItem(FAMILY_ROOM_KEY)||'{"messages":[]}');
+      const msgs = Array.isArray(room.messages) ? room.messages : [];
+      const seen = JSON.parse(localStorage.getItem(FAMILY_SEEN_KEY)||'{}');
+      const lastSeen = seen[uid] || '';
+      const unread = msgs.filter(m => m.senderId !== uid && String(m.timestamp||'') > String(lastSeen) && !m.deleted).length;
+      const badge = document.getElementById('chatBadge');
+      if(badge){ badge.style.display = unread > 0 ? 'inline-block' : 'none'; badge.textContent = unread > 99 ? '99+' : String(unread); }
+    }catch(e){}
+  }
+  document.addEventListener('DOMContentLoaded', updateBadge);
+  window.addEventListener('storage', updateBadge);
+})();
+
+
 (function(){
   const AUTH_KEY = "haushaltsheld_user";
   const USERS_KEY = "haushaltsheld_users";
   const CHILD_PERMISSIONS_KEY = "haushaltsheld_child_permissions";
   const ACTIVE_CHILD_KEY = "hh_active_child";
   const FAMILY_ROOM_KEY = "hh_family_chat_room";
-  const LEGACY_THREADS_KEY = "hh_family_chat_threads";
+  const LEGACY_THREADS_KEY = "hh_family_chat_room";
   const DIRECT_CHATS_KEY = "hh_direct_chats_v2";
   const DIRECT_SEEN_PREFIX = "hh_direct_seen_";
 
@@ -302,8 +578,8 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
   function getDirectMessages(conversationId){ const chats = loadDirectChats(); const arr = Array.isArray(chats[conversationId]) ? chats[conversationId] : []; return arr.map(m => normalizeMessage(m, "direct")); }
   function setDirectMessages(conversationId, messages){ const chats = loadDirectChats(); chats[conversationId] = messages; saveDirectChats(chats); }
 
-  function getFamilySeen(){ const seen = readJson("hh_family_chat_seen_parent", {}); return typeof seen === "object" && seen ? seen : {}; }
-  function setFamilySeen(seen){ writeJson("hh_family_chat_seen_parent", seen); }
+  function getFamilySeen(){ const seen = readJson("hh_family_chat_seen_child", {}); return typeof seen === "object" && seen ? seen : {}; }
+  function setFamilySeen(seen){ writeJson("hh_family_chat_seen_child", seen); }
   function getDirectSeen(conversationId){ const seen = readJson(DIRECT_SEEN_PREFIX + conversationId, {}); return typeof seen === "object" && seen ? seen : {}; }
   function setDirectSeen(conversationId, seen){ writeJson(DIRECT_SEEN_PREFIX + conversationId, seen); }
 
@@ -610,4 +886,101 @@ textarea{width:100%;border:1px solid #d8e3ec;background:#fff;border-radius:20px;
 
   document.addEventListener("DOMContentLoaded", init);
 })();
+
 </script>
+
+<button class="ki-fab" id="kiFab" type="button" aria-label="Schnecki fragen">
+  <img src="assets/assetsschnecke.png" alt="Schnecki" class="schnecki-pulse">
+</button>
+<section class="ki-panel" id="kiPanel">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt="Schnecki"></div>
+      <div>
+        <h3>Schnecki</h3>
+        <div class="ki-head-status">Deine Hilfsschnecke</div>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button">×</button>
+  </div>
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+  </div>
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Frag Schnecki etwas..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+
+<script>
+(function(){
+  var POPUP_KEY = 'hh_ki_popup_kind_chat';
+  var PAGE_LABEL = 'Mein Chat';
+
+  function loadChild(){ try{ return JSON.parse(localStorage.getItem('hh_active_child')||'null'); }catch(e){return null;} }
+
+  var fab = document.getElementById('kiFab');
+  var panel = document.getElementById('kiPanel');
+  var closeBtn = document.getElementById('kiClose');
+  var form = document.getElementById('kiForm');
+  var input = document.getElementById('kiInput');
+  var chat = document.getElementById('kiChat');
+  var welcome = document.getElementById('kiWelcomeMsg');
+
+  if(!fab||!panel) return;
+
+  var child = loadChild();
+  var childName = child ? (child.nickname||child.name||'') : '';
+
+  if(welcome) welcome.textContent = 'Hallo '+childName+'! 👋 Ich bin Schnecki, deine Hilfsschnecke. Was möchtest du wissen?';
+
+  function addMsg(role, text){
+    var d = document.createElement('div');
+    d.className = 'ki-msg '+role;
+    d.textContent = text;
+    chat.appendChild(d);
+    chat.scrollTop = chat.scrollHeight;
+    return d;
+  }
+
+  fab.addEventListener('click', function(){
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && input) input.focus();
+  });
+  if(closeBtn) closeBtn.addEventListener('click', function(){ panel.classList.remove('open'); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') panel.classList.remove('open'); });
+
+  if(form) form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var msg = input.value.trim();
+    if(!msg) return;
+    input.value = '';
+    addMsg('user', msg);
+    var loading = addMsg('bot','');
+    loading.classList.add('ki-typing');
+    loading.innerHTML = '<span></span><span></span><span></span>';
+    try{
+      var res = await fetch('/.netlify/functions/chat', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          message: msg,
+          page: 'Mein Chat',
+          mode: 'child',
+          childName: childName,
+          system: 'Du bist Schnecki, eine freundliche Hilfsschnecke für Kinder. Antworte kurz, einfach und kindgerecht. Benutze manchmal kleine Emojis. Erkläre Dinge so, als würdest du mit einem Kind zwischen 6 und 14 Jahren sprechen.'
+        })
+      });
+      var data = await res.json();
+      loading.classList.remove('ki-typing'); loading.innerHTML = '';
+      loading.textContent = data.reply || 'Ich konnte das gerade nicht beantworten. Versuch es nochmal! 🐌';
+    }catch(err){
+      loading.classList.remove('ki-typing'); loading.innerHTML = '';
+      loading.textContent = 'Ups, da hat etwas nicht geklappt! Versuch es nochmal. 🐌';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

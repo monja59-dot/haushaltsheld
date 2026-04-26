@@ -672,61 +672,412 @@ button,input,select,textarea{font:inherit}
 
 .receipt-success-toast.show { display: block; }
 
+
+
+/* === HAUSHALTSHELD SIDEBAR FINAL SYSTEM === */
+.app{
+  display:grid!important;
+  grid-template-columns:var(--sidebar-w,258px) 1fr!important;
+  min-height:100vh!important;
+}
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%,#fdf9f4 100%)!important;
+  border-right:1px solid rgba(223,209,188,.85)!important;
+  padding:28px 18px 24px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:8px!important;
+  position:sticky!important;
+  top:0!important;
+  height:100vh!important;
+  overflow-y:auto!important;
+  z-index:20!important;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.4)!important;
+}
+.sidebar .logo-wrap{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:0 8px 18px!important;
+  border-bottom:1px solid var(--line,#dfd1bc)!important;
+  margin-bottom:8px!important;
+  text-decoration:none!important;
+  color:inherit!important;
+  flex-shrink:0!important;
+  cursor:pointer!important;
+}
+.sidebar .logo-wrap img{
+  width:48px!important;
+  height:48px!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))!important;
+}
+.sidebar .logo-name{
+  font-weight:800!important;
+  font-size:1.25rem!important;
+  color:var(--text,#2d342f)!important;
+  line-height:1.1!important;
+}
+.sidebar .logo-sub{
+  font-size:.75rem!important;
+  color:var(--muted,#7d8a82)!important;
+  margin-top:2px!important;
+  line-height:1.2!important;
+}
+.sidebar-auth{
+  display:grid!important;
+  gap:10px!important;
+  margin:0 0 8px!important;
+  padding:0 0 14px!important;
+  border-bottom:1px solid var(--line,#dfd1bc)!important;
+}
+.sidebar-user-card{
+  background:rgba(255,255,255,.74)!important;
+  border:1px solid rgba(223,209,188,.8)!important;
+  border-radius:16px!important;
+  padding:12px 14px!important;
+  font-size:.82rem!important;
+  box-shadow:var(--shadow-xs,0 2px 8px rgba(54,45,28,.05))!important;
+}
+.sidebar-user-card strong{
+  display:block!important;
+  color:var(--text,#2d342f)!important;
+  font-weight:800!important;
+  margin-bottom:3px!important;
+  line-height:1.2!important;
+}
+.sidebar-user-card span{
+  display:block!important;
+  color:var(--muted,#7d8a82)!important;
+  font-size:.76rem!important;
+  font-weight:700!important;
+  line-height:1.25!important;
+}
+.sidebar-auth-actions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+}
+.login-btn,
+.logout-btn{
+  width:100%!important;
+  border:1.5px solid #ddcbb4!important;
+  background:linear-gradient(135deg,#fffaf4 0%,#f1e4d3 100%)!important;
+  color:#665646!important;
+  padding:10px 12px!important;
+  border-radius:16px!important;
+  font-size:.88rem!important;
+  font-weight:800!important;
+  cursor:pointer!important;
+  text-align:center!important;
+  text-decoration:none!important;
+  transition:.18s ease!important;
+  box-shadow:0 3px 0 #cdb394,0 8px 18px rgba(110,82,40,.10),inset 0 1px 0 rgba(255,255,255,.72)!important;
+  margin:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:42px!important;
+  font-family:var(--font-main,"Outfit",sans-serif)!important;
+}
+.login-btn:hover,
+.logout-btn:hover{
+  transform:translateY(-2px)!important;
+}
+.mode-switch{
+  display:flex!important;
+  gap:6px!important;
+  background:rgba(255,255,255,.86)!important;
+  border:1px solid var(--line,#dfd1bc)!important;
+  border-radius:999px!important;
+  padding:5px!important;
+  box-shadow:var(--shadow-xs,0 2px 8px rgba(54,45,28,.05))!important;
+}
+.mode-btn{
+  flex:1!important;
+  border:none!important;
+  background:transparent!important;
+  color:var(--muted,#7d8a82)!important;
+  padding:9px 12px!important;
+  border-radius:999px!important;
+  font-size:.82rem!important;
+  font-weight:800!important;
+  cursor:pointer!important;
+  transition:.18s ease!important;
+  box-shadow:none!important;
+  font-family:var(--font-main,"Outfit",sans-serif)!important;
+}
+.mode-btn.active{
+  background:linear-gradient(135deg,var(--accent,#4CAF50) 0%,var(--accent-dark,#3E8E41) 100%)!important;
+  color:#fff!important;
+  box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)!important;
+}
+.nav-label{
+  font-size:.7rem!important;
+  font-weight:800!important;
+  text-transform:uppercase!important;
+  letter-spacing:.1em!important;
+  color:var(--muted,#7d8a82)!important;
+  padding:16px 10px 6px!important;
+}
+.nav,
+.hh-main-nav,
+.dropdown-menu,
+.extras-subnav{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:4px!important;
+}
+.nav a,
+.dropdown-menu a,
+.extras-subnav a,
+.dropdown-toggle{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:11px 13px!important;
+  border-radius:18px!important;
+  text-decoration:none!important;
+  color:var(--text2,#556159)!important;
+  font-weight:700!important;
+  font-size:.98rem!important;
+  transition:all .18s ease!important;
+  border:1px solid transparent!important;
+  position:relative!important;
+  background:transparent!important;
+  cursor:pointer!important;
+  width:100%!important;
+  text-align:left!important;
+  font-family:var(--font-main,"Outfit",sans-serif)!important;
+  min-height:58px!important;
+}
+.dropdown-toggle{
+  justify-content:space-between!important;
+}
+.dropdown-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+.nav a:hover,
+.dropdown-menu a:hover,
+.extras-subnav a:hover,
+.dropdown-toggle:hover{
+  background:rgba(255,255,255,.72)!important;
+  border-color:rgba(223,209,188,.9)!important;
+  transform:translateX(2px)!important;
+  box-shadow:var(--shadow-xs,0 2px 8px rgba(54,45,28,.05))!important;
+  color:var(--text,#2d342f)!important;
+}
+.nav a.active,
+.dropdown-menu a.active,
+.extras-subnav a.active,
+.nav-dropdown.open .dropdown-toggle{
+  background:linear-gradient(135deg,#58b95d 0%,#3e8e41 100%)!important;
+  color:#fff!important;
+  border-color:rgba(62,142,65,.28)!important;
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)!important;
+}
+.nav-icon{
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  border-radius:12px!important;
+  display:grid!important;
+  place-items:center!important;
+  background:rgba(255,255,255,.92)!important;
+  border:1px solid rgba(223,209,188,.92)!important;
+  color:var(--accent-dark,#3E8E41)!important;
+  flex-shrink:0!important;
+  box-shadow:0 2px 8px rgba(54,45,28,.05)!important;
+}
+.nav-icon svg,
+.nav-icon i{
+  width:18px!important;
+  height:18px!important;
+  stroke:currentColor!important;
+  color:currentColor!important;
+  display:block!important;
+}
+.nav a.active .nav-icon,
+.dropdown-menu a.active .nav-icon,
+.extras-subnav a.active .nav-icon,
+.nav-dropdown.open .dropdown-toggle .nav-icon{
+  background:rgba(255,255,255,.16)!important;
+  border-color:rgba(255,255,255,.22)!important;
+  color:#fff!important;
+}
+.chat-badge{
+  position:absolute!important;
+  top:-6px!important;
+  right:-6px!important;
+  min-width:18px!important;
+  height:18px!important;
+  padding:0 5px!important;
+  border-radius:999px!important;
+  background:#cc6666!important;
+  color:#fff!important;
+  font-size:.68rem!important;
+  font-weight:800!important;
+  line-height:18px!important;
+  text-align:center!important;
+  border:2px solid #fff!important;
+  box-shadow:0 2px 8px rgba(204,102,102,.28)!important;
+  display:none;
+}
+.nav-dropdown,
+.extras-wrap{
+  display:grid!important;
+  gap:6px!important;
+}
+.dropdown-menu,
+.extras-subnav{
+  display:none!important;
+  padding-left:10px!important;
+  margin-top:4px!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+.nav-dropdown.open .dropdown-menu,
+.extras-wrap.open .extras-subnav{
+  display:flex!important;
+}
+.dropdown-caret{
+  margin-left:auto!important;
+  transition:transform .18s ease!important;
+  color:var(--muted,#7d8a82)!important;
+  display:grid!important;
+  place-items:center!important;
+}
+.dropdown-caret svg,
+.dropdown-caret i{
+  width:18px!important;
+  height:18px!important;
+}
+.nav-dropdown.open .dropdown-caret,
+.extras-wrap.open .dropdown-caret{
+  transform:rotate(180deg)!important;
+  color:#fff!important;
+}
+.sidebar-footer{
+  display:none!important;
+}
+@media(max-width:960px){
+  .app{grid-template-columns:1fr!important}
+  .sidebar{
+    height:auto!important;
+    position:relative!important;
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    padding:16px!important;
+    gap:0!important;
+  }
+  .sidebar .logo-wrap{
+    margin-bottom:0!important;
+    padding-bottom:0!important;
+    border-bottom:none!important;
+    border-right:1px solid var(--line,#dfd1bc)!important;
+    padding-right:16px!important;
+    margin-right:16px!important;
+  }
+  .sidebar-auth{
+    width:100%!important;
+    order:2!important;
+    margin-top:12px!important;
+  }
+  .nav-label{display:none!important}
+  .nav,
+  .hh-main-nav{
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    flex:1!important;
+    order:3!important;
+  }
+  .nav a,
+  .dropdown-menu a,
+  .extras-subnav a,
+  .dropdown-toggle{
+    flex:0 1 auto!important;
+    min-height:52px!important;
+    padding:10px 12px!important;
+  }
+  .nav-dropdown,
+  .extras-wrap{
+    order:4!important;
+    width:100%!important;
+    margin-top:10px!important;
+  }
+  .dropdown-menu,
+  .extras-subnav{
+    padding-left:0!important;
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="app">
   <aside class="sidebar">
-    <a class="logo-wrap" href="index.html">
-      <img src="assets/assetsschnecke.png" alt="HaushaltsHeld">
-      <div>
-        <div class="logo-name">HaushaltsHeld</div>
-        <div class="logo-sub">Dein Familien-Assistent</div>
-      </div>
-    </a>
+  <a class="logo-wrap" href="index.html" aria-label="Zur Startseite">
+    <img src="assets/assetsschnecke.png" alt="HaushaltsHeld">
+    <div>
+      <div class="logo-name">HaushaltsHeld</div>
+      <div class="logo-sub">Dein Familien-Assistent</div>
+    </div>
+  </a>
 
-    <div class="nav-label">Hauptmenü</div>
-    <nav class="nav">
-      <a href="index.html"> <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path></svg></span><span>Dashboard</span></a>
-      <a href="finanzen.html" class="active"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 7h18v10H3z"></path><path d="M17 12h.01"></path><path d="M3 9h18"></path></svg></span><span>Finanzen</span></a>
-      <a href="einkaufsliste.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle><path d="M5 5h2l2.4 9.5a1 1 0 0 0 1 .8H18a1 1 0 0 0 1-.8L21 8H7"></path></svg></span><span>Einkäufe</span></a>
-      <a href="aufgaben.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span>Aufgaben</span></a>
-      <a href="familienplaner.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg></span><span>Familienplaner</span></a>
-      <a href="essensplan.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 3v8"></path><path d="M6 3v8"></path><path d="M4 7h2"></path><path d="M11 3v18"></path><path d="M15 3c2 2 2 6 0 8"></path><path d="M15 11v10"></path></svg></span><span>Essensplan</span></a>
-      <a href="rezepte.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span><span>Rezepte</span></a>
-      <a href="admin_chat.html"><span class="nav-icon" style="position:relative"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
-    </nav>
+  <div class="sidebar-auth" id="hhSidebarAuth">
+    <div class="sidebar-user-card">
+      <strong id="sidebarUserName">Willkommen</strong>
+      <span id="sidebarUserRole">Bitte anmelden oder Eltern-Modus nutzen</span>
+    </div>
 
-    <div class="nav-label">Extras</div>
-    <div class="nav nav-drop" id="extrasDrop">
-      <button class="nav-drop-head" type="button">
-        <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg></span>
+    <div class="sidebar-auth-actions">
+      <a class="login-btn" id="sidebarLoginBtn" href="login.html">Anmelden</a>
+      <button class="logout-btn" id="sidebarLogoutBtn" type="button">Abmelden</button>
+    </div>
+
+    <div class="mode-switch sidebar-mode-top" aria-label="Modus wechseln">
+      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
+      <button class="mode-btn" id="childBtn" type="button">Kind</button>
+    </div>
+  </div>
+
+  <div class="nav-label">Hauptmenü</div>
+  <nav class="nav hh-main-nav">
+    <a href="index.html" data-page="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+    <a href="finanzen.html" data-page="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+    <a href="einkaufsliste.html" data-page="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
+    <a href="aufgaben.html" data-page="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+    <a href="familienplaner.html" data-page="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+    <a href="essensplan.html" data-page="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
+    <a href="admin_chat.html" data-page="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge">0</span></span><span>Familien-Chat</span></a>
+    <a href="datenzentrale.html" data-page="datenzentrale.html"><span class="nav-icon"><i data-lucide="database"></i></span><span>Datenzentrale</span></a>
+    <a href="admin.html" data-page="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Admin & Rechte</span></a>
+  </nav>
+
+  <div class="nav-label">Extras</div>
+  <div class="nav-dropdown extras-wrap" id="extrasDropdown">
+    <button class="dropdown-toggle" id="extrasToggle" type="button" aria-expanded="false">
+      <span class="dropdown-title">
+        <span class="nav-icon"><i data-lucide="folders"></i></span>
         <span>Extras</span>
-        <span class="nav-arrow">⌄</span>
-      </button>
-      <div class="nav-drop-links">
-        <a href="finanzbericht.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="M8 14v3"></path><path d="M12 10v7"></path><path d="M16 6v11"></path></svg></span><span>Bericht</span></a>
-        <a href="finanz_historie.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v5h5"></path><path d="M12 7v5l3 3"></path></svg></span><span>Historie</span></a>
-        <a href="beleg_import.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path><path d="M14 2v6h6"></path></svg></span><span>Belege</span></a>
-        <a href="rezepte.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4H10a4 4 0 0 1 4 4v12a4 4 0 0 0-4-4H4.5A2.5 2.5 0 0 0 2 18.5z"/><path d="M22 6.5A2.5 2.5 0 0 0 19.5 4H14a4 4 0 0 0-4 4v12a4 4 0 0 1 4-4h5.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg></span><span>Rezepte</span></a>
-      <a href="essensplan_essverhalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="4"/><path d="m16 16 5 5"/></svg></span><span>Essensanalyse</span></a>
-      <a href="nutzer-verwalten.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span>Nutzer verwalten</span></a>
-        <a href="admin.html"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"></path><path d="m9 12 2 2 4-4"></path></svg></span><span>Familienrechte</span></a>
-      </div>
-    </div>
+      </span>
+      <span class="dropdown-caret"><i data-lucide="chevron-down"></i></span>
+    </button>
 
-    <div class="sidebar-footer">
-      <div class="user-box">
-        <strong id="userName">👋 Willkommen</strong>
-        <span id="userRole">Eltern-Modus</span>
-      </div>
-      <div class="mode-switch">
-        <button class="mode-btn active" type="button">Eltern</button>
-        <button class="mode-btn" id="childBtn" type="button">Kind</button>
-      </div>
-      <button class="logout-btn" type="button" onclick="handleLogout()">🚪 Abmelden</button>
-    </div>
-  </aside>
+    <nav class="dropdown-menu extras-subnav">
+      <a href="finanzbericht.html" data-page="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Finanzbericht</span></a>
+      <a href="finanz_historie.html" data-page="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Finanz-Historie</span></a>
+      <a href="beleg_import.html" data-page="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Beleg-Import</span></a>
+      <a href="essensplan_essverhalten.html" data-page="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
+      <a href="rezepte.html" data-page="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+      <a href="nutzer-verwalten.html" data-page="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+    </nav>
+  </div>
+</aside>
 
   <main class="main">
     <div class="page-header">
@@ -3319,6 +3670,126 @@ window['__kiSuggestions'] = ['Wo kann ich sparen?', 'Analysiere meine Ausgaben',
 
 
 
+
+
+<script>
+/* === HAUSHALTSHELD SIDEBAR FINAL SYSTEM === */
+window.HHUnifiedSidebarFinal = {
+  getUser:function(){
+    try{
+      return JSON.parse(localStorage.getItem("haushaltsheld_user") || localStorage.getItem("haushaltsheld_current_user") || "null");
+    }catch(e){ return null; }
+  },
+  hydrate:function(){
+    var user=this.getUser();
+    var nameEl=document.getElementById("sidebarUserName");
+    var roleEl=document.getElementById("sidebarUserRole");
+    var loginBtn=document.getElementById("sidebarLoginBtn");
+    var logoutBtn=document.getElementById("sidebarLogoutBtn");
+    var mode=localStorage.getItem("haushaltsheld_mode") || "parent";
+
+    var parentBtn=document.getElementById("adminBtn");
+    var childBtn=document.getElementById("childBtn");
+    if(parentBtn) parentBtn.classList.toggle("active", mode !== "child");
+    if(childBtn) childBtn.classList.toggle("active", mode === "child");
+
+    if(user){
+      var name=user.name || user.username || user.vorname || user.displayName || "Angemeldet";
+      var role=user.role || user.modus || user.type || "Eltern-Modus";
+      if(nameEl) nameEl.textContent="👋 " + name;
+      if(roleEl) roleEl.textContent=String(role);
+      if(loginBtn) loginBtn.style.display="none";
+      if(logoutBtn) logoutBtn.style.display="inline-flex";
+    }else{
+      if(nameEl) nameEl.textContent="Willkommen";
+      if(roleEl) roleEl.textContent="Bitte anmelden oder Eltern-Modus nutzen";
+      if(loginBtn) loginBtn.style.display="inline-flex";
+      if(logoutBtn) logoutBtn.style.display="none";
+    }
+
+    this.markActive();
+    this.updateChatBadge();
+    try{ if(window.lucide && typeof lucide.createIcons==="function") lucide.createIcons(); }catch(e){}
+  },
+  logout:function(){
+    try{
+      localStorage.removeItem("haushaltsheld_user");
+      localStorage.removeItem("haushaltsheld_current_user");
+      localStorage.removeItem("hh_active_child");
+      localStorage.removeItem("haushaltsheld_mode");
+    }catch(e){}
+    window.location.href="login.html";
+  },
+  setMode:function(mode){
+    try{ localStorage.setItem("haushaltsheld_mode", mode === "child" ? "child" : "parent"); }catch(e){}
+    if(mode === "child") window.location.href="kindermodus.html";
+    else window.location.href="index.html";
+  },
+  toggleExtras:function(){
+    var box=document.getElementById("extrasDropdown");
+    var btn=document.getElementById("extrasToggle");
+    if(!box) return;
+    var open=!box.classList.contains("open");
+    box.classList.toggle("open", open);
+    if(btn) btn.setAttribute("aria-expanded", open ? "true" : "false");
+  },
+  markActive:function(){
+    var file=(location.pathname.split("/").pop() || "index.html").toLowerCase();
+    document.querySelectorAll(".sidebar a[href]").forEach(function(a){
+      var href=(a.getAttribute("href") || "").split("#")[0].split("?")[0].toLowerCase();
+      if(href === file){
+        a.classList.add("active");
+        var parent=a.closest("#extrasDropdown,.nav-dropdown,.extras-wrap");
+        if(parent){
+          parent.classList.add("open");
+          var btn=parent.querySelector("button");
+          if(btn) btn.setAttribute("aria-expanded","true");
+        }
+      }else if(href){
+        a.classList.remove("active");
+      }
+    });
+  },
+  updateChatBadge:function(){
+    var badge=document.getElementById("chatBadge");
+    if(!badge) return;
+    try{
+      var threads=JSON.parse(localStorage.getItem("hh_family_chat_threads") || "[]");
+      var count=0;
+      if(Array.isArray(threads)){
+        threads.forEach(function(t){
+          if(t && (t.unread || t.isNew)) count += Number(t.unread || 1);
+        });
+      }
+      if(count>0){
+        badge.textContent=count>99 ? "99+" : String(count);
+        badge.style.display="inline-block";
+      }else{
+        badge.textContent="0";
+        badge.style.display="none";
+      }
+    }catch(e){
+      badge.style.display="none";
+    }
+  }
+};
+
+window.handleLogout=function(){ window.HHUnifiedSidebarFinal.logout(); };
+
+document.addEventListener("DOMContentLoaded", function(){
+  var logoutBtn=document.getElementById("sidebarLogoutBtn");
+  var parentBtn=document.getElementById("adminBtn");
+  var childBtn=document.getElementById("childBtn");
+  var extrasBtn=document.getElementById("extrasToggle");
+
+  if(logoutBtn) logoutBtn.addEventListener("click", function(){ window.HHUnifiedSidebarFinal.logout(); });
+  if(parentBtn) parentBtn.addEventListener("click", function(){ window.HHUnifiedSidebarFinal.setMode("parent"); });
+  if(childBtn) childBtn.addEventListener("click", function(){ window.HHUnifiedSidebarFinal.setMode("child"); });
+  if(extrasBtn) extrasBtn.addEventListener("click", function(){ window.HHUnifiedSidebarFinal.toggleExtras(); });
+
+  window.HHUnifiedSidebarFinal.hydrate();
+});
+</script>
 
 </body>
 </html>

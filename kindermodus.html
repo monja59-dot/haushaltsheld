@@ -1,71 +1,609 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Haushaltsheld – Kindermodus</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
-:root{--bg:#f7f2e9;--bg-2:#fdf9f3;--card:#ffffff;--soft:#f6efe4;--soft2:#efe3d2;--line:#dfd1bc;--text:#2d342f;--text2:#556159;--muted:#7d8a82;--accent:#4CAF50;--accent-dark:#3E8E41;--accent-soft:#e7f5e8;--shadow-xs:0 2px 8px rgba(54,45,28,.05);--shadow-sm:0 6px 18px rgba(54,45,28,.08);--sidebar-w:258px;--font-main:"Outfit",sans-serif}*{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;overflow-x:hidden}body{font-family:var(--font-main);background:radial-gradient(circle at top left, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 30%), linear-gradient(180deg,#fbf7f1 0%, var(--bg) 100%);color:var(--text);min-height:100vh;font-size:16px;line-height:1.6;letter-spacing:-0.01em}h1,h2,h3,h4,h5,h6{font-family:var(--font-main)!important;letter-spacing:-0.03em;line-height:1.15}button,input,select,textarea{font:inherit}.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh}.sidebar{background:linear-gradient(180deg,#f8efe3 0%, #fdf9f4 100%);border-right:1px solid rgba(223,209,188,.85);padding:28px 18px 24px;display:flex;flex-direction:column;gap:8px;position:sticky;top:0;height:100vh;overflow-y:auto;z-index:10;box-shadow:inset -1px 0 0 rgba(255,255,255,.4)}.logo-wrap{display:flex;align-items:center;gap:12px;padding:0 8px 24px;border-bottom:1px solid var(--line);margin-bottom:8px}.logo-wrap img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(62,142,65,.14))}.logo-name{font-weight:800;font-size:1.25rem!important;color:var(--text)}.logo-sub{font-size:.75rem;color:var(--muted);margin-top:2px}.nav-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:16px 10px 6px}.nav{display:flex;flex-direction:column;gap:4px}.nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:18px;text-decoration:none;color:var(--text2);font-weight:700!important;font-size:.98rem!important;transition:all .18s ease;border:1px solid transparent;position:relative}.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);box-shadow:var(--shadow-xs);color:var(--text)}.nav a.active{background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);color:#fff;border-color:rgba(62,142,65,.28);box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18)}.nav-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.92);border:1px solid rgba(223,209,188,.92);color:var(--accent-dark);flex-shrink:0;box-shadow:0 2px 8px rgba(54,45,28,.05)}.nav-icon svg,.nav-icon i{width:18px;height:18px;stroke:currentColor}.nav a.active .nav-icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff}.chat-badge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#cc6666;color:#fff;font-size:.68rem;font-weight:800;line-height:18px;text-align:center;border:2px solid #fff;box-shadow:0 2px 8px rgba(204,102,102,.28)}.sidebar-footer{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:grid;gap:10px}.user-info{background:rgba(255,255,255,.7);border:1px solid rgba(223,209,188,.7);border-radius:16px;padding:12px 14px;font-size:.8rem;margin-bottom:8px}.user-info strong{display:block;font-weight:800;color:var(--text);margin-bottom:4px}.user-info span{display:block;color:var(--muted);font-size:.75rem}.logout-btn{width:100%;border:1.5px solid #ddcbb4;background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);color:#665646;padding:10px 12px;border-radius:16px;font-size:.88rem;font-weight:800;cursor:pointer;transition:.18s ease;box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72)}.mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-xs)}.mode-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:.82rem;font-weight:800;cursor:pointer;transition:.18s ease}.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;box-shadow:0 3px 0 #2f6f33,0 8px 18px rgba(62,142,65,.22),inset 0 1px 0 rgba(255,255,255,.2)}.main{width:100%;max-width:1580px;padding:32px}.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}.page-header h1{font-size:2.35rem;font-weight:800;margin-bottom:8px}.page-header p{color:var(--muted);font-size:.98rem;max-width:860px}.card{background:linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;box-shadow:var(--shadow-sm)}.mode-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)}@media(max-width:960px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:16px;gap:0}.logo-wrap{margin-bottom:0;padding-bottom:0;border-bottom:none;border-right:1px solid var(--line);padding-right:16px;margin-right:16px}.nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a{flex:0 1 auto;padding:10px 12px}.nav-label,.sidebar-footer{display:none}}@media(max-width:600px){.main{padding:16px}.page-header h1{font-size:1.95rem}}
-</style></head><body><div class="app"><aside class="sidebar">
-  <div class="logo-wrap" style="cursor:pointer;" onclick="window.location.href='index.html'">
-    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mein Bereich – Haushaltsheld</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap');
+
+:root{
+  --bg:#f7f2e9; --bg2:#fdf9f3; --card:#ffffff;
+  --line:#dfd1bc; --text:#2d342f; --text2:#556159; --muted:#7d8a82;
+  --soft:#f6efe4; --shadow-xs:0 2px 8px rgba(54,45,28,.05);
+  --shadow-sm:0 6px 18px rgba(54,45,28,.08);
+  --sidebar-w:260px;
+  --accent:#4CAF50; --accent-dark:#388E3C; --accent-soft:#e8f5e9;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+
+body{
+  font-family:'Baloo 2',sans-serif;
+  background:radial-gradient(circle at top left,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 30%),
+    linear-gradient(180deg,#fbf7f1 0%,var(--bg) 100%);
+  color:var(--text); min-height:100vh; font-size:16px; line-height:1.6;
+}
+
+h1,h2,h3,h4{font-family:'Baloo 2',sans-serif;letter-spacing:-0.02em;line-height:1.2;}
+button,input,select,textarea{font-family:'Baloo 2',sans-serif;}
+
+/* APP LAYOUT */
+.app{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{
+  background:linear-gradient(180deg,#f8efe3 0%,#fdf9f4 100%);
+  border-right:1px solid rgba(223,209,188,.85);
+  padding:20px 14px 20px; display:flex; flex-direction:column;
+  gap:6px; position:sticky; top:0; height:100vh; overflow-y:auto; z-index:10;
+}
+
+/* Kind-Avatar */
+.kind-avatar-wrap{
+  display:flex; align-items:center; gap:12px;
+  padding:12px 10px 16px; border-bottom:1px solid var(--line); margin-bottom:8px;
+  cursor:pointer;
+}
+.kind-avatar{
+  width:46px; height:46px; border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+  display:grid; place-items:center; font-size:1.5rem;
+  border:3px solid white; box-shadow:0 3px 10px rgba(62,142,65,.3);
+  overflow:hidden; flex-shrink:0;
+}
+.kind-avatar img{width:100%;height:100%;object-fit:cover;}
+.kind-name{font-size:1rem;font-weight:800;color:var(--text);line-height:1.2;}
+.kind-role{font-size:.75rem;color:var(--muted);font-weight:600;}
+
+/* NAV */
+.nav-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:12px 8px 4px;}
+.nav{display:flex;flex-direction:column;gap:3px;}
+.nav a{
+  display:flex; align-items:center; gap:10px; padding:9px 10px;
+  border-radius:16px; text-decoration:none; color:var(--text2);
+  font-weight:600; font-size:.95rem; transition:all .18s ease;
+  border:1px solid transparent; position:relative;
+}
+.nav a:hover{background:rgba(255,255,255,.72);border-color:rgba(223,209,188,.9);transform:translateX(2px);}
+.nav a.active{background:rgba(255,255,255,.9);border-color:rgba(223,209,188,.8);box-shadow:var(--shadow-xs);}
+
+/* Nav Dot + Chip */
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.nav-chip{
+  width:30px;height:30px;border-radius:9px;
+  display:grid;place-items:center;flex-shrink:0;
+}
+
+/* Chat Badge */
+.chat-badge{
+  margin-left:auto; min-width:18px; height:18px; padding:0 5px;
+  border-radius:999px; background:#cc6666; color:#fff;
+  font-size:.65rem; font-weight:800; line-height:18px; text-align:center;
+}
+
+/* Sidebar Footer */
+.sidebar-footer{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:grid;gap:8px;}
+.back-btn{
+  width:100%; border:1.5px solid #ddcbb4;
+  background:linear-gradient(135deg,#fffaf4 0%,#f1e4d3 100%);
+  color:#665646; padding:9px 12px; border-radius:14px;
+  font-size:.88rem; font-weight:800; cursor:pointer; transition:.18s ease;
+  box-shadow:0 3px 0 #cdb394,0 8px 18px rgba(110,82,40,.10);
+}
+.logout-btn{
+  width:100%; border:1.5px solid #ffcdd2;
+  background:linear-gradient(135deg,#fff5f5 0%,#ffe0e0 100%);
+  color:#c62828; padding:9px 12px; border-radius:14px;
+  font-size:.88rem; font-weight:800; cursor:pointer; transition:.18s ease;
+  box-shadow:0 3px 0 #ef9a9a;
+}
+
+/* MAIN */
+.main{width:100%;max-width:1400px;padding:28px;}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.page-header h1{font-size:2rem;font-weight:800;}
+.page-header p{color:var(--muted);font-size:.95rem;}
+
+/* CARD */
+.card{
+  background:linear-gradient(180deg,#ffffff 0%,#fffdfa 100%);
+  border:1px solid rgba(223,209,188,.95);
+  border-radius:24px; padding:22px; box-shadow:var(--shadow-sm);
+}
+
+/* MODE BADGE */
+.mode-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 14px;
+  border-radius:999px;font-weight:800;font-size:.85rem;
+  background:var(--accent-soft);border:1px solid rgba(76,175,80,.3);
+  color:var(--accent-dark);
+}
+
+/* SCHNECKI ANIMATION */
+@keyframes schnecki-bounce{
+  0%,100%{transform:translateY(0) rotate(0deg);}
+  25%{transform:translateY(-8px) rotate(-3deg);}
+  75%{transform:translateY(-4px) rotate(3deg);}
+}
+@keyframes schnecki-pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+}
+.schnecki-mascot{animation:schnecki-bounce 3s ease-in-out infinite;}
+.schnecki-pulse{animation:schnecki-pulse 2s ease-in-out infinite;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .app{grid-template-columns:1fr;}
+  .sidebar{height:auto;position:relative;flex-direction:row;flex-wrap:wrap;padding:12px;}
+  .kind-avatar-wrap{border-bottom:none;border-right:1px solid var(--line);padding-right:14px;margin-right:14px;margin-bottom:0;padding-bottom:0;}
+  .nav{flex-direction:row;flex-wrap:wrap;flex:1;}
+  .nav a{flex:0 1 auto;padding:8px 10px;}
+  .nav-label,.sidebar-footer{display:none;}
+  .nav-dot{display:none;}
+}
+@media(max-width:600px){.main{padding:14px;}.page-header h1{font-size:1.7rem;}}
+
+:root{
+  --accent:#4CAF50;
+  --accent-dark:#388E3C;
+  --accent-soft:#e8f5e9;
+  --accent-text:#1b5e20;
+  --accent-shadow:#2e7d32;
+}
+.mode-badge{background:#e8f5e9;border-color:rgba(0,0,0,.1);color:#388E3C;}
+.nav a.active{background:#e8f5e9;border-color:#4CAF5033;}
+.card-accent{background:linear-gradient(135deg,#4CAF50 0%,#388E3C 100%);color:#fff;}
+.btn-primary{border:none;background:linear-gradient(135deg,#4CAF50,#388E3C);color:#fff;
+  padding:12px 20px;border-radius:16px;font-weight:800;cursor:pointer;font-family:inherit;
+  font-size:.95rem;box-shadow:0 4px 0 #2e7d32,0 10px 22px #4CAF5033;transition:.15s ease;}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-soft{border:1.5px solid #4CAF5044;background:#e8f5e9;color:#388E3C;
+  padding:10px 16px;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;font-size:.9rem;}
+/* KI Widget Kind-Design */
+.ki-fab{position:fixed;left:22px;bottom:22px;width:64px;height:64px;border-radius:50%;
+  border:none;background:linear-gradient(135deg,#4CAF50,#388E3C);cursor:pointer;z-index:9990;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 5px 0 #2e7d32,0 12px 28px #4CAF5044;}
+.ki-fab::before{content:'';position:absolute;inset:-8px;border-radius:50%;
+  background:#4CAF5033;animation:kiPulse 2.2s ease-out infinite;pointer-events:none;}
+@keyframes kiPulse{0%{transform:scale(1);opacity:1;}70%{transform:scale(1.5);opacity:0;}100%{transform:scale(1.5);opacity:0;}}
+.ki-fab img{width:42px;height:42px;object-fit:contain;}
+.ki-panel{position:fixed;left:22px;bottom:100px;width:320px;max-height:480px;
+  background:#fff;border:1px solid rgba(223,209,188,.95);border-radius:24px;
+  box-shadow:0 20px 60px rgba(54,45,28,.15),0 4px 0 #2e7d32;
+  display:flex;flex-direction:column;z-index:9991;
+  opacity:0;transform:translateY(16px) scale(.96);pointer-events:none;
+  transition:opacity .25s,transform .25s;overflow:hidden;}
+.ki-panel.open{opacity:1;transform:none;pointer-events:all;}
+.ki-head{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid rgba(223,209,188,.6);
+  background:linear-gradient(135deg,#e8f5e9,rgba(255,255,255,.5));}
+.ki-head-left{display:flex;align-items:center;gap:10px;}
+.ki-head-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;
+  background:linear-gradient(135deg,#4CAF50,#388E3C);display:grid;place-items:center;}
+.ki-head-avatar img{width:100%;height:100%;object-fit:cover;}
+.ki-head h3{font-size:.95rem;font-weight:800;margin:0;color:var(--text);}
+.ki-head-status{font-size:.72rem;color:#388E3C;font-weight:700;}
+.ki-close{width:30px;height:30px;border-radius:10px;border:1px solid rgba(223,209,188,.8);
+  background:rgba(255,255,255,.8);color:var(--muted);font-size:1.1rem;cursor:pointer;
+  display:grid;place-items:center;}
+.ki-chat{flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:8px;}
+.ki-msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:.88rem;line-height:1.5;font-weight:600;}
+.ki-msg.bot{background:#e8f5e9;border:1px solid #4CAF5033;color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;}
+.ki-msg.user{background:linear-gradient(135deg,#4CAF50,#388E3C);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+.ki-msg.ki-typing{display:flex;gap:5px;align-items:center;padding:14px;}
+.ki-msg.ki-typing span{width:7px;height:7px;border-radius:50%;background:#4CAF50;animation:kiDot .9s infinite;}
+.ki-msg.ki-typing span:nth-child(2){animation-delay:.2s;}
+.ki-msg.ki-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes kiDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.ki-form{display:flex;gap:8px;padding:10px 14px;border-top:1px solid rgba(223,209,188,.5);}
+.ki-input{flex:1;border:1.5px solid rgba(223,209,188,.9);background:#fffdf9;border-radius:14px;
+  padding:9px 14px;font-size:.88rem;outline:none;font-family:inherit;font-weight:600;}
+.ki-input:focus{border-color:#4CAF50;box-shadow:0 0 0 3px #4CAF5022;}
+.ki-send{border:none;background:linear-gradient(135deg,#4CAF50,#388E3C);color:#fff;
+  padding:9px 16px;border-radius:14px;font-weight:800;cursor:pointer;font-family:inherit;font-size:.85rem;
+  box-shadow:0 3px 0 #2e7d32;}
+
+.start-hero{text-align:center;padding:32px 20px 24px;position:relative;}
+.schnecki-big{width:120px;height:120px;object-fit:contain;margin:0 auto 16px;display:block;}
+.welcome-title{font-size:2.2rem;font-weight:800;color:var(--text);margin-bottom:6px;}
+.welcome-sub{font-size:1.05rem;color:var(--muted);font-weight:600;}
+
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+.stat-card{border-radius:20px;padding:16px;text-align:center;border:1px solid rgba(223,209,188,.8);}
+.stat-card .stat-icon{font-size:1.8rem;margin-bottom:6px;}
+.stat-card .stat-val{font-size:1.6rem;font-weight:800;line-height:1;}
+.stat-card .stat-label{font-size:.8rem;color:var(--muted);font-weight:700;margin-top:4px;}
+
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px;}
+.quick-card{border-radius:20px;padding:18px 16px;text-align:left;cursor:pointer;
+  text-decoration:none;display:flex;align-items:center;gap:14px;
+  border:1px solid rgba(223,209,188,.8);background:#fff;transition:.18s ease;}
+.quick-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);}
+.quick-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem;flex-shrink:0;}
+.quick-title{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:2px;}
+.quick-sub{font-size:.8rem;color:var(--muted);font-weight:600;}
+
+.day-card{border-radius:20px;padding:18px 20px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;}
+.day-card h3{font-size:1rem;font-weight:800;margin-bottom:12px;opacity:.9;}
+.task-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.2);}
+.task-row:last-child{border-bottom:none;}
+.task-check{width:22px;height:22px;border-radius:7px;border:2px solid rgba(255,255,255,.6);
+  background:transparent;cursor:pointer;display:grid;place-items:center;flex-shrink:0;}
+.task-check.done{background:rgba(255,255,255,.9);border-color:transparent;}
+.task-name{flex:1;font-size:.92rem;font-weight:700;}
+.task-stars{font-size:.8rem;opacity:.85;}
+.empty-tasks{text-align:center;padding:16px;opacity:.8;font-weight:600;}
+
+@media(max-width:600px){
+  .stats-grid{grid-template-columns:repeat(3,1fr);}
+  .quick-grid{grid-template-columns:1fr;}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+
+  <!-- Kind-Avatar -->
+  <div class="kind-avatar-wrap" onclick="window.location.href='kindermodus.html'">
+    <div class="kind-avatar" id="kindAvatar">🧒</div>
     <div>
-      <div class="logo-name">Haushaltsheld</div>
-      <div class="logo-sub">Dein Familien-Assistent</div>
+      <div class="kind-name" id="kindName">Hallo!</div>
+      <div class="kind-role">Kindermodus</div>
     </div>
   </div>
 
-  <div class="nav-label">Hauptmenü</div>
+  <div class="nav-label">Mein Bereich</div>
   <nav class="nav">
-    <a href="index.html" class="active"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
-    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
-    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
-    <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
-    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
+    <a href="kindermodus.html" class="active">
+      <span class="nav-dot" style="background:#4CAF50;"></span>
+      <span class="nav-chip" style="background:#4CAF50;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></span>
+      <span>Startseite</span>
+    </a>
   </nav>
 
-  <div class="nav-label">Extras</div>
+  <div class="nav-label">Schnellzugriff</div>
   <nav class="nav">
-    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
-    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
-    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
-    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
-    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
-    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
-    <a href="admin.html"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
+    <a href="kind_aufgaben.html" >
+      <span class="nav-dot" style="background:#FF9800;"></span>
+      <span class="nav-chip" style="background:#FF9800;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>
+      <span>Meine Aufgaben</span>
+    </a>
+    <a href="kind_mein_geld.html" >
+      <span class="nav-dot" style="background:#FFC107;"></span>
+      <span class="nav-chip" style="background:#FFC107;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
+      <span>Mein Geld</span>
+    </a>
+    <a href="kind_sparziel.html" >
+      <span class="nav-dot" style="background:#2196F3;"></span>
+      <span class="nav-chip" style="background:#2196F3;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+      <span>Meine Sparziele</span>
+    </a>
+    <a href="kind_wuensche.html" >
+      <span class="nav-dot" style="background:#9C27B0;"></span>
+      <span class="nav-chip" style="background:#9C27B0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      <span>Meine Wünsche</span>
+    </a>
+    <a href="kind_chat.html"  style="position:relative;">
+      <span class="nav-dot" style="background:#E91E63;"></span>
+      <span class="nav-chip" style="background:#E91E63;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+      <span>Mein Chat</span>
+      <span class="chat-badge" id="chatBadge" style="display:none;">0</span>
+    </a>
   </nav>
 
   <div class="sidebar-footer">
-    <div class="user-info">
-      <strong id="userName">👋 Willkommen</strong>
-      <span id="userRole">Eltern-Modus</span>
-    </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
-      <button class="mode-btn" id="childBtn" type="button">Kind</button>
-    </div>
-    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
+    <button class="back-btn" onclick="window.location.href='index.html'">👨‍👩‍👧 Zum Elternbereich</button>
+    <button class="logout-btn" onclick="doLogout()">🚪 Abmelden</button>
   </div>
-</aside><main class="main"><div class="page-header"><div><h1>Kindermodus</h1><p>Platzhalter für den Wechsel in den Kinderbereich.</p></div><span class="mode-badge">Elternmodus aktiv</span></div><section class="card"><h2 style="margin-bottom:10px;">Seite vorbereitet</h2><p style="color:var(--text2);">Diese Elternseite ist verlinkt und kann jetzt als Nächstes inhaltlich ausgebaut werden.</p></section></main></div>
+
+</aside>
+<main class="main">
+
+<div class="start-hero">
+  <img src="assets/assetsschnecke.png" alt="Schnecki" class="schnecki-big schnecki-mascot" id="schneckiBig">
+  <h1 class="welcome-title" id="heroTitle">Hallo! 👋</h1>
+  <p class="welcome-sub" id="heroSub">Schön dass du da bist!</p>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card" style="background:#e8f5e9;">
+    <div class="stat-icon">⭐</div>
+    <div class="stat-val" id="starCountHome" style="color:#388E3C;">0</div>
+    <div class="stat-label">Sterne</div>
+  </div>
+  <div class="stat-card" style="background:#fff3e0;">
+    <div class="stat-icon">✅</div>
+    <div class="stat-val" id="taskCountHome" style="color:#e65100;">0</div>
+    <div class="stat-label">Aufgaben</div>
+  </div>
+  <div class="stat-card" style="background:#fffde7;">
+    <div class="stat-icon">💰</div>
+    <div class="stat-val" id="balanceHome" style="color:#f57f17;">0€</div>
+    <div class="stat-label">Guthaben</div>
+  </div>
+</div>
+
+<div class="quick-grid">
+  <a href="kind_aufgaben.html" class="quick-card">
+    <div class="quick-icon" style="background:#fff3e0;">✅</div>
+    <div>
+      <div class="quick-title">Meine Aufgaben</div>
+      <div class="quick-sub" id="quickTaskSub">Heute erledigen</div>
+    </div>
+  </a>
+  <a href="kind_mein_geld.html" class="quick-card">
+    <div class="quick-icon" style="background:#fffde7;">💰</div>
+    <div>
+      <div class="quick-title">Mein Geld</div>
+      <div class="quick-sub" id="quickGeldSub">Kontostand ansehen</div>
+    </div>
+  </a>
+  <a href="kind_sparziel.html" class="quick-card">
+    <div class="quick-icon" style="background:#e3f2fd;">🎯</div>
+    <div>
+      <div class="quick-title">Meine Sparziele</div>
+      <div class="quick-sub" id="quickSparSub">Fortschritt ansehen</div>
+    </div>
+  </a>
+  <a href="kind_wuensche.html" class="quick-card">
+    <div class="quick-icon" style="background:#f3e5f5;">⭐</div>
+    <div>
+      <div class="quick-title">Meine Wünsche</div>
+      <div class="quick-sub">Wünsche verwalten</div>
+    </div>
+  </a>
+</div>
+
+<div class="card day-card" style="margin-bottom:18px;">
+  <h3>📋 Heutige Aufgaben</h3>
+  <div id="todayTaskList"><div class="empty-tasks">Keine Aufgaben für heute 🎉</div></div>
+</div>
+
+<div class="card" style="margin-bottom:18px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+    <h3 style="font-size:1rem;font-weight:800;">💬 Neue Nachrichten</h3>
+    <a href="kind_chat.html" style="font-size:.85rem;font-weight:800;color:#388E3C;text-decoration:none;">Alle anzeigen →</a>
+  </div>
+  <div id="homeMessages" style="color:var(--muted);font-size:.9rem;font-weight:600;">Keine neuen Nachrichten</div>
+</div>
+
+</main>
+</div>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
-  if(window.lucide && lucide.createIcons) lucide.createIcons();
-  const raw = localStorage.getItem('haushaltsheld_user') || localStorage.getItem('haushaltsheld_current_user');
-  try{
-    if(raw){
-      const u = JSON.parse(raw);
-      const n = document.getElementById('userName');
-      const r = document.getElementById('userRole');
-      if(n) n.textContent = '👋 ' + (u.name || u.username || 'Willkommen');
-      if(r) r.textContent = String(u.role || u.modus || 'Eltern-Modus');
-    }
-  }catch(e){}
-  const childBtn = document.getElementById('childBtn');
-  if(childBtn) childBtn.addEventListener('click', function(){ window.location.href = 'kindermodus.html'; });
+  if(window.lucide) lucide.createIcons();
+  loadKindAvatar();
 });
-function handleLogout(){
-  try{
-    localStorage.removeItem('haushaltsheld_user');
-    localStorage.removeItem('haushaltsheld_current_user');
-  }catch(e){}
+
+function doLogout(){
+  localStorage.removeItem('hh_active_child');
   window.location.href = 'login.html';
 }
+
+function loadKindAvatar(){
+  try{
+    const child = JSON.parse(localStorage.getItem('hh_active_child')||'null');
+    if(!child) return;
+    const nameEl = document.getElementById('kindName');
+    const avatarEl = document.getElementById('kindAvatar');
+    if(nameEl) nameEl.textContent = child.nickname || child.name || 'Hallo!';
+    if(avatarEl){
+      if(child.photo){ avatarEl.innerHTML = '<img src="'+child.photo+'" alt="">'; }
+      else { avatarEl.textContent = child.avatar || '🧒'; }
+    }
+  }catch(e){}
+}
+
+// Chat-Badge
+(function(){
+  const FAMILY_ROOM_KEY = 'hh_family_chat_room';
+  const FAMILY_SEEN_KEY = 'hh_family_chat_seen_child';
+  function updateBadge(){
+    try{
+      const child = JSON.parse(localStorage.getItem('hh_active_child')||'null');
+      if(!child) return;
+      const uid = child.id || child.name;
+      const room = JSON.parse(localStorage.getItem(FAMILY_ROOM_KEY)||'{"messages":[]}');
+      const msgs = Array.isArray(room.messages) ? room.messages : [];
+      const seen = JSON.parse(localStorage.getItem(FAMILY_SEEN_KEY)||'{}');
+      const lastSeen = seen[uid] || '';
+      const unread = msgs.filter(m => m.senderId !== uid && String(m.timestamp||'') > String(lastSeen) && !m.deleted).length;
+      const badge = document.getElementById('chatBadge');
+      if(badge){ badge.style.display = unread > 0 ? 'inline-block' : 'none'; badge.textContent = unread > 99 ? '99+' : String(unread); }
+    }catch(e){}
+  }
+  document.addEventListener('DOMContentLoaded', updateBadge);
+  window.addEventListener('storage', updateBadge);
+})();
+
+
+function loadHomeData(){
+  try{
+    const child = JSON.parse(localStorage.getItem('hh_active_child')||'null');
+    if(!child){
+      window.location.href = 'login.html';
+      return;
+    }
+    const name = child.nickname || child.name || '';
+    const title = document.getElementById('heroTitle');
+    const sub   = document.getElementById('heroSub');
+    const hours = new Date().getHours();
+    let greet = hours < 11 ? 'Guten Morgen' : hours < 17 ? 'Hallo' : 'Guten Abend';
+    if(title) title.textContent = greet + ', ' + name + '! 👋';
+    if(sub)   sub.textContent   = 'Schön dass du da bist!';
+
+    const childId = child.id || child.name;
+    const kidKey  = k => 'hh_kid_' + childId + '_' + k;
+
+    // Sterne
+    const money = JSON.parse(localStorage.getItem('hh_kid_money_entries')||'[]');
+    const stars = (JSON.parse(localStorage.getItem(kidKey('stars'))||'null')) || 0;
+    const starEl = document.getElementById('starCountHome');
+    if(starEl) starEl.textContent = stars;
+
+    // Aufgaben
+    const allTasks = JSON.parse(localStorage.getItem('haushaltsheld_tasks')||'[]');
+    const today = new Date().toISOString().slice(0,10);
+    const childTasks = allTasks.filter(t => !t.assignedTo || t.assignedTo === childId || t.assignedTo === child.name);
+    const todayTasks = childTasks.filter(t => !t.done && (!t.dueDate || t.dueDate.slice(0,10) === today));
+    const openCount  = childTasks.filter(t => !t.done).length;
+    
+    const taskEl = document.getElementById('taskCountHome');
+    if(taskEl) taskEl.textContent = openCount;
+    const quickTask = document.getElementById('quickTaskSub');
+    if(quickTask) quickTask.textContent = openCount > 0 ? openCount + ' offen' : 'Alles erledigt! 🎉';
+
+    // Aufgaben-Liste heute
+    const listEl = document.getElementById('todayTaskList');
+    if(listEl){
+      if(todayTasks.length === 0){
+        listEl.innerHTML = '<div class="empty-tasks">Heute keine Aufgaben mehr! 🎉</div>';
+      } else {
+        listEl.innerHTML = todayTasks.slice(0,4).map(t => `
+          <div class="task-row">
+            <div class="task-check ${t.done?'done':''}" onclick="toggleTask('${t.id}',this)">${t.done?'✓':''}</div>
+            <span class="task-name">${t.title||t.name||'Aufgabe'}</span>
+            <span class="task-stars">+${t.stars||t.reward||5}⭐</span>
+          </div>`).join('');
+      }
+    }
+
+    // Geld
+    const entries = JSON.parse(localStorage.getItem(kidKey('money'))||'[]');
+    const balance = entries.reduce((s,e)=> s + (e.type==='einnahme'?1:-1)*Math.abs(Number(e.amount||0)), 0);
+    const balEl = document.getElementById('balanceHome');
+    if(balEl) balEl.textContent = balance.toFixed(0) + '€';
+
+    // Chat Vorschau
+    const room = JSON.parse(localStorage.getItem('hh_family_chat_room')||'{"messages":[]}');
+    const msgs = Array.isArray(room.messages) ? room.messages : [];
+    const last = msgs.filter(m => !m.deleted).slice(-2);
+    const msgEl = document.getElementById('homeMessages');
+    if(msgEl && last.length > 0){
+      msgEl.innerHTML = last.map(m =>
+        `<div style="padding:6px 0;border-bottom:1px solid var(--line);font-size:.9rem;">
+          <strong style="font-weight:800;">${m.senderName||'?'}:</strong> ${(m.text||'').slice(0,60)}
+        </div>`).join('');
+    }
+
+  }catch(e){ console.error(e); }
+}
+
+function toggleTask(id, el){
+  try{
+    const tasks = JSON.parse(localStorage.getItem('haushaltsheld_tasks')||'[]');
+    const t = tasks.find(t => t.id == id);
+    if(t){ t.done = !t.done; localStorage.setItem('haushaltsheld_tasks', JSON.stringify(tasks)); }
+    el.classList.toggle('done');
+    el.textContent = el.classList.contains('done') ? '✓' : '';
+  }catch(e){}
+}
+
+document.addEventListener('DOMContentLoaded', loadHomeData);
+
 </script>
-</body></html>
+
+<button class="ki-fab" id="kiFab" type="button" aria-label="Schnecki fragen">
+  <img src="assets/assetsschnecke.png" alt="Schnecki" class="schnecki-pulse">
+</button>
+<section class="ki-panel" id="kiPanel">
+  <div class="ki-head">
+    <div class="ki-head-left">
+      <div class="ki-head-avatar"><img src="assets/assetsschnecke.png" alt="Schnecki"></div>
+      <div>
+        <h3>Schnecki</h3>
+        <div class="ki-head-status">Deine Hilfsschnecke</div>
+      </div>
+    </div>
+    <button class="ki-close" id="kiClose" type="button">×</button>
+  </div>
+  <div class="ki-chat" id="kiChat">
+    <div class="ki-msg bot" id="kiWelcomeMsg"></div>
+  </div>
+  <form class="ki-form" id="kiForm">
+    <input class="ki-input" id="kiInput" type="text" placeholder="Frag Schnecki etwas..." autocomplete="off">
+    <button class="ki-send" type="submit">Senden</button>
+  </form>
+</section>
+
+<script>
+(function(){
+  var POPUP_KEY = 'hh_ki_popup_kind_home';
+  var PAGE_LABEL = 'Mein Bereich';
+
+  function loadChild(){ try{ return JSON.parse(localStorage.getItem('hh_active_child')||'null'); }catch(e){return null;} }
+
+  var fab = document.getElementById('kiFab');
+  var panel = document.getElementById('kiPanel');
+  var closeBtn = document.getElementById('kiClose');
+  var form = document.getElementById('kiForm');
+  var input = document.getElementById('kiInput');
+  var chat = document.getElementById('kiChat');
+  var welcome = document.getElementById('kiWelcomeMsg');
+
+  if(!fab||!panel) return;
+
+  var child = loadChild();
+  var childName = child ? (child.nickname||child.name||'') : '';
+
+  if(welcome) welcome.textContent = 'Hallo '+childName+'! 👋 Ich bin Schnecki, deine Hilfsschnecke. Was möchtest du wissen?';
+
+  function addMsg(role, text){
+    var d = document.createElement('div');
+    d.className = 'ki-msg '+role;
+    d.textContent = text;
+    chat.appendChild(d);
+    chat.scrollTop = chat.scrollHeight;
+    return d;
+  }
+
+  fab.addEventListener('click', function(){
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open') && input) input.focus();
+  });
+  if(closeBtn) closeBtn.addEventListener('click', function(){ panel.classList.remove('open'); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') panel.classList.remove('open'); });
+
+  if(form) form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var msg = input.value.trim();
+    if(!msg) return;
+    input.value = '';
+    addMsg('user', msg);
+    var loading = addMsg('bot','');
+    loading.classList.add('ki-typing');
+    loading.innerHTML = '<span></span><span></span><span></span>';
+    try{
+      var res = await fetch('/.netlify/functions/chat', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          message: msg,
+          page: 'Mein Bereich',
+          mode: 'child',
+          childName: childName,
+          system: 'Du bist Schnecki, eine freundliche Hilfsschnecke für Kinder. Antworte kurz, einfach und kindgerecht. Benutze manchmal kleine Emojis. Erkläre Dinge so, als würdest du mit einem Kind zwischen 6 und 14 Jahren sprechen.'
+        })
+      });
+      var data = await res.json();
+      loading.classList.remove('ki-typing'); loading.innerHTML = '';
+      loading.textContent = data.reply || 'Ich konnte das gerade nicht beantworten. Versuch es nochmal! 🐌';
+    }catch(err){
+      loading.classList.remove('ki-typing'); loading.innerHTML = '';
+      loading.textContent = 'Ups, da hat etwas nicht geklappt! Versuch es nochmal. 🐌';
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

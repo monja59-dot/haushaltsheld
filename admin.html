@@ -75,6 +75,8 @@ button,input,select,textarea{font:inherit}
 .page-header h1{font-size:2.35rem;font-weight:800;margin-bottom:8px;display:flex;gap:12px;align-items:center}
 .page-header p{color:var(--muted);font-size:.98rem;max-width:940px}
 .mode-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;font-weight:800;font-size:.88rem;background:var(--soft);border:1px solid var(--line);color:var(--text2);box-shadow:var(--shadow-xs)}
+.header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.save-toast{position:fixed;right:22px;bottom:22px;z-index:10000;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);color:#fff;border-radius:18px;padding:13px 18px;font-weight:900;box-shadow:0 6px 0 #2f6f33,0 16px 32px rgba(62,142,65,.28);opacity:0;transform:translateY(10px);pointer-events:none;transition:.18s ease}.save-toast.show{opacity:1;transform:translateY(0)}
 .card{background:linear-gradient(180deg,#ffffff 0%,#fffdfa 100%);border:1px solid rgba(223,209,188,.95);border-radius:28px;padding:24px;box-shadow:var(--shadow-sm);margin-bottom:18px}
 .card h2{font-size:1.16rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:10px}
 .card h3{font-size:1rem;font-weight:800;margin-bottom:6px}
@@ -171,54 +173,309 @@ tbody tr:hover td{background:#fbfdfb}
   .nav{flex-direction:row;flex-wrap:wrap;flex:1}.nav a{flex:0 1 auto;padding:10px 12px}.nav-label,.sidebar-footer{display:none}
 }
 @media(max-width:760px){.main{padding:16px}.page-header h1{font-size:1.95rem}.grid-3,.person-grid,.form-grid,.form-grid-3{grid-template-columns:1fr}.card{padding:18px}.right-row{align-items:flex-start}.tabs{gap:6px}.tab{font-size:.84rem;padding:9px 11px}}
+
+
+/* === HaushaltsHeld Sidebar FINAL: einheitliche Buttons + Login oben === */
+.hh-sidebar-final .logo-wrap,
+.hh-sidebar-final .hh-logo-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 8px 18px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:10px;
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer;
+}
+.sidebar-user-top{
+  display:grid;
+  grid-template-columns:42px 1fr;
+  gap:10px;
+  align-items:center;
+  background:rgba(255,255,255,.76);
+  border:1px solid rgba(223,209,188,.82);
+  border-radius:18px;
+  padding:12px;
+  margin:0 0 8px;
+  box-shadow:var(--shadow-xs);
+}
+.sidebar-user-avatar{
+  width:42px;
+  height:42px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(180deg,#fffdfa 0%, #edf7ee 100%);
+  border:1px solid rgba(76,175,80,.18);
+  color:var(--accent-dark);
+  font-weight:900;
+  box-shadow:var(--shadow-xs);
+}
+.sidebar-user-text{min-width:0;}
+.sidebar-user-text strong{
+  display:block;
+  font-size:.9rem;
+  font-weight:900;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  line-height:1.2;
+}
+.sidebar-user-text span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:.74rem;
+  font-weight:700;
+}
+.sidebar-user-actions{
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  margin-top:2px;
+}
+.sidebar-login-btn,
+.sidebar-logout-btn{
+  width:100%;
+  min-height:38px;
+  border:1.5px solid #ddcbb4;
+  background:linear-gradient(135deg,#fffaf4 0%, #f1e4d3 100%);
+  color:#665646 !important;
+  border-radius:14px;
+  padding:9px 12px;
+  font-size:.84rem;
+  font-weight:900;
+  text-decoration:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 3px 0 #cdb394, 0 8px 18px rgba(110,82,40,.10), inset 0 1px 0 rgba(255,255,255,.72);
+  transition:transform .16s ease, box-shadow .16s ease, filter .16s ease;
+}
+.sidebar-login-btn:hover,
+.sidebar-logout-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 0 #cdb394,0 12px 22px rgba(110,82,40,.14),inset 0 1px 0 rgba(255,255,255,.72);
+}
+.sidebar-login-btn svg,
+.sidebar-logout-btn svg{width:16px;height:16px;stroke:currentColor;}
+.hh-sidebar-final .nav,
+.hh-sidebar-final .hh-nav{display:flex;flex-direction:column;gap:4px;}
+.hh-sidebar-final .nav a,
+.hh-sidebar-final .nav .dropdown-toggle,
+.hh-sidebar-final .nav .nav-drop-head,
+.hh-sidebar-final .nav .nav-toggle,
+.hh-nav-btn{
+  width:100%;
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 13px;
+  border-radius:18px;
+  text-decoration:none;
+  color:var(--text2);
+  font-weight:800 !important;
+  font-size:.96rem !important;
+  line-height:1.15;
+  transition:all .18s ease;
+  border:1px solid transparent;
+  position:relative;
+  background:transparent;
+  cursor:pointer;
+  text-align:left;
+  font-family:var(--font-main, "Outfit", sans-serif);
+}
+.hh-sidebar-final .nav a:hover,
+.hh-sidebar-final .nav .dropdown-toggle:hover,
+.hh-sidebar-final .nav .nav-drop-head:hover,
+.hh-sidebar-final .nav .nav-toggle:hover,
+.hh-nav-btn:hover{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(223,209,188,.9);
+  transform:translateX(2px);
+  box-shadow:var(--shadow-xs);
+  color:var(--text);
+}
+.hh-sidebar-final .nav a.active,
+.hh-sidebar-final .nav .dropdown-toggle.active,
+.hh-sidebar-final .nav-dropdown.open > .dropdown-toggle,
+.hh-sidebar-final .nav-drop.open > .nav-drop-head,
+.hh-sidebar-final .nav-toggle.active,
+.hh-nav-btn.active{
+  background:linear-gradient(135deg,#58b95d 0%, #3e8e41 100%);
+  color:#fff !important;
+  border-color:rgba(62,142,65,.28);
+  box-shadow:0 5px 0 #2f6f33,0 14px 26px rgba(62,142,65,.20),inset 0 1px 0 rgba(255,255,255,.18);
+  transform:translateX(2px);
+}
+.hh-sidebar-final .nav-icon{
+  width:36px !important;
+  height:36px !important;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(223,209,188,.92);
+  color:var(--accent-dark);
+  flex:0 0 36px;
+  box-shadow:0 2px 8px rgba(54,45,28,.05);
+  position:relative;
+}
+.hh-sidebar-final .nav-icon svg,
+.hh-sidebar-final .nav-icon i{
+  width:18px !important;
+  height:18px !important;
+  stroke:currentColor;
+  color:currentColor;
+}
+.hh-sidebar-final .nav a.active .nav-icon,
+.hh-sidebar-final .nav-dropdown.open > .dropdown-toggle .nav-icon,
+.hh-nav-btn.active .nav-icon{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.22);
+  color:#fff;
+}
+.hh-sidebar-final .dropdown-menu{
+  display:none;
+  flex-direction:column;
+  gap:4px;
+  padding-left:10px;
+  margin-top:4px;
+}
+.hh-sidebar-final .nav-dropdown.open .dropdown-menu{display:flex;}
+.hh-sidebar-final .dropdown-caret{
+  margin-left:auto;
+  width:18px;
+  height:18px;
+  display:grid;
+  place-items:center;
+  transition:transform .18s ease;
+}
+.hh-sidebar-final .nav-dropdown.open .dropdown-caret{transform:rotate(180deg);}
+.hh-sidebar-final .hh-sub{
+  min-height:50px;
+  font-size:.9rem !important;
+  padding-left:10px;
+}
+.hh-sidebar-final .chat-badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#cc6666;
+  color:#fff;
+  font-size:.68rem;
+  font-weight:900;
+  line-height:18px;
+  text-align:center;
+  border:2px solid #fff;
+  box-shadow:0 2px 8px rgba(204,102,102,.28);
+}
+.hh-sidebar-final .sidebar-footer{
+  margin-top:auto;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  display:grid;
+  gap:10px;
+}
+.hh-sidebar-final .user-info{display:none !important;}
+@media(max-width:960px){
+  .sidebar-user-top{grid-template-columns:42px minmax(150px,1fr);max-width:320px;margin-left:10px;margin-right:10px;}
+  .sidebar-user-actions{grid-column:1 / -1;}
+  .hh-sidebar-final .nav a,
+  .hh-sidebar-final .nav .dropdown-toggle,
+  .hh-nav-btn{min-height:48px;}
+  .hh-sidebar-final .dropdown-menu{padding-left:0;flex-direction:row;flex-wrap:wrap;}
+}
+
+
+  /* Alters-Preset */
+  .age-presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .age-preset-btn{border:1.5px solid var(--line);background:linear-gradient(135deg,#fffaf4,#f1e4d3);
+    color:#665646;padding:8px 16px;border-radius:14px;font-size:.85rem;font-weight:800;
+    cursor:pointer;transition:.18s ease;font-family:inherit;}
+  .age-preset-btn:hover{border-color:var(--accent);color:var(--accent-dark);background:var(--accent-soft);}
+  .age-preset-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:#fff;border-color:var(--accent-dark);}
+  .preset-label{font-size:.78rem;color:var(--muted);margin-bottom:8px;font-weight:700;}
+  /* Tab Badge */
+  .tab-badge{display:inline-flex;align-items:center;justify-content:center;
+    min-width:18px;height:18px;padding:0 5px;border-radius:999px;
+    background:#cc6666;color:#fff;font-size:.65rem;font-weight:800;
+    margin-left:6px;line-height:18px;}
+
 </style>
 </head>
 
 <body>
 <div class="app">
-<aside class="sidebar">
-  <div class="logo-wrap" style="cursor:pointer;" onclick="window.location.href='index.html'">
-    <img src="assets/assetsschnecke.png" alt="Haushaltsheld">
-    <div>
-      <div class="logo-name">Haushaltsheld</div>
-      <div class="logo-sub">Dein Familien-Assistent</div>
-    </div>
-  </div>
+<aside class="sidebar hh-sidebar-final">
+    <a class="logo-wrap hh-logo-link" href="index.html" aria-label="Zur Startseite">
+      <img src="assets/assetsschnecke.png" alt="HaushaltsHeld">
+      <div>
+        <div class="logo-name">HaushaltsHeld</div>
+        <div class="logo-sub">Dein Familien-Assistent</div>
+      </div>
+    </a>
 
-  <div class="nav-label">Hauptmenü</div>
-  <nav class="nav">
-    <a href="index.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
-    <a href="finanzen.html"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
-    <a href="einkaufsliste.html"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkäufe</span></a>
-    <a href="aufgaben.html"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
-    <a href="familienplaner.html"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
-    <a href="essensplan.html"><span class="nav-icon"><i data-lucide="utensils-crossed"></i></span><span>Essensplan</span></a>
-    <a href="admin_chat.html"><span class="nav-icon" style="position:relative;"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
-  </nav>
+    <section class="sidebar-user-top" aria-label="Anmeldung">
+      <div class="sidebar-user-avatar" id="sidebarUserAvatar">👤</div>
+      <div class="sidebar-user-text">
+        <strong id="sidebarUserName">Nicht angemeldet</strong>
+        <span id="sidebarUserRole">Bitte anmelden</span>
+      </div>
+      <div class="sidebar-user-actions">
+        <a class="sidebar-login-btn" id="sidebarLoginBtn" href="login.html"><i data-lucide="log-in"></i><span>Anmelden</span></a>
+        <button class="sidebar-logout-btn" id="sidebarLogoutBtn" type="button" style="display:none;"><i data-lucide="log-out"></i><span>Abmelden</span></button>
+      </div>
+    </section>
 
-  <div class="nav-label">Extras</div>
-  <nav class="nav">
-    <a href="finanzbericht.html"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Bericht</span></a>
-    <a href="finanz_historie.html"><span class="nav-icon"><i data-lucide="history"></i></span><span>Historie</span></a>
-    <a href="beleg_import.html"><span class="nav-icon"><i data-lucide="receipt"></i></span><span>Belege</span></a>
-    <a href="rezepte.html"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
-    <a href="essensplan_essverhalten.html"><span class="nav-icon"><i data-lucide="scan-search"></i></span><span>Essensanalyse</span></a>
-    <a href="nutzer-verwalten.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
-    <a href="admin.html" class="active"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Familienrechte</span></a>
-  </nav>
+    <div class="nav-label">Hauptmenü</div>
+    <nav class="nav hh-nav" aria-label="Hauptnavigation">
+      <a href="index.html" class="hh-nav-btn"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Dashboard</span></a>
+      <a href="finanzen.html" class="hh-nav-btn"><span class="nav-icon"><i data-lucide="wallet"></i></span><span>Finanzen</span></a>
+      <a href="einkaufsliste.html" class="hh-nav-btn"><span class="nav-icon"><i data-lucide="shopping-cart"></i></span><span>Einkauf</span></a>
+      <a href="aufgaben.html" class="hh-nav-btn"><span class="nav-icon"><i data-lucide="check-square"></i></span><span>Aufgaben</span></a>
+      <a href="familienplaner.html" class="hh-nav-btn"><span class="nav-icon"><i data-lucide="calendar-days"></i></span><span>Familienplaner</span></a>
+      <a href="essensplan.html" class="hh-nav-btn"><span class="nav-icon"><i data-lucide="utensils"></i></span><span>Essensplan</span></a>
+      <a href="admin_chat.html" class="hh-nav-btn"><span class="nav-icon"><i data-lucide="message-circle"></i><span id="chatBadge" class="chat-badge" style="display:none;">0</span></span><span>Familien-Chat</span></a>
+      <a href="datenzentrale.html" class="hh-nav-btn"><span class="nav-icon"><i data-lucide="database"></i></span><span>Datenzentrale</span></a>
+      <a href="admin.html" class="hh-nav-btn active"><span class="nav-icon"><i data-lucide="shield-check"></i></span><span>Admin</span></a>
 
-  <div class="sidebar-footer">
-    <div class="user-info">
-      <strong id="userName">👋 Willkommen</strong>
-      <span id="userRole">Eltern-Modus</span>
+      <div class="nav-dropdown hh-extras" id="hhExtrasMenu">
+        <button class="dropdown-toggle hh-nav-btn" type="button" onclick="document.getElementById('hhExtrasMenu').classList.toggle('open')" aria-label="Extras öffnen">
+          <span class="nav-icon"><i data-lucide="more-horizontal"></i></span>
+          <span>Extras</span>
+          <span class="dropdown-caret"><i data-lucide="chevron-down"></i></span>
+        </button>
+        <div class="dropdown-menu">
+        <a href="finanzbericht.html" class="hh-nav-btn hh-sub"><span class="nav-icon"><i data-lucide="bar-chart-3"></i></span><span>Finanzbericht</span></a>
+        <a href="finanz_historie.html" class="hh-nav-btn hh-sub"><span class="nav-icon"><i data-lucide="history"></i></span><span>Finanz-Historie</span></a>
+        <a href="beleg_import.html" class="hh-nav-btn hh-sub"><span class="nav-icon"><i data-lucide="scan-line"></i></span><span>Beleg-Import</span></a>
+        <a href="beleg.html" class="hh-nav-btn hh-sub"><span class="nav-icon"><i data-lucide="receipt-text"></i></span><span>Belege</span></a>
+        <a href="essensplan_essverhalten.html" class="hh-nav-btn hh-sub"><span class="nav-icon"><i data-lucide="activity"></i></span><span>Essensanalyse</span></a>
+    <a href="rezepte.html" class="hh-nav-btn hh-sub"><span class="nav-icon"><i data-lucide="book-open"></i></span><span>Rezepte</span></a>
+    <a href="nutzer-verwalten.html" class="hh-nav-btn hh-sub"><span class="nav-icon"><i data-lucide="users"></i></span><span>Nutzer verwalten</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer hh-sidebar-footer-clean">
+      <div class="mode-switch">
+        <button class="mode-btn active" type="button" onclick="window.location.href='index.html'">Eltern</button>
+        <button class="mode-btn" type="button" onclick="window.location.href='kindermodus.html'">Kind</button>
+      </div>
     </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" id="adminBtn" type="button">Eltern</button>
-      <button class="mode-btn" id="childBtn" type="button">Kind</button>
-    </div>
-    <button class="logout-btn" onclick="handleLogout()">🚪 Abmelden</button>
-  </div>
-</aside>
+  </aside>
 
 <main class="main">
   <div class="page-header">
@@ -226,7 +483,7 @@ tbody tr:hover td{background:#fbfdfb}
       <h1><span class="page-title-icon"><i data-lucide="shield-check"></i></span><span>Familie & Rechte</span></h1>
       <p>Hier legst du fest, wer in HaushaltsHeld was sehen, bearbeiten oder freigeben darf. Familienverwaltung bleibt getrennt von privaten Inhalten.</p>
     </div>
-    <span class="mode-badge">Elternmodus aktiv</span>
+    <div class="header-actions"><button class="btn" id="saveAllRightsTopBtn" type="button">Alle Rechte speichern</button><span class="mode-badge">Elternmodus aktiv</span></div>
   </div>
 
   <section class="hero">
@@ -259,7 +516,7 @@ tbody tr:hover td{background:#fbfdfb}
       <button class="tab" data-tab="privacy" type="button">Privatsphäre</button>
       <button class="tab" data-tab="finance" type="button">Finanzen</button>
       <button class="tab" data-tab="chat" type="button">Chat-Schutz</button>
-      <button class="tab" data-tab="requests" type="button">Freigaben</button>
+      <button class="tab" data-tab="requests" type="button">Freigaben<span class="tab-badge" id="requestsBadge" style="display:none;">0</span></button>
       <button class="tab" data-tab="audit" type="button">Sicherheitsverlauf</button>
     </div>
 
@@ -318,6 +575,14 @@ tbody tr:hover td{background:#fbfdfb}
       <h2><span class="section-icon"><i data-lucide="baby"></i></span><span>Kinderrechte</span></h2>
       <p class="card-sub">Diese Rechte gelten für Kinder und Jugendliche. Kinder sehen nur eigene Inhalte und gemeinsame Familienbereiche — keine privaten Daten von Eltern oder Geschwistern.</p>
       <div class="notice"><strong>Familienchat bleibt offen:</strong> Kinder und Eltern können grundsätzlich miteinander schreiben. Private Chats zwischen Kindern können altersabhängig erlaubt, pausiert oder geschützt werden.</div>
+      
+      <div class="preset-label">Alters-Voreinstellung wählen:</div>
+      <div class="age-presets" id="agePresets">
+        <button class="age-preset-btn" type="button" data-age="6">🧒 6–9 Jahre</button>
+        <button class="age-preset-btn" type="button" data-age="10">👦 10–13 Jahre</button>
+        <button class="age-preset-btn" type="button" data-age="14">🧑 14–15 Jahre</button>
+        <button class="age-preset-btn" type="button" data-age="16">👨 16–17 Jahre</button>
+      </div>
       <div class="rights-list" id="childRightsList"></div>
     </div>
 
@@ -472,6 +737,8 @@ tbody tr:hover td{background:#fbfdfb}
       <div class="grid-2">
         <div>
           <h3>Eingehende Anfragen</h3>
+          <div id="childRequests" class="rights-list" style="margin-bottom:12px;"></div>
+          <h3 style="margin-top:8px;">Freigabe-Anfragen (Erwachsene)</h3>
           <div id="incomingRequests" class="rights-list"></div>
         </div>
         <div>
@@ -526,9 +793,15 @@ tbody tr:hover td{background:#fbfdfb}
         <button class="btn-soft" id="clearAuditBtn" type="button">Verlauf leeren</button>
       </div>
     </div>
+
+    <div class="btn-row" style="margin-top:18px;justify-content:flex-end;">
+      <button class="btn" id="saveAllRightsBottomBtn" type="button">Alle Rechte speichern</button>
+    </div>
   </section>
 </main>
 </div>
+
+<div class="save-toast" id="saveToast">✅ Rechte gespeichert</div>
 
 <div class="modal-backdrop" id="infoModal">
   <div class="modal">
@@ -569,17 +842,21 @@ tbody tr:hover td{background:#fbfdfb}
   ];
 
   const childRights = [
-    ["tasks_view","Eigene Aufgaben sehen","Kind sieht eigene Aufgaben und altersgerechte Familienaufgaben.",true],
-    ["tasks_done","Aufgaben abhaken","Kind darf eigene Aufgaben erledigt markieren.",true],
-    ["family_chat","Familienchat nutzen","Familienchat ist gemeinsamer Raum für alle.",true,true],
-    ["parent_chat","Eltern anschreiben","Eltern-Kind-Kommunikation bleibt offen.",true,true],
-    ["shopping_suggest","Einkaufsideen vorschlagen","Kind darf Wünsche oder Einkaufsideen eintragen.",true],
-    ["money_view","Belohnungen / Taschengeld sehen","Nur eigenes Geld, keine Eltern- oder Geschwisterfinanzen.",false],
-    ["appointments_view","Kindgerechte Termine sehen","Keine privaten Termine von Eltern/Geschwistern.",true],
-    ["ki_child","KI-Hilfe kindgerecht nutzen","Keine sensiblen Daten und keine privaten Inhalte anderer.",false],
-    ["private_chat","Private Chats altersabhängig","Geschwister-Privatchats nur mit Schutzregel/Freigabe.",false],
-    ["attachments","Bilder/Anhänge senden","Kann bei Missbrauch gesperrt werden.",false],
-    ["scanner","Belege/Fotos hochladen","Nur nach Freigabe und altersgerecht.",false]
+    ["tasks_view",      "Eigene Aufgaben sehen",         "Kind sieht eigene Aufgaben und altersgerechte Familienaufgaben.", true],
+    ["tasks_done",      "Aufgaben abhaken",               "Kind darf eigene Aufgaben erledigt markieren.", true],
+    ["tasks_create",    "Eigene Aufgaben anlegen",        "Kind darf selbst Aufgaben erstellen (ab 10–13 empfohlen).", false],
+    ["family_chat",     "Familienchat nutzen",            "Familienchat ist gemeinsamer Raum für alle.", true, true],
+    ["parent_chat",     "Eltern anschreiben",             "Eltern-Kind-Kommunikation bleibt offen.", true, true],
+    ["private_chat",    "Private Chats",                  "Innerfamiliäre Privatnachrichten. Bei Missbrauch sperrbar.", true],
+    ["shopping_suggest","Einkaufsideen vorschlagen",      "Kind darf Wünsche oder Einkaufsideen eintragen.", true],
+    ["money_view",      "Taschengeld & Belohnungen sehen","Nur eigenes Geld, keine Eltern- oder Geschwisterfinanzen.", false],
+    ["scanner",         "Belege & Fotos hochladen",       "Finanzkompetenz fördern – Kassenzettel scannen lernen.", false],
+    ["appointments_view","Kindgerechte Termine sehen",    "Keine privaten Termine von Eltern/Geschwistern.", true],
+    ["appointments_create","Eigene Termine erstellen",    "Kind darf eigene Termine anlegen (Freunde, Treffen).", false],
+    ["appointments_private","Private Termine erlaubt",    "Eigene Termine können privat sein (ab 14–15 empfohlen).", false],
+    ["appointments_optional","Optionale Termine zu-/absagen","Kind darf bei optionalen Terminen selbst entscheiden.", false],
+    ["ki_child",        "KI-Hilfe (Schnecki)",            "Kindgerecht gefiltert – keine sensiblen Themen.", true],
+    ["report_view",     "Finanzbericht einsehen",         "Nur eigene Daten, keine Eltern-Finanzen (ab 14–15).", false]
   ];
 
   const defaultRights = {
@@ -826,6 +1103,26 @@ tbody tr:hover td{background:#fbfdfb}
     document.getElementById("infoModal").classList.add("open");
   }
 
+  function showSaveToast(text){
+    const toast=document.getElementById("saveToast");
+    if(!toast) return;
+    toast.textContent = text || "✅ Rechte gespeichert";
+    toast.classList.add("show");
+    clearTimeout(window.__hhSaveToastTimer);
+    window.__hhSaveToastTimer=setTimeout(()=>toast.classList.remove("show"),2200);
+  }
+
+  function saveEverything(note){
+    saveRights();
+    write(KEYS.requests,state.requests);
+    write(KEYS.grants,state.grants);
+    write(KEYS.audit,state.audit);
+    addAudit("Rechte gespeichert",state.selectedId || currentUserId(),note || "Alle aktuellen Einstellungen wurden übernommen.");
+    saveRights();
+    renderAll();
+    showSaveToast("✅ Rechte gespeichert");
+  }
+
   function renderMembers(){
     const grid=document.getElementById("memberGrid");
     grid.innerHTML = state.users.map(u=>{
@@ -881,6 +1178,178 @@ tbody tr:hover td{background:#fbfdfb}
       : "Dieses Profil sieht keine privaten Daten von Eltern oder Geschwistern.";
   }
 
+  
+  // ── Alters-Preset Matrix ──────────────────────────────────────
+  const AGE_PRESETS = {
+    6: {
+      tasks_view: true, tasks_done: true, tasks_create: false,
+      family_chat: true, parent_chat: true, private_chat: true,
+      shopping_suggest: true, money_view: false, scanner: false,
+      appointments_view: true, appointments_create: true,
+      appointments_private: false, appointments_optional: false,
+      ki_child: true, report_view: false
+    },
+    10: {
+      tasks_view: true, tasks_done: true, tasks_create: true,
+      family_chat: true, parent_chat: true, private_chat: true,
+      shopping_suggest: true, money_view: true, scanner: true,
+      appointments_view: true, appointments_create: true,
+      appointments_private: false, appointments_optional: true,
+      ki_child: true, report_view: false
+    },
+    14: {
+      tasks_view: true, tasks_done: true, tasks_create: true,
+      family_chat: true, parent_chat: true, private_chat: true,
+      shopping_suggest: true, money_view: true, scanner: true,
+      appointments_view: true, appointments_create: true,
+      appointments_private: true, appointments_optional: true,
+      ki_child: true, report_view: false
+    },
+    16: {
+      tasks_view: true, tasks_done: true, tasks_create: true,
+      family_chat: true, parent_chat: true, private_chat: true,
+      shopping_suggest: true, money_view: true, scanner: true,
+      appointments_view: true, appointments_create: true,
+      appointments_private: true, appointments_optional: true,
+      ki_child: true, report_view: true
+    }
+  };
+
+  function applyAgePreset(age){
+    const u = selectedUser();
+    if(!u) return;
+    const preset = AGE_PRESETS[age];
+    if(!preset) return;
+
+    // Rechte setzen
+    if(!state.rights.child[u.id]) state.rights.child[u.id] = {};
+    Object.assign(state.rights.child[u.id], preset);
+
+    // Speichern
+    write(KEYS.rights, state.rights);
+
+    // UI aktualisieren
+    renderChildRights();
+
+    // Aktiven Button markieren
+    document.querySelectorAll('.age-preset-btn').forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.dataset.age) === age);
+    });
+
+    showToast('Voreinstellung für ' + age + '+ Jahre gesetzt ✅');
+  }
+
+  
+  
+  function renderChildRequests(){
+    const requests = read(KEYS.requests, []);
+    const childReqs = requests.filter(r => r.status === 'open' && r.fromChild);
+    const box = document.getElementById('childRequests');
+    if(!box) return;
+
+    if(!childReqs.length){
+      box.innerHTML = '<div class="empty">Keine offenen Kind-Anfragen.</div>';
+      return;
+    }
+
+    const rightLabels = {};
+    childRights.forEach(([key,,title]) => { rightLabels[key] = title; });
+
+    box.innerHTML = childReqs.map(r => {
+      const childName = r.childName || r.requesterId || '?';
+      const rightLabel = rightLabels[r.rightKey] || r.rightKey || r.area || 'Freigabe';
+      const note = r.note ? ' · ' + r.note : '';
+      return `<div class="right-row" style="border-left:3px solid var(--accent);padding-left:12px;">
+        <div>
+          <strong>${esc(childName)} möchte: ${esc(rightLabel)}</strong>
+          <span>${new Date(r.createdAt||Date.now()).toLocaleDateString('de-DE')}${esc(note)}</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn small" data-child-approve="${esc(r.id)}" type="button">✅ Freigeben</button>
+          <button class="btn-danger small" data-child-deny="${esc(r.id)}" type="button">❌ Ablehnen</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Event-Handler
+    box.querySelectorAll('[data-child-approve]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.childApprove;
+        const reqs = read(KEYS.requests, []);
+        const req = reqs.find(r => r.id === id);
+        if(req){
+          req.status = 'approved';
+          req.answeredAt = new Date().toISOString();
+          // Recht setzen
+          if(req.requesterId && req.rightKey){
+            if(!state.rights.child[req.requesterId]) state.rights.child[req.requesterId] = {};
+            state.rights.child[req.requesterId][req.rightKey] = true;
+            write(KEYS.rights, state.rights);
+          }
+          write(KEYS.requests, reqs);
+          showToast('Freigabe erteilt für ' + (req.childName || req.requesterId) + ' ✅');
+          renderChildRequests();
+          updateRequestsBadge();
+        }
+      });
+    });
+
+    box.querySelectorAll('[data-child-deny]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.childDeny;
+        const reqs = read(KEYS.requests, []);
+        const req = reqs.find(r => r.id === id);
+        if(req){
+          req.status = 'denied';
+          req.answeredAt = new Date().toISOString();
+          write(KEYS.requests, reqs);
+          showToast('Anfrage abgelehnt.');
+          renderChildRequests();
+          updateRequestsBadge();
+        }
+      });
+    });
+  }
+
+
+  function updateRequestsBadge(){
+    const requests = read(KEYS.requests, []);
+    const curId = userId(state.current);
+    const open = requests.filter(r => r.ownerId === curId && r.status === 'open').length;
+    // Auch Kind-Anfragen zählen (von Kindern gestellte)
+    const childOpen = requests.filter(r => r.status === 'open' && r.fromChild).length;
+    const total = open + childOpen;
+    const badge = document.getElementById('requestsBadge');
+    if(badge){
+      badge.style.display = total > 0 ? 'inline-flex' : 'none';
+      badge.textContent = total > 99 ? '99+' : String(total);
+    }
+  }
+
+
+  
+  function showToast(msg, duration=3000){
+    let t = document.getElementById('hhAdminToast');
+    if(!t){
+      t = document.createElement('div');
+      t.id = 'hhAdminToast';
+      t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#2e7d32;color:#fff;padding:12px 20px;border-radius:14px;font-weight:800;font-size:.9rem;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,.2);transition:opacity .3s;';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = '1';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => { t.style.opacity = '0'; }, duration);
+  }
+
+
+  function initAgePresets(){
+    document.querySelectorAll('.age-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyAgePreset(parseInt(btn.dataset.age)));
+    });
+  }
+
+
   function renderChildRights(){
     const u=selectedUser();
     const list=document.getElementById("childRightsList");
@@ -910,7 +1379,7 @@ tbody tr:hover td{background:#fbfdfb}
         state.rights.child[u.id][input.getAttribute("data-child-right")] = input.checked;
       });
     });
-    document.getElementById("saveChildRightsBtn").addEventListener("click",()=>{
+    document.getElementById("saveChildRightsBtn")?.addEventListener("click",()=>{
       saveRights(); addAudit("Kinderrechte gespeichert",u.id,"Altersgerechte Rechte angepasst."); renderAll(); showModal("Gespeichert","Die Kinderrechte wurden gespeichert.");
     });
   }
@@ -960,6 +1429,8 @@ tbody tr:hover td{background:#fbfdfb}
   }
 
   function renderRequests(){
+    updateRequestsBadge();
+    renderChildRequests();
     const curId=userId(state.current);
     const incoming=state.requests.filter(r=>r.ownerId===curId && r.status==="open");
     const incomingBox=document.getElementById("incomingRequests");
@@ -1061,20 +1532,24 @@ tbody tr:hover td{background:#fbfdfb}
 
   function bindEvents(){
     document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>activateTab(btn.dataset.tab)));
+    ["saveAllRightsTopBtn","saveAllRightsBottomBtn"].forEach(id=>{
+      const btn=document.getElementById(id);
+      if(btn) btn.addEventListener("click",()=>saveEverything("Manuell über „Alle Rechte speichern“ gespeichert."));
+    });
 
-    document.getElementById("saveRoleBtn").addEventListener("click",()=>{
+    document.getElementById("saveRoleBtn")?.addEventListener("click",()=>{
       const u=selectedUser(); const newRole=document.getElementById("roleSelect").value;
       state.rights.roles[u.id]=newRole;
       ensureRights(); saveRights(); addAudit("Rolle geändert",u.id,roleLabel(newRole)); renderAll(); showModal("Rolle gespeichert","Die Rolle wurde gespeichert.");
     });
 
-    document.getElementById("saveProtectionBtn").addEventListener("click",()=>{
+    document.getElementById("saveProtectionBtn")?.addEventListener("click",()=>{
       const u=selectedUser(); const val=document.getElementById("protectionSelect").value;
       state.rights.protection[u.id]=val;
       saveRights(); addAudit("Schutzstufe geändert",u.id,protectionLabel(val)); renderAll(); showModal("Schutz gespeichert","Die Schutzstufe wurde gespeichert.");
     });
 
-    document.getElementById("savePrivacyBtn").addEventListener("click",()=>{
+    document.getElementById("savePrivacyBtn")?.addEventListener("click",()=>{
       const u=selectedUser();
       if(isForeignAdult(u)){showModal("Privatbereich geschützt","Diese Privatsphäre kann nur die ausgewählte erwachsene Person selbst ändern. Bitte nutze „Freigabe anfragen“.");return;}
       state.rights.privacy[u.id]={
@@ -1086,12 +1561,12 @@ tbody tr:hover td{background:#fbfdfb}
       saveRights(); addAudit("Privatsphäre gespeichert",u.id,"Standardsichtbarkeit angepasst."); renderAll(); showModal("Gespeichert","Die Privatsphäre-Einstellungen wurden gespeichert.");
     });
 
-    document.getElementById("requestPrivacyBtn").addEventListener("click",()=>{
+    document.getElementById("requestPrivacyBtn")?.addEventListener("click",()=>{
       const u=selectedUser();
       createRequest("privacy","summary",u.id);
     });
 
-    document.getElementById("saveFinanceRightsBtn").addEventListener("click",()=>{
+    document.getElementById("saveFinanceRightsBtn")?.addEventListener("click",()=>{
       const u=selectedUser();
       if(isForeignAdult(u)){showModal("Finanz-Privatsphäre geschützt","Diese Finanzrechte kann nur die ausgewählte erwachsene Person selbst ändern. Bitte nutze „Finanz-Freigabe anfragen“.");return;}
       state.rights.finance[u.id]={
@@ -1105,12 +1580,12 @@ tbody tr:hover td{background:#fbfdfb}
       saveRights(); addAudit("Finanzrechte gespeichert",u.id,"Finanz-Sichtbarkeit angepasst."); renderAll(); showModal("Gespeichert","Die Finanzrechte wurden gespeichert.");
     });
 
-    document.getElementById("requestFinanceBtn").addEventListener("click",()=>{
+    document.getElementById("requestFinanceBtn")?.addEventListener("click",()=>{
       const u=selectedUser();
       createRequest("finance","summary",u.id);
     });
 
-    document.getElementById("saveChatBtn").addEventListener("click",()=>{
+    document.getElementById("saveChatBtn")?.addEventListener("click",()=>{
       const u=selectedUser();
       if(isForeignAdult(u)){showModal("Private Chats geschützt","Private Chat-Einstellungen anderer Erwachsener können nicht durch Admin geändert werden.");return;}
       state.rights.chat[u.id]={
@@ -1122,33 +1597,34 @@ tbody tr:hover td{background:#fbfdfb}
       saveRights(); addAudit("Chat-Schutz gespeichert",u.id,"Chat-Schutz angepasst."); renderAll(); showModal("Gespeichert","Die Chat-Schutz-Einstellungen wurden gespeichert.");
     });
 
-    document.getElementById("pausePrivateChatBtn").addEventListener("click",()=>{
+    document.getElementById("pausePrivateChatBtn")?.addEventListener("click",()=>{
       const u=selectedUser();
       if(isForeignAdult(u)){showModal("Private Chats geschützt","Private Chats anderer Erwachsener können nicht durch Admin pausiert werden.");return;}
       state.rights.chat[u.id].privateChildChat=false;
       saveRights(); addAudit("Privatchat pausiert",u.id,"Private Chats wurden pausiert. Familienchat/Elternkontakt bleibt offen."); renderAll(); showModal("Privatchat pausiert","Private Chats wurden pausiert. Familienchat und Eltern-Kind-Kommunikation bleiben offen.");
     });
 
-    document.getElementById("createRequestBtn").addEventListener("click",()=>{
+    document.getElementById("createRequestBtn")?.addEventListener("click",()=>{
       createRequest(document.getElementById("requestArea").value,document.getElementById("requestLevel").value,document.getElementById("requestTarget").value);
     });
 
-    document.getElementById("clearAuditBtn").addEventListener("click",()=>{
+    document.getElementById("clearAuditBtn")?.addEventListener("click",()=>{
       if(!confirm("Sicherheitsverlauf wirklich leeren?")) return;
       state.audit=[]; write(KEYS.audit,state.audit); renderAudit();
     });
 
-    document.getElementById("closeModalBtn").addEventListener("click",()=>document.getElementById("infoModal").classList.remove("open"));
-    document.getElementById("infoModal").addEventListener("click",(e)=>{if(e.target.id==="infoModal") e.currentTarget.classList.remove("open");});
+    document.getElementById("closeModalBtn")?.addEventListener("click",()=>document.getElementById("infoModal").classList.remove("open"));
+    document.getElementById("infoModal")?.addEventListener("click",(e)=>{if(e.target.id==="infoModal") e.currentTarget.classList.remove("open");});
   }
 
   function initUserBox(){
     const raw = read(KEYS.activeUser,null) || read(KEYS.activeUserLegacy,null);
+    const nameEl = document.getElementById("userName");
+    const roleEl = document.getElementById("userRole");
     if(raw){
-      document.getElementById("userName").textContent = "👋 " + (raw.name || raw.username || "Willkommen");
-      document.getElementById("userRole").textContent = roleLabel(normalizeRole(raw.role || raw.modus || "owner"));
+      if(nameEl) nameEl.textContent = "👋 " + (raw.name || raw.username || "Willkommen");
+      if(roleEl) roleEl.textContent = roleLabel(normalizeRole(raw.role || raw.modus || "owner"));
     }
-    document.getElementById("childBtn").addEventListener("click",()=>{window.location.href="kindermodus.html";});
   }
 
   window.handleLogout = function(){
@@ -1164,6 +1640,7 @@ tbody tr:hover td{background:#fbfdfb}
     loadState();
     bindEvents();
     renderAll();
+    initAgePresets();
   });
 })();
 </script>
@@ -1186,5 +1663,57 @@ tbody tr:hover td{background:#fbfdfb}
   document.addEventListener("DOMContentLoaded",updateGlobalChatBadge);window.addEventListener("storage",updateGlobalChatBadge);window.updateGlobalChatBadge=updateGlobalChatBadge;
 })();
 </script>
+
+<script>
+(function(){
+  function safeJson(key){
+    try{return JSON.parse(localStorage.getItem(key)||"null");}catch(e){return null;}
+  }
+  function firstLetter(name){
+    name = String(name||"").trim();
+    return name ? name.charAt(0).toUpperCase() : "👤";
+  }
+  function roleLabel(user){
+    const role = String(user?.role || user?.typ || user?.type || "").toLowerCase();
+    if(role.includes("child") || role.includes("kind")) return "Kindermodus";
+    if(role.includes("admin") || role.includes("parent") || role.includes("eltern")) return "Elternmodus";
+    return user ? "Angemeldet" : "Bitte anmelden";
+  }
+  function updateSidebarUser(){
+    const user = safeJson("haushaltsheld_user") || safeJson("hh_active_user") || safeJson("hh_user");
+    const nameEl = document.getElementById("sidebarUserName");
+    const roleEl = document.getElementById("sidebarUserRole");
+    const avatarEl = document.getElementById("sidebarUserAvatar");
+    const loginBtn = document.getElementById("sidebarLoginBtn");
+    const logoutBtn = document.getElementById("sidebarLogoutBtn");
+    const name = user?.name || user?.displayName || user?.username || user?.vorname || "";
+    if(user && nameEl){
+      nameEl.textContent = name || "Angemeldet";
+      if(roleEl) roleEl.textContent = roleLabel(user);
+      if(avatarEl) avatarEl.textContent = firstLetter(name);
+      if(loginBtn) loginBtn.style.display = "none";
+      if(logoutBtn) logoutBtn.style.display = "flex";
+    }else{
+      if(nameEl) nameEl.textContent = "Nicht angemeldet";
+      if(roleEl) roleEl.textContent = "Bitte anmelden";
+      if(avatarEl) avatarEl.textContent = "👤";
+      if(loginBtn) loginBtn.style.display = "flex";
+      if(logoutBtn) logoutBtn.style.display = "none";
+    }
+  }
+  document.addEventListener("DOMContentLoaded", function(){
+    updateSidebarUser();
+    const logoutBtn = document.getElementById("sidebarLogoutBtn");
+    if(logoutBtn){
+      logoutBtn.addEventListener("click", function(){
+        ["haushaltsheld_user","hh_active_user","hh_active_child","haushaltsheld_mode"].forEach(function(k){localStorage.removeItem(k);});
+        window.location.href = "login.html";
+      });
+    }
+    if(window.lucide) window.lucide.createIcons();
+  });
+})();
+</script>
+
 </body>
 </html>
